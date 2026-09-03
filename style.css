@@ -22,7 +22,7 @@ header{
 h1{
   display: flex;
   justify-content: center;
-  text-shadow: 2px 1px 5px rgb(50,0,150);
+  text-shadow: 2px 1px 12px rgb(125,0,200);
 }
 p{
   font-size: 14px;
@@ -45,6 +45,14 @@ p{
   color: white;
   border: 3px solid white;
   padding: 12px;
+}
+#criar-conta, .botao-abrir{
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+#criar-conta:hover, .botao-abrir:hover{
+  transform: scale(1.1);
+  transition: 0.3s;
+  box-shadow: 0 0 20px rgb(125,0,200);
 }
 footer{
   margin-top: 70px;
