@@ -25,6 +25,33 @@
     <br>
     <p>To: eu e meus amigos <3 ❤️</p>
   </footer>
+
+  <div id="tela-criar-conta" class="tela-conta">
+    <div class="secao-criar-conta">
+      <button id="fechar-criar-conta" type="button">Voltar</button>
+      <h2>CRIAR CONTA</h2>
+      <div class="opcoes-criar-conta">
+        <label for="email">E-mail:</label>
+        <input id="email" type="email" placeholder="Digite seu e-mail" autocomplete="email">
+        <label for="senha">Senha:</label>
+        <input id="senha" type="password" placeholder="Digite sua senha" autocomplete="new-password">
+        <label for="confirmar-senha">Confirmar senha:</label>
+        <input id="confirmar-senha" type="password" placeholder="Digite sua senha novamente" autocomplete="new-password">
+        <button id="confirmar-criar-conta" type="button">Criar Conta</button>
+        <div class="separador-conta">
+          <span></span>
+          <p>OU</p>
+          <span></span>
+        </div>
+        <button id="criar-conta-google" type="button">Continuar com Google</button>
+        <p id="erro-criar-conta"></p>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
   <script src="script.js"></script>
   <script src="firebase-config.js"></script>
   <script src="auten.js"></script>
