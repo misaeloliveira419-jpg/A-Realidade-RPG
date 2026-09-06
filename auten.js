@@ -261,7 +261,7 @@ auth.onAuthStateChanged(async usuario => {
 
 function obterContasConhecidas() {
   try {
-    const contas = JSON.parse(localStorage.getItem(CHAVE_CONTAS_CONHECIDAS));
+    const contas = JSON.parse(localStorage.getItem(chaveContasConhecidas));
     return Array.isArray(contas) ? contas : [];
   } catch {
     return [];
@@ -289,7 +289,7 @@ function salvarContaConhecida(usuario, dados) {
     contas.push(conta);
   }
 
-  localStorage.setItem(CHAVE_CONTAS_CONHECIDAS, JSON.stringify(contas));
+  localStorage.setItem(chaveContasConhecidas, JSON.stringify(contas));
 }
 
 function renderizarMenuContas() {
