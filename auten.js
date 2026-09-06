@@ -11,7 +11,8 @@ const menuContas = document.getElementById("menu-contas");
 const listaOutrasContas = document.getElementById("lista-outras-contas");
 const botaoAdicionarOutraConta = document.getElementById("adicionar-outra-conta");
 const areaConta = document.querySelector(".area-conta");
-const chaveContasConhecidas = "a-realidade-contas-conhecidas";
+let adicionandoOutraConta = false;
+let grupoContasPendente = null;
 
 window.usuarioAtual = null;
 window.dadosUsuarioAtual = null;
@@ -26,7 +27,7 @@ function fecharTelaCriarConta() {
   erroCriarConta.textContent = "";
 }
 
-botaoCriarConta.addEventListener("click", evento => {
+botaoCriarConta.addEventListener("click", async evento => {
   evento.stopPropagation();
 
   if (!auth.currentUser) {
@@ -34,14 +35,28 @@ botaoCriarConta.addEventListener("click", evento => {
     return;
   }
 
-  renderizarMenuContas();
+  await renderizarMenuContas();
   menuContas.classList.toggle("ativo");
 });
 
-botaoAdicionarOutraConta.addEventListener("click", evento => {
+botaoAdicionarOutraConta.addEventListener("click", async evento => {
   evento.stopPropagation();
   menuContas.classList.remove("ativo");
-  abrirTelaCriarConta();
+
+  try {
+    grupoContasPendente = await prepararGrupoContas();
+
+    if (!grupoContasPendente) {
+      console.error("Não foi possível preparar o grupo de contas.");
+      return;
+    }
+
+    adicionandoOutraConta = true;
+    abrirTelaCriarConta();
+
+  } catch (erro) {
+    console.error("Erro ao preparar outra conta:", erro);
+  }
 });
 
 document.addEventListener("click", evento => {
@@ -90,6 +105,128 @@ async function salvarUsuarioNoFirestore(usuario, provedor) {
   });
 }
 
+/*GRUPO DE CONTAS*/
+
+function obterNomeConta(usuario, dados = {}) {
+  return dados?.nome || usuario?.displayName || usuario?.email?.split("@")[0] || "Conta";
+}
+
+async function prepararGrupoContas() {
+  const usuario = auth.currentUser;
+  if (!usuario) return null;
+
+  const referenciaUsuario = db.collection("usuarios").doc(usuario.uid);
+  const documentoUsuario = await referenciaUsuario.get();
+  const dadosUsuario = documentoUsuario.data() || {};
+
+  if (dadosUsuario.grupoContasId) {
+    return dadosUsuario.grupoContasId;
+  }
+
+  const referenciaGrupo = db.collection("gruposContas").doc();
+
+  const membros = {};
+  membros[usuario.uid] = {
+    nome: obterNomeConta(usuario, dadosUsuario),
+    foto: usuario.photoURL || dadosUsuario.foto || ""
+  };
+
+  await referenciaGrupo.set({
+    membros: membros,
+    criadoEm: firebase.firestore.FieldValue.serverTimestamp(),
+    atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+  });
+
+  await referenciaUsuario.set({
+    grupoContasId: referenciaGrupo.id
+  }, {
+    merge: true
+  });
+
+  window.dadosUsuarioAtual = {
+    ...dadosUsuario,
+    grupoContasId: referenciaGrupo.id
+  };
+
+  return referenciaGrupo.id;
+}
+
+async function vincularContaAoGrupo(usuario) {
+  if (!adicionandoOutraConta || !grupoContasPendente || !usuario) return true;
+
+  try {
+    const referenciaUsuario = db.collection("usuarios").doc(usuario.uid);
+    const documentoUsuario = await referenciaUsuario.get();
+    const dadosUsuario = documentoUsuario.data() || {};
+
+    const dadosMembro = {
+      nome: obterNomeConta(usuario, dadosUsuario),
+      foto: usuario.photoURL || dadosUsuario.foto || ""
+    };
+
+    const referenciaGrupo = db.collection("gruposContas").doc(grupoContasPendente);
+    const caminhoMembro = new firebase.firestore.FieldPath("membros", usuario.uid);
+
+    await referenciaGrupo.update(
+      caminhoMembro, dadosMembro,
+      "atualizadoEm", firebase.firestore.FieldValue.serverTimestamp()
+    );
+
+    await referenciaUsuario.set({
+      grupoContasId: grupoContasPendente
+    }, {
+      merge: true
+    });
+
+    adicionandoOutraConta = false;
+    grupoContasPendente = null;
+
+    await renderizarMenuContas();
+
+    return true;
+
+  } catch (erro) {
+    console.error("Erro ao vincular as contas:", erro);
+    return false;
+  }
+}
+
+async function renderizarMenuContas() {
+  listaOutrasContas.innerHTML = "";
+
+  const usuario = auth.currentUser;
+  if (!usuario) return;
+
+  try {
+    const documentoUsuario = await db.collection("usuarios").doc(usuario.uid).get();
+    const dadosUsuario = documentoUsuario.data() || {};
+    const grupoContasId = dadosUsuario.grupoContasId;
+
+    if (!grupoContasId) return;
+
+    const documentoGrupo = await db.collection("gruposContas").doc(grupoContasId).get();
+    if (!documentoGrupo.exists) return;
+
+    const membros = documentoGrupo.data().membros || {};
+
+    Object.entries(membros).forEach(([uid, dados]) => {
+      if (uid === usuario.uid) return;
+
+      const botao = document.createElement("button");
+
+      botao.type = "button";
+      botao.className = "conta-salva";
+      botao.dataset.uid = uid;
+      botao.textContent = dados.nome || "Conta";
+
+      listaOutrasContas.appendChild(botao);
+    });
+
+  } catch (erro) {
+    console.error("Erro ao carregar outras contas:", erro);
+  }
+}
+
 async function criarContaComEmail() {
   const email = campoEmail.value.trim();
   const senha = campoSenha.value;
@@ -117,13 +254,22 @@ async function criarContaComEmail() {
 
   try {
     const credencial = await auth.createUserWithEmailAndPassword(email, senha);
-
+    
     await salvarUsuarioNoFirestore(credencial.user, "email");
+    
+    if (adicionandoOutraConta) {
+      const vinculada = await vincularContaAoGrupo(credencial.user);
+      
+      if (!vinculada) {
+        erroCriarConta.textContent = "A conta foi criada, mas não foi possível adicioná-la ao grupo de contas.";
+        return;
+      }
+    }
 
     campoEmail.value = "";
     campoSenha.value = "";
     campoConfirmarSenha.value = "";
-
+    
     fecharTelaCriarConta();
 
   } catch (erro) {
@@ -173,9 +319,19 @@ async function criarContaComGoogle() {
     });
     
     const resultado = await auth.signInWithPopup(provedorGoogle);
-
+    
     await salvarUsuarioNoFirestore(resultado.user, "google");
-
+    
+    if (adicionandoOutraConta) {
+      
+      const vinculada = await vincularContaAoGrupo(resultado.user);
+      
+      if (!vinculada) {
+        erroCriarConta.textContent = "A conta foi autenticada, mas não foi possível adicioná-la ao grupo de contas.";
+        return;
+      }
+    }
+    
     fecharTelaCriarConta();
 
   } catch (erro) {
@@ -243,8 +399,7 @@ auth.onAuthStateChanged(async usuario => {
     window.dadosUsuarioAtual = documento.data();
 
     atualizarBotaoUsuario(usuario, window.dadosUsuarioAtual);
-    salvarContaConhecida(usuario, window.dadosUsuarioAtual);
-    renderizarMenuContas();
+    await renderizarMenuContas();
     
     window.dispatchEvent(new CustomEvent("usuario-autenticado", {
       detail: {
@@ -258,53 +413,3 @@ auth.onAuthStateChanged(async usuario => {
     console.error("Erro ao carregar os dados do usuário:", erro);
   }
 });
-
-function obterContasConhecidas() {
-  try {
-    const contas = JSON.parse(localStorage.getItem(chaveContasConhecidas));
-    return Array.isArray(contas) ? contas : [];
-  } catch {
-    return [];
-  }
-}
-
-function salvarContaConhecida(usuario, dados) {
-  if (!usuario) return;
-
-  const contas = obterContasConhecidas();
-  const nome = dados?.nome || usuario.displayName || usuario.email?.split("@")[0] || "Conta";
-
-  const conta = {
-    uid: usuario.uid,
-    nome: nome,
-    email: usuario.email || "",
-    foto: usuario.photoURL || ""
-  };
-
-  const indiceExistente = contas.findIndex(item => item.uid === usuario.uid);
-
-  if (indiceExistente >= 0) {
-    contas[indiceExistente] = conta;
-  } else {
-    contas.push(conta);
-  }
-
-  localStorage.setItem(chaveContasConhecidas, JSON.stringify(contas));
-}
-
-function renderizarMenuContas() {
-  listaOutrasContas.innerHTML = "";
-
-  if (!auth.currentUser) return;
-
-  const contas = obterContasConhecidas();
-  const outrasContas = contas.filter(conta => conta.uid !== auth.currentUser.uid);
-
-  outrasContas.forEach(conta => {
-    const item = document.createElement("div");
-    item.className = "conta-salva";
-    item.textContent = conta.nome || conta.email || "Conta";
-    item.title = conta.email || conta.nome || "";
-    listaOutrasContas.appendChild(item);
-  });
-}
