@@ -52,13 +52,71 @@ p{
 }
 #criar-conta:hover, .botao-abrir:hover{
   transform: scale(1.1);
-  transition: 0.3s;
   box-shadow: 0 0 20px rgb(100,0,200);
 }
 footer{
   margin-top: 70px;
   margin-bottom: 30px;
   font-weight: bold;
+}
+
+/*Botão de contas*/
+
+.area-conta{
+  position: relative;
+  display: inline-block;
+  margin: 10px;
+}
+.area-conta #criar-conta{
+  margin: 0;
+}
+.menu-contas{
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  display: none;
+  background: black;
+  border: 2px solid white;
+  border-radius: 5px;
+  z-index: 900;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.menu-contas.ativo{
+  display: block;
+}
+.menu-contas:hover{
+  transform: scale(1.1);
+  box-shadow: 0 0 20px rgb(100,0,200);
+}
+.conta-salva{
+  padding: 12px;
+  color: white;
+  text-align: left;
+  border-bottom: 1px solid rgb(100, 100, 100);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.conta-salva:last-child{
+  border-bottom: none;
+}
+#lista-outras-contas:empty{
+  display: none;
+}
+#adicionar-outra-conta{
+  padding: 8px;
+  background: black;
+  color: white;
+  border: none;
+  font-size: 10px;
+  font-weight: bold;
+  text-align: left;
+  cursor: pointer;
+  align-items: center;
+}
+#adicionar-outra-conta:hover{
+  background: rgb(25, 25, 25);
+  box-shadow: inset 0 0 12px rgba(100, 0, 200, 0.5);
 }
 
 .tela-conta{
@@ -71,11 +129,9 @@ footer{
   z-index: 1000;
   padding: 20px;
 }
-
 .tela-conta.ativa{
   display: flex;
 }
-
 .secao-criar-conta{
   position: relative;
   width: 100%;
@@ -85,13 +141,11 @@ footer{
   border: 3px solid white;
   box-shadow: 0 0 25px rgba(100,0,200,0.6);
 }
-
 .secao-criar-conta h2{
   text-align: center;
   font-size: 28px;
   text-shadow: 2px 1px 12px rgb(100,0,200);
 }
-
 #fechar-criar-conta{
   position: absolute;
   top: 10px;
@@ -103,18 +157,15 @@ footer{
   border: 2px solid white;
   padding: 6px 16px;
 }
-
 .opcoes-criar-conta{
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
-
 .opcoes-criar-conta label{
   margin-top: 8px;
   font-weight: bold;
 }
-
 .opcoes-criar-conta input{
   padding: 12px;
   background: rgb(15,15,15);
@@ -124,11 +175,9 @@ footer{
   font-size: 15px;
   border-radius: 5px;
 }
-
 .opcoes-criar-conta input:focus{
   box-shadow: 0 0 12px rgb(100,0,200);
 }
-
 #confirmar-criar-conta,
 #criar-conta-google{
   margin-top: 32px;
@@ -142,39 +191,33 @@ footer{
   transition: transform 0.2s, box-shadow 0.2s;
   align-self: center;
 }
-
 #confirmar-criar-conta:hover,
 #criar-conta-google:hover{
   transform: scale(1.03);
   box-shadow: 0 0 15px rgb(100,0,200);
 }
-
 #confirmar-criar-conta:disabled,
 #criar-conta-google:disabled{
   opacity: 0.6;
   cursor: default;
   transform: none;
 }
-
 .separador-conta{
   display: flex;
   align-items: center;
   gap: 10px;
   margin-top: 12px;
 }
-
 .separador-conta span{
   flex: 1;
   height: 1px;
   background: white;
 }
-
 .separador-conta p{
   width: auto;
   margin: 0;
   font-size: 12px;
 }
-
 #erro-criar-conta{
   width: 100%;
   min-height: 20px;

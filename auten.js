@@ -1,14 +1,17 @@
 const botaoCriarConta = document.getElementById("criar-conta");
 const telaCriarConta = document.getElementById("tela-criar-conta");
 const botaoFecharCriarConta = document.getElementById("fechar-criar-conta");
-
 const campoEmail = document.getElementById("email");
 const campoSenha = document.getElementById("senha");
 const campoConfirmarSenha = document.getElementById("confirmar-senha");
-
 const botaoConfirmarCriarConta = document.getElementById("confirmar-criar-conta");
 const botaoCriarContaGoogle = document.getElementById("criar-conta-google");
 const erroCriarConta = document.getElementById("erro-criar-conta");
+const menuContas = document.getElementById("menu-contas");
+const listaOutrasContas = document.getElementById("lista-outras-contas");
+const botaoAdicionarOutraConta = document.getElementById("adicionar-outra-conta");
+const areaConta = document.querySelector(".area-conta");
+const chaveContasConhecidas = "a-realidade-contas-conhecidas";
 
 window.usuarioAtual = null;
 window.dadosUsuarioAtual = null;
@@ -23,9 +26,27 @@ function fecharTelaCriarConta() {
   erroCriarConta.textContent = "";
 }
 
-botaoCriarConta.addEventListener("click", () => {
+botaoCriarConta.addEventListener("click", evento => {
+  evento.stopPropagation();
+
   if (!auth.currentUser) {
     abrirTelaCriarConta();
+    return;
+  }
+
+  renderizarMenuContas();
+  menuContas.classList.toggle("ativo");
+});
+
+botaoAdicionarOutraConta.addEventListener("click", evento => {
+  evento.stopPropagation();
+  menuContas.classList.remove("ativo");
+  abrirTelaCriarConta();
+});
+
+document.addEventListener("click", evento => {
+  if (!areaConta.contains(evento.target)) {
+    menuContas.classList.remove("ativo");
   }
 });
 
@@ -146,6 +167,11 @@ async function criarContaComGoogle() {
 
   try {
     const provedorGoogle = new firebase.auth.GoogleAuthProvider();
+    
+    provedorGoogle.setCustomParameters({
+      prompt: "select_account"
+    });
+    
     const resultado = await auth.signInWithPopup(provedorGoogle);
 
     await salvarUsuarioNoFirestore(resultado.user, "google");
@@ -217,7 +243,9 @@ auth.onAuthStateChanged(async usuario => {
     window.dadosUsuarioAtual = documento.data();
 
     atualizarBotaoUsuario(usuario, window.dadosUsuarioAtual);
-
+    salvarContaConhecida(usuario, window.dadosUsuarioAtual);
+    renderizarMenuContas();
+    
     window.dispatchEvent(new CustomEvent("usuario-autenticado", {
       detail: {
         uid: usuario.uid,
@@ -230,3 +258,53 @@ auth.onAuthStateChanged(async usuario => {
     console.error("Erro ao carregar os dados do usuário:", erro);
   }
 });
+
+function obterContasConhecidas() {
+  try {
+    const contas = JSON.parse(localStorage.getItem(CHAVE_CONTAS_CONHECIDAS));
+    return Array.isArray(contas) ? contas : [];
+  } catch {
+    return [];
+  }
+}
+
+function salvarContaConhecida(usuario, dados) {
+  if (!usuario) return;
+
+  const contas = obterContasConhecidas();
+  const nome = dados?.nome || usuario.displayName || usuario.email?.split("@")[0] || "Conta";
+
+  const conta = {
+    uid: usuario.uid,
+    nome: nome,
+    email: usuario.email || "",
+    foto: usuario.photoURL || ""
+  };
+
+  const indiceExistente = contas.findIndex(item => item.uid === usuario.uid);
+
+  if (indiceExistente >= 0) {
+    contas[indiceExistente] = conta;
+  } else {
+    contas.push(conta);
+  }
+
+  localStorage.setItem(CHAVE_CONTAS_CONHECIDAS, JSON.stringify(contas));
+}
+
+function renderizarMenuContas() {
+  listaOutrasContas.innerHTML = "";
+
+  if (!auth.currentUser) return;
+
+  const contas = obterContasConhecidas();
+  const outrasContas = contas.filter(conta => conta.uid !== auth.currentUser.uid);
+
+  outrasContas.forEach(conta => {
+    const item = document.createElement("div");
+    item.className = "conta-salva";
+    item.textContent = conta.nome || conta.email || "Conta";
+    item.title = conta.email || conta.nome || "";
+    listaOutrasContas.appendChild(item);
+  });
+}
