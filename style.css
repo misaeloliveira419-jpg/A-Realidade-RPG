@@ -11,15 +11,6 @@ body{
 header{
   text-align: right;
 }
-#criar-conta{
-  margin: 10px;
-  padding: 12px;
-  font-size: 14px;
-  background: black;
-  color: white;
-  border: 2px solid white;
-  border-radius: 5px;
-}
 h1{
   display: flex;
   justify-content: center;
@@ -62,6 +53,15 @@ footer{
 
 /*Botão de contas*/
 
+#criar-conta{
+  margin: 10px;
+  padding: 12px;
+  font-size: 14px;
+  background: black;
+  color: white;
+  border: 2px solid white;
+  border-radius: 5px;
+}
 .area-conta{
   position: relative;
   display: inline-block;
