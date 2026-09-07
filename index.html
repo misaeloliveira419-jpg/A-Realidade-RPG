@@ -17,23 +17,29 @@
       </div>
     </div>
   </header>
-  <!--Página principal-->
   <br><br>
-  <h1>SEJA BEM-VINDO(A)!</h1>
-  <br>
-  <p>A Realidade é um RPG criado por mim, Misael Oliveira, em que eu e meus amigos improvisamos e montamos juntos uma história que envolve mistério, puzzle, e muita mecânica. Esse site funciona como um meio para montar campanhas, fichas de personagem, entender o sistema e suas regras, ou até mesmo ficar por dentro das atualizações que o RPG (geralmente o sistema) vai ter.</p>
-  <div class="opcoes">
-    <button class="botao-abrir" id="abrir-campanhas">CAMPANHAS</button>
-    <button class="botao-abrir" id="abrir-fichas">SUAS FICHAS</button>
-    <button class="botao-abrir" id="abrir-sistema">SISTEMA</button>
-    <button class="botao-abrir" id="abrir-novidades">NOVIDADES</button>
-  </div>
-  <footer>
-    <p>By: Misael Oliveira Barbosa, 2026</p>
+
+  <!--Página principal-->
+
+  <div id="tela-principal" class="tela-site ativa">
+    <h1>SEJA BEM-VINDO(A)!</h1>
     <br>
-    <p>To: eu e meus amigos <3 ❤️</p>
-  </footer>
+    <p>A Realidade é um RPG criado por mim, Misael Oliveira, em que eu e meus amigos improvisamos e montamos juntos uma história que envolve mistério, puzzle, e muita mecânica. Esse site funciona como um meio para montar campanhas, fichas de personagem, entender o sistema e suas regras, ou até mesmo ficar por dentro das atualizações que o RPG (geralmente o sistema) vai ter.</p>
+    <div class="opcoes">
+      <button class="botao-abrir" id="botao-abrir-campanhas">CAMPANHAS</button>
+      <button class="botao-abrir" id="botao-abrir-fichas">SUAS FICHAS</button>
+      <button class="botao-abrir" id="botao-abrir-sistema">SISTEMA</button>
+      <button class="botao-abrir" id="botao-abrir-novidades">NOVIDADES</button>
+    </div>
+    <footer>
+      <p>By: Misael Oliveira Barbosa, 2026</p>
+      <br>
+      <p>To: eu e meus amigos <3 ❤️</p>
+    </footer>
+  </div>
+  
   <!--Tela de criar conta-->
+  
   <div id="tela-criar-conta" class="tela-conta">
     <div class="secao-criar-conta">
       <button id="fechar-criar-conta" type="button">Voltar</button>
@@ -56,7 +62,9 @@
       </div>
     </div>
   </div>
+  
   <!--Tela para trocar para conta de e-mail-->
+  
   <div id="tela-trocar-conta" class="tela-conta">
     <div class="secao-criar-conta">
       <button id="fechar-trocar-conta" type="button">Voltar</button>
@@ -70,6 +78,19 @@
       </div>
     </div>
   </div>
+
+  <!--Tela campanhas-->
+  
+  <div id="tela-campanhas" class="tela-site">
+    <div class="intro-campanhas">
+      <h1>CAMPANHAS</h1>
+    </div>
+
+    <div class="opcoes-campanhas">
+      <button class="botao-abrir" id="botao-criar-campanha">+ CRIAR CAMPANHA</button>
+    </div>
+  </div>
+
   <!--scripts-->
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>

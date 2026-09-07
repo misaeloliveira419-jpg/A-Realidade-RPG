@@ -11,6 +11,18 @@ body{
 header{
   text-align: right;
 }
+
+/*Telas do site*/
+
+.tela-site{
+  display: none;
+}
+.tela-site.ativa{
+  display: block;
+}
+
+/*Tela principal*/
+
 h1{
   display: flex;
   justify-content: center;
@@ -22,6 +34,13 @@ p{
   text-align: center;
   margin: 0 auto;
   line-height: 1.5;
+}
+#criar-conta, .botao-abrir{
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+#criar-conta:hover, .botao-abrir:hover{
+  transform: scale(1.1);
+  box-shadow: 0 0 20px rgb(100,0,200);
 }
 .opcoes{
   display: grid;
@@ -37,13 +56,6 @@ p{
   color: white;
   border: 3px solid white;
   padding: 12px;
-}
-#criar-conta, .botao-abrir{
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-#criar-conta:hover, .botao-abrir:hover{
-  transform: scale(1.1);
-  box-shadow: 0 0 20px rgb(100,0,200);
 }
 footer{
   margin-top: 70px;
@@ -277,4 +289,25 @@ footer{
   color: rgb(255,100,100);
   text-align: center;
   font-size: 14px;
+}
+
+/*Tela campanhas*/
+
+.intro-campanhas h1{
+  display: flex;
+  justify-content: center;
+  border: 3px solid white;
+  border-radius: 5px;
+  padding: 12px;
+  background: black;
+  width: 400px;
+  margin: 0 auto; 
+}
+.opcoes-campanhas{
+  display: grid;
+  grid-template-columns: repeat(2, 200px);
+  gap: 50px;
+  justify-content: center;
+  margin-top: 60px;
+  
 }
