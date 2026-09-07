@@ -300,14 +300,41 @@ footer{
   border-radius: 5px;
   padding: 12px;
   background: black;
-  width: 400px;
+  width: 350px;
   margin: 0 auto; 
 }
 .opcoes-campanhas{
   display: grid;
-  grid-template-columns: repeat(2, 200px);
-  gap: 50px;
+  grid-template-columns: repeat(1, 300px);
+  gap: 30px;
   justify-content: center;
   margin-top: 60px;
-  
+}
+.botao-abrir-campanha{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  box-sizing: border-box;
+  font-weight: bold;
+  font-size: 16px;
+  background: black;
+  color: white;
+  border: 2px solid white;
+  border-radius: 5px;
+  padding: 12px;
+  height: 200px;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.botao-abrir-campanha::before{
+  content: "";
+  display: block;
+  width: 110%;
+  height: 2px;
+  background-color: white;
+  margin-bottom: 12px;
+}
+.botao-abrir-campanha:hover{
+  transform: scale(1.1);
+  box-shadow: 0 0 20px rgb(100,0,200);
 }
