@@ -34,6 +34,11 @@ botaoCriarConta.addEventListener("click", async evento => {
     abrirTelaCriarConta();
     return;
   }
+  
+  if (menuContas.classList.contains("ativo")) {
+    menuContas.classList.remove("ativo");
+    return;
+  }
 
   await renderizarMenuContas();
   menuContas.classList.toggle("ativo");

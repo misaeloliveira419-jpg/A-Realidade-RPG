@@ -72,19 +72,27 @@ footer{
 }
 .menu-contas{
   position: absolute;
-  display: none;
+  display: flex;
+  flex-direction: column;
   background: black;
   border: 2px solid white;
   border-radius: 5px;
   z-index: 900;
-  transition: transform 0.3s, box-shadow 0.3s;
-  flex-direction: column;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(-15px) scaleY(0.85);
+  transform-origin: top right;
+  transition: opacity 0.25s ease, transform 0.3s ease, visibility 0.3s;
 }
 .menu-contas.ativo{
-  display: flex;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0) scaleY(1);
 }
-.menu-contas:hover{
-  transform: scale(1.1);
+.menu-contas.ativo:hover{
+  transform: translateY(0) scale(1.03);
   box-shadow: 0 0 20px rgb(100,0,200);
 }
 .conta-salva{
