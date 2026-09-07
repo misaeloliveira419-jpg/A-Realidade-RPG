@@ -11,8 +11,18 @@ const menuContas = document.getElementById("menu-contas");
 const listaOutrasContas = document.getElementById("lista-outras-contas");
 const botaoAdicionarOutraConta = document.getElementById("adicionar-outra-conta");
 const areaConta = document.querySelector(".area-conta");
+
 let adicionandoOutraConta = false;
 let grupoContasPendente = null;
+
+const telaTrocarConta = document.getElementById("tela-trocar-conta");
+const botaoFecharTrocarConta = document.getElementById("fechar-trocar-conta");
+const nomeTrocarConta = document.getElementById("nome-trocar-conta");
+const campoSenhaTrocarConta = document.getElementById("senha-trocar-conta");
+const botaoConfirmarTrocarConta = document.getElementById("confirmar-trocar-conta");
+const erroTrocarConta = document.getElementById("erro-trocar-conta");
+
+let contaTrocaPendente = null;
 
 window.usuarioAtual = null;
 window.dadosUsuarioAtual = null;
@@ -110,10 +120,15 @@ async function salvarUsuarioNoFirestore(usuario, provedor) {
   });
 }
 
-/*GRUPO DE CONTAS*/
+/*Grupo de contas*/
 
 function obterNomeConta(usuario, dados = {}) {
   return dados?.nome || usuario?.displayName || usuario?.email?.split("@")[0] || "Conta";
+}
+
+function obterProvedorConta(usuario) {
+  const usaGoogle = usuario.providerData?.some(provedor => provedor.providerId === "google.com");
+  return usaGoogle ? "google" : "email";
 }
 
 async function prepararGrupoContas() {
@@ -133,7 +148,9 @@ async function prepararGrupoContas() {
   const membros = {};
   membros[usuario.uid] = {
     nome: obterNomeConta(usuario, dadosUsuario),
-    foto: usuario.photoURL || dadosUsuario.foto || ""
+    foto: usuario.photoURL || dadosUsuario.foto || "",
+    email: usuario.email || "",
+    provedor: obterProvedorConta(usuario)
   };
 
   await referenciaGrupo.set({
@@ -166,7 +183,9 @@ async function vincularContaAoGrupo(usuario) {
 
     const dadosMembro = {
       nome: obterNomeConta(usuario, dadosUsuario),
-      foto: usuario.photoURL || dadosUsuario.foto || ""
+      foto: usuario.photoURL || dadosUsuario.foto || "",
+      email: usuario.email || "",
+      provedor: obterProvedorConta(usuario)
     };
 
     const referenciaGrupo = db.collection("gruposContas").doc(grupoContasPendente);
@@ -196,6 +215,132 @@ async function vincularContaAoGrupo(usuario) {
   }
 }
 
+async function atualizarMeuMembroNoGrupo(usuario, dadosUsuario) {
+  if (!usuario || !dadosUsuario?.grupoContasId) return;
+
+  try {
+    const referenciaGrupo = db.collection("gruposContas").doc(dadosUsuario.grupoContasId);
+    const caminhoMembro = new firebase.firestore.FieldPath("membros", usuario.uid);
+
+    const dadosMembro = {
+      nome: obterNomeConta(usuario, dadosUsuario),
+      foto: usuario.photoURL || dadosUsuario.foto || "",
+      email: usuario.email || "",
+      provedor: obterProvedorConta(usuario)
+    };
+
+    await referenciaGrupo.update(
+      caminhoMembro, dadosMembro,
+      "atualizadoEm", firebase.firestore.FieldValue.serverTimestamp()
+    );
+
+  } catch (erro) {
+    console.error("Erro ao atualizar dados da conta no grupo:", erro);
+  }
+}
+
+async function trocarParaConta(conta) {
+  if (!conta || conta.uid === auth.currentUser?.uid) return;
+
+  menuContas.classList.remove("ativo");
+
+  if (conta.provedor === "google") {
+    await trocarParaContaGoogle(conta);
+    return;
+  }
+
+  if (conta.provedor === "email") {
+    abrirTrocaContaEmail(conta);
+    return;
+  }
+
+  alert("Não foi possível identificar como esta conta foi criada.");
+}
+
+async function trocarParaContaGoogle(conta) {
+  try {
+    const provedorGoogle = new firebase.auth.GoogleAuthProvider();
+
+    if (conta.email) {
+      provedorGoogle.setCustomParameters({
+        login_hint: conta.email
+      });
+    } else {
+      provedorGoogle.setCustomParameters({
+        prompt: "select_account"
+      });
+    }
+
+    const resultado = await auth.signInWithPopup(provedorGoogle);
+
+    if (resultado.user.uid !== conta.uid) {
+      alert("Você selecionou uma conta diferente de " + conta.nome + ".");
+      return;
+    }
+
+  } catch (erro) {
+    console.error("Erro ao trocar de conta:", erro);
+  }
+}
+
+function abrirTrocaContaEmail(conta) {
+  contaTrocaPendente = conta;
+
+  nomeTrocarConta.textContent = conta.nome || "ENTRAR NA CONTA";
+  campoSenhaTrocarConta.value = "";
+  erroTrocarConta.textContent = "";
+
+  telaTrocarConta.classList.add("ativa");
+  campoSenhaTrocarConta.focus();
+}
+
+function fecharTrocaContaEmail() {
+  telaTrocarConta.classList.remove("ativa");
+  campoSenhaTrocarConta.value = "";
+  erroTrocarConta.textContent = "";
+  contaTrocaPendente = null;
+}
+
+botaoFecharTrocarConta.addEventListener("click", fecharTrocaContaEmail);
+
+botaoConfirmarTrocarConta.addEventListener("click", async () => {
+  if (!contaTrocaPendente) return;
+
+  const senha = campoSenhaTrocarConta.value;
+
+  if (!senha) {
+    erroTrocarConta.textContent = "Digite a senha.";
+    return;
+  }
+
+  botaoConfirmarTrocarConta.disabled = true;
+  botaoConfirmarTrocarConta.textContent = "Entrando...";
+
+  try {
+    const resultado = await auth.signInWithEmailAndPassword(contaTrocaPendente.email, senha);
+
+    if (resultado.user.uid !== contaTrocaPendente.uid) {
+      erroTrocarConta.textContent = "Essa não é a conta selecionada.";
+      return;
+    }
+
+    fecharTrocaContaEmail();
+
+  } catch (erro) {
+    console.error("Erro ao trocar de conta:", erro);
+
+    if (erro.code === "auth/wrong-password" || erro.code === "auth/invalid-credential") {
+      erroTrocarConta.textContent = "Senha incorreta.";
+    } else {
+      erroTrocarConta.textContent = "Não foi possível entrar nesta conta.";
+    }
+
+  } finally {
+    botaoConfirmarTrocarConta.disabled = false;
+    botaoConfirmarTrocarConta.textContent = "Entrar nesta conta";
+  }
+});
+
 async function renderizarMenuContas() {
   listaOutrasContas.innerHTML = "";
 
@@ -223,6 +368,15 @@ async function renderizarMenuContas() {
       botao.className = "conta-salva";
       botao.dataset.uid = uid;
       botao.textContent = dados.nome || "Conta";
+      
+      botao.addEventListener("click", () => {
+        trocarParaConta({
+          uid: uid,
+          nome: dados.nome || "Conta",
+          email: dados.email || "",
+          provedor: dados.provedor || ""
+        });
+      });
 
       listaOutrasContas.appendChild(botao);
     });
@@ -402,8 +556,9 @@ auth.onAuthStateChanged(async usuario => {
     }
 
     window.dadosUsuarioAtual = documento.data();
-
+    
     atualizarBotaoUsuario(usuario, window.dadosUsuarioAtual);
+    await atualizarMeuMembroNoGrupo(usuario, window.dadosUsuarioAtual);
     await renderizarMenuContas();
     
     window.dispatchEvent(new CustomEvent("usuario-autenticado", {
