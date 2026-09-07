@@ -11,3 +11,15 @@ function abrirTelaCampanhas() {
 }
 
 botaoAbrirCampanhas.addEventListener("click", abrirTelaCampanhas);
+
+/* Tela criar campanha */
+
+const telaCriarCampanha = document.getElementById("tela-criar-campanha");
+const botaoCriarCampanha = document.getElementById("botao-criar-campanha");
+
+function abrirTelaCriarCampanha() {
+  telaCampanhas.classList.remove("ativa");
+  telaCriarCampanha.classList.add("ativa");
+}
+
+botaoCriarCampanha.addEventListener("click", abrirTelaCriarCampanha);

@@ -297,7 +297,6 @@ footer{
   display: flex;
   justify-content: center;
   border: 3px solid white;
-  border-radius: 5px;
   padding: 12px;
   background: black;
   width: 350px;
@@ -313,28 +312,46 @@ footer{
 .botao-abrir-campanha{
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
   box-sizing: border-box;
+  height: 200px;
+  padding: 25px 12px 12px;
   font-weight: bold;
   font-size: 16px;
   background: black;
   color: white;
   border: 2px solid white;
   border-radius: 5px;
-  padding: 12px;
-  height: 200px;
   transition: transform 0.3s, box-shadow 0.3s;
-}
-.botao-abrir-campanha::before{
-  content: "";
-  display: block;
-  width: 110%;
-  height: 2px;
-  background-color: white;
-  margin-bottom: 12px;
 }
 .botao-abrir-campanha:hover{
   transform: scale(1.1);
   box-shadow: 0 0 20px rgb(100,0,200);
 }
+#botao-criar-campanha{
+  width: 80px;
+  height: 80px;
+  margin-top: 15px;
+  background: black;
+  color: white;
+  border: 2px solid white;
+  border-radius: 50%;
+  font-size: 50px;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+#botao-criar-campanha:hover{
+  transform: scale(1.1);
+  box-shadow: 0 0 20px rgb(100,0,200);
+}
+.botao-abrir-campanha span{
+  width: 300px;
+  padding-top: 12px;
+  border-top: 2px solid white;
+  text-align: center;
+}
+
+/*Tela criar campanha*/
+
