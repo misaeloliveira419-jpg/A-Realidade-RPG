@@ -457,6 +457,11 @@ footer{
   font-size: 15px;
   border-radius: 5px;
   align-self: center;
+}
+#secao-criar-campanha input{
+  width: 300px;
+}
+#secao-criar-campanha textarea{
   width: 500px;
 }
 #secao-criar-campanha input:focus{
