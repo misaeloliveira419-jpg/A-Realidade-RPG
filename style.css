@@ -315,8 +315,6 @@ footer{
 /*Tela selecionar campanhas*/
 
 .intro-campanhas h1{
-  display: flex;
-  justify-content: center;
   border: 3px solid white;
   padding: 12px;
   background: black;
@@ -374,7 +372,7 @@ footer{
   text-align: center;
 }
 
-/*Tela entrar campanha*/
+/*Tela entrar/criar campanha*/
 
 #secao-entrar-campanha{
   display: flex;
@@ -481,4 +479,14 @@ footer{
 #secao-criar-campanha button:hover{
   transform: scale(1.03);
   box-shadow: 0 0 15px rgb(100,0,200);
+}
+
+/*Tela campanha*/
+
+#nome-campanha-atual{
+  padding: 12px;
+  width: 350px;
+  margin: 0 auto;
+  border: 3px solid white;
+  background: black;
 }

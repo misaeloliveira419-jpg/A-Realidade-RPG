@@ -40,8 +40,6 @@ function abrirTelaEntrarCampanha() {
 
 botaoEntrarCampanha.addEventListener("click", abrirTelaEntrarCampanha);
 
-/*Tela campanha*/
-
 const telaCampanha = document.getElementById("tela-campanha");
 const linkCampanha = document.getElementById("link-campanha");
 const nomeCampanha = document.getElementById("nome-campanha");
@@ -64,8 +62,25 @@ function criarCampanha() {
     alert("Por favor, insira o nome da campanha.");
     return;
   }
+  atualizarNomeCampanha();
+  atualizarDescricaoCampanha();
   telaEntrarCampanha.classList.remove("ativa");
   telaCampanha.classList.add("ativa");
 }
 
 botaoConfirmarCriarCampanha.addEventListener("click", criarCampanha);
+
+/*Tela campanha*/
+
+const nomeCampanhaAtual = document.getElementById("nome-campanha-atual");
+
+function atualizarNomeCampanha() {
+  nomeCampanhaAtual.textContent = nomeCampanha.value.trim() || "Campanha sem nome";
+}
+
+const descricaoCampanha = document.getElementById("descricao-campanha");
+const descricaoCampanhaAtual = document.getElementById("descricao-campanha-atual");
+
+function atualizarDescricaoCampanha() {
+  descricaoCampanhaAtual.textContent = descricaoCampanha.value.trim() || null;
+}
