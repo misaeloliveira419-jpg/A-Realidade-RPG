@@ -39,3 +39,4 @@ function abrirTelaEntrarCampanha() {
 }
 
 botaoEntrarCampanha.addEventListener("click", abrirTelaEntrarCampanha);
+

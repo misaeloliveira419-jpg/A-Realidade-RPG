@@ -395,7 +395,7 @@ footer{
   font-weight: bold;
   font-size: 18px;
   align-self: center;
-  width: 500px;
+  width: 400px;
 }
 #secao-entrar-campanha input{
   padding: 6px;
@@ -406,7 +406,7 @@ footer{
   font-size: 15px;
   border-radius: 5px;
   align-self: center;
-  width: 500px;
+  width: 400px;
 }
 #secao-entrar-campanha input:focus{
   box-shadow: 0 0 12px rgb(100,0,200);
@@ -445,7 +445,7 @@ footer{
   font-weight: bold;
   font-size: 18px;
   align-self: center;
-  width: 500px;
+  width: 400px;
 }
 #secao-criar-campanha input,
 #secao-criar-campanha textarea{
@@ -462,7 +462,7 @@ footer{
   width: 300px;
 }
 #secao-criar-campanha textarea{
-  width: 500px;
+  width: 400px;
 }
 #secao-criar-campanha input:focus{
   box-shadow: 0 0 12px rgb(100,0,200);
