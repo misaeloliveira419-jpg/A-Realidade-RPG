@@ -43,10 +43,16 @@ botaoEntrarCampanha.addEventListener("click", abrirTelaEntrarCampanha);
 /*Tela campanha*/
 
 const telaCampanha = document.getElementById("tela-campanha");
+const linkCampanha = document.getElementById("link-campanha");
+const nomeCampanha = document.getElementById("nome-campanha");
 const botaoConfirmarEntrarCampanha = document.getElementById("confirmar-entrar-campanha");
 const botaoConfirmarCriarCampanha = document.getElementById("confirmar-criar-campanha");
 
 function entrarCampanha() {
+  if (linkCampanha.value.trim() === "") {
+    alert("Por favor, insira o link da campanha.");
+    return;
+  }
   telaEntrarCampanha.classList.remove("ativa");
   telaCampanha.classList.add("ativa");
 }
@@ -54,6 +60,10 @@ function entrarCampanha() {
 botaoConfirmarEntrarCampanha.addEventListener("click", entrarCampanha);
 
 function criarCampanha() {
+  if (nomeCampanha.value.trim() === "") {
+    alert("Por favor, insira o nome da campanha.");
+    return;
+  }
   telaEntrarCampanha.classList.remove("ativa");
   telaCampanha.classList.add("ativa");
 }
