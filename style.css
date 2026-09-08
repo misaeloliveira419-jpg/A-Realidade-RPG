@@ -95,7 +95,7 @@ footer{
   pointer-events: none;
   transform: translateY(-15px) scaleY(0.85);
   transform-origin: top right;
-  transition: opacity 0.25s ease, transform 0.3s ease, visibility 0.3s;
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
 }
 .menu-contas.ativo{
   opacity: 1;
@@ -157,7 +157,7 @@ footer{
   border: 2px solid white;
   font-weight: bold;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 #confirmar-trocar-conta:hover{
   transform: scale(1.03);
@@ -232,7 +232,7 @@ footer{
 }
 .opcoes-criar-conta input{
   padding: 12px;
-  background: rgb(15,15,15);
+  background: black;
   color: white;
   border: 2px solid white;
   outline: none;
@@ -252,7 +252,7 @@ footer{
   border: 2px solid white;
   font-weight: bold;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.3s, box-shadow 0.3s;
   align-self: center;
 }
 #confirmar-criar-conta:hover,
@@ -379,7 +379,7 @@ footer{
 #secao-entrar-campanha{
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 15px;
 }
 #secao-entrar-campanha h2{
   text-align: center;
@@ -393,6 +393,9 @@ footer{
 #secao-entrar-campanha label{
   margin-top: 8px;
   font-weight: bold;
+  font-size: 18px;
+  align-self: center;
+  width: 500px;
 }
 #secao-entrar-campanha input{
   padding: 6px;
@@ -402,14 +405,31 @@ footer{
   outline: hidden;
   font-size: 15px;
   border-radius: 5px;
+  align-self: center;
+  width: 500px;
 }
 #secao-entrar-campanha input:focus{
   box-shadow: 0 0 12px rgb(100,0,200);
 }
+#secao-entrar-campanha button{
+  padding: 12px;
+  align-self: center;
+  width: 200px;
+  background: black;
+  color: white;
+  border: 2px solid white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+#secao-entrar-campanha button:hover{
+  transform: scale(1.03);
+  box-shadow: 0 0 15px rgb(100,0,200);
+}
 #secao-criar-campanha{
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 15px;
 }
 #secao-criar-campanha h2{
   text-align: center;
@@ -423,8 +443,12 @@ footer{
 #secao-criar-campanha label{
   margin-top: 8px;
   font-weight: bold;
+  font-size: 18px;
+  align-self: center;
+  width: 500px;
 }
-#secao-criar-campanha input{
+#secao-criar-campanha input,
+#secao-criar-campanha textarea{
   padding: 6px;
   background: black;
   color: white;
@@ -432,7 +456,24 @@ footer{
   outline: hidden;
   font-size: 15px;
   border-radius: 5px;
+  align-self: center;
+  width: 500px;
 }
 #secao-criar-campanha input:focus{
   box-shadow: 0 0 12px rgb(100,0,200);
+}
+#secao-criar-campanha button{
+  padding: 12px;
+  align-self: center;
+  width: 200px;
+  background: black;
+  color: white;
+  border: 2px solid white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+#secao-criar-campanha button:hover{
+  transform: scale(1.03);
+  box-shadow: 0 0 15px rgb(100,0,200);
 }
