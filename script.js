@@ -16,17 +16,17 @@ document.querySelectorAll(".botao-voltar").forEach(botao => {
   });
 });
 
-/*Tela campanhas*/
+/*Tela selecionar campanhas*/
 
-const telaCampanhas = document.getElementById("tela-campanhas");
+const telaSelecionarCampanhas = document.getElementById("tela-selecionar-campanhas");
 const botaoAbrirCampanhas = document.getElementById("botao-abrir-campanhas");
 
-function abrirTelaCampanhas() {
+function abrirTelaSelecionarCampanhas() {
   telaPrincipal.classList.remove("ativa");
-  telaCampanhas.classList.add("ativa");
+  telaSelecionarCampanhas.classList.add("ativa");
 }
 
-botaoAbrirCampanhas.addEventListener("click", abrirTelaCampanhas);
+botaoAbrirCampanhas.addEventListener("click", abrirTelaSelecionarCampanhas);
 
 /*Tela entrar campanha*/
 
@@ -34,7 +34,7 @@ const telaEntrarCampanha = document.getElementById("tela-entrar-campanha");
 const botaoEntrarCampanha = document.getElementById("botao-entrar-campanha");
 
 function abrirTelaEntrarCampanha() {
-  telaCampanhas.classList.remove("ativa");
+  telaSelecionarCampanhas.classList.remove("ativa");
   telaEntrarCampanha.classList.add("ativa");
 }
 
