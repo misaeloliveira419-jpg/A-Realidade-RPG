@@ -1,6 +1,22 @@
 const telaPrincipal = document.getElementById("tela-principal");
 
-/* Tela campanhas */
+/*Botão voltar*/
+
+document.querySelectorAll(".botao-voltar").forEach(botao => {
+  botao.addEventListener("click", () => {
+    const destino = document.getElementById(botao.dataset.voltar);
+
+    if (!destino) return;
+
+    document.querySelectorAll(".tela-site").forEach(tela => {
+      tela.classList.remove("ativa");
+    });
+
+    destino.classList.add("ativa");
+  });
+});
+
+/*Tela campanhas*/
 
 const telaCampanhas = document.getElementById("tela-campanhas");
 const botaoAbrirCampanhas = document.getElementById("botao-abrir-campanhas");
@@ -12,14 +28,14 @@ function abrirTelaCampanhas() {
 
 botaoAbrirCampanhas.addEventListener("click", abrirTelaCampanhas);
 
-/* Tela criar campanha */
+/*Tela entrar campanha*/
 
-const telaCriarCampanha = document.getElementById("tela-criar-campanha");
-const botaoCriarCampanha = document.getElementById("botao-criar-campanha");
+const telaEntrarCampanha = document.getElementById("tela-entrar-campanha");
+const botaoEntrarCampanha = document.getElementById("botao-entrar-campanha");
 
-function abrirTelaCriarCampanha() {
+function abrirTelaEntrarCampanha() {
   telaCampanhas.classList.remove("ativa");
-  telaCriarCampanha.classList.add("ativa");
+  telaEntrarCampanha.classList.add("ativa");
 }
 
-botaoCriarCampanha.addEventListener("click", abrirTelaCriarCampanha);
+botaoEntrarCampanha.addEventListener("click", abrirTelaEntrarCampanha);

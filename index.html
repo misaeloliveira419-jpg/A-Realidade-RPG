@@ -42,7 +42,7 @@
   
   <div id="tela-criar-conta" class="tela-conta">
     <div class="secao-criar-conta">
-      <button id="fechar-criar-conta" type="button">Voltar</button>
+      <button id="fechar-criar-conta" type="button">← Voltar</button>
       <h2>CRIAR CONTA</h2>
       <div class="opcoes-criar-conta">
         <label for="email">E-mail:</label>
@@ -67,7 +67,7 @@
   
   <div id="tela-trocar-conta" class="tela-conta">
     <div class="secao-criar-conta">
-      <button id="fechar-trocar-conta" type="button">Voltar</button>
+      <button id="fechar-trocar-conta" type="button">← Voltar</button>
       <h2 id="nome-trocar-conta">ENTRAR NA CONTA</h2>
       
       <div class="opcoes-criar-conta">
@@ -82,13 +82,14 @@
   <!--Tela campanhas-->
   
   <div id="tela-campanhas" class="tela-site">
+    <button class="botao-voltar" data-voltar="tela-principal" type="button">← Voltar</button>
     <div class="intro-campanhas">
       <h1>CAMPANHAS</h1>
     </div>
 
     <div class="opcoes-campanhas">
       <div class="botao-abrir-campanha">
-        <button id="botao-criar-campanha" type="button">+</button>
+        <button id="botao-entrar-campanha" type="button">+</button>
         <span>ADICIONAR CAMPANHA</span>
       </div>
     </div>
@@ -96,8 +97,20 @@
 
   <!--Tela de criação de campanha-->
      
-  <div id="tela-criar-campanha" class="tela-site">
-    
+  <div id="tela-entrar-campanha" class="tela-site">
+    <button class="botao-voltar" data-voltar="tela-campanhas" type="button">← Voltar</button>
+    <h2>ENTRAR POR UM LINK</h2>
+    <label for="link-campanha">Link da Campanha:</label>
+    <input id="link-campanha" type="text" placeholder="Cole o link da campanha aqui" required>
+    <button id="confirmar-entrar-campanha" type="submit">Entrar na Campanha</button>
+    <h2>CRIAR CAMPANHA</h2>
+    <form id="form-criar-campanha" class="form-criar-campanha">
+      <label for="nome-campanha">Nome da Campanha:</label>
+      <input id="nome-campanha" type="text" placeholder="Digite o nome da campanha" required>
+      <label for="descricao-campanha">Descrição da Campanha:</label>
+      <textarea id="descricao-campanha" placeholder="Digite a descrição da campanha" required></textarea>
+      <button id="confirmar-criar-campanha" type="submit">Criar Campanha</button>
+    </form>
   </div>
 
   <!--scripts-->

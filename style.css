@@ -291,6 +291,28 @@ footer{
   font-size: 14px;
 }
 
+/*Botão voltar*/
+
+.botao-voltar{
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  padding: 8px 16px;
+  background: black;
+  color: white;
+  border: 2px solid white;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 100;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.botao-voltar:hover{
+  transform: scale(1.1);
+  box-shadow: 0 0 10px rgb(100,0,200);
+}
+
 /*Tela campanhas*/
 
 .intro-campanhas h1{
@@ -329,7 +351,7 @@ footer{
   transform: scale(1.1);
   box-shadow: 0 0 20px rgb(100,0,200);
 }
-#botao-criar-campanha{
+#botao-entrar-campanha{
   width: 80px;
   height: 80px;
   margin-top: 15px;
@@ -342,7 +364,7 @@ footer{
   cursor: pointer;
   transition: transform 0.3s, box-shadow 0.3s;
 }
-#botao-criar-campanha:hover{
+#botao-entrar-campanha:hover{
   transform: scale(1.1);
   box-shadow: 0 0 20px rgb(100,0,200);
 }
@@ -353,5 +375,5 @@ footer{
   text-align: center;
 }
 
-/*Tela criar campanha*/
+/*Tela entrar campanha*/
 
