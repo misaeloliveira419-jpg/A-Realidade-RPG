@@ -28,7 +28,7 @@ function abrirTelaSelecionarCampanhas() {
 
 botaoAbrirCampanhas.addEventListener("click", abrirTelaSelecionarCampanhas);
 
-/*Tela entrar campanha*/
+/*Tela entrar/criar campanha*/
 
 const telaEntrarCampanha = document.getElementById("tela-entrar-campanha");
 const botaoEntrarCampanha = document.getElementById("botao-entrar-campanha");
@@ -40,3 +40,22 @@ function abrirTelaEntrarCampanha() {
 
 botaoEntrarCampanha.addEventListener("click", abrirTelaEntrarCampanha);
 
+/*Tela campanha*/
+
+const telaCampanha = document.getElementById("tela-campanha");
+const botaoConfirmarEntrarCampanha = document.getElementById("confirmar-entrar-campanha");
+const botaoConfirmarCriarCampanha = document.getElementById("confirmar-criar-campanha");
+
+function entrarCampanha() {
+  telaEntrarCampanha.classList.remove("ativa");
+  telaCampanha.classList.add("ativa");
+}
+
+botaoConfirmarEntrarCampanha.addEventListener("click", entrarCampanha);
+
+function criarCampanha() {
+  telaEntrarCampanha.classList.remove("ativa");
+  telaCampanha.classList.add("ativa");
+}
+
+botaoConfirmarCriarCampanha.addEventListener("click", criarCampanha);
