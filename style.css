@@ -302,10 +302,9 @@ footer{
   color: white;
   border: 2px solid white;
   border-radius: 5px;
-  font-weight: bold;
   cursor: pointer;
   z-index: 100;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .botao-voltar:hover{
@@ -313,7 +312,7 @@ footer{
   box-shadow: 0 0 10px rgb(100,0,200);
 }
 
-/*Tela campanhas*/
+/*Tela selecionar campanhas*/
 
 .intro-campanhas h1{
   display: flex;
@@ -377,3 +376,63 @@ footer{
 
 /*Tela entrar campanha*/
 
+#secao-entrar-campanha{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+#secao-entrar-campanha h2{
+  text-align: center;
+  background: black;
+  border: 3px solid white;
+  padding: 12px;
+  width: 350px;
+  margin: 0 auto;
+  text-shadow: 2px 1px 12px rgb(100,0,200);
+}
+#secao-entrar-campanha label{
+  margin-top: 8px;
+  font-weight: bold;
+}
+#secao-entrar-campanha input{
+  padding: 6px;
+  background: black;
+  color: white;
+  border: 2px solid white;
+  outline: hidden;
+  font-size: 15px;
+  border-radius: 5px;
+}
+#secao-entrar-campanha input:focus{
+  box-shadow: 0 0 12px rgb(100,0,200);
+}
+#secao-criar-campanha{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+#secao-criar-campanha h2{
+  text-align: center;
+  background: black;
+  border: 3px solid white;
+  padding: 12px;
+  width: 350px;
+  margin: 0 auto;
+  text-shadow: 2px 1px 12px rgb(100,0,200);
+}
+#secao-criar-campanha label{
+  margin-top: 8px;
+  font-weight: bold;
+}
+#secao-criar-campanha input{
+  padding: 6px;
+  background: black;
+  color: white;
+  border: 2px solid white;
+  outline: hidden;
+  font-size: 15px;
+  border-radius: 5px;
+}
+#secao-criar-campanha input:focus{
+  box-shadow: 0 0 12px rgb(100,0,200);
+}
