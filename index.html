@@ -89,8 +89,8 @@
       <h1>CAMPANHAS</h1>
     </div>
 
-    <div class="opcoes-campanhas">
-      <div class="botao-abrir-campanha">
+    <div class="opcoes-campanhas" id="lista-campanhas">
+      <div class="botao-abrir-campanha" id="card-adicionar-campanha">
         <button id="botao-entrar-campanha" type="button">+</button>
         <span>ADICIONAR CAMPANHA</span>
       </div>
@@ -124,16 +124,47 @@
     <button class="botao-voltar" data-voltar="tela-selecionar-campanhas" type="button">← Voltar</button>
     <div class="intro-campanha">
       <h1 id="nome-campanha-atual"></h1>
+      <br>
       <p id="descricao-campanha-atual"></p>
+      <span id="papel-campanha-atual"></span>
     </div>
+
+    <section id="controles-mestre-campanha" class="somente-mestre" hidden>
+      <h2>CONVITE DA CAMPANHA</h2>
+
+      <div class="area-convite-campanha">
+        <input id="link-convite-atual" type="text" readonly>
+        <button id="copiar-link-campanha" type="button">Copiar link</button>
+        <button id="regenerar-link-campanha" type="button">Gerar novo link</button>
+      </div>
+
+      <h2>MEMBROS</h2>
+      <div id="lista-membros-campanha"></div>
+    </section>
+    
+    <section id="fichas-campanha">
+      <h2>FICHAS</h2>
+
+      <div id="abas-fichas-campanha">
+        <button class="aba-ficha-campanha" data-tipo="jogadores" type="button">JOGADORES</button>
+        <button class="aba-ficha-campanha somente-mestre" data-tipo="npcs" type="button" hidden>NPC's</button>
+        <button class="aba-ficha-campanha somente-mestre" data-tipo="criaturas" type="button" hidden>CRIATURAS</button>
+      </div>
+
+      <div id="conteudo-fichas-campanha"></div>
+    </section>
+
+    <button id="sair-campanha" type="button">SAIR DA CAMPANHA</button>
+  </div>
 
   <!--scripts-->
     
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
-  <script src="script.js"></script>
   <script src="firebase-config.js"></script>
   <script src="auten.js"></script>
+  <script src="script.js"></script>
+  <script src="campanhas.js"></script>
 </body>
 </html>

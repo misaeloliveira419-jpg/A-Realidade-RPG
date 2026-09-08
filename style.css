@@ -490,3 +490,135 @@ footer{
   border: 3px solid white;
   background: black;
 }
+#intro-campanha p{
+  max-width: 300px;
+  text-align: center;
+}
+
+/*Cards de campanhas salvas*/
+
+.campanha-salva{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:12px;
+  width:300px;
+  height:200px;
+  padding:20px;
+  background:black;
+  color:white;
+  border:2px solid white;
+  border-radius:5px;
+  cursor:pointer;
+  transition:transform 0.3s, box-shadow 0.3s;
+}
+.campanha-salva:hover{
+  transform:scale(1.1);
+  box-shadow:0 0 20px rgb(100,0,200);
+}
+.campanha-salva strong{
+  font-size:22px;
+}
+.campanha-salva span{
+  font-size:13px;
+  opacity:0.8;
+  text-align:center;
+}
+
+/*Tela interna da campanha*/
+
+.intro-campanha{
+  text-align:center;
+}
+#papel-campanha-atual{
+  display:block;
+  margin-top:10px;
+  font-weight:bold;
+}
+#controles-mestre-campanha,
+#fichas-campanha{
+  width:min(900px,90%);
+  margin:40px auto;
+  padding:20px;
+  background:black;
+  border:2px solid white;
+  border-radius:5px;
+}
+#controles-mestre-campanha h2,
+#fichas-campanha h2{
+  text-align:center;
+}
+.area-convite-campanha{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  flex-wrap:wrap;
+  margin:20px 0 35px;
+}
+#link-convite-atual{
+  width:400px;
+  padding:8px;
+  background:black;
+  color:white;
+  border:2px solid white;
+}
+.area-convite-campanha button,
+.membro-campanha button,
+#sair-campanha{
+  padding:8px 14px;
+  background:black;
+  color:white;
+  border:2px solid white;
+  cursor:pointer;
+  transition:transform 0.3s, box-shadow 0.3s;
+}
+.area-convite-campanha button:hover,
+.membro-campanha button:hover,
+#sair-campanha:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 12px rgb(100,0,200);
+}
+#lista-membros-campanha{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.membro-campanha{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px;
+  border:1px solid rgba(255,255,255,0.4);
+}
+.membro-campanha span{
+  flex:1;
+}
+#abas-fichas-campanha{
+  display:grid;
+  gap:15px;
+  margin-top:25px;
+}
+#abas-fichas-campanha.modo-mestre{
+  grid-template-columns:repeat(3,1fr);
+}
+#abas-fichas-campanha.modo-jogador{
+  grid-template-columns:1fr;
+}
+.aba-ficha-campanha{
+  padding:15px;
+  background:black;
+  color:white;
+  border:2px solid white;
+  font-weight:bold;
+  cursor:pointer;
+}
+#conteudo-fichas-campanha{
+  min-height:150px;
+  margin-top:20px;
+  border-top:2px solid white;
+}
+#sair-campanha{
+  display:block;
+  margin:30px auto;
+}

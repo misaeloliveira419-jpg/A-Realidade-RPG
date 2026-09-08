@@ -1,86 +1,30 @@
 const telaPrincipal = document.getElementById("tela-principal");
+const telaSelecionarCampanhas = document.getElementById("tela-selecionar-campanhas");
+const telaEntrarCampanha = document.getElementById("tela-entrar-campanha");
 
-/*Botão voltar*/
+function abrirTelaSite(id) {
+  const destino = document.getElementById(id);
+  if (!destino) return;
+
+  document.querySelectorAll(".tela-site").forEach(tela => tela.classList.remove("ativa"));
+  destino.classList.add("ativa");
+}
+
+window.abrirTelaSite = abrirTelaSite;
 
 document.querySelectorAll(".botao-voltar").forEach(botao => {
-  botao.addEventListener("click", () => {
-    const destino = document.getElementById(botao.dataset.voltar);
-
-    if (!destino) return;
-
-    document.querySelectorAll(".tela-site").forEach(tela => {
-      tela.classList.remove("ativa");
-    });
-
-    destino.classList.add("ativa");
-  });
+  botao.addEventListener("click", () => abrirTelaSite(botao.dataset.voltar));
 });
 
-/*Tela selecionar campanhas*/
+document.getElementById("botao-abrir-campanhas").addEventListener("click", () => {
+  abrirTelaSite("tela-selecionar-campanhas");
+});
 
-const telaSelecionarCampanhas = document.getElementById("tela-selecionar-campanhas");
-const botaoAbrirCampanhas = document.getElementById("botao-abrir-campanhas");
-
-function abrirTelaSelecionarCampanhas() {
-  telaPrincipal.classList.remove("ativa");
-  telaSelecionarCampanhas.classList.add("ativa");
-}
-
-botaoAbrirCampanhas.addEventListener("click", abrirTelaSelecionarCampanhas);
-
-/*Tela entrar/criar campanha*/
-
-const telaEntrarCampanha = document.getElementById("tela-entrar-campanha");
-const botaoEntrarCampanha = document.getElementById("botao-entrar-campanha");
-
-function abrirTelaEntrarCampanha() {
-  telaSelecionarCampanhas.classList.remove("ativa");
-  telaEntrarCampanha.classList.add("ativa");
-}
-
-botaoEntrarCampanha.addEventListener("click", abrirTelaEntrarCampanha);
-
-const telaCampanha = document.getElementById("tela-campanha");
-const linkCampanha = document.getElementById("link-campanha");
-const nomeCampanha = document.getElementById("nome-campanha");
-const botaoConfirmarEntrarCampanha = document.getElementById("confirmar-entrar-campanha");
-const botaoConfirmarCriarCampanha = document.getElementById("confirmar-criar-campanha");
-
-function entrarCampanha() {
-  if (linkCampanha.value.trim() === "") {
-    alert("Por favor, insira o link da campanha.");
+document.getElementById("botao-entrar-campanha").addEventListener("click", () => {
+  if (!auth.currentUser) {
+    alert("Você precisa estar em uma conta para criar ou entrar em uma campanha.");
     return;
   }
-  telaEntrarCampanha.classList.remove("ativa");
-  telaCampanha.classList.add("ativa");
-}
 
-botaoConfirmarEntrarCampanha.addEventListener("click", entrarCampanha);
-
-function criarCampanha() {
-  if (nomeCampanha.value.trim() === "") {
-    alert("Por favor, insira o nome da campanha.");
-    return;
-  }
-  atualizarNomeCampanha();
-  atualizarDescricaoCampanha();
-  telaEntrarCampanha.classList.remove("ativa");
-  telaCampanha.classList.add("ativa");
-}
-
-botaoConfirmarCriarCampanha.addEventListener("click", criarCampanha);
-
-/*Tela campanha*/
-
-const nomeCampanhaAtual = document.getElementById("nome-campanha-atual");
-
-function atualizarNomeCampanha() {
-  nomeCampanhaAtual.textContent = nomeCampanha.value.trim() || "Campanha sem nome";
-}
-
-const descricaoCampanha = document.getElementById("descricao-campanha");
-const descricaoCampanhaAtual = document.getElementById("descricao-campanha-atual");
-
-function atualizarDescricaoCampanha() {
-  descricaoCampanhaAtual.textContent = descricaoCampanha.value.trim() || null;
-}
+  abrirTelaSite("tela-entrar-campanha");
+});
