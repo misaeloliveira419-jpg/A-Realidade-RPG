@@ -87,7 +87,6 @@ function removerConviteDaURL() {
   history.replaceState({}, "", url.pathname + url.search + url.hash);
 }
 
-
 /*Lista de Campanhas*/
 
 function limparCardsCampanhas() {
@@ -159,7 +158,6 @@ function iniciarEscutaCampanhas(usuario) {
     console.error("Erro ao carregar campanhas:", erro);
   });
 }
-
 
 /*Criar campanha*/
 
@@ -260,7 +258,6 @@ async function criarCampanha() {
     botaoConfirmarCriarCampanha.textContent = "Criar Campanha";
   }
 }
-
 
 /*Entrar por convite*/
 
@@ -426,7 +423,6 @@ async function abrirCampanha(id) {
 }
 
 window.abrirCampanha = abrirCampanha;
-
 
 /*Tempo real*/
 
