@@ -646,25 +646,25 @@ footer{
   box-shadow:0 0 12px rgb(100,0,200);
 }
 #membros-campanha{
-  text-shadow: 2px 1px 12px rgb(50,0,200);
+  text-shadow: 2px 1px 12px rgb(75,0,225);
 }
 #lista-membros-campanha{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 .membro-campanha{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:10px;
-  border:1px solid rgba(255,255,255,0.4);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid rgba(255,255,255,0.4);
 }
 .membro-campanha span{
-  flex:1;
+  flex: 1;
 }
 #fichas-campanha h2{
-  text-shadow: 2px 1px 12px rgb(0,100,100);
+  text-shadow: 2px 1px 12px rgb(0,150,150);
 }
 #abas-fichas-campanha{
   display:grid;
