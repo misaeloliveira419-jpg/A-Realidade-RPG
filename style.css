@@ -558,8 +558,8 @@ footer{
 }
 .botao-editar-nome-campanha{
   flex-shrink: 0;
-  width: 40px;
-  height: 66px;
+  width: 50px;
+  height: 67px;
   background: black;
   color: white;
   border: 3px solid white;
