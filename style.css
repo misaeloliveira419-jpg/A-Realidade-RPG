@@ -753,6 +753,11 @@ footer{
   border: 2px solid white;
   font-weight: bold;
   cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.aba-ficha-campanha:hover{
+  transform: scale(1.1);
+  box-shadow: 0 0 12px rgb(150,0,225);
 }
 #conteudo-fichas-campanha{
   min-height: 150px;
