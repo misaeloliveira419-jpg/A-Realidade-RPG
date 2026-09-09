@@ -678,12 +678,12 @@ footer{
   padding:0;
   background:black;
   color:white;
-  border:1px solid white;
-  border-radius:5px;
-  font-size:20px;
-  line-height:1;
-  cursor:pointer;
-  transition:transform 0.3s, box-shadow 0.3s;
+  border: 1px solid white;
+  border-radius: 5px;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 .botao-configurar-membro:hover{
   transform:scale(1.1);
