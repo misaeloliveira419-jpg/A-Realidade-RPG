@@ -14,6 +14,7 @@ const areaConta = document.querySelector(".area-conta");
 
 let adicionandoOutraConta = false;
 let grupoContasPendente = null;
+let uidContaAnterior = null;
 
 const telaTrocarConta = document.getElementById("tela-trocar-conta");
 const botaoFecharTrocarConta = document.getElementById("fechar-trocar-conta");
@@ -533,6 +534,15 @@ function atualizarBotaoUsuario(usuario, dados) {
 }
 
 auth.onAuthStateChanged(async usuario => {
+  const trocouDeConta = uidContaAnterior !== null && usuario && uidContaAnterior !== usuario.uid;
+  
+  if (trocouDeConta) {
+    document.querySelectorAll(".tela-site").forEach(tela => tela.classList.remove("ativa"));
+    document.getElementById("tela-principal")?.classList.add("ativa");
+  }
+  
+  uidContaAnterior = usuario?.uid || null;
+  
   if (!usuario) {
     window.usuarioAtual = null;
     window.dadosUsuarioAtual = null;

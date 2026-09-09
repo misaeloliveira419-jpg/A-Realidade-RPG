@@ -12,6 +12,8 @@ const nomeCampanhaAtual = document.getElementById("nome-campanha-atual");
 const descricaoCampanhaAtual = document.getElementById("descricao-campanha-atual");
 const papelCampanhaAtual = document.getElementById("papel-campanha-atual");
 
+const botaoEditarNomeCampanha = document.getElementById("editar-nome-campanha");
+const botaoEditarDescricaoCampanha = document.getElementById("editar-descricao-campanha");
 const controlesMestreCampanha = document.getElementById("controles-mestre-campanha");
 const linkConviteAtual = document.getElementById("link-convite-atual");
 const botaoCopiarLink = document.getElementById("copiar-link-campanha");
@@ -35,6 +37,49 @@ window.campanhaAtualId = null;
 window.papelCampanhaAtual = null;
 
 /*Utilidades*/
+
+async function editarNomeCampanha() {
+  if (!campanhaAtualId || papelAtualCampanha !== "mestre") return;
+
+  const novoNome = prompt("Novo nome da campanha:", campanhaAtualDados?.nome || "");
+
+  if (novoNome === null) return;
+
+  const nome = novoNome.trim();
+
+  if (!nome) {
+    alert("O nome da campanha não pode ficar vazio.");
+    return;
+  }
+
+  try {
+    await db.collection("campanhas").doc(campanhaAtualId).update({
+      nome: nome,
+      atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+    });
+  } catch (erro) {
+    console.error("Erro ao editar nome da campanha:", erro);
+    alert("Não foi possível alterar o nome da campanha.");
+  }
+}
+
+async function editarDescricaoCampanha() {
+  if (!campanhaAtualId || papelAtualCampanha !== "mestre") return;
+
+  const novaDescricao = prompt("Nova descrição da campanha:", campanhaAtualDados?.descricao || "");
+
+  if (novaDescricao === null) return;
+
+  try {
+    await db.collection("campanhas").doc(campanhaAtualId).update({
+      descricao: novaDescricao.trim(),
+      atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+    });
+  } catch (erro) {
+    console.error("Erro ao editar descrição da campanha:", erro);
+    alert("Não foi possível alterar a descrição da campanha.");
+  }
+}
 
 function obterDadosBasicosUsuario() {
   const usuario = auth.currentUser;
@@ -372,14 +417,11 @@ function aplicarPapelCampanha(membro) {
   abasFichasCampanha.classList.toggle("modo-mestre", mestre);
   abasFichasCampanha.classList.toggle("modo-jogador", !mestre);
 
-  if (mestre) {
-    if (campanhaAtualDados) linkConviteAtual.value = gerarLinkConvite(campanhaAtualDados.conviteCodigo);
-    iniciarEscutaMembros();
-  } else {
-    if (cancelarEscutaMembros) cancelarEscutaMembros();
-    cancelarEscutaMembros = null;
-    listaMembrosCampanha.innerHTML = "";
+  if (mestre && campanhaAtualDados) {
+    linkConviteAtual.value = gerarLinkConvite(campanhaAtualDados.conviteCodigo);
   }
+  
+  iniciarEscutaMembros();
 }
 
 async function abrirCampanha(id) {
@@ -466,7 +508,7 @@ function iniciarEscutasCampanhaAtual() {
 
 function iniciarEscutaMembros() {
   if (cancelarEscutaMembros) return;
-  if (!campanhaAtualId || papelAtualCampanha !== "mestre") return;
+  if (!campanhaAtualId || !auth.currentUser) return;
 
   cancelarEscutaMembros = db.collection("campanhas").doc(campanhaAtualId).collection("membros").orderBy("entrouEm", "asc").onSnapshot(resultado => {
     listaMembrosCampanha.innerHTML = "";
@@ -482,7 +524,7 @@ function iniciarEscutaMembros() {
 
       linha.appendChild(nome);
 
-      if (membro.papel === "jogador") {
+      if (papelAtualCampanha === "mestre" && membro.papel === "jogador") {
         const promover = document.createElement("button");
         promover.type = "button";
         promover.textContent = "Tornar Mestre";
@@ -672,6 +714,8 @@ function verificarConviteNaURL(usuario) {
 
 botaoConfirmarCriarCampanha.addEventListener("click", criarCampanha);
 botaoConfirmarEntrarCampanha.addEventListener("click", entrarCampanha);
+botaoEditarNomeCampanha.addEventListener("click", editarNomeCampanha);
+botaoEditarDescricaoCampanha.addEventListener("click", editarDescricaoCampanha);
 botaoRegenerarLink.addEventListener("click", regenerarLinkCampanha);
 botaoCopiarLink.addEventListener("click", copiarLinkCampanha);
 botaoSairCampanha.addEventListener("click", sairCampanha);
