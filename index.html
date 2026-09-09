@@ -123,9 +123,27 @@
   <div id="tela-campanha" class="tela-site">
     <button class="botao-voltar" data-voltar="tela-selecionar-campanhas" type="button">← Voltar</button>
     <div class="intro-campanha">
-      <h1 id="nome-campanha-atual"></h1>
-      <br>
-      <p id="descricao-campanha-atual"></p>
+      
+      <div class="linha-edicao-campanha">
+        <h1 id="nome-campanha-atual"></h1>
+        <button id="editar-nome-campanha" class="botao-editar-nome-campanha somente-mestre" type="button" title="Editar nome" hidden>
+          <svg xmlns="http://w3.org" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+            <path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+          </svg>
+        </button>
+      </div>
+      
+      <div class="linha-edicao-campanha linha-descricao-campanha">
+        <p id="descricao-campanha-atual"></p>
+        <button id="editar-descricao-campanha" class="botao-editar-descricao-campanha somente-mestre" type="button" title="Editar descrição" hidden>
+          <svg xmlns="http://w3.org" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+            <path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+          </svg>
+        </button>
+      </div>
+      
       <span id="papel-campanha-atual"></span>
     </div>
 
@@ -137,9 +155,11 @@
         <button id="copiar-link-campanha" type="button">Copiar link</button>
         <button id="regenerar-link-campanha" type="button">Gerar novo link</button>
       </div>
-
+    </section>
+    
+    <section id="membros-campanha">
       <h2>MEMBROS</h2>
-      <div id="lista-membros-campanha"></div>
+        <div id="lista-membros-campanha"></div>
     </section>
     
     <section id="fichas-campanha">
