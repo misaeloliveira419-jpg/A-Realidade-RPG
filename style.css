@@ -649,25 +649,26 @@ footer{
   text-shadow: 2px 1px 12px rgb(75,0,225);
 }
 #lista-membros-campanha{
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
   gap: 10px;
 }
 .membro-campanha{
-  position:relative;
-  display:flex;
-  align-items:center;
-  gap:10px;
-  min-height:42px;
-  padding:10px 52px 10px 10px;
-  border:1px solid rgba(255,255,255,0.4);
-  box-sizing:border-box;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 42px;
+  padding: 10px 52px 10px 10px;
+  border: 1px solid rgba(255,255,255,0.4);
+  box-sizing: border-box;
 }
 .area-configurar-membro{
-  position:absolute;
-  top:6px;
-  right:6px;
-  z-index:20;
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  transform: translateY(-50%);
+  z-index: 20;
 }
 .botao-configurar-membro{
   display: flex;
@@ -754,4 +755,9 @@ footer{
 #sair-campanha{
   display:block;
   margin:30px auto;
+}
+@media (max-width:600px){
+  #lista-membros-campanha{
+    grid-template-columns:1fr;
+  }
 }
