@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="style-sistema.css"/>
+  <title>Sistema: A Realidade RPG</title>
+</head>
+<body>
+
+  <!--Cabeçalho da página-->
+  
+  <header>
+    <div class="area-conta">
+      <button id="criar-conta">Criar Conta</button>
+      <div id="menu-contas" class="menu-contas">
+        <div id="lista-outras-contas"></div>
+        <button id="adicionar-outra-conta" type="button">+ Adicionar outra conta</button>
+      </div>
+    </div>
+  </header>
+  <br><br>
+
+  <!--Página principal-->
+
+  <div id="tela-sistema" class="tela-site ativa">
+    <button class="botao-voltar" onclick="window.location.href='index.html'" type="button">← Voltar</button>
+    <h1>A REALIDADE RPG</h1>
+    
+  </div>
+
+  <!--Tela de criar conta-->
+  
+  <div id="tela-criar-conta" class="tela-conta">
+    <div class="secao-criar-conta">
+      <button id="fechar-criar-conta" type="button">← Voltar</button>
+      <h2>CRIAR CONTA</h2>
+      <div class="opcoes-criar-conta">
+        <label for="email">E-mail:</label>
+        <input id="email" type="email" placeholder="Digite seu e-mail" autocomplete="email">
+        <label for="senha">Senha:</label>
+        <input id="senha" type="password" placeholder="Digite sua senha" autocomplete="new-password">
+        <label for="confirmar-senha">Confirmar senha:</label>
+        <input id="confirmar-senha" type="password" placeholder="Digite sua senha novamente" autocomplete="new-password">
+        <button id="confirmar-criar-conta" type="button">Criar Conta</button>
+        <div class="separador-conta">
+          <span></span>
+          <p>OU</p>
+          <span></span>
+        </div>
+        <button id="criar-conta-google" type="button">Continuar com Google</button>
+        <p id="erro-criar-conta"></p>
+      </div>
+    </div>
+  </div>
+  
+  <!--Tela para trocar para conta de e-mail-->
+  
+  <div id="tela-trocar-conta" class="tela-conta">
+    <div class="secao-criar-conta">
+      <button id="fechar-trocar-conta" type="button">← Voltar</button>
+      <h2 id="nome-trocar-conta">ENTRAR NA CONTA</h2>
+      
+      <div class="opcoes-criar-conta">
+        <label for="senha-trocar-conta">Senha:</label>
+        <input id="senha-trocar-conta" type="password" placeholder="Digite a senha da conta" autocomplete="current-password">
+        <button id="confirmar-trocar-conta" type="button">Entrar nesta conta</button>
+        <p id="erro-trocar-conta"></p>
+      </div>
+    </div>
+  </div>
+
+  <!--Scripts-->
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="auten.js"></script>
+  <script src="script.js"></script>
+  <script src="campanhas.js"></script>
+  <script src="sistema.js"></script>
+</body>
+</html>
