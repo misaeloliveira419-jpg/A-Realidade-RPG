@@ -498,32 +498,32 @@ footer{
 /*Cards de campanhas salvas*/
 
 .campanha-salva{
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  gap:12px;
-  width:300px;
-  height:200px;
-  padding:20px;
-  background:black;
-  color:white;
-  border:2px solid white;
-  border-radius:5px;
-  cursor:pointer;
-  transition:transform 0.3s, box-shadow 0.3s;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  width: 300px;
+  height: 200px;
+  padding: 20px;
+  background: black;
+  color: white;
+  border: 2px solid white;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 .campanha-salva:hover{
-  transform:scale(1.1);
-  box-shadow:0 0 20px rgb(150,0,225);
+  transform: scale(1.1);
+  box-shadow: 0 0 20px rgb(150,0,225);
 }
 .campanha-salva strong{
-  font-size:22px;
+  font-size: 22px;
 }
 .campanha-salva span{
-  font-size:13px;
-  opacity:0.8;
-  text-align:center;
+  font-size: 13px;
+  opacity: 0.8;
+  text-align: center;
 }
 
 /*Tela interna da campanha*/
@@ -547,8 +547,12 @@ footer{
 }
 #descricao-campanha-atual{
   margin: 0;
-  max-width: 300px;
+  width: 300px;
+  max-width: 90vw;
   text-align: center;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 .botao-editar-nome-campanha,
 .botao-editar-descricao-campanha{
@@ -619,34 +623,34 @@ footer{
   text-shadow: 2px 1px 12px rgb(180,140,0);
 }
 .area-convite-campanha{
-  display:flex;
-  justify-content:center;
-  gap:10px;
-  flex-wrap:wrap;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
   margin: 20px 0 35px;
 }
 #link-convite-atual{
-  width:400px;
-  padding:8px;
-  background:black;
-  color:white;
-  border:2px solid white;
+  width: 400px;
+  padding: 8px;
+  background: black;
+  color: white;
+  border: 2px solid white;
 }
 .area-convite-campanha button,
 .membro-campanha button,
 #sair-campanha{
-  padding:8px 14px;
-  background:black;
-  color:white;
-  border:2px solid white;
-  cursor:pointer;
-  transition:transform 0.3s, box-shadow 0.3s;
+  padding: 8px 14px;
+  background: black;
+  color: white;
+  border: 2px solid white;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 .area-convite-campanha button:hover,
 .membro-campanha button:hover,
 #sair-campanha:hover{
-  transform:scale(1.05);
-  box-shadow:0 0 12px rgb(150,0,225);
+  transform: scale(1.05);
+  box-shadow: 0 0 12px rgb(150,0,225);
 }
 #membros-campanha{
   text-shadow: 2px 1px 12px rgb(70,0,255);
@@ -690,40 +694,40 @@ footer{
   transition: transform 0.3s, box-shadow 0.3s;
 }
 .botao-configurar-membro:hover{
-  transform:scale(1.1);
-  box-shadow:0 0 10px rgb(150,0,225);
+  transform: scale(1.1);
+  box-shadow: 0 0 10px rgb(150,0,225);
 }
 .menu-configurar-membro{
-  position:absolute;
-  top:0;
-  right:42px;
-  display:flex;
-  gap:6px;
-  padding:6px;
-  background:black;
-  border:1px solid white;
-  border-radius:5px;
-  white-space:nowrap;
-  opacity:0;
-  visibility:hidden;
-  pointer-events:none;
-  transform:translateX(8px);
-  transition:opacity 0.2s, transform 0.2s, visibility 0.2s;
-  z-index:30;
+  position: absolute;
+  top: 0;
+  right: 42px;
+  display: flex;
+  gap: 6px;
+  padding: 6px;
+  background: black;
+  border: 1px solid white;
+  border-radius: 5px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateX(8px);
+  transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
+  z-index: 30;
 }
 .menu-configurar-membro.ativo{
-  opacity:1;
-  visibility:visible;
-  pointer-events:auto;
-  transform:translateX(0);
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(0);
 }
 .menu-configurar-membro button{
-  padding:7px 10px;
-  background:black;
-  color:white;
-  border:1px solid white;
-  cursor:pointer;
-  white-space:nowrap;
+  padding: 7px 10px;
+  background: black;
+  color: white;
+  border: 1px solid white;
+  cursor: pointer;
+  white-space: nowrap;
 }
 .membro-campanha span{
   flex: 1;
@@ -732,35 +736,35 @@ footer{
   text-shadow: 2px 1px 12px rgb(0,225,175);
 }
 #abas-fichas-campanha{
-  display:grid;
-  gap:15px;
-  margin-top:25px;
+  display: grid;
+  gap: 15px;
+  margin-top: 25px;
 }
 #abas-fichas-campanha.modo-mestre{
-  grid-template-columns:repeat(3,1fr);
+  grid-template-columns: repeat(3,1fr);
 }
 #abas-fichas-campanha.modo-jogador{
-  grid-template-columns:1fr;
+  grid-template-columns: 1fr;
 }
 .aba-ficha-campanha{
-  padding:15px;
-  background:black;
-  color:white;
-  border:2px solid white;
-  font-weight:bold;
-  cursor:pointer;
+  padding: 15px;
+  background: black;
+  color: white;
+  border: 2px solid white;
+  font-weight: bold;
+  cursor: pointer;
 }
 #conteudo-fichas-campanha{
-  min-height:150px;
-  margin-top:20px;
-  border-top:2px solid white;
+  min-height: 150px;
+  margin-top: 20px;
+  border-top: 2px solid white;
 }
 #sair-campanha{
-  display:block;
-  margin:30px auto;
+  display: block;
+  margin: 30px auto;
 }
 @media (max-width:600px){
   #lista-membros-campanha{
-    grid-template-columns:1fr;
+    grid-template-columns: 1fr;
   }
 }
