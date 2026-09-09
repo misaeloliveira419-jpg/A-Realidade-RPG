@@ -568,7 +568,7 @@ footer{
   cursor: pointer;
   transition: transform 0.3s, box-shadow 0.3s;
   position: relative;
-  left: -12px;
+  left: -11.5px;
   top: 0.0625px;
 }
 .botao-editar-nome-campanha:hover{
