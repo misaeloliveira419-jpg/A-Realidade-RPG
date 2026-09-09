@@ -568,8 +568,8 @@ footer{
   cursor: pointer;
   transition: transform 0.3s, box-shadow 0.3s;
   position: relative;
-  left: -11px;
-  top: 0.5px;
+  left: -10px;
+  top: 0.225px;
 }
 .botao-editar-nome-campanha:hover{
   transform: scale(1.1);
