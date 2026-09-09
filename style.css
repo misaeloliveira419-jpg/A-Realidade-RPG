@@ -670,13 +670,13 @@ footer{
   z-index:20;
 }
 .botao-configurar-membro{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  width:34px;
-  height:34px;
-  padding:0;
-  background:black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  background: black;
   color:white;
   border: 1px solid white;
   border-radius: 5px;
