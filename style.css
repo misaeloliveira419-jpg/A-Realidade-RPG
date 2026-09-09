@@ -569,7 +569,7 @@ footer{
   transition: transform 0.3s, box-shadow 0.3s;
   position: relative;
   left: -12px;
-  top: -0.5px;
+  top: -1px;
 }
 .botao-editar-nome-campanha:hover{
   transform: scale(1.1);
