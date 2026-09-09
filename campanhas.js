@@ -152,7 +152,7 @@ function iniciarEscutaCampanhas(usuario) {
 
   const uidEscuta = usuario.uid;
 
-  cancelarEscutaCampanhas = db.collection("usuarios").doc(uidEscuta).collection("campanhas").orderBy("criadaEm", "asc").onSnapshot(resultado => {
+  cancelarEscutaCampanhas = db.collection("usuarios").doc(uidEscuta).collection("campanhas").onSnapshot(resultado => {
     renderizarCampanhas(resultado.docs, uidEscuta).catch(erro => console.error("Erro ao montar campanhas:", erro));
   }, erro => {
     console.error("Erro ao carregar campanhas:", erro);
@@ -221,7 +221,6 @@ async function criarCampanha() {
 
           transacao.set(referenciaUsuarioCampanha, {
             campanhaId: referenciaCampanha.id,
-            criadaEm: servidor,
             entrouEm: servidor
           });
 
@@ -279,50 +278,45 @@ async function entrarCampanha() {
   botaoConfirmarEntrarCampanha.textContent = "Entrando...";
 
   try {
+    const referenciaConvite = db.collection("convitesCampanha").doc(codigo);
+    const convite = await referenciaConvite.get();
+
+    if (!convite.exists || convite.data().ativo !== true) {
+      throw new Error("convite-invalido");
+    }
+
+    const campanhaId = convite.data().campanhaId;
+    const referenciaUsuarioCampanha = db.collection("usuarios").doc(usuario.uid).collection("campanhas").doc(campanhaId);
+    const usuarioCampanha = await referenciaUsuarioCampanha.get();
+
+    if (usuarioCampanha.exists) {
+      campoLinkCampanha.value = "";
+      removerConviteDaURL();
+      await abrirCampanha(campanhaId);
+      return;
+    }
+
     const dadosUsuario = obterDadosBasicosUsuario();
+    const referenciaMembro = db.collection("campanhas").doc(campanhaId).collection("membros").doc(usuario.uid);
 
-    const campanhaId = await db.runTransaction(async transacao => {
-      const referenciaConvite = db.collection("convitesCampanha").doc(codigo);
-      const convite = await transacao.get(referenciaConvite);
+    const batch = db.batch();
+    const servidor = firebase.firestore.FieldValue.serverTimestamp();
 
-      if (!convite.exists || convite.data().ativo !== true) {
-        throw new Error("convite-invalido");
-      }
-
-      const id = convite.data().campanhaId;
-      const referenciaCampanha = db.collection("campanhas").doc(id);
-      const referenciaMembro = referenciaCampanha.collection("membros").doc(usuario.uid);
-      const referenciaUsuarioCampanha = db.collection("usuarios").doc(usuario.uid).collection("campanhas").doc(id);
-
-      const campanha = await transacao.get(referenciaCampanha);
-      const membro = await transacao.get(referenciaMembro);
-      const usuarioCampanha = await transacao.get(referenciaUsuarioCampanha);
-
-      if (!campanha.exists || campanha.data().conviteCodigo !== codigo) {
-        throw new Error("convite-invalido");
-      }
-
-      if (!membro.exists) {
-        transacao.set(referenciaMembro, {
-          uid: usuario.uid,
-          nome: dadosUsuario.nome,
-          foto: dadosUsuario.foto,
-          papel: "jogador",
-          conviteCodigo: codigo,
-          entrouEm: firebase.firestore.FieldValue.serverTimestamp()
-        });
-      }
-
-      if (!usuarioCampanha.exists) {
-        transacao.set(referenciaUsuarioCampanha, {
-          campanhaId: id,
-          criadaEm: campanha.data().criadoEm,
-          entrouEm: membro.exists ? membro.data().entrouEm : firebase.firestore.FieldValue.serverTimestamp()
-        });
-      }
-
-      return id;
+    batch.set(referenciaMembro, {
+      uid: usuario.uid,
+      nome: dadosUsuario.nome,
+      foto: dadosUsuario.foto,
+      papel: "jogador",
+      conviteCodigo: codigo,
+      entrouEm: servidor
     });
+
+    batch.set(referenciaUsuarioCampanha, {
+      campanhaId: campanhaId,
+      entrouEm: servidor
+    });
+
+    await batch.commit();
 
     campoLinkCampanha.value = "";
     removerConviteDaURL();
@@ -332,8 +326,10 @@ async function entrarCampanha() {
   } catch (erro) {
     console.error("Erro ao entrar na campanha:", erro);
 
-    if (erro.message === "convite-invalido" || erro.code === "permission-denied") {
+    if (erro.message === "convite-invalido") {
       alert("Esse convite não existe mais ou não é válido.");
+    } else if (erro.code === "permission-denied") {
+      alert("O Firebase bloqueou a entrada na campanha. Verifique as regras do Firestore.");
     } else {
       alert("Não foi possível entrar na campanha.");
     }
