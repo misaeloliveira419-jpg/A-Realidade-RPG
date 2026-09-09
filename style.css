@@ -559,7 +559,7 @@ footer{
 .botao-editar-nome-campanha{
   flex-shrink: 0;
   width: 40px;
-  height: 66.625px;
+  height: 66px;
   background: black;
   color: white;
   border: 3px solid white;
@@ -569,7 +569,6 @@ footer{
   transition: transform 0.3s, box-shadow 0.3s;
   position: relative;
   left: -10px;
-  top: 0.225px;
 }
 .botao-editar-nome-campanha:hover{
   transform: scale(1.1);
