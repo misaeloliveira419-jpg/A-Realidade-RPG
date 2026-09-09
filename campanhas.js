@@ -525,24 +525,66 @@ function iniciarEscutaMembros() {
       linha.appendChild(nome);
 
       if (papelAtualCampanha === "mestre" && membro.papel === "jogador") {
+        const areaConfiguracoes = document.createElement("div");
+        areaConfiguracoes.className = "area-configurar-membro";
+
+        const engrenagem = document.createElement("button");
+        engrenagem.type = "button";
+        engrenagem.className = "botao-configurar-membro";
+        engrenagem.title = "Opções do membro";
+        engrenagem.textContent = "⚙";
+        
+        const menu = document.createElement("div");
+        menu.className = "menu-configurar-membro";
+
         const promover = document.createElement("button");
         promover.type = "button";
         promover.textContent = "Tornar Mestre";
-        promover.addEventListener("click", () => promoverJogador(documento.id));
-
+        promover.addEventListener("click", evento => {
+          evento.stopPropagation();
+          menu.classList.remove("ativo");
+          promoverJogador(documento.id);
+        });
+        
         const expulsar = document.createElement("button");
         expulsar.type = "button";
         expulsar.textContent = "Expulsar";
-        expulsar.addEventListener("click", () => expulsarJogador(documento.id, membro.nome));
+        expulsar.addEventListener("click", evento => {
+          evento.stopPropagation();
+          menu.classList.remove("ativo");
+          expulsarJogador(documento.id, membro.nome);
+        });
 
-        linha.appendChild(promover);
-        linha.appendChild(expulsar);
-      }
+  menu.appendChild(promover);
+  menu.appendChild(expulsar);
+
+  engrenagem.addEventListener("click", evento => {
+    evento.stopPropagation();
+
+    document.querySelectorAll(".menu-configurar-membro.ativo").forEach(outroMenu => {
+      if (outroMenu !== menu) outroMenu.classList.remove("ativo");
+    });
+
+    menu.classList.toggle("ativo");
+  });
+
+  menu.addEventListener("click", evento => evento.stopPropagation());
+
+  areaConfiguracoes.appendChild(engrenagem);
+  areaConfiguracoes.appendChild(menu);
+  linha.appendChild(areaConfiguracoes);
+}
 
       listaMembrosCampanha.appendChild(linha);
     });
   });
 }
+
+document.addEventListener("click", () => {
+  document.querySelectorAll(".menu-configurar-membro.ativo").forEach(menu => {
+    menu.classList.remove("ativo");
+  });
+});
 
 async function promoverJogador(uid) {
   if (!campanhaAtualId || papelAtualCampanha !== "mestre") return;

@@ -655,11 +655,72 @@ footer{
   gap: 10px;
 }
 .membro-campanha{
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px;
-  border: 1px solid rgba(255,255,255,0.4);
+  position:relative;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  min-height:42px;
+  padding:10px 52px 10px 10px;
+  border:1px solid rgba(255,255,255,0.4);
+  box-sizing:border-box;
+}
+.area-configurar-membro{
+  position:absolute;
+  top:6px;
+  right:6px;
+  z-index:20;
+}
+.botao-configurar-membro{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  width:34px;
+  height:34px;
+  padding:0;
+  background:black;
+  color:white;
+  border:1px solid white;
+  border-radius:5px;
+  font-size:20px;
+  line-height:1;
+  cursor:pointer;
+  transition:transform 0.3s, box-shadow 0.3s;
+}
+.botao-configurar-membro:hover{
+  transform:scale(1.1);
+  box-shadow:0 0 10px rgb(100,0,200);
+}
+.menu-configurar-membro{
+  position:absolute;
+  top:0;
+  right:42px;
+  display:flex;
+  gap:6px;
+  padding:6px;
+  background:black;
+  border:1px solid white;
+  border-radius:5px;
+  white-space:nowrap;
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transform:translateX(8px);
+  transition:opacity 0.2s, transform 0.2s, visibility 0.2s;
+  z-index:30;
+}
+.menu-configurar-membro.ativo{
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto;
+  transform:translateX(0);
+}
+.menu-configurar-membro button{
+  padding:7px 10px;
+  background:black;
+  color:white;
+  border:1px solid white;
+  cursor:pointer;
+  white-space:nowrap;
 }
 .membro-campanha span{
   flex: 1;
