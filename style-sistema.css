@@ -3,3 +3,23 @@ h2{
     display: flex;
     justify-content: center;
 }
+.lista-topicos-sistema{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    line-height: 2;
+    font-weight: bold;
+    font-size: 18px;
+}
+.lista-subtopicos-sistema{
+    grid-template-columns: 1fr;
+    font-weight: normal;
+    font-size: 12px;
+}
+.topicos-sistema,
+.lista-subtopicos-sistema{
+    transition: 0.3s;
+}
+.topicos-sistema:hover,
+.lista-subtopicos-sistema:hover{
+    transform: scale(1.1);
+}
