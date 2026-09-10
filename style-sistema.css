@@ -10,6 +10,11 @@ h2{
     font-weight: bold;
     font-size: 18px;
 }
+@media (max-width: 600px) {
+    .lista-topicos-sistema{
+        grid-template-comlumns: 1fr;
+    }
+}
 .lista-subtopicos-sistema{
     grid-template-columns: 1fr;
     font-weight: normal;
@@ -22,9 +27,4 @@ h2{
 .topicos-sistema:hover,
 .lista-subtopicos-sistema:hover{
     transform: scale(1.1);
-}
-@media (max-width: 600px) {
-    .lista-topicos-sistema{
-        grid-template-comlumns: 1fr;
-    }
 }
