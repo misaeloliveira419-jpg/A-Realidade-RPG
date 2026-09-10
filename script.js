@@ -1,6 +1,4 @@
 const telaPrincipal = document.getElementById("tela-principal");
-const telaSelecionarCampanhas = document.getElementById("tela-selecionar-campanhas");
-const telaEntrarCampanha = document.getElementById("tela-entrar-campanha");
 
 function abrirTelaSite(id) {
   const destino = document.getElementById(id);

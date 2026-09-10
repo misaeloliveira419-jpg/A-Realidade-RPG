@@ -481,20 +481,6 @@ footer{
   box-shadow: 0 0 15px rgb(150,0,225);
 }
 
-/*Tela campanha*/
-
-#nome-campanha-atual{
-  padding: 12px;
-  width: 350px;
-  margin: 0;
-  border: 3px solid white;
-  background: black;
-}
-.intro-campanha p{
-  max-width: 300px;
-  text-align: center;
-}
-
 /*Cards de campanhas salvas*/
 
 .campanha-salva{
@@ -528,7 +514,21 @@ footer{
 
 /*Tela interna da campanha*/
 
+#tela-campanha{
+  background-color: linear-gradient(90deg, rgb(40,10,0), rgb(40,20,0), rgb(45,30,0), rgb(20,0,40), rgb(40,0,20), rgb(45,0,40));
+}
+#nome-campanha-atual{
+  padding: 12px;
+  width: 350px;
+  margin: 0;
+  border: 3px solid white;
+  background: black;
+}
 .intro-campanha{
+  text-align: center;
+}
+.intro-campanha p{
+  max-width: 300px;
   text-align: center;
 }
 .linha-edicao-campanha{
