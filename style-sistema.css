@@ -23,3 +23,8 @@ h2{
 .lista-subtopicos-sistema:hover{
     transform: scale(1.1);
 }
+@media (max-width: 600px) {
+    .lista-topicos-sistema{
+        grid-template-comlumns: 1fr;
+    }
+}
