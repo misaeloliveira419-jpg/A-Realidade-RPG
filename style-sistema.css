@@ -12,7 +12,11 @@ h2{
 }
 @media (max-width: 600px) {
     .lista-topicos-sistema{
-        grid-template-comlumns: 1fr;
+        display: grid;
+        grid-template-columns: 1fr;
+        line-height: 2;
+        font-weight: bold;
+        font-size: 18px;
     }
 }
 .lista-subtopicos-sistema{
