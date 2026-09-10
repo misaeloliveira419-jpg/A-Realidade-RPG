@@ -6,11 +6,16 @@ h2{
 .lista-topicos-sistema{
     display: grid;
     grid-template-columns: repeat(2, minmax(200px,300px));
+    gap: 20px;
     line-height: 2;
     font-weight: bold;
     font-size: 18px;
     justify-content: center;
-    margin: 0 auto;
+    width: 100%;
+    max-width: 700px;
+    box-sizing: border-box;
+    padding: 20px 40px;
+    margin:  0 auto;
 }
 .lista-subtopicos-sistema{
     flex-direction: column;
@@ -19,18 +24,15 @@ h2{
 }
 .topicos-sistema,
 .lista-subtopicos-sistema{
-    transition: 0.3s;
+    transition: transform 0.3s;
+    transform-origin: center;
 }
 .topicos-sistema:hover,
 .lista-subtopicos-sistema:hover{
-    transform: scale(1.1);
+    transform: scale(1.05);
 }
 @media (max-width: 600px) {
     .lista-topicos-sistema{
-        display: grid;
         grid-template-columns: 1fr;
-        line-height: 2;
-        font-weight: bold;
-        font-size: 18px;
     }
 }
