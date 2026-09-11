@@ -773,7 +773,7 @@ auth.onAuthStateChanged(usuario => {
 
 function fundoHeaderTelaCampanha(id) {
   const destino = document.getElementById(id);
-  const header = document.querySelector('body');
+  const body = document.querySelector('body');
   if (!destino) return;
 
   if (id === "tela-campanha" && body) {
