@@ -515,7 +515,7 @@ footer{
 /*Tela interna da campanha*/
 
 #tela-campanha{
-  background-color: linear-gradient(90deg, rgb(40,10,0), rgb(40,20,0), rgb(45,30,0), rgb(20,0,40), rgb(40,0,20), rgb(45,0,40));
+  background-image: linear-gradient(90deg, rgb(40,10,0), rgb(40,20,0), rgb(45,30,0), rgb(20,0,40), rgb(40,0,20), rgb(45,0,40));
 }
 #nome-campanha-atual{
   padding: 12px;
