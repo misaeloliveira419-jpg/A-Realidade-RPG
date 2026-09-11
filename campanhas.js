@@ -139,17 +139,109 @@ function limparCardsCampanhas() {
   listaCampanhas.querySelectorAll(".campanha-salva").forEach(card => card.remove());
 }
 
+function prepararImagemCampanha(arquivo) {
+  return new Promise((resolve, reject) => {
+    if (!arquivo.type.startsWith("image/")) {
+      reject(new Error("arquivo-invalido"));
+      return;
+    }
+
+    const leitor = new FileReader();
+
+    leitor.onload = () => {
+      const imagem = new Image();
+
+      imagem.onload = () => {
+        const limiteLargura = 800;
+        const limiteAltura = 450;
+
+        const escala = Math.min(
+          limiteLargura / imagem.width,
+          limiteAltura / imagem.height,
+          1
+        );
+
+        const largura = Math.round(imagem.width * escala);
+        const altura = Math.round(imagem.height * escala);
+
+        const canvas = document.createElement("canvas");
+        canvas.width = largura;
+        canvas.height = altura;
+
+        const contexto = canvas.getContext("2d");
+        contexto.drawImage(imagem, 0, 0, largura, altura);
+
+        const imagemBase64 = canvas.toDataURL("image/webp", 0.8);
+
+        if (imagemBase64.length > 850000) {
+          reject(new Error("imagem-grande"));
+          return;
+        }
+
+        resolve(imagemBase64);
+      };
+
+      imagem.onerror = reject;
+      imagem.src = leitor.result;
+    };
+
+    leitor.onerror = reject;
+    leitor.readAsDataURL(arquivo);
+  });
+}
+
+async function adicionarImagemCampanha(campanha, arquivo, botao) {
+  const usuario = auth.currentUser;
+
+  if (!usuario || !campanha?.id) return;
+
+  const textoOriginal = botao.textContent;
+
+  botao.disabled = true;
+  botao.textContent = "Salvando...";
+
+  try {
+    const imagem = await prepararImagemCampanha(arquivo);
+
+    const imagemDoCard = document.querySelector(`.campanha-salva[data-campanha-id="${campanha.id}"] .imagem-card-campanha`);
+    
+    if (imagemDoCard) {
+      imagemDoCard.querySelector("img")?.remove();
+      const novaImagem = document.createElement("img");
+      novaImagem.src = imagem;
+      novaImagem.alt = `Imagem da campanha ${campanha.nome || ""}`;
+
+      imagemDoCard.prepend(novaImagem);
+  }
+
+  } catch (erro) {
+    console.error("Erro ao salvar imagem da campanha:", erro);
+
+    if (erro.message === "imagem-grande") {
+      alert("Mesmo após ser reduzida, essa imagem ficou grande demais.");
+    } else if (erro.message === "arquivo-invalido") {
+      alert("Selecione um arquivo de imagem.");
+    } else {
+      alert("Não foi possível salvar a imagem da campanha.");
+    }
+  } finally {
+    botao.disabled = false;
+    botao.textContent = textoOriginal;
+  }
+}
+
 function criarCardCampanha(campanha) {
   const card = document.createElement("div");
   card.className = "campanha-salva";
+  card.dataset.campanhaId = campanha.id;
   card.tabIndex = 0;
 
   const areaImagem = document.createElement("div");
   areaImagem.className = "imagem-card-campanha";
 
-  if (campanha.imagemUrl) {
+  if (campanha.imagemCampanha) {
     const imagem = document.createElement("img");
-    imagem.src = campanha.imagemUrl;
+    imagem.src = campanha.imagemCampanha;
     imagem.alt = `Imagem da campanha ${campanha.nome || ""}`;
     areaImagem.appendChild(imagem);
   }
@@ -347,6 +439,7 @@ async function deletarCampanhaPeloCard(campanha) {
     }
 
     const referenciaCampanha = db.collection("campanhas").doc(campanha.id);
+    const referenciaFoto = db.collection("fotos").doc("campanhas").collection("imagens").doc(campanha.id);
     const membros = await referenciaCampanha.collection("membros").get();
 
     const batch = db.batch();
@@ -356,12 +449,7 @@ async function deletarCampanhaPeloCard(campanha) {
 
       batch.delete(documentoMembro.ref);
 
-      batch.delete(
-        db.collection("usuarios")
-          .doc(uid)
-          .collection("campanhas")
-          .doc(campanha.id)
-      );
+      batch.delete(referenciaFoto);
     });
 
     if (campanha.conviteCodigo) {
@@ -386,16 +474,22 @@ async function renderizarCampanhas(documentos, uidEscuta) {
   for (const documento of documentos) {
     const referenciaCampanha = db.collection("campanhas").doc(documento.id);
     
-    const [campanha, membro] = await Promise.all([
+    const [campanha, membro, foto] = await Promise.all([
       referenciaCampanha.get(),
-      referenciaCampanha.collection("membros").doc(uidEscuta).get()
+      referenciaCampanha.collection("membros").doc(uidEscuta).get(),
+      db.collection("fotos")
+      .doc("campanhas")
+      .collection("imagens")
+      .doc(documento.id)
+      .get()
     ]);
     
     if (campanha.exists && membro.exists) {
       campanhas.push({
         id: campanha.id,
         ...campanha.data(),
-        papelUsuario: membro.data().papel
+        papelUsuario: membro.data().papel,
+        imagemCampanha: foto.exists ? foto.data().imagem : ""
       });
     }
   }
@@ -1000,13 +1094,14 @@ auth.onAuthStateChanged(usuario => {
 /*Fundo header dentro de tela campanha*/
 
 function fundoHeaderTelaCampanha(id) {
+  if (id !== "tela-campanha") return;
+
   const destino = document.getElementById(id);
   const body = document.querySelector('body');
-  if (!destino) return;
+  
+  if (!destino || !body) return;
 
-  if (id === "tela-campanha" && body) {
-    body.style.background = "linear-gradient(90deg, rgb(30,20,0), rgb(35,25,0), rgb(30,20,0), rgb(20,0,35),  rgb(0,20,30), rgb(30,0,30))";
-  }
+  body.style.background = "linear-gradient(90deg, rgb(30,20,0), rgb(35,25,0), rgb(30,20,0), rgb(20,0,35),  rgb(0,20,30), rgb(30,0,30))";
 }
 
 document.addEventListener("click", () => {

@@ -35,10 +35,20 @@ h2{
   .lista-topicos-sistema{
     grid-template-columns: 1fr;
   }
+  #lista-explicacao-testes{
+    max-width: 400px;
+  }
 }
 #lista-explicacao-testes{
   font-size: 14px;
-  max-width: 400px;
+  max-width: 600px;
+  text-align: center;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+#lista-explicacao-tipos-sucesso{
+  font-size: 14px;
+  max-width: 600px;
   text-align: center;
   margin: 0 auto;
   line-height: 1.5;
