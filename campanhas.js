@@ -1,5 +1,6 @@
 const listaCampanhas = document.getElementById("lista-campanhas");
 const cardAdicionarCampanha = document.getElementById("card-adicionar-campanha");
+const storageCampanhas = firebase.storage();
 
 const campoLinkCampanha = document.getElementById("link-campanha");
 const campoNomeCampanha = document.getElementById("nome-campanha");
@@ -139,35 +140,262 @@ function limparCardsCampanhas() {
 }
 
 function criarCardCampanha(campanha) {
-  const card = document.createElement("button");
-
-  card.type = "button";
+  const card = document.createElement("div");
   card.className = "campanha-salva";
+  card.tabIndex = 0;
+
+  const areaImagem = document.createElement("div");
+  areaImagem.className = "imagem-card-campanha";
+
+  if (campanha.imagemUrl) {
+    const imagem = document.createElement("img");
+    imagem.src = campanha.imagemUrl;
+    imagem.alt = `Imagem da campanha ${campanha.nome || ""}`;
+    areaImagem.appendChild(imagem);
+  }
+
+  const areaMenu = document.createElement("div");
+  areaMenu.className = "area-menu-card-campanha";
+
+  const botaoMenu = document.createElement("button");
+  botaoMenu.type = "button";
+  botaoMenu.className = "botao-menu-card-campanha";
+  botaoMenu.textContent = "...";
+  botaoMenu.title = "Opções da campanha";
+
+  const menu = document.createElement("div");
+  menu.className = "menu-card-campanha";
+
+  const botaoImagem = document.createElement("button");
+  botaoImagem.type = "button";
+  botaoImagem.textContent = "Adicionar imagem da campanha";
+
+  const inputImagem = document.createElement("input");
+  inputImagem.type = "file";
+  inputImagem.accept = "image/*";
+  inputImagem.hidden = true;
+
+  botaoImagem.addEventListener("click", evento => {
+    evento.stopPropagation();
+    menu.classList.remove("ativo");
+    inputImagem.click();
+  });
+
+  inputImagem.addEventListener("change", async () => {
+    const arquivo = inputImagem.files?.[0];
+    if (!arquivo) return;
+
+    await adicionarImagemCampanha(campanha, arquivo, botaoImagem);
+    inputImagem.value = "";
+  });
+
+  const botaoAcao = document.createElement("button");
+  botaoAcao.type = "button";
+
+  if (campanha.papelUsuario === "mestre") {
+    botaoAcao.textContent = "Deletar campanha";
+    botaoAcao.className = "acao-perigosa-card";
+
+    botaoAcao.addEventListener("click", evento => {
+      evento.stopPropagation();
+      menu.classList.remove("ativo");
+      deletarCampanhaPeloCard(campanha);
+    });
+  } else {
+    botaoAcao.textContent = "Sair da campanha";
+
+    botaoAcao.addEventListener("click", evento => {
+      evento.stopPropagation();
+      menu.classList.remove("ativo");
+      sairCampanhaPeloCard(campanha);
+    });
+  }
+
+  menu.appendChild(botaoImagem);
+  menu.appendChild(botaoAcao);
+  menu.appendChild(inputImagem);
+
+  botaoMenu.addEventListener("click", evento => {
+    evento.stopPropagation();
+
+    document.querySelectorAll(".menu-card-campanha.ativo").forEach(outroMenu => {
+      if (outroMenu !== menu) outroMenu.classList.remove("ativo");
+    });
+
+    menu.classList.toggle("ativo");
+  });
+
+  menu.addEventListener("click", evento => evento.stopPropagation());
+
+  areaMenu.appendChild(botaoMenu);
+  areaMenu.appendChild(menu);
+  areaImagem.appendChild(areaMenu);
+
+  const areaNome = document.createElement("div");
+  areaNome.className = "nome-card-campanha";
 
   const nome = document.createElement("strong");
   nome.textContent = campanha.nome || "Campanha sem nome";
 
-  const descricao = document.createElement("span");
-  descricao.textContent = campanha.descricao || "";
+  areaNome.appendChild(nome);
 
-  card.appendChild(nome);
-  card.appendChild(descricao);
+  card.appendChild(areaImagem);
+  card.appendChild(areaNome);
 
   card.addEventListener("click", () => abrirCampanha(campanha.id));
 
+  card.addEventListener("keydown", evento => {
+    if (evento.key === "Enter") abrirCampanha(campanha.id);
+  });
+
   return card;
+}
+
+async function adicionarImagemCampanha(campanha, arquivo, botao) {
+  if (!auth.currentUser || !campanha?.id) return;
+
+  if (!arquivo.type.startsWith("image/")) {
+    alert("Selecione um arquivo de imagem.");
+    return;
+  }
+
+  if (arquivo.size > 5 * 1024 * 1024) {
+    alert("A imagem precisa ter no máximo 5 MB.");
+    return;
+  }
+
+  const textoOriginal = botao.textContent;
+
+  botao.disabled = true;
+  botao.textContent = "Enviando...";
+
+  try {
+    const referenciaImagem = storageCampanhas.ref(`campanhas/${campanha.id}/capa`);
+
+    await referenciaImagem.put(arquivo, {
+      contentType: arquivo.type
+    });
+
+    const urlOriginal = await referenciaImagem.getDownloadURL();
+    const url = `${urlOriginal}&v=${Date.now()}`;
+
+    await db.collection("campanhas").doc(campanha.id).update({
+      imagemUrl: url,
+      atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+  } catch (erro) {
+    console.error("Erro ao adicionar imagem da campanha:", erro);
+    alert("Não foi possível adicionar a imagem.");
+
+  } finally {
+    botao.disabled = false;
+    botao.textContent = textoOriginal;
+  }
+}
+
+async function sairCampanhaPeloCard(campanha) {
+  const usuario = auth.currentUser;
+
+  if (!usuario || !campanha?.id) return;
+
+  if (!confirm(`Deseja sair da campanha "${campanha.nome}"?`)) return;
+
+  try {
+    const batch = db.batch();
+
+    batch.delete(
+      db.collection("campanhas")
+        .doc(campanha.id)
+        .collection("membros")
+        .doc(usuario.uid)
+    );
+
+    batch.delete(
+      db.collection("usuarios")
+        .doc(usuario.uid)
+        .collection("campanhas")
+        .doc(campanha.id)
+    );
+
+    await batch.commit();
+
+  } catch (erro) {
+    console.error("Erro ao sair da campanha:", erro);
+    alert("Não foi possível sair da campanha.");
+  }
+}
+
+async function deletarCampanhaPeloCard(campanha) {
+  const usuario = auth.currentUser;
+
+  if (!usuario || !campanha?.id || campanha.papelUsuario !== "mestre") return;
+
+  const confirmar = confirm(
+    `Deseja realmente deletar "${campanha.nome}"?\n\nEssa ação não poderá ser desfeita.`
+  );
+
+  if (!confirmar) return;
+
+  try {
+    try {
+      await storageCampanhas.ref(`campanhas/${campanha.id}/capa`).delete();
+    } catch (erroStorage) {
+      if (erroStorage.code !== "storage/object-not-found") {
+        console.warn("Não foi possível apagar a imagem da campanha:", erroStorage);
+      }
+    }
+
+    const referenciaCampanha = db.collection("campanhas").doc(campanha.id);
+    const membros = await referenciaCampanha.collection("membros").get();
+
+    const batch = db.batch();
+
+    membros.forEach(documentoMembro => {
+      const uid = documentoMembro.id;
+
+      batch.delete(documentoMembro.ref);
+
+      batch.delete(
+        db.collection("usuarios")
+          .doc(uid)
+          .collection("campanhas")
+          .doc(campanha.id)
+      );
+    });
+
+    if (campanha.conviteCodigo) {
+      batch.delete(
+        db.collection("convitesCampanha").doc(campanha.conviteCodigo)
+      );
+    }
+
+    batch.delete(referenciaCampanha);
+
+    await batch.commit();
+
+  } catch (erro) {
+    console.error("Erro ao deletar campanha:", erro);
+    alert("Não foi possível deletar a campanha.");
+  }
 }
 
 async function renderizarCampanhas(documentos, uidEscuta) {
   const campanhas = [];
 
   for (const documento of documentos) {
-    const campanha = await db.collection("campanhas").doc(documento.id).get();
-
-    if (campanha.exists) {
+    const referenciaCampanha = db.collection("campanhas").doc(documento.id);
+    
+    const [campanha, membro] = await Promise.all([
+      referenciaCampanha.get(),
+      referenciaCampanha.collection("membros").doc(uidEscuta).get()
+    ]);
+    
+    if (campanha.exists && membro.exists) {
       campanhas.push({
         id: campanha.id,
-        ...campanha.data()
+        ...campanha.data(),
+        papelUsuario: membro.data().papel
       });
     }
   }
@@ -780,3 +1008,9 @@ function fundoHeaderTelaCampanha(id) {
     body.style.background = "linear-gradient(90deg, rgb(30,20,0), rgb(35,25,0), rgb(30,20,0), rgb(20,0,35),  rgb(0,20,30), rgb(30,0,30))";
   }
 }
+
+document.addEventListener("click", () => {
+  document.querySelectorAll(".menu-card-campanha.ativo").forEach(menu => {
+    menu.classList.remove("ativo");
+  });
+});
