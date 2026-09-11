@@ -1101,7 +1101,12 @@ function fundoHeaderTelaCampanha(id) {
   
   if (!destino || !body) return;
 
-  body.style.background = "linear-gradient(90deg, rgb(30,20,0), rgb(35,25,0), rgb(30,20,0), rgb(20,0,35),  rgb(0,20,30), rgb(30,0,30))";
+  if (id === "tela-campanha"){
+    body.style.background = "linear-gradient(90deg, rgb(30,20,0), rgb(35,25,0), rgb(30,20,0), rgb(20,0,35),  rgb(0,20,30), rgb(30,0,30))";
+  }
+  else {
+    body.style.background = "linear-gradient(rgb(30,0,45), rgb(0,30,15), rgb(35,35,0), rgb(0,25,35), rgb(30,30,30), black)";
+  }
 }
 
 document.addEventListener("click", () => {

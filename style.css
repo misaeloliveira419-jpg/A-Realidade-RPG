@@ -601,7 +601,6 @@ footer{
 /*Tela interna da campanha*/
 
 #tela-campanha{
-  min-height: 100vh;
   background: linear-gradient(90deg, rgb(30,20,0), rgb(35,25,0), rgb(30,20,0), rgb(20,0,35),  rgb(0,20,30), rgb(30,0,30));
 }
 #nome-campanha-atual{
