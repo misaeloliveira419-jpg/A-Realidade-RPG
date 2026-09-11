@@ -4,7 +4,7 @@ h2{
     justify-content: center;
 }
 .lista-topicos-sistema{
-    display: grid;
+  display: grid;
     grid-template-columns: repeat(2, minmax(200px,300px));
     gap: 20px;
     line-height: 2;
@@ -18,21 +18,28 @@ h2{
     margin:  0 auto;
 }
 .lista-subtopicos-sistema{
-    flex-direction: column;
-    font-weight: normal;
-    font-size: 12px;
+  flex-direction: column;
+  font-weight: normal;
+  font-size: 12px;
 }
 .topicos-sistema,
 .lista-subtopicos-sistema{
-    transition: transform 0.3s;
-    transform-origin: center;
+  transition: transform 0.3s;
+  transform-origin: center;
 }
 .topicos-sistema:hover,
 .lista-subtopicos-sistema:hover{
-    transform: scale(1.05);
+  transform: scale(1.05);
 }
 @media (max-width: 600px) {
-    .lista-topicos-sistema{
-        grid-template-columns: 1fr;
-    }
+  .lista-topicos-sistema{
+    grid-template-columns: 1fr;
+  }
+}
+#lista-explicacao-testes{
+  font-size: 14px;
+  max-width: 400px;
+  text-align: center;
+  margin: 0 auto;
+  line-height: 1.5;
 }
