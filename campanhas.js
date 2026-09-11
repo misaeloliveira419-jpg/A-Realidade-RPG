@@ -768,3 +768,15 @@ auth.onAuthStateChanged(usuario => {
   iniciarEscutaCampanhas(usuario);
   verificarConviteNaURL(usuario);
 });
+
+/*Fundo header dentro de tela campanha*/
+
+function fundoHeaderTelaCampanha(id) {
+  const destino = document.getElementById(id);
+  const header = document.querySelector('header');
+  if (!destino) return;
+
+  if (id === "tela-campanha" && header) {
+    header.style.background = "linear-gradient(90deg, rgb(30,20,0), rgb(35,25,0), rgb(30,20,0), rgb(20,0,35),  rgb(0,20,30), rgb(30,0,30))";
+  }
+}
