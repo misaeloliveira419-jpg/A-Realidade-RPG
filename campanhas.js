@@ -1094,7 +1094,6 @@ auth.onAuthStateChanged(usuario => {
 /*Fundo header dentro de tela campanha*/
 
 function fundoHeaderTelaCampanha(id) {
-  if (id !== "tela-campanha") return;
 
   const destino = document.getElementById(id);
   const body = document.querySelector('body');
