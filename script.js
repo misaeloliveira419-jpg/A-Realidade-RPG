@@ -6,7 +6,8 @@ function abrirTelaSite(id) {
 
   document.querySelectorAll(".tela-site").forEach(tela => tela.classList.remove("ativa"));
   destino.classList.add("ativa");
-  fundoHeaderTelaCampanha("tela-campanha");
+
+  fundoHeaderTelaCampanha(id);
 }
 
 window.abrirTelaSite = abrirTelaSite;
