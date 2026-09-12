@@ -36,7 +36,7 @@ h2{
     grid-template-columns: 1fr;
   }
   #lista-explicacao-testes{
-    max-width: 300px;
+    max-width: 90%;
   }
 }
 #lista-explicacao-testes{
@@ -52,5 +52,14 @@ h2{
   line-height: 1.5;
 }
 #lista-explicacao-tipos-sucesso li{
+  margin-top: 20px;
+}
+#lista-exemplos-casos-especiais{
+  font-size: 14px;
+  max-width: 500px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+#lista-exemplos-casos-especiais li{
   margin-top: 20px;
 }
