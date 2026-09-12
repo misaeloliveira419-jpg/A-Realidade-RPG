@@ -82,6 +82,18 @@ h2{
 #lista-perfil-personagem li{
   margin-top: 20px;
 }
+a{
+  color: rgb(100,175,175);
+}
+#lista-ocupacoes-personagem{
+  font-size: 16px;
+  max-width: 500px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+#lista-ocupacoes-personagem li{
+  margin-top: 20px;
+}
 
 /*Tela cenas e ações*/
 
