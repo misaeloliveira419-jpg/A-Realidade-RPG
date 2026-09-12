@@ -1,3 +1,5 @@
+/*Tela sistema*/
+
 h2{
     margin-top: 40px;
     display: flex;
@@ -31,13 +33,12 @@ h2{
 .lista-subtopicos-sistema:hover{
   transform: scale(1.05);
 }
-@media (max-width: 600px) {
-  .lista-topicos-sistema{
-    grid-template-columns: 1fr;
-  }
-  #lista-explicacao-testes{
-    max-width: 90%;
-  }
+
+/*Tela mecânica de testes*/
+
+#tela-mecanica-testes h1,
+#tela-mecanica-testes h2{
+  text-shadow: 2px 1px 12px rgb(175,175,175);
 }
 #lista-explicacao-testes{
   font-size: 14px;
@@ -62,4 +63,36 @@ h2{
 }
 #lista-exemplos-casos-especiais li{
   margin-top: 20px;
+}
+
+/*Tela criação de personagem*/
+
+#tela-criacao-personagem h1,
+#tela-criacao-personagem h2{
+  text-shadow: 2px 1px 12px rgb(150,0,225);
+}
+
+/*Tela cenas e ações*/
+
+#tela-cenas-acoes h1,
+#tela-cenas-acoes h2{
+  text-shadow: 2px 1px 12px rgb(180,140,0);
+}
+
+/*Tela níveis e habilidades*/
+
+#tela-niveis-habilidades h1,
+#tela-niveis-habilidades h2{
+  text-shadow: 2px 1px 12px rgb(100,175,175);
+}
+
+/*Para celular*/
+
+@media (max-width: 600px) {
+  .lista-topicos-sistema{
+    grid-template-columns: 1fr;
+  }
+  #lista-explicacao-testes{
+    max-width: 90%;
+  }
 }

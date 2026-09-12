@@ -753,7 +753,7 @@ footer{
   gap: 10px;
   min-height: 42px;
   padding: 10px 52px 10px 10px;
-  border: 2px solid rgba(200,0,255,0.4);
+  border: 3px solid rgba(200,0,255,0.4);
   box-sizing: border-box;
 }
 .area-configurar-membro{
