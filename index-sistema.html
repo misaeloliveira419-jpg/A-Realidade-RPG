@@ -83,8 +83,11 @@
         Criação de personagem
         <ul>
           <li class="lista-subtopicos-sistema" data-tela="tela-criacao-personagem" data-alvo="conceito-personagem">Conceito do Personagem</li>
-          <li class="lista-subtopicos-sistema" data-tela="tela-criacao-personagem" data-alvo="perfil-ocupacao">Perfil e Ocupação</li>
-          <li class="lista-subtopicos-sistema" data-tela="tela-criacao-personagem" data-alvo="atributos-pericias-outros">Atributos, Perícias, e Outros</li>
+          <li class="lista-subtopicos-sistema" data-tela="tela-criacao-personagem" data-alvo="perfil-personagem">Perfil do Personagem</li>
+          <li class="lista-subtopicos-sistema" data-tela="tela-criacao-personagem" data-alvo="ocupacao-personagem">Ocupação do Personagem</li>
+          <li class="lista-subtopicos-sistema" data-tela="tela-criacao-personagem" data-alvo="atributos">Atributos</li>
+          <li class="lista-subtopicos-sistema" data-tela="tela-criacao-personagem" data-alvo="pericias">Perícias</li>
+          <li class="lista-subtopicos-sistema" data-tela="tela-criacao-personagem" data-alvo="pontos-vitalidade-determinacao">Pontos de Vitalidade (PV) e Pontos de Determinação (PD)</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-criacao-personagem" data-alvo="itens-capacidade-carga">Itens e Capacidade de Carga</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-criacao-personagem" data-alvo="consequencias-idade">Consequências de idade</li>
         </ul>
@@ -142,16 +145,16 @@
         <br>
         No caso desse exemplo, o personagem teve sucesso na sua ação.</li>
     </ol>
-    <br><br>
+    <br>
     <p>Para definir o quão bem o personagem teve um sucesso, ou o quão mal ele teve um fracasso, existem os <b>tipos de sucesso</b>.</p>
 
     <h2 id="tipos-sucesso">Tipos de sucesso</h2>
     <ul id="lista-explicacao-tipos-sucesso">
-      <li>Desastre: acontece se o menor resultado do teste for 20. Pode gerar consequências horríveis, como quebrar um computador ao tentar consertá-lo, ou sofrer dano ao tentar arrombar uma porta.</li>
-      <li>Fracasso: acontece se o menor resultado do teste for maior que o valor da perícia usada. O personagem não consegue realizar a ação.</li>
-      <li>Normal: acontece se o menor resultado do teste for igual ou menor que o valor da perícia usada. O personagem realiza a ação de maneira simples.</li>
-      <li>Bom: acontece se o menor resultado do teste for igual ou menor que a metade, 1/2, do valor da perícia usada. O personagem realiza a ação de uma forma excelente.</li>
-      <li>Extremo: acontece se o menor resultado do teste for igual ou menor que 1/5 do valor da perícia usada. O personagem realiza a ação de maneira esplêndida, praticamente perfeita.</li>
+      <li><b>DESASTRE:</b> acontece se o menor resultado do teste for 20. Pode gerar consequências horríveis, como quebrar um computador ao tentar consertá-lo, ou sofrer dano ao tentar arrombar uma porta.</li>
+      <li><b>FRACASSO:</b> acontece se o menor resultado do teste for maior que o valor da perícia usada. O personagem não consegue realizar a ação.</li>
+      <li><b>NORMAL:</b> acontece se o menor resultado do teste for igual ou menor que o valor da perícia usada. O personagem realiza a ação de maneira simples.</li>
+      <li><b>BOM:</b> acontece se o menor resultado do teste for igual ou menor que a metade, 1/2, do valor da perícia usada. O personagem realiza a ação de uma forma excelente.</li>
+      <li><b>EXTREMO:</b> acontece se o menor resultado do teste for igual ou menor que 1/5 do valor da perícia usada. O personagem realiza a ação de maneira esplêndida, praticamente perfeita.</li>
     </ul>
 
     <h2 id="casos-especiais">Casos Especiais</h2>
@@ -169,12 +172,34 @@
     <button class="botao-voltar" data-voltar="tela-sistema" type="button">← Voltar</button>
 
     <h1>CRIAÇÃO DE PERSONAGEM</h1>
+    <p>Esse tópico vai explicar passo a passo como criar um personagem a você jogador, começando com o <b>conceito do personagem</b>.</p>
 
     <h2 id="conceito-personagem">Conceito do Personagem</h2>
+    <p>Ao criar um personagem, é importante entender como vai ser a campanha que você irá jogar;
+      <br><br>
+      Depois, é fundamental que você pense o estilo de personagem que você quer jogar, como ele vai agir em determinadas situações, e a personalidade principal dele;
+      <br><br>
+      Após isso, é interessante que você crie um backstory (passado) para o seu personagem, principalmente um backstory com lacunas a serem resolvidas, objetivos do personagem, momentos, pessoas, e objetos importantes, tudo para que o seu mestre possa te ajudar a desenvolver o seu personagem junto com você durante a campanha.
+      <br><br>
+      Assim, após determinar todas essas características de roleplay, você vai ter uma ótima base para começar a desenvolver o <b>Perfil</b> e a <b>Ocupação</b> do seu personagem.</p>
 
-    <h2 id="perfil-ocupacao">Perfil e Ocupação</h2>
+    <h2 id="perfil-personagem">Perfil do Personagem</h2>
+    <p>O Perfil de um personagem define como ele <em>normalmente</em> (ou seja, não em todos os momentos) age ou reage durante uma situação. O jogador deve escolher um Perfil para seu personagem, que pode ser qualquer um dos três tipos abaixo:</p>
 
-    <h2 id="atributos-pericias-outros">Atributos, Perícias, e Outros</h2>
+    <ul id="lista-perfil-personagem">
+      <li><b>PROATIVO:</b> O personagem é muito ativo, gosta de tomar a iniciativa e tenta fazer ações não tão planejadas. É um personagem que se sente como um homem-máquina, que não tem muito tempo para pensar antes de tomar uma decisão.</li>
+      <li><b>REFLEXIVO:</b> O personagem adora pensar antes de agir, prefere seguir um rumo de ações planejadas, ou prefere analisar a situação antes de tomar uma decisão.</li>
+      <li><b>ADAPTATIVO:</b> O personagem varia seu modo de agir conforme a situação, e está sempre pronto para agir em situações novas. Ele é um personagem fluido, que consegue agir sob pressão, ou que está disposto a mudar de forma.</li>
+    </ul>
+
+    <h2 id="ocupacao-personagem">Ocupação do Personagem</h2>
+    <p></p>
+
+    <h2 id="atributos">Atributos</h2>
+
+    <h2 id="pericias">Perícias</h2>
+
+    <h2 id="pontos-vitalidade-determinacao">Pontos de Vitalidade (PV) e Pontos de Determinação (PD)</h2>
 
     <h2 id="itens-capacidade-carga">Itens e Capacidade de Carga</h2>
 

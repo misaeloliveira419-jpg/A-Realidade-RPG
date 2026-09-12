@@ -62,8 +62,9 @@ h2{
   margin: 0 auto;
   line-height: 1.5;
 }
-#lista-exemplos-casos-especiais li{
+#lista-exemplos-casos-especiais li:last-of-type{
   margin-top: 20px;
+  margin-bottom: 40px;
 }
 
 /*Tela criação de personagem*/
@@ -71,6 +72,15 @@ h2{
 #tela-criacao-personagem h1,
 #tela-criacao-personagem h2{
   text-shadow: 2px 1px 12px rgb(150,0,225);
+}
+#lista-perfil-personagem{
+  font-size: 14px;
+  max-width: 500px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+#lista-perfil-personagem li{
+  margin-top: 20px;
 }
 
 /*Tela cenas e ações*/
