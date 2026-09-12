@@ -4,6 +4,7 @@ h2{
     margin-top: 40px;
     display: flex;
     justify-content: center;
+    text-shadow: 2px 1px 12px black;
 }
 .lista-topicos-sistema{
   display: grid;
