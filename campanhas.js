@@ -1,6 +1,5 @@
 const listaCampanhas = document.getElementById("lista-campanhas");
 const cardAdicionarCampanha = document.getElementById("card-adicionar-campanha");
-const storageCampanhas = firebase.storage();
 
 const campoLinkCampanha = document.getElementById("link-campanha");
 const campoNomeCampanha = document.getElementById("nome-campanha");
@@ -190,46 +189,6 @@ function prepararImagemCampanha(arquivo) {
   });
 }
 
-async function adicionarImagemCampanha(campanha, arquivo, botao) {
-  const usuario = auth.currentUser;
-
-  if (!usuario || !campanha?.id) return;
-
-  const textoOriginal = botao.textContent;
-
-  botao.disabled = true;
-  botao.textContent = "Salvando...";
-
-  try {
-    const imagem = await prepararImagemCampanha(arquivo);
-
-    const imagemDoCard = document.querySelector(`.campanha-salva[data-campanha-id="${campanha.id}"] .imagem-card-campanha`);
-    
-    if (imagemDoCard) {
-      imagemDoCard.querySelector("img")?.remove();
-      const novaImagem = document.createElement("img");
-      novaImagem.src = imagem;
-      novaImagem.alt = `Imagem da campanha ${campanha.nome || ""}`;
-
-      imagemDoCard.prepend(novaImagem);
-  }
-
-  } catch (erro) {
-    console.error("Erro ao salvar imagem da campanha:", erro);
-
-    if (erro.message === "imagem-grande") {
-      alert("Mesmo após ser reduzida, essa imagem ficou grande demais.");
-    } else if (erro.message === "arquivo-invalido") {
-      alert("Selecione um arquivo de imagem.");
-    } else {
-      alert("Não foi possível salvar a imagem da campanha.");
-    }
-  } finally {
-    botao.disabled = false;
-    botao.textContent = textoOriginal;
-  }
-}
-
 function criarCardCampanha(campanha) {
   const card = document.createElement("div");
   card.className = "campanha-salva";
@@ -258,28 +217,66 @@ function criarCardCampanha(campanha) {
   const menu = document.createElement("div");
   menu.className = "menu-card-campanha";
 
-  const botaoImagem = document.createElement("button");
-  botaoImagem.type = "button";
-  botaoImagem.textContent = "Adicionar imagem da campanha";
+  if (campanha.papelUsuario === "mestre") {
+    const botaoImagem = document.createElement("button");
+    botaoImagem.type = "button";
+    botaoImagem.textContent = campanha.imagemCampanha
+    ? "Alterar imagem da campanha"
+    : "Adicionar imagem da campanha";
 
-  const inputImagem = document.createElement("input");
-  inputImagem.type = "file";
-  inputImagem.accept = "image/*";
-  inputImagem.hidden = true;
+    const inputImagem = document.createElement("input");
+    inputImagem.type = "file";
+    inputImagem.accept = "image/*";
+    inputImagem.hidden = true;
 
-  botaoImagem.addEventListener("click", evento => {
-    evento.stopPropagation();
-    menu.classList.remove("ativo");
-    inputImagem.click();
-  });
+    botaoImagem.addEventListener("click", evento => {
+      evento.stopPropagation();
+      menu.classList.remove("ativo");
+      inputImagem.click();
+    });
 
-  inputImagem.addEventListener("change", async () => {
-    const arquivo = inputImagem.files?.[0];
-    if (!arquivo) return;
+    inputImagem.addEventListener("change", async () => {
+      const arquivo = inputImagem.files?.[0];
+      if (!arquivo) return;
 
-    await adicionarImagemCampanha(campanha, arquivo, botaoImagem);
-    inputImagem.value = "";
-  });
+      const imagem = await adicionarImagemCampanha(campanha, arquivo, botaoImagem);
+
+      if (imagem) {
+        campanha.imagemCampanha = imagem;
+
+        const novoCard = criarCardCampanha(campanha);
+        card.replaceWith(novoCard);
+      }
+
+      inputImagem.value = "";
+    });
+
+    menu.appendChild(botaoImagem);
+    menu.appendChild(inputImagem);
+
+    if (campanha.imagemCampanha) {
+      const botaoDeletarImagem = document.createElement("button");
+      botaoDeletarImagem.type = "button";
+      botaoDeletarImagem.textContent = "Deletar imagem da campanha";
+      botaoDeletarImagem.className = "acao-perigosa-card";
+
+      botaoDeletarImagem.addEventListener("click", async evento => {
+        evento.stopPropagation();
+        menu.classList.remove("ativo");
+
+        const deletou = await deletarImagemCampanha(campanha);
+
+        if (deletou) {
+          campanha.imagemCampanha = "";
+
+          const novoCard = criarCardCampanha(campanha);
+          card.replaceWith(novoCard);
+        }
+      });
+
+      menu.appendChild(botaoDeletarImagem);
+    }
+  }
 
   const botaoAcao = document.createElement("button");
   botaoAcao.type = "button";
@@ -303,9 +300,7 @@ function criarCardCampanha(campanha) {
     });
   }
 
-  menu.appendChild(botaoImagem);
   menu.appendChild(botaoAcao);
-  menu.appendChild(inputImagem);
 
   botaoMenu.addEventListener("click", evento => {
     evento.stopPropagation();
@@ -344,45 +339,77 @@ function criarCardCampanha(campanha) {
 }
 
 async function adicionarImagemCampanha(campanha, arquivo, botao) {
-  if (!auth.currentUser || !campanha?.id) return;
+  const usuario = auth.currentUser;
 
-  if (!arquivo.type.startsWith("image/")) {
-    alert("Selecione um arquivo de imagem.");
-    return;
-  }
-
-  if (arquivo.size > 5 * 1024 * 1024) {
-    alert("A imagem precisa ter no máximo 5 MB.");
-    return;
-  }
+  if (!usuario || !campanha?.id || campanha.papelUsuario !== "mestre") return null;
 
   const textoOriginal = botao.textContent;
 
   botao.disabled = true;
-  botao.textContent = "Enviando...";
+  botao.textContent = "Salvando...";
 
   try {
-    const referenciaImagem = storageCampanhas.ref(`campanhas/${campanha.id}/capa`);
+    const imagem = await prepararImagemCampanha(arquivo);
 
-    await referenciaImagem.put(arquivo, {
-      contentType: arquivo.type
-    });
+    await db
+      .collection("fotos")
+      .doc("campanhas")
+      .collection("imagens")
+      .doc(campanha.id)
+      .set({
+        imagem: imagem,
+        atualizadoPor: usuario.uid,
+        atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+      });
 
-    const urlOriginal = await referenciaImagem.getDownloadURL();
-    const url = `${urlOriginal}&v=${Date.now()}`;
-
-    await db.collection("campanhas").doc(campanha.id).update({
-      imagemUrl: url,
-      atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
-    });
+    return imagem;
 
   } catch (erro) {
-    console.error("Erro ao adicionar imagem da campanha:", erro);
-    alert("Não foi possível adicionar a imagem.");
+    console.error("Erro ao salvar imagem da campanha:", erro);
+
+    if (erro.message === "imagem-grande") {
+      alert("Mesmo após ser reduzida, essa imagem ficou grande demais.");
+    } else if (erro.message === "arquivo-invalido") {
+      alert("Selecione um arquivo de imagem.");
+    } else if (erro.code === "permission-denied") {
+      alert("Você não tem permissão para alterar a imagem desta campanha.");
+    } else {
+      alert("Não foi possível salvar a imagem da campanha.");
+    }
+
+    return null;
 
   } finally {
     botao.disabled = false;
     botao.textContent = textoOriginal;
+  }
+}
+
+async function deletarImagemCampanha(campanha) {
+  const usuario = auth.currentUser;
+
+  if (!usuario || !campanha?.id || campanha.papelUsuario !== "mestre") {
+    return false;
+  }
+
+  if (!confirm("Deseja deletar a imagem desta campanha?")) {
+    return false;
+  }
+
+  try {
+    await db
+      .collection("fotos")
+      .doc("campanhas")
+      .collection("imagens")
+      .doc(campanha.id)
+      .delete();
+
+    return true;
+
+  } catch (erro) {
+    console.error("Erro ao deletar imagem da campanha:", erro);
+    alert("Não foi possível deletar a imagem da campanha.");
+    return false;
   }
 }
 
@@ -430,16 +457,13 @@ async function deletarCampanhaPeloCard(campanha) {
   if (!confirmar) return;
 
   try {
-    try {
-      await storageCampanhas.ref(`campanhas/${campanha.id}/capa`).delete();
-    } catch (erroStorage) {
-      if (erroStorage.code !== "storage/object-not-found") {
-        console.warn("Não foi possível apagar a imagem da campanha:", erroStorage);
-      }
-    }
 
     const referenciaCampanha = db.collection("campanhas").doc(campanha.id);
-    const referenciaFoto = db.collection("fotos").doc("campanhas").collection("imagens").doc(campanha.id);
+    const referenciaFoto = db
+    .collection("fotos")
+    .doc("campanhas")
+    .collection("imagens")
+    .doc(campanha.id);
     const membros = await referenciaCampanha.collection("membros").get();
 
     const batch = db.batch();
@@ -449,8 +473,15 @@ async function deletarCampanhaPeloCard(campanha) {
 
       batch.delete(documentoMembro.ref);
 
-      batch.delete(referenciaFoto);
+      batch.delete(
+        db.collection("usuarios")
+        .doc(uid)
+        .collection("campanhas")
+        .doc(campanha.id)
+      );
     });
+
+    batch.delete(referenciaFoto);
 
     if (campanha.conviteCodigo) {
       batch.delete(
