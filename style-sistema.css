@@ -97,6 +97,27 @@ a{
 #lista-ocupacoes-personagem li{
   margin-top: 20px;
 }
+#lista-atributos{
+  font-size: 14px;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+#lista-atributos li{
+  margin-top: 20px;
+}
+#lista-pericias{
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(14, auto);
+  font-size: 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+#lista-pericias li{
+  margin-top: 20px;
+}
 
 /*Tela cenas e ações*/
 
@@ -121,7 +142,19 @@ a{
   #lista-explicacao-testes{
     max-width: 90%;
   }
+  #lista-perfil-personagem{
+    max-width: 90%;
+  }
   #lista-ocupacoes-personagem{
+    display: grid;
+    grid-auto-flow: row;
+    grid-template-rows: repeat(1, auto);
+    max-width: 90%;
+  }
+  #lista-atributos{
+    max-width: 90%;
+  }
+  #lista-pericias{
     display: grid;
     grid-auto-flow: row;
     grid-template-rows: repeat(1, auto);

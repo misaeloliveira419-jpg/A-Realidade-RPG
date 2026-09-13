@@ -444,15 +444,118 @@
     <br><br>
     <p>O jogador deve escolher <b>uma</b> dentre essas ocupações. Cada uma delas tem Perícias listadas, elas são as <b>Perícias Naturais</b> de cada ocupação.</p>
     <br>
-    <p>Após escolher a ocupação, o jogador deve distribuir <em>+5 pontos</em> entre as <b>Perícias Naturais</b> da sua ocupação, com limite de <em>+3 pontos</em> por Perícia, podendo ultrapassar o limite de 12 pontos em uma única perícia.</p>
+    <p>Após escolher a ocupação, o jogador deve distribuir <em>+5 pontos</em> entre as <b>Perícias Naturais</b> da sua ocupação, com <u>limite</u> de <em>+3 pontos</em> por Perícia, <em>podendo ultrapassar</em> o limite de 12 pontos em uma única perícia.</p>
     <br>
     <p>Ocupações com Perícias divididas entre Áreas e Gerais, como Cientista e Estudante, devem ter no mínimo <b>uma</b> Perícia de Área, podendo ter até <b>todas</b> as Perícias Naturais como Perícias de Área.</p>
     <br>
-    <p>Todas as ocupações são divididas em 6 níveis, indo do Nível 0 ao Nível 10. <a href="#" onclick="abrirTelaSite('tela-niveis-habilidades')">Ir para Níveis e Habilidades</a>.</p>
+    <p>Todas as ocupações são divididas em 11 níveis, indo do Nível 0 ao Nível 10. <a href="#" onclick="abrirTelaSite('tela-niveis-habilidades')">Ir para Níveis e Habilidades</a>.</p>
 
     <h2 id="atributos">Atributos</h2>
+    <p>Os Atributos do personagem são as capacidades físicas, mentais, e emocionais que ele possui. Um valor de um Atributo define a <b>quantidade de d20</b> que serão rolados para um Teste de Perícia (com exceção do <b>Deslocamento</b>). Por exemplo, ter <em>2 pontos</em> no Atributo Físico faz com que o Teste de uma Perícia que use esse Atributo seja rolada com <b>2d20</b>.</p>
+    <br>
+    <p>Os Atributos são divididos em 3:</p>
+    <ul id="lista-atributos">
+      <li><b>FÍSICO:</b> Atributo que define as capacidades físicas de um personagem, como força, coordenação motora, resistência, etc.</li>
+      <li><b>COGNIÇÃO:</b> Atributo que define as capacidades mentais de um personagem, como raciocínio lógico, análise de informações, memória, etc.</li>
+      <li><b>PRESENÇA:</b> Atributo que define as capacidades emocionais de um personagem, como interação social, empatia, autocontrole, etc.</li>
+      <li><b>DESLOCAMENTO:</b> Atributo que define a quantidade de metros/quadrados que um personagem consegue se movimentar em uma rodada.</li>
+    </ul>
+    <br>
+    <p>Um personagem tem <b>4 pontos</b> de Atributo para distribuir entre Físico, Cognição e Presença, sendo que há um <u>limite</u> de <b>3 pontos</b> por Atributo.</p>
+    <br>
+    <p>O Atributo Deslocamento tem um valor base de 9 metros/6 quadrados, e pode variar dependendo da situação, de habilidades, de itens, de condições, etc.</p>
 
     <h2 id="pericias">Perícias</h2>
+    <p>As Perícias são um conjunto de ações, proficiências e conhecimentos que o personagem possui. o valor de uma Perícia define o <b>resultado máximo</b> que um d20 precisa ter para que o personagem consiga executá-la. Por exemplo, ter <em>9 pontos</em> na Perícia Intuição faz com que para ter sucesso em um Teste dessa Perícia, o resultado da rolagem de d20 precise ser <b>igual ou menor do que 9</b>.</p>
+    <br>
+    <p>As perícias são divididas em 28:</p>
+    <ul id="lista-pericias">
+      <li><b>ACROBACIA:</b> Realizar movimentos ágeis, saltos, equilíbrios e manobras corporais.
+        <br>
+        Atributo: Físico.</li>
+      <li><b>ADESTRAMENTO:</b> Lidar, treinar e compreender o comportamento de animais.
+        <br>
+        Atributo: Presença.</li>
+      <li><b>ÁREA - ARTES:</b> Criar, interpretar e compreender diferentes formas de expressão artística.
+        <br>
+        Atributo: Presença.</li>
+      <li><b>ATLETISMO:</b> Executar atividades físicas que envolvam força, corrida e esforço corporal.
+        <br>
+        Atributo: Físico.</li>
+      <li><b>ATUALIDADES:</b> Conhecer acontecimentos recentes, cultura popular e informações contemporâneas.
+        <br>
+        Atributo: Cognição.</li>
+      <li><b>ÁREA - COMPUTAÇÃO:</b> Utilizar, programar e compreender computadores, redes e sistemas digitais.
+        <br>
+        Atributo: Cognição.</li>
+      <li><b>CONDUÇÃO:</b> Dirigir e controlar veículos em diferentes situações.
+        <br>
+        Atributo: Físico.</li>
+      <li><b>CRIME:</b> Conhecer e executar práticas ilegais, como arrombamentos e furtos.
+        <br>
+        Atributo: Físico.</li>
+      <li><b>DIPLOMACIA:</b> Convencer e negociar através de argumentos sinceros e boa comunicação.
+        <br>
+        Atributo: Presença.</li>
+      <li><b>ÁREA - ENGENHARIA:</b> Compreender, construir e reparar máquinas, estruturas e sistemas técnicos.
+        <br>
+        Atributo: Cognição.</li>
+      <li><b>ÁREA - EXATAS:</b> Aplicar conhecimentos de matemática, física, estatística e áreas relacionadas.
+        <br>
+        Atributo: Cognição.</li>
+        <li><b>FORTITUDE:</b> Resistir a dor, esforço físico, doenças e condições adversas.
+          <br>
+          Atributo: Físico.</li>
+        <li><b>FURTIVIDADE:</b> Mover-se e agir sem chamar atenção ou ser percebido.
+          <br>
+          Atributo: Físico.</li>
+        <li><b>ÁREA - HUMANAS:</b> Conhecer história, filosofia, sociologia, política e outras ciências humanas.
+          <br>
+          Atributo: Cognição.</li>
+        <li><b>INTIMIDAÇÃO:</b> Influenciar alguém através de ameaça, pressão ou imposição.
+          <br>
+          Atributo: Presença.</li>
+        <li><b>INTUIÇÃO:</b> Interpretar emoções, intenções e comportamentos de outras pessoas.
+          <br>
+          Atributo: Presença.</li>
+        <li><b>LÁBIA:</b> Convencer, enganar ou improvisar através da fala.
+          <br>
+          Atributo: Presença.</li>
+        <li><b>ÁREA - LINGUAGEM:</b> Compreender e utilizar idiomas, escrita e conhecimentos linguísticos.
+          <br>
+          Atributo: Cognição.</li>
+        <li><b>LUTA:</b> Combater corpo a corpo utilizando golpes, armas corpo a corpo ou técnicas físicas.
+          <br>
+          Atributo: Físico.</li>
+        <li><b>ÁREA - MEDICINA:</b> Identificar e tratar ferimentos, doenças e condições de saúde.
+          <br>
+          Atributo: Cognição.</li>
+        <li><b>ÁREA - NATUREZA:</b> Conhecer animais, plantas, ecossistemas e fenômenos naturais.
+          <br>
+          Atributo: Cognição.</li>
+        <li><b>PERCEPÇÃO:</b> Notar detalhes, estímulos e acontecimentos ao seu redor.
+          <br>
+          Atributo: Cognição.</li>
+        <li><b>PONTARIA:</b> Utilizar armas e objetos que exigem precisão à distância.
+          <br>
+          Atributo: Físico.</li>
+        <li><b>REFLEXO:</b> Reagir rapidamente a perigos, movimentos e acontecimentos repentinos.
+          <br>
+          Atributo: Físico.</li>
+        <li><b>ÁREA - RELIGIÃO:</b> Conhecer crenças, tradições, símbolos e práticas religiosas.
+          <br>
+          Atributo: Cognição/Presença.</li>
+        <li><b>SEDUÇÃO:</b> Influenciar alguém através de charme, atração e interesse pessoal.
+          <br>
+          Atributo: Presença.</li>
+        <li><b>SOBREVIVÊNCIA:</b> Manter-se seguro e encontrar recursos em ambientes hostis.
+          <br>
+          Atributo: Cognição.</li>
+        <li><b>VONTADE:</b> Resistir a medo, pressão emocional, manipulação e desgaste mental.
+          <br>
+          Atributo: Presença.</li>
+    </ul>
+    <br>
 
     <h2 id="pontos-vitalidade-determinacao">Pontos de Vitalidade (PV) e Pontos de Determinação (PD)</h2>
 
