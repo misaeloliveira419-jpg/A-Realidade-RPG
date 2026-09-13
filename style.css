@@ -30,7 +30,7 @@ h1{
 }
 p{
   font-size: 14px;
-  max-width: 400px;
+  max-width: 600px;
   text-align: center;
   margin: 0 auto;
   line-height: 1.5;
@@ -854,7 +854,10 @@ footer{
   display: block;
   margin: 30px auto;
 }
-@media (max-width:600px){
+@media (max-width:700px){
+  p{
+    max-width: 90%;
+  }
   #lista-membros-campanha{
     grid-template-columns: 1fr;
   }

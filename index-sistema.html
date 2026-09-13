@@ -188,14 +188,14 @@
 
     <ul id="lista-perfil-personagem">
       <li><b>PROATIVO:</b> O personagem é muito ativo, gosta de tomar a iniciativa e tenta fazer ações não tão planejadas. É um personagem que se sente como um homem-máquina, que não tem muito tempo para pensar antes de tomar uma decisão.</li>
-      <li><b>REFLEXIVO:</b> O personagem adora pensar antes de agir, prefere seguir um rumo de ações planejadas, ou prefere analisar a situação antes de tomar uma decisão.</li>
+      <li><b>REFLEXIVO:</b> O personagem pensa antes de agir, prefere seguir um rumo de ações planejadas, ou prefere analisar a situação antes de tomar uma decisão.</li>
       <li><b>ADAPTATIVO:</b> O personagem varia seu modo de agir conforme a situação, e está sempre pronto para agir em situações novas. Ele é um personagem fluido, que consegue agir sob pressão, ou que está disposto a mudar de forma.</li>
     </ul>
     <br>
     <p>O Perfil do personagem começa no Nível 0, e pode evoluir até o Nível 5. <a href="#" onclick="abrirTelaSite('tela-niveis-habilidades')">Ir para Níveis e Habilidades</a>.</p>
 
     <h2 id="ocupacao-personagem">Ocupação do Personagem</h2>
-    <p>A Ocupação do personagem é o cargo que o personagem ocupa, seja ele um emprego, um status, ou uma característica social. Seu personagem terá <b>uma</b> das 74 ocupações, cada uma delas fornecendo +5 pontos para distribuir entre 3 perícias diferentes (limite de 3 pontos por perícia, não pode ultrapassar o limite de 16 pontos em uma única perícia). Todas estão listadas abaixo:</p>
+    <p>A Ocupação do personagem é o cargo que o personagem ocupa, seja ele um emprego, um status, ou uma característica social. Todas estão listadas abaixo:</p>
     <br>
     
     <ul id="lista-ocupacoes-personagem">
@@ -292,7 +292,9 @@
         Perícias: Furtividade, Intuição, Lábia.</li>
       <li><b>Estudante:</b> Dedica-se ao aprendizado e à formação em determinada área.
         <br>
-        Perícias: Áreas - Artes, Computação, Engenharia, Exatas, Medicina, Natureza;
+        Perícias:
+        <br>
+        Áreas - Artes, Computação, Engenharia, Exatas, Medicina, Natureza;
         <br>
         Geral - Atualidades.</li>
       <li><b>Farmacêutico:</b> Trabalha com medicamentos, substâncias e seus efeitos.
@@ -377,27 +379,76 @@
       <li><b>Policial:</b> Mantém a segurança pública e atua no cumprimento da lei.
         <br>
         Perícias: Intimidação, Pontaria, Vontade.</li>
-        <li><b>Político:</b> Atua na administração pública e representação da sociedade.
-          <br>
-          Perícias: Atualidades, Diplomacia, Lábia.</li>
-        <li><b>Porteiro:</b> Controla o acesso e auxilia na segurança de um local.
-          <br>
-          Perícias: Atualidades, Diplomacia,Percepção.</li>
-        <li><b>Professor:</b> Ensina conhecimentos e orienta o aprendizado de outras pessoas.
-          <br>
-          Perícias:
-          <br>
-          Áreas - Artes, Computação, Engenharia, Exatas, Humanas, Linguagem, Medicina, Natureza, Religião;
-          <br>
-          Gerais: Diplomacia, Intuição.</li>
-        <li><b>Programador:</b> Desenvolve e mantém programas e sistemas computacionais.
-          <br>
-          Perícias: Área - Computação, Área - Engenharia, Área - Exatas.</li>
-        <li><b></b></li>
+      <li><b>Político:</b> Atua na administração pública e representação da sociedade.
         <br>
+        Perícias: Atualidades, Diplomacia, Lábia.</li>
+      <li><b>Porteiro:</b> Controla o acesso e auxilia na segurança de um local.
+        <br>
+        Perícias: Atualidades, Diplomacia,Percepção.</li>
+      <li><b>Professor:</b> Ensina conhecimentos e orienta o aprendizado de outras pessoas.
+        <br>
+        Perícias:
+        <br>
+        Áreas - Artes, Computação, Engenharia, Exatas, Humanas, Linguagem, Medicina, Natureza, Religião;
+        <br>
+        Gerais: Diplomacia, Intuição.</li>
+      <li><b>Programador:</b> Desenvolve e mantém programas e sistemas computacionais.
+        <br>
+        Perícias: Área - Computação, Área - Engenharia, Área - Exatas.</li>
+      <li><b>Prostituto(a):</b> Oferece serviços sexuais em troca de pagamento.
+        <br>
+        Perícias: Inutição, Lábia, Sedução.</li>
+      <li><b>Psicólogo(a):</b> Estuda comportamentos e auxilia pessoas emocionalmente.
+        <br>
+        Perícias: Diplomacia, Área - Humanas, Intuição.</li>
+      <li><b>Psiquiatra:</b> Médico especializado em saúde e transtornos mentais.
+        <br>
+        Perícias: Área - Humanas, Intuição, Área - Medicina.</li>
+      <li><b>Secretário(a):</b> Organiza informações, documentos, compromissos e atividades administrativas.
+        <br>
+        Perícias: Atualidades, Área - Computação, Diplomacia.</li>
+      <li><b>Sindicalista:</b> Representa e defende interesses de trabalhadores organizados.
+        <br>
+        Perícias: Diplomacia, Área - Humanas, Lábia.</li>
+      <li><b>Socorrista:</b> Presta atendimento imediato em emergências e acidentes.
+        <br>
+        Perícias: Área - Medicina, Área - Natureza, Percepção.</li>
+      <li><b>Soldado:</b> Atua diretamente em operações e atividades militares.
+        <br>
+        Perícias: Fortitude, Pontaria, Sobrevivência.</li>
+      <li><b>Taxista:</b> Transporta passageiros profissionalmente pela cidade.
+        <br>
+        Perícias: Atualidades, Condução, Diplomacia.</li>
+      <li><b>Técnico de Higienização Hospitalar:</b> Realiza limpeza e descontaminação de ambientes hospitalares.
+        <br>
+        Perícias: Fortitude, Área - Medicina, Percepção.</li>
+      <li><b>Tratador de Zoológico:</b> Cuida de animais mantidos em zoológicos.
+        <br>
+        Perícias: Adestramento, Área - Natureza, Percepção.</li>
+      <li><b>Treinador de Animais:</b> Ensina e condiciona comportamentos em animais.
+        <br>
+        Perícias: Adestramento, Intuição, Área - Natureza.</li>
+      <li><b>Vagabundo:</b> Vive sem ocupação ou residência estável, sobrevivendo como pode.
+        <br>
+        Perícias: Lábia, Percepção, Sobrevivência.</li>
+      <li><b>Vendedor:</b> Negocia e comercializa produtos ou serviços.
+        <br>
+        Perícias: Diplomacia, Intuição, Lábia.</li>
+      <li><b>Veterinário:</b> Cuida da saúde e do tratamento de animais.
+        <br>
+        Perícias: Adestramento, Área - Medicina, Área - Natureza.</li>
+      <li><b>Vaqueiro:</b> Maneja e cuida de gado e outros animais rurais.
+        <br>
+        Perícias: Adestramento, Atletismo, Sobrevivência.</li>
     </ul>
-
-    <p>Cada uma dessas ocupações começa no Nível 0, e podem evoluir até o Nível 10. <a href="#" onclick="abrirTelaSite('tela-niveis-habilidades')">Ir para Níveis e Habilidades</a>.</p>
+    <br><br>
+    <p>O jogador deve escolher <b>uma</b> dentre essas ocupações. Cada uma delas tem Perícias listadas, elas são as <b>Perícias Naturais</b> de cada ocupação.</p>
+    <br>
+    <p>Após escolher a ocupação, o jogador deve distribuir <em>+5 pontos</em> entre as <b>Perícias Naturais</b> da sua ocupação, com limite de <em>+3 pontos</em> por Perícia, podendo ultrapassar o limite de 12 pontos em uma única perícia.</p>
+    <br>
+    <p>Ocupações com Perícias divididas entre Áreas e Gerais, como Cientista e Estudante, devem ter no mínimo <b>uma</b> Perícia de Área, podendo ter até <b>todas</b> as Perícias Naturais como Perícias de Área.</p>
+    <br>
+    <p>Todas as ocupações são divididas em 6 níveis, indo do Nível 0 ao Nível 10. <a href="#" onclick="abrirTelaSite('tela-niveis-habilidades')">Ir para Níveis e Habilidades</a>.</p>
 
     <h2 id="atributos">Atributos</h2>
 

@@ -86,8 +86,11 @@ a{
   color: rgb(100,175,175);
 }
 #lista-ocupacoes-personagem{
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(38, auto);
   font-size: 16px;
-  max-width: 500px;
+  max-width: 1200px;
   margin: 0 auto;
   line-height: 1.5;
 }
@@ -111,11 +114,17 @@ a{
 
 /*Para celular*/
 
-@media (max-width: 600px) {
+@media (max-width: 700px) {
   .lista-topicos-sistema{
     grid-template-columns: 1fr;
   }
   #lista-explicacao-testes{
+    max-width: 90%;
+  }
+  #lista-ocupacoes-personagem{
+    display: grid;
+    grid-auto-flow: row;
+    grid-template-rows: repeat(1, auto);
     max-width: 90%;
   }
 }
