@@ -87,7 +87,8 @@
           <li class="lista-subtopicos-sistema" data-tela="tela-criacao-personagem" data-alvo="ocupacao-personagem">Ocupação do Personagem</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-criacao-personagem" data-alvo="atributos">Atributos</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-criacao-personagem" data-alvo="pericias">Perícias</li>
-          <li class="lista-subtopicos-sistema" data-tela="tela-criacao-personagem" data-alvo="pontos-vitalidade-determinacao">Pontos de Vitalidade (PV) e Pontos de Determinação (PD)</li>
+          <li class="lista-subtopicos-sistema" data-tela="tela-criacao-personagem" data-alvo="pontos-vitalidade">Pontos de Vitalidade (PV)</li>
+          <li class="lista-subtopicos-sistema" data-tela="tela-criacao-personagem" data-alvo="pontos-determinacao">Pontos de Determinação (PD)</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-criacao-personagem" data-alvo="itens-capacidade-carga">Itens e Capacidade de Carga</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-criacao-personagem" data-alvo="consequencias-idade">Consequências de idade</li>
         </ul>
@@ -503,63 +504,75 @@
       <li><b>ÁREA - EXATAS:</b> Aplicar conhecimentos de matemática, física, estatística e áreas relacionadas.
         <br>
         Atributo: Cognição.</li>
-        <li><b>FORTITUDE:</b> Resistir a dor, esforço físico, doenças e condições adversas.
-          <br>
-          Atributo: Físico.</li>
-        <li><b>FURTIVIDADE:</b> Mover-se e agir sem chamar atenção ou ser percebido.
-          <br>
-          Atributo: Físico.</li>
-        <li><b>ÁREA - HUMANAS:</b> Conhecer história, filosofia, sociologia, política e outras ciências humanas.
-          <br>
-          Atributo: Cognição.</li>
-        <li><b>INTIMIDAÇÃO:</b> Influenciar alguém através de ameaça, pressão ou imposição.
-          <br>
-          Atributo: Presença.</li>
-        <li><b>INTUIÇÃO:</b> Interpretar emoções, intenções e comportamentos de outras pessoas.
-          <br>
-          Atributo: Presença.</li>
-        <li><b>LÁBIA:</b> Convencer, enganar ou improvisar através da fala.
-          <br>
-          Atributo: Presença.</li>
-        <li><b>ÁREA - LINGUAGEM:</b> Compreender e utilizar idiomas, escrita e conhecimentos linguísticos.
-          <br>
-          Atributo: Cognição.</li>
-        <li><b>LUTA:</b> Combater corpo a corpo utilizando golpes, armas corpo a corpo ou técnicas físicas.
-          <br>
-          Atributo: Físico.</li>
-        <li><b>ÁREA - MEDICINA:</b> Identificar e tratar ferimentos, doenças e condições de saúde.
-          <br>
-          Atributo: Cognição.</li>
-        <li><b>ÁREA - NATUREZA:</b> Conhecer animais, plantas, ecossistemas e fenômenos naturais.
-          <br>
-          Atributo: Cognição.</li>
-        <li><b>PERCEPÇÃO:</b> Notar detalhes, estímulos e acontecimentos ao seu redor.
-          <br>
-          Atributo: Cognição.</li>
-        <li><b>PONTARIA:</b> Utilizar armas e objetos que exigem precisão à distância.
-          <br>
-          Atributo: Físico.</li>
-        <li><b>REFLEXO:</b> Reagir rapidamente a perigos, movimentos e acontecimentos repentinos.
-          <br>
-          Atributo: Físico.</li>
-        <li><b>ÁREA - RELIGIÃO:</b> Conhecer crenças, tradições, símbolos e práticas religiosas.
-          <br>
-          Atributo: Cognição/Presença.</li>
-        <li><b>SEDUÇÃO:</b> Influenciar alguém através de charme, atração e interesse pessoal.
-          <br>
-          Atributo: Presença.</li>
-        <li><b>SOBREVIVÊNCIA:</b> Manter-se seguro e encontrar recursos em ambientes hostis.
-          <br>
-          Atributo: Cognição.</li>
-        <li><b>VONTADE:</b> Resistir a medo, pressão emocional, manipulação e desgaste mental.
-          <br>
-          Atributo: Presença.</li>
+      <li><b>FORTITUDE:</b> Resistir a dor, esforço físico, doenças e condições adversas.
+        <br>
+        Atributo: Físico.</li>
+      <li><b>FURTIVIDADE:</b> Mover-se e agir sem chamar atenção ou ser percebido.
+        <br>
+        Atributo: Físico.</li>
+      <li><b>ÁREA - HUMANAS:</b> Conhecer história, filosofia, sociologia, política e outras ciências humanas.
+        <br>
+        Atributo: Cognição.</li>
+      <li><b>INTIMIDAÇÃO:</b> Influenciar alguém através de ameaça, pressão ou imposição.
+        <br>
+        Atributo: Presença.</li>
+      <li><b>INTUIÇÃO:</b> Interpretar emoções, intenções e comportamentos de outras pessoas.
+        <br>
+        Atributo: Presença.</li>
+      <li><b>LÁBIA:</b> Convencer, enganar ou improvisar através da fala.
+        <br>
+        Atributo: Presença.</li>
+      <li><b>ÁREA - LINGUAGEM:</b> Compreender e utilizar idiomas, escrita e conhecimentos linguísticos.
+        <br>
+        Atributo: Cognição.</li>
+      <li><b>LUTA:</b> Combater corpo a corpo utilizando golpes, armas corpo a corpo ou técnicas físicas.
+        <br>
+        Atributo: Físico.</li>
+      <li><b>ÁREA - MEDICINA:</b> Identificar e tratar ferimentos, doenças e condições de saúde.
+        <br>
+        Atributo: Cognição.</li>
+      <li><b>ÁREA - NATUREZA:</b> Conhecer animais, plantas, ecossistemas e fenômenos naturais.
+        <br>
+        Atributo: Cognição.</li>
+      <li><b>PERCEPÇÃO:</b> Notar detalhes, estímulos e acontecimentos ao seu redor.
+        <br>
+        Atributo: Cognição.</li>
+      <li><b>PONTARIA:</b> Utilizar armas e objetos que exigem precisão à distância.
+        <br>
+        Atributo: Físico.</li>
+      <li><b>REFLEXO:</b> Reagir rapidamente a perigos, movimentos e acontecimentos repentinos.
+        <br>
+        Atributo: Físico.</li>
+      <li><b>ÁREA - RELIGIÃO:</b> Conhecer crenças, tradições, símbolos e práticas religiosas.
+        <br>
+        Atributo: Cognição/Presença.</li>
+      <li><b>SEDUÇÃO:</b> Influenciar alguém através de charme, atração e interesse pessoal.
+        <br>
+        Atributo: Presença.</li>
+      <li><b>SOBREVIVÊNCIA:</b> Manter-se seguro e encontrar recursos em ambientes hostis.
+        <br>
+        Atributo: Cognição.</li>
+      <li><b>VONTADE:</b> Resistir a medo, pressão emocional, manipulação e desgaste mental.
+        <br>
+        Atributo: Presença.</li>
     </ul>
-    <br>
 
-    <h2 id="pontos-vitalidade-determinacao">Pontos de Vitalidade (PV) e Pontos de Determinação (PD)</h2>
+    <h2 id="pontos-vitalidade">Pontos de Vitalidade (PV)</h2>
+    <p>Os Pontos de Vitalidade, ou PV, são a medida de saúde física de um personagem, indicando seu cansaço e ferimentos físicos. O cálculo de PV é:</p>
+    <br>
+    <p><b>PV = 15 + Físico + Fortitude/2 (arredondado para baixo)</b></p>
+    <br>
+    <p>Um personagem pode perder PV sempre que ele fizer um esforço físico, ou quando sofrer ferimentos. Para recuperar PV, um personagem deve ser tratado, ou descansar. Há certas Condições que um personagem pode adquirir por conta de alterações no seu PV. Isso é abordado em Cenas e Ações. <a id="ir-para-cenas-acoes" href="#" onclick="abrirTelaSite('tela-cenas-acoes')">Ir para Cenas e Ações</a>.</p>
+    
+    <h2 id="pontos-determinacao">Pontos de Determinação (PD)</h2>
+    <p>Os Pontos de Determinação, ou PD, são a medida de saúde mental de um personagem, indicando seu estresse e racionalidade. O cálculo de PD é:</p>
+    <br>
+    <p><b>PD = 20 + Cognição + Vontade/2 (arredondado para baixo)</b></p>
+    <br>
+    <p>Um personagem pode perder PD usando Habilidades, sofrendo danos mentais, entre outros. Para recuperar PD, um personagem deve se acalmar, ou descansar. Há certas Condições que um personagem pode adquirir por conta de alterações no seu PD. Isso é abordado em Cenas e Ações. <a id="ir-para-cenas-acoes" href="#" onclick="abrirTelaSite('tela-cenas-acoes')">Ir para Cenas e Ações</a>.</p>
 
     <h2 id="itens-capacidade-carga">Itens e Capacidade de Carga</h2>
+    
 
     <h2 id="consequencias-idade">Consequências de idade</h2>
 
