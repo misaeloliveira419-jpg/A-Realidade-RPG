@@ -121,6 +121,15 @@ a{
 #ir-para-cenas-acoes{
   color: rgb(180,140,0);
 }
+#lista-consequencias-idade{
+  font-size: 16px;
+  max-width: 500px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+#lista-consequencias-idade li{
+  margin-top: 20px;
+}
 
 /*Tela cenas e ações*/
 

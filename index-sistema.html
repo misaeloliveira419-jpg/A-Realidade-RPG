@@ -89,6 +89,7 @@
           <li class="lista-subtopicos-sistema" data-tela="tela-criacao-personagem" data-alvo="pericias">Perícias</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-criacao-personagem" data-alvo="pontos-vitalidade">Pontos de Vitalidade (PV)</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-criacao-personagem" data-alvo="pontos-determinacao">Pontos de Determinação (PD)</li>
+          <li class="lista-subtopicos-sistema" data-tela="tela-criacao-personagem" data-alvo="pontos-credito">Pontos de Crédito (PC)</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-criacao-personagem" data-alvo="itens-capacidade-carga">Itens e Capacidade de Carga</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-criacao-personagem" data-alvo="consequencias-idade">Consequências de idade</li>
         </ul>
@@ -567,15 +568,64 @@
     <h2 id="pontos-determinacao">Pontos de Determinação (PD)</h2>
     <p>Os Pontos de Determinação, ou PD, são a medida de saúde mental de um personagem, indicando seu estresse e racionalidade. O cálculo de PD é:</p>
     <br>
-    <p><b>PD = 20 + Cognição + Vontade/2 (arredondado para baixo)</b></p>
+    <p><b>PD = 20 + Presença + Vontade/2 (arredondado para baixo)</b></p>
     <br>
     <p>Um personagem pode perder PD usando Habilidades, sofrendo danos mentais, entre outros. Para recuperar PD, um personagem deve se acalmar, ou descansar. Há certas Condições que um personagem pode adquirir por conta de alterações no seu PD. Isso é abordado em Cenas e Ações. <a id="ir-para-cenas-acoes" href="#" onclick="abrirTelaSite('tela-cenas-acoes')">Ir para Cenas e Ações</a>.</p>
 
+    <h2 id="pontos-credito">Pontos de Crédito (PC)</h2>
+    <p>Os Pontos de Crédito, ou PC, são os pontos de finanças de um personagem, esses pontos podem ser usados para "comprar" itens, ou para gastar em outras atividades. O PC inicial é calculado como:</p>
+    <br>
+    <p><b>PC = </b></p>
+
     <h2 id="itens-capacidade-carga">Itens e Capacidade de Carga</h2>
-    
+    <p>Os itens são objetos que um personagem pode portar ou possuir, cada um tendo funções diferentes entre si. Os itens são separados em 2 categorias: <b>Itens Comuns</b> e <b>Itens Especiais</b>. Cada item possui um Peso, que é determinado pelo espaço ocupado, e pela massa do objeto. A seguir, estão listadas as duas categorias:</p>
+    <br>
+    <ul id="lista-itens-comuns">
+      <h3>Itens Comuns:</h3>
+      <li><b>Celular:</b> Um pequeno dispositivo eletrônico usado para fazer chamadas, enviar mensagens e acessar ferramentas como lanterna e câmera.
+      <br>
+      Peso: 0,5.</li>
+      <li><b>Microfone:</b> Dispositivo portátil simples para gravação e transmissão de voz.
+        <br>
+        Peso: 0,5.</li>
+    </ul>
+    <ul id="lista-itens-especiais">
+      <h3>Itens Especiais:</h3>
+    </ul>
 
     <h2 id="consequencias-idade">Consequências de idade</h2>
-
+    <p>As Consequências de Idade são os efeitos gerados a partir da idade do personagem. O jogador deve escolher uma dentre as Consequências de cada idade para o seu personagem no momento que ele atingir a idade descrita (não pode repetir uma Consequência). O personagem consegue adiar em até 2 anos a Consequência que o vai atingir. Para isso, ele precisa ter um sucesso Extremo em um teste de Fortitude sempre que ficar 1 ano mais velho.</p>
+    <p>As Consequências de Idade são:</p>
+    <br>
+    <ul id="lista-consequencias-idade">
+      <li><b>35-37 a 44-46 anos e 45-47 a 59-61 anos:</b>
+        <br>
+        <ul>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+        </ul>
+      </li>
+      <br>
+      <li><b>60-62 a 74-76 anos e 75-77 a 89-91 anos:</b>
+        <br>
+        <ul>
+          <li></li>
+          <li></li>
+          <li></li>
+        </ul>
+      </li>
+      <br>
+      <li><b>90-92+ anos:</b>
+        <br>
+        <ul>
+          <li></li>
+          <li></li>
+        </ul>
+      </li>
+    </ul>
+    
   </div>
 
   <!--Tela cenas e ações-->
