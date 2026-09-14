@@ -137,14 +137,62 @@ a{
 #tela-cenas-acoes h2{
   text-shadow: 2px 1px 12px rgb(180,140,0);
 }
+#lista-turnos-rodadas{
+  font-size: 16px;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+#lista-turnos-rodadas li{
+  margin-top: 20px;
+}
 #lista-acoes-exploracao{
-  font-size: 14px;
+  font-size: 16px;
   max-width: 600px;
   margin: 0 auto;
   line-height: 1.5;
 }
 #lista-acoes-exploracao li{
   margin-top: 20px;
+}
+#lista-acoes-interludio{
+  font-size: 16px;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+#lista-acoes-interludio li{
+  margin-top: 20px;
+}
+#lista-acao-tratar{
+  font-size: 16px;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+#lista-acao-tratar li{
+  margin-top: 5px;
+}
+#lista-acoes-investigacao{
+  font-size: 16px;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+#lista-acoes-investigacao li{
+  margin-top: 20px;
+}
+#lista-acoes-combate{
+  font-size: 16px;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+#lista-acoes-combate li{
+  margin-top: 20px;
+}
+#sub-lista-acoes-combate li{
+  margin-top: 5px;
 }
 
 /*Tela níveis e habilidades*/
@@ -179,6 +227,27 @@ a{
     display: grid;
     grid-auto-flow: row;
     grid-template-rows: repeat(1, auto);
+    max-width: 90%;
+  }
+  #lista-consequencias-idade{
+    max-width: 90%;
+  }
+  #lista-turnos-rodadas{
+    max-width: 90%;
+  }
+  #lista-acoes-exploracao{
+    max-width: 90%;
+  }
+  #lista-acoes-interludio{
+    max-width: 90%;
+  }
+  #lista-acoes-investigacao{
+    max-width: 90%;
+  }
+  #lista-acoes-combate{
+    max-width: 90%;
+  }
+  #sub-lista-acoes-combate{
     max-width: 90%;
   }
 }

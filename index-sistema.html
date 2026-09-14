@@ -633,26 +633,75 @@
     <button class="botao-voltar" data-voltar="tela-sistema" type="button">← Voltar</button>
 
     <h1>CENAS E AÇÕES</h1>
-    <p>A Cena é um momento o qual os personagens estão fazendo algum tipo de ação com algum objetivo, seja esse descansar, investigar, entre outros. Uma Cena não tem duração definida, podendo durar minutos ou horas.</p>
+    <p>A Cena é um momento o qual os personagens estão fazendo algum tipo de ação com algum objetivo, seja esse descansar, investigar, entre outros.</p>
+    <br>
+    <p>Em cada Cena, existem os <b>turnos</b> e <b>rodadas</b>:</p>
+    <br>
+    <ul id="lista-turnos-rodadas">
+      <li><b>Turno:</b> Um turno é um conjunto de rodadas, tendo uma duração estimada de 10 a 15 segundos, mas que pode variar de acordo com a Cena.</li>
+      <li><b>Rodada:</b> Uma rodada é um conjunto de ações de um personagem, e cada personagem tem 1 rodada por turno.</li>
+    </ul>
+    <br>
+    <p>Toda Cena deve manter uma ordem de iniciativa dos personagens, sendo escolha da mesa definir como isso é decidido. Uma Cena não tem duração definida, podendo durar minutos ou horas.</p>
 
     <h2 id="tipos-cena">Tipos de Cena</h2>
-    <p>Existem alguns tipos de cenas, sendo elas: Cena de Exploração; Cena de Interlúdio; Cena de Investigação; e Cena de Combate.</p>
+    <p>Existem alguns tipos de cenas, sendo elas: <b>Cena de Exploração</b>, <b>Cena de Interlúdio</b>, <b>Cena de Investigação</b>, e <b>Cena de Combate</b>.</p>
 
     <h2 id="cena-exploracao">Cena de Exploração</h2>
-    <p>Uma Cena de Exploração é caracterizada pela exploração de uma área ou região, com o objetvo de conhecer melhor o território de uma maneira geral, como um shopping, parque, etc.</p>
+    <p>Uma Cena de Exploração é caracterizada pela exploração de uma área ou região, com o objetvo de conhecer melhor o ambiente de uma maneira geral, como um shopping, parque, etc.</p>
     <br>
     <p>Nesse tipo de Cena, existem Áreas de Interesse: regiões que despertam maior interesse no personagem. O personagem é livre para caminhar e conversar, podendo usar 2 tipos de ação: <b>Observar</b> e <b>Interagir</b>.</p>
     <br>
     <ul id="lista-acoes-exploracao">
       <li><b>Observar:</b> Você escolhe uma Área e diz o seu valor em Percepção. Baseado no valor da Perícia, o mestre fornece informações gerais sobre a Área escolhida ao personagem.</li>
-      <li><b>Interagir:</b> Você escolhe uma Área e interage com o ambiente, seja conversando com pessoas, ou analisando coisas mais específicas (objetos, paredes, cartazes, etc). Ao Interagir, você também pode rolar um teste de Percepção para conseguir receber informações ainda mais detalhadas.</li>
+      <li><b>Interagir:</b> Você escolhe uma Área e interage com o ambiente, seja conversando com pessoas, ou analisando coisas mais específicas (objetos, paredes, cartazes, etc). Ao Interagir, você descobre as informações com base nas suas ações sobre o ambiente.</li>
     </ul>
 
     <h2 id="cena-interludio">Cena de Interlúdio</h2>
+    <p>Uma Cena de Interlúdio ocorre quando os personagens estão em um momento de descanso e lazer, fazendo ações simples como conversar, ou interagindo com objetos, como mexendo em um celular.</p>
+    <br>
+    <p>Um personagem pode fazer 2 ações de Interlúdio por Cena, podendo repetir a mesma ação, ou fazer ações diferentes durante a Cena.</p>
+    <br>
+    <p>O personagem pode fazer qualquer uma das 3 ações de Interlúdio abaixo:</p>
+    <br>
+    <ul id="lista-acoes-interludio">
+      <li><b>Alimentar-se:</b> Você tem uma refeição nutritiva, consumindo 1 alimento. Recupera 3 PV e 1 PD.</li>
+      <li><b>Dormir:</b> Você passa um tempo dormindo. Recupera 2 PV e 2 PD.</li>
+      <li><b>Relaxar:</b> Você descansa fazendo atividades simples. Recupera 1 PV e 3 PD.</li>
+      <li><b>Tratar:</b> Você cuida dos ferimentos/desgastes de uma pessoa (pode ser aplicado em si mesmo).
+        <ul id="lista-acao-tratar">
+          <li><b>Medicina 5-8:</b> Recupera +1 PV;</li>
+          <li><b>Medicina 9-12:</b> Recupera +2 PV;</li>
+          <li><b>Medicina 13-15:</b> Recupera +3 PV;</li>
+          <li><b>Medicina 16:</b> Recupera +4 PV.</li>
+        </ul>
+      </li>
+    </ul>
 
     <h2 id="cena-investigacao">Cena de Investigação</h2>
+    <p>A Cena de Investigação ocorre em momentos nos quais os persnagens estão procurando algo específico em um local, como algum tipo de pista, objeto específico, ou algo de interesse.</p>
+    <br>
+    <p>Nessa Cena, os persnagens têm Pontos de Interesse (PI), que são objetos ou locais específicos para fazer alguma <b>ação de Investigação</b>.</p>
+    <br>
+    <ul id="lista-acoes-investigacao">
+      <li><b>Interagir:</b> O personagem interage fisicamente com o PI, como abrir um livro, ou olhar embaixo de um tapete. Isso não requer testes, basta a criatividade do jogador.</li>
+      <li><b>Analisar:</b> O jogador pode requisitar uma Perícia específica ao mestre para obter mais informações sobre o PI baseado no valor de sua Perícia. Por exemplo, tentar obter informações com a perícia Área - Linguagem ao analisar um livro. Baseado na Perícia descrita pelo jogador, e pela coerência dela com o PI, o mestre pode fornecer informações mais específicas.</li>
+    </ul>
 
     <h2 id="cena-combate">Cena de Combate</h2>
+    <p>Um Combate ocorre quando há algum tipo de confronto entre personagens, seja ele uma luta física, uma troca de tiros, etc.</p>
+    <br>
+    <p>Durante uma Cena de Combate, um personagem pode fazer as seguintes ações:</p>
+    <br>
+    <ul id="lista-acoes-combate">
+      <li><b>Atacar:</b>
+        <ul id="sub-lista-acoes-combate">
+          <li><b>Padrão:</b> O personagem desfere um golpe único em um alvo, descrevendo como o faz.</li>
+          <li><b>Rajada:</b> O personagem desfere até 3 golpes de uma só vez no mesmo ataque, sendo que a cada novo ataque, ele perde 1d20 no teste (por exemplo, dar 2 golpes diminui 1d20 no teste).</li>
+          <li><b>Mirar:</b> O personagem guarda o ataque para a próxima rodada, ganhando +1d20 no próximo ataque ao alvo.</li>
+        </ul>
+      </li>
+     <li><b></b></li>
 
     <h2 id="acoes">Ações</h2>
 
