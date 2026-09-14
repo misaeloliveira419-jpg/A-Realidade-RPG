@@ -137,6 +137,15 @@ a{
 #tela-cenas-acoes h2{
   text-shadow: 2px 1px 12px rgb(180,140,0);
 }
+#lista-acoes-exploracao{
+  font-size: 14px;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+#lista-acoes-exploracao li{
+  margin-top: 20px;
+}
 
 /*Tela níveis e habilidades*/
 
