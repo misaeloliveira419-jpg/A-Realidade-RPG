@@ -658,11 +658,11 @@
     </ul>
 
     <h2 id="cena-interludio">Cena de Interlúdio</h2>
-    <p>Uma Cena de Interlúdio ocorre quando os personagens estão em um momento de descanso e lazer, fazendo ações simples como conversar, ou interagindo com objetos, como mexendo em um celular.</p>
+    <p>Uma Cena de Interlúdio ocorre quando os personagens estão em um momento de descanso e lazer, fazendo ações simples como conversar, ou interagindo com objetos sem fazer esforço, como mexer em um celular.</p>
     <br>
-    <p>Um personagem pode fazer 2 ações de Interlúdio por Cena, podendo repetir a mesma ação, ou fazer ações diferentes durante a Cena.</p>
+    <p>Um personagem pode fazer 2 Ações de Interlúdio por Cena, podendo repetir a mesma ação, ou fazer ações diferentes durante a Cena.</p>
     <br>
-    <p>O personagem pode fazer qualquer uma das 3 ações de Interlúdio abaixo:</p>
+    <p>O personagem pode fazer qualquer uma das 4 Ações de Interlúdio abaixo:</p>
     <br>
     <ul id="lista-acoes-interludio">
       <li><b>Alimentar-se:</b> Você tem uma refeição nutritiva, consumindo 1 alimento. Recupera 3 PV e 1 PD.</li>
@@ -698,43 +698,39 @@
     <p>Abaixo estão as <b>Ações Principais de Combate:</b></p>
     <br>
     <ul id="lista-acoes-combate">
-      <li><b>Ações de Ataque:</b>
+      <li><b>Ações de Ataque:</b> O personagem faz um teste de Luta ou outra perícia situacional contra DT Reação do alvo (quem vence o teste depende do tipo de Reação usada).</li>
         <ul id="sub-lista-acoes-combate">
-          <li><b>Padrão:</b> O personagem desfere um golpe único em um alvo, descrevendo como o faz.</li>
-          <li><b>Rajada:</b> O personagem desfere até 3 golpes de uma só vez no mesmo ataque, sendo que a cada novo ataque, ele perde 1d20 no teste (por exemplo, dar 2 golpes diminui 1d20 no teste).</li>
+          <li><b>Padrão:</b> O personagem desfere um golpe único em um alvo.</li>
+          <li><b>Rajada:</b> O personagem desfere até 3 golpes de uma só vez no mesmo ataque, sendo que a cada novo ataque, ele tem penalidade de -1d20 no teste (por exemplo, dar 2 golpes diminui 1d20 no teste).</li>
         </ul>
       </li>
-      <li><b>Ações Táticas:</b>
+      <li><b>Ações Táticas:</b> O personagem faz um teste de Luta DT Reação do alvo (quem vence o teste depende do tipo de Reação usada).</li>
         <ul id="sub-lista-acoes-combate">
-          <li><b>Agarrar:</b> O personagem segura um alvo, mantendo ele imóvel. Para isso, deve fazer um teste de Luta com Físico DT Luta com Físico oposto, precisando empatar para agarrar o alvo.</li>
-          <li><b>Derrubar:</b> O personagem desloca um alvo para o chão. Para isso, deve fazer um teste de Luta com Físico DT Luta/Reflexo com Físico oposto, precisando vencer para derrubar o alvo.</li>
-          <li><b>Empurrar:</b> O personagem empurra um alvo para uma direção escolhida. Para isso, deve fazer um teste de Luta com Físico DT Luta com Físico, precisando vencer para derrubar o alvo.</li>
-          <li><b>Roubar:</b> O personagem rouba um Item de um alvo, seja ele uma arma empunhada ou objeto guardado. Para isso, deve fazer um teste de Crime com Físico DT Reflexo com Físico oposto, precisando vencer para roubar o Item do alvo.</li>
-          <li><b>Furtar:</b> O personagem furta um Item escondido de um alvo, seja ele uma arma empunhada ou objeto guardado. Para isso, deve fazer um teste de Crime com Físico DT Percepção com Presença oposto, precisando vencer para furtar o Item do alvo.</li>
+          <li><b>Agarrar:</b> O personagem segura um alvo, mantendo ele imóvel. Para isso, deve fazer um teste de Luta, precisando empatar para agarrar o alvo.</li>
+          <li><b>Derrubar:</b> O personagem desloca um alvo para o chão. Para isso, deve fazer um teste de Luta, precisando vencer para derrubar o alvo.</li>
+          <li><b>Empurrar:</b> O personagem empurra um alvo para uma direção escolhida. Para isso, deve fazer um teste de Luta, precisando vencer para derrubar o alvo.</li>
+          <li><b>Roubar:</b> O personagem rouba um Item de um alvo, seja ele uma arma empunhada ou objeto guardado. Para isso, deve fazer um teste de Crime, precisando vencer para roubar o Item do alvo.</li>
+          <li><b>Furtar:</b> O personagem furta um Item de um alvo enquanto está furtivo, seja ele uma arma empunhada ou objeto guardado. Para isso, deve fazer um teste de Crime, precisando ter Sucesso para furtar o Item do alvo.</li>
         </ul>
       </li>
-      <li><b>Ações de Movimento:</b>
-        <ul id="sub-lista-acoes-combate">
-          <li><b>Deslocamento:</b> </li>
-          <li><b>Investida:</b> </li>
-        </ul>
-      </li>
+      <li><b>Ação de Deslocamento:</b> O personagem se move em uma distância máxima igual ao seu Deslocamento.</li>
       <li><b>Ações Especiais:</b>
         <ul id="sub-lista-acoes-combate">
-          <li><b>Mirar:</b> O personagem guarda o ataque para a próxima rodada, ganhando +1d20 no próximo ataque ao alvo escolhido.</li>
-          <li><b>Sacar Item:</b> </li>
-          <li><b>Usar Item:</b> </li>
-          <li><b>Usar Habilidade:</b> </li>
-          <li><b>Interagir com o ambiente:</b> </li>
-          <li><b>Primeiros socorros:</b> </li>
+          <li><b>Mirar:</b> O personagem guarda o ataque para a próxima rodada, ganhando vantagem de +1d20 no próximo ataque ao alvo escolhido.</li>
+          <li><b>Investida:</b> O personagem percorre seu Deslocamento + 1/2 do seu Atletismo, e desfere um ataque físico em um alvo. O dano desse ataque aumenta em +1d6, porém o personagem tem penalidade de -1d20 nas suas Reações no turno.</li>
+          <li><b>Sacar Item:</b> O personagem pega um Item de seu Inventário.</li>
+          <li><b>Usar Item:</b> O personagem utiliza um Item de seu Inventário, seja consumindo-o, arremessando-o, etc.</li>
+          <li><b>Usar Habilidade:</b> O personagem usa uma Habilidade dentre suas Habilidades.</li>
+          <li><b>Interagir com o ambiente:</b> O personagem interage com o ambiente no meio do Combate, como ligar um computador, ou procurar algo importante.</li>
+          <li><b>Primeiros socorros:</b> O personagem trata os machucados de um outro personagem que está com a Condição Morrendo. Para isso, deve fazer um teste de Área - Medicina, precisando de um Sucesso Extremo para tratar o personagem.</li>
         </ul>
       </li>
       <li><b>Ações Sociais:</b>
         <ul id="sub-lista-acoes-combate">
-          <li><b>Provocar:</b> </li>
-          <li><b>Intimidar:</b> </li>
-          <li><b>Blefar:</b> </li>
-          <li><b>Incentivar:</b> </li>
+          <li><b>Provocar:</b> O personagem provoca um alvo, tentando irritá-lo. Para isso, deve fazer um teste de Lábia, precisando vencer para provocar o alvo.</li>
+          <li><b>Intimidar:</b> O personagem intimida um alvo, tentando amedrontá-lo. Para isso, deve fazer um teste de Intimidação, precisando vencer para intimidar o alvo.</li>
+          <li><b>Blefar:</b> O personagem mente para um alv, tentando enganá-lo. Para isso, deve fazer um teste de Lábia, precisando vencer para convencer o alvo.</li>
+          <li><b>Incentivar:</b> O personagem incentiva um alvo, fornecendo vantagem de +1d20 no seu próximo teste. Para isso, deve fazer um teste de Diplomacia, precisando de um Sucesso Extremo para incentivar o alvo.</li>
         </ul>
       </li>
     </ul>
@@ -744,26 +740,48 @@
     <p>Abaixo estão as <b>Ações Rápidas de Combate:</b></p>
     <br>
     <ul id="lista-acoes-combate">
-      <li><b>Falar:</b> </li>
-      <li><b>Observar:</b> </li>
-      <li><b>Entregar/Receber Item:</b> </li>
-      <li><b>Soltar Item:</b> </li>
-      <li><b>Apanhar Item:</b> </li>
-      <li><b>Jogar-se ao chão:</b> </li>
-      <li><b>Levantar rápido:</b> </li>
+      <li><b>Falar:</b> O personagem conversa durante o Combate.</li>
+      <li><b>Observar:</b> O personagem olha ao redor rapidamente, para entender o que está acontecendo no meio do Combate.</li>
+      <li><b>Entregar/Receber Item:</b> O personagem entrega um Item para outro, ou recebe um Item de outro.</li>
+      <li><b>Soltar Item:</b> O personagem larga um Item no chão.</li>
+      <li><b>Apanhar Item:</b> O personagem apanha um Item do chão.</li>
+      <li><b>Jogar-se ao chão:</b> O personagem se atira ao chão rapidamente.</li>
+      <li><b>Levantar rápido:</b> O personagem se levanta rapidamente. Para isso, deve fazer um teste de Acrobacia, precisando de um Sucesso para levantar-se. Se falhar, cai no chão gastando 1 Ação Principal.</li>
     </ul>
     <br>
-    <p>Uma Reação é uma ação reativa a algum acontecimento dentro do Combate, como reagir a um ataque que está sofrendo, reagir a um ataque que um aliado está sofrendo, como se jogar na frente dele, etc.</p>
+    <p>Uma Reação é uma Ação reativa a algum acontecimento dentro do Combate, como reagir a um ataque que está sofrendo, reagir a um ataque que um aliado está sofrendo (se jogando na frente dele), etc.</p>
     <br>
-    <p>A cada nova Reação que um personagem fizer no turno, ele perde 1d20 no teste.</p>
+    <p>A cada nova Reação que um personagem fizer no turno, ele tem penalidade de -1d20 no teste.</p>
     <br>
     <p>Abaixo estão as <b>Reações de Combate:</b></p>
     <br>
     <ul id="lista-acoes-combate">
-      <li><b>Esquiva:</b> </li>
-      <li><b>Bloqueio:</b> </li>
-      <li><b>Contra-ataque:</b> </li>
-      <li><b>Proteger:</b> </li>
+      <li><b>Reações a Ações de Ataque:</b>
+        <ul id="sub-lista-acoes-combate">
+          <li><b>Esquivar:</b> O personagem desvia de um ataque sofrido. Para isso, deve fazer um teste de Reflexo, precisando vencer para desviar do ataque.</li>
+          <li><b>Bloquear:</b> O personagem resiste ao ataque fisicamente. Para isso, deve fazer um teste de Fortitude, precisando empatar para bloquear o ataque.</li>
+          <li><b>Contra-atacar:</b> O personagem contra-ataca o alvo que o atacou. Para fazer isso, deve fazer um teste de Luta (ou outra perícia situacional). Se vencer, acerta o contra-ataque; Se empatar, leva metade do dano do Ataque e dá metade do dano do Contra-ataque; Se perder, sofre o dano do Ataque e tem uma desvantagem de -1d20 no próximo teste.</li>
+          <li><b>Proteger:</b> O personagem se põe na frente de um alvo adjacente que está prestes a sofrer um ataque. Para isso, deve fazer um teste de Reflexo, precisando ter Sucesso</li>
+        </ul>
+      </li>
+      <li><b>Reações a Ações Táticas:</b>
+        <ul id="sub-lista-acoes-combate">
+          <li><b>Esquivar:</b> </li>
+          <li><b>Desagarrar:</b> </li>
+          <li><b>Suster-se:</b> </li>
+        </ul>
+      </li>
+      <li><b>Reações a Ações de Movimento:</b>
+        <ul id="sub-lista-acoes-combate">
+          <li><b>Notar:</b> </li>
+        </ul>
+      </li>
+      <li><b>Reações a Ações Sociais:</b>
+        <ul id="sub-lista-acoes-combate">
+          <li><b>Resistir a provocação:</b> </li>
+          <li><b>Resistir a intimidação:</b> </li>
+          <li><b>Desacreditar de um blefe:</b> </li>
+      </li>
     </ul>
 
     <h2 id="mecanicas-adicionais">Mecânicas Adicionais</h2>
