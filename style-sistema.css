@@ -1,24 +1,28 @@
 /*Tela sistema*/
 
 h2{
-    margin-top: 40px;
-    display: flex;
-    justify-content: center;
-    text-shadow: 2px 1px 12px black;
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  text-shadow: 2px 1px 12px black;
+}
+h3{
+  display: flex;
+  justify-content: center;
 }
 .lista-topicos-sistema{
   display: grid;
-    grid-template-columns: repeat(2, minmax(200px,300px));
-    gap: 20px;
-    line-height: 2;
-    font-weight: bold;
-    font-size: 18px;
-    justify-content: center;
-    width: 100%;
-    max-width: 700px;
-    box-sizing: border-box;
-    padding: 20px 40px;
-    margin:  0 auto;
+  grid-template-columns: repeat(2, minmax(200px,300px));
+  gap: 20px;
+  line-height: 2;
+  font-weight: bold;
+  font-size: 18px;
+  justify-content: center;
+  width: 100%;
+  max-width: 700px;
+  box-sizing: border-box;
+  padding: 20px 40px;
+  margin:  0 auto;
 }
 .lista-subtopicos-sistema{
   flex-direction: column;
