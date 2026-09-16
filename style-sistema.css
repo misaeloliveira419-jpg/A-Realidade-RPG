@@ -137,8 +137,8 @@ a{
 
 /*Tela cenas e ações*/
 
-#tela-cenas-acoes h1,
-#tela-cenas-acoes h2{
+#tela-cenas-acoes-mecanicas h1,
+#tela-cenas-acoes-mecanicas h2{
   text-shadow: 2px 1px 12px rgb(180,140,0);
 }
 #lista-turnos-rodadas{
