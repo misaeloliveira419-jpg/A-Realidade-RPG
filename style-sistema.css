@@ -92,7 +92,7 @@ a{
 #lista-ocupacoes-personagem{
   display: grid;
   grid-auto-flow: column;
-  grid-template-rows: repeat(38, auto);
+  grid-template-rows: repeat(39, auto);
   font-size: 16px;
   max-width: 1200px;
   margin: 0 auto;
@@ -198,6 +198,15 @@ a{
 #sub-lista-acoes-combate li{
   margin-top: 5px;
 }
+#lista-acoes-gerais{
+  font-size: 16px;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+#lista-acoes-gerais li{
+  margin-top: 20px;
+}
 
 /*Tela níveis e habilidades*/
 
@@ -212,46 +221,53 @@ a{
   .lista-topicos-sistema{
     grid-template-columns: 1fr;
   }
-  #lista-explicacao-testes{
-    max-width: 90%;
+  #lista-explicacao-testes li{
+    max-width: 95%;
   }
-  #lista-perfil-personagem{
-    max-width: 90%;
+  #lista-perfil-personagem li{
+    max-width: 95%;
   }
   #lista-ocupacoes-personagem{
     display: grid;
     grid-auto-flow: row;
     grid-template-rows: repeat(1, auto);
-    max-width: 90%;
   }
-  #lista-atributos{
-    max-width: 90%;
+  #lista-ocupacoes-personagem li{
+    max-width: 95%;
+  }
+  #lista-atributos li{
+    max-width: 95%;
   }
   #lista-pericias{
     display: grid;
     grid-auto-flow: row;
     grid-template-rows: repeat(1, auto);
-    max-width: 90%;
   }
-  #lista-consequencias-idade{
-    max-width: 90%;
+  #lista-pericias li{
+    max-width: 95%;
   }
-  #lista-turnos-rodadas{
-    max-width: 90%;
+  #lista-consequencias-idade li{
+    max-width: 95%;
   }
-  #lista-acoes-exploracao{
-    max-width: 90%;
+  #lista-turnos-rodadas li{
+    max-width: 95%;
   }
-  #lista-acoes-interludio{
-    max-width: 90%;
+  #lista-acoes-exploracao li{
+    max-width: 95%;
   }
-  #lista-acoes-investigacao{
-    max-width: 90%;
+  #lista-acoes-interludio li{
+    max-width: 95%;
   }
-  #lista-acoes-combate{
-    max-width: 90%;
+  #lista-acoes-investigacao li{
+    max-width: 95%;
   }
-  #sub-lista-acoes-combate{
-    max-width: 90%;
+  #lista-acoes-combate li{
+    max-width: 95%;
+  }
+  #sub-lista-acoes-combate li{
+    max-width: 95%;
+  }
+  #lista-acoes-gerais li{
+    max-width: 95%;
   }
 }
