@@ -70,7 +70,7 @@
     <h1>A REALIDADE RPG</h1>
     <h2>TÓPICOS</h2>
     <ul class="lista-topicos-sistema">
-      <li id="mecanica-testes" class="topicos-sistema">
+      <li id="mecanicas-basicas" class="topicos-sistema">
         Mecânicas Básicas
         <ul>
           <li class="lista-subtopicos-sistema" data-tela="tela-mecanicas-basicas" data-alvo="termos-importantes">Termos importantes</li>
@@ -173,12 +173,12 @@
     <p>Existem alguns momentos específicos em que o mestre não necessariamente vai pedir para um jogador rolar um teste. A seguir estão alguns exemplos:</p>
     <br>
     <ul id="lista-exemplos-casos-especiais">
-      <li>O jogador pode sugerir ao mestre para fazer um teste de uma Perícia específica, por exemplo: pedir para rolar um teste de Intuição para sentir as intenções de um personagem.</li>
+      <li>O jogador pode sugerir ao mestre para fazer um teste de uma Perícia específica, por exemplo: pedir para rolar um teste de <b>Intuição</b> para sentir as intenções de um personagem.</li>
       <li>Em alguns casos, o mestre vai pedir para que o jogador diga apenas o valor natural da Perícia do personagem, dando algum tipo de informação baseada nos conhecimentos naturais do personagem. Por exemplo: pedir para o jogador dizer apenas o valor de <b>Computação</b> do personagem para definir o quanto ele consegue descobrir investigando um computador.</li>
     </ul>
 
     <h2 id="distancias">Distâncias</h2>
-    <p>As distâncias são a forma de medir alcance no sistema. Elas podem ser usadas para definir a distância entre um personagem e um objeto, entre dois personagens, etc.</p>
+    <p>As distâncias são a forma de medir o alcance no sistema. Elas podem ser usadas para definir a distância entre um personagem e um objeto, entre dois personagens, etc.</p>
     <br>
     <p>As distâncias são definidas em <b>metros</b> ou <b>quadrados</b>, dependendo do sistema de unidades que a mesa escolher.</p>
     <br>
@@ -187,7 +187,7 @@
     <p>Em distâncias, existem algumas especificações, a seguir há uma lista delas:</p>
     <br>
     <ul id="lista-distancias">
-      <li><b>Toque:</b> 0 metros / 0 quadrados (ocupando o mesmo espaço);</li>
+      <li><b>Toque:</b> 0 metros / 0 quadrados (ocupa o mesmo espaço);</li>
       <li><b>Pessoal ou Corpo a corpo:</b> 1,5 metros / 1 quadrado;</li>
       <li><b>Curto:</b> 9 metros / 6 quadrados;</li>
       <li><b>Médio:</b> 18 metros / 12 quadrados;</li>
@@ -764,26 +764,26 @@
     <h3>Lista de Ações Principais de Combate:</h3>
     <ul id="lista-acoes-combate">
 
-      <li><b>Ações de Ataque:</b> O personagem faz um teste de Luta ou outra perícia situacional contra DT Reação do alvo (quem vence o teste depende do tipo de Reação usada).</li>
+      <li><b>Ações de Ataque:</b> O personagem faz um teste de Luta ou outra perícia situacional contra a Reação do alvo (quem vence o teste depende do tipo de Reação usada).</li>
         <ul id="sub-lista-acoes-combate">
           <li><b>Padrão:</b> O personagem desfere um golpe único em um alvo.</li>
-          <li><b>Rajada:</b> O personagem desfere até 3 golpes de uma só vez no mesmo Ataque, sendo que a cada novo golpe, ele tem penalidade de -1d20 no teste (por exemplo, dar 2 golpes diminui 1d20 no teste). Porém, se acertar o Ataque, os dados de dano são multiplicados pela <b>quantidade de golpes</b> dada (ou seja, se acertar um Ataque que daria 1d8 de dano dando 2 golpes, o dano será 2d8).</li>
+          <li><b>Rajada:</b> O personagem desfere até 3 golpes de uma só vez no mesmo Ataque, sendo que a cada novo golpe, ele tem penalidade de -1d20 no teste (por exemplo, dar 2 golpes diminui 1d20 no teste). Porém, se acertar o Ataque, os dados de dano são multiplicados pela <b>quantidade de golpes dada</b> (ou seja, se acertar um Ataque que daria 1d8 de dano dando 2 golpes, o dano será 2d8).</li>
         </ul>
       </li>
 
-      <li><b>Ações Táticas:</b>
+      <li><b>Ações Táticas:</b> O personagem faz um teste de Atletismo ou Luta contra a Reação do alvo (quem vence o teste depende do tipo de Ação usada).</li>
         <ul id="sub-lista-acoes-combate">
-          <li><b>Agarrar:</b> O personagem segura um alvo, mantendo ele imóvel. Para isso, deve fazer um teste de Atletismo/Luta, precisando empatar para agarrar o alvo.</li>
-          <li><b>Derrubar:</b> O personagem desloca um alvo para o chão. Para isso, deve fazer um teste de Atletismo/Luta, precisando vencer para derrubar o alvo.</li>
-          <li><b>Empurrar:</b> O personagem empurra um alvo para uma direção escolhida. Para isso, deve fazer um teste de Atletismo/Luta, precisando vencer para empurrar o alvo.</li>
+          <li><b>Agarrar:</b> O personagem segura um alvo, mantendo ele imóvel. Para isso, precisa <b>empatar</b> para agarrar o alvo.</li>
+          <li><b>Derrubar:</b> O personagem desloca um alvo para o chão. Para isso, precisa <b>vencer</b> para derrubar o alvo.</li>
+          <li><b>Empurrar:</b> O personagem empurra um alvo para uma direção escolhida de até 3 metros. Para isso, precisa <b>vencer</b> para empurrar o alvo.</li>
         </ul>
       </li>
 
-      <li><b>Ação de Deslocamento:</b> O personagem se move em uma distância máxima igual ao seu Deslocamento.</li>
+      <li><b>Ação de Movimento:</b> O personagem se move em uma distância máxima igual ao seu Deslocamento.</li>
       
       <li><b>Ações Especiais:</b>
         <ul id="sub-lista-acoes-combate">
-          <li><b>Mirar:</b> O personagem guarda o ataque para a próxima rodada, ganhando vantagem de +1d20 no próximo ataque ao alvo escolhido.</li>
+          <li><b>Mirar:</b> O personagem passa um turno inteiro mirando o ataque, ganhando vantagem de +1d20 no próximo ataque ao alvo escolhido.</li>
           <li><b>Investida:</b> O personagem gasta 2 Ações e 1 PV percorrendo seu Deslocamento + Atletismo, e desfere um Ataque físico em um alvo. O dano desse ataque aumenta em +2d6, porém o personagem tem penalidade de -1d20 nas suas Reações até o início da sua próxima rodada.</li>
           <li><b>Levantar-se:</b> O personagem se levanta do chão.</li>
           <li><b>Interagir com o ambiente:</b> O personagem interage com o ambiente, como ligar um computador, ou procurar algo importante.</li>
@@ -801,7 +801,7 @@
       <li><b>Entregar/Receber Item:</b> O personagem entrega um Item para outro a alcance Pessoal, ou recebe um Item de outro a alcance Pessoal.</li>
       <li><b>Soltar Item:</b> O personagem larga um Item no chão.</li>
       <li><b>Apanhar Item:</b> O personagem apanha um Item a alcance Pessoal do chão.</li>
-      <li><b>Jogar-se ao chão:</b> O personagem se atira ao chão a um alcance Pessoal rapidamente.</li>
+      <li><b>Jogar-se ao chão:</b> O personagem se atira ao chão a alcance Pessoal rapidamente.</li>
     </ul>
     <br><br>
 
@@ -817,17 +817,17 @@
 
       <li><b>Reações a Ações de Ataque:</b>
         <ul id="sub-lista-acoes-combate">
-          <li><b>Esquivar:</b> O personagem desvia de um Ataque sofrido. Para isso, deve fazer um teste de Reflexo, precisando vencer para desviar do ataque.</li>
-          <li><b>Bloquear:</b> O personagem resiste ao Ataque fisicamente. Para isso, deve fazer um teste de Fortitude, precisando empatar para bloquear o ataque.</li>
-          <li><b>Contra-atacar:</b> O personagem contra-ataca um alvo que acabou de fazer um Ataque. Para fazer isso, deve fazer um teste de Luta (ou outra perícia situacional). Se vencer, acerta o contra-ataque; Se empatar, o atacante dá metade do dano do Ataque e o defensor dá metade do dano do Contra-ataque; Se perder, sofre o dano do Ataque e tem uma desvantagem de -1d20 no próximo teste de Perícia.</li>
-          <li><b>Intrometer-se:</b> O personagem se põe na frente de um alvo adjacente que está prestes a sofrer um Ataque. Para isso, deve fazer um teste de Reflexo, precisando ter Sucesso Bom para se pôr a frente do alvo.</li>
+          <li><b>Esquivar:</b> O personagem desvia de um Ataque sofrido. Para isso, deve fazer um teste de <b>Reflexo</b>, precisando <b>vencer</b> para desviar do ataque.</li>
+          <li><b>Bloquear:</b> O personagem resiste ao Ataque fisicamente. Para isso, deve fazer um teste de <b>Fortitude</b>, precisando <b>empatar</b> para bloquear o ataque.</li>
+          <li><b>Contra-atacar:</b> O personagem contra-ataca um alvo que acabou de fazer um Ataque. Para fazer isso, deve fazer um teste de <b>Luta</b> (ou outra perícia situacional). Se <b>vencer</b>, acerta o contra-ataque; Se <b>empatar</b>, o atacante dá metade do dano do Ataque e o defensor dá metade do dano do Contra-ataque; Se <b>perder</b>, sofre o dano do Ataque e tem uma desvantagem de -1d20 no próximo teste de Perícia.</li>
+          <li><b>Intrometer-se:</b> O personagem se põe na frente de um alvo a alcance Pessoal que está prestes a sofrer um Ataque. Para isso, deve fazer um teste de <b>Reflexo DT Sucesso Bom</b> para se pôr a frente do alvo.</li>
         </ul>
       </li>
 
       <li><b>Reações a Ações Táticas:</b>
         <ul id="sub-lista-acoes-combate">
-          <li><b>Desagarrar:</b> O personagem evita um Agarrar sofrido. Para isso, deve fazer um teste de Luta, precisando vencer para evitar a Condição.</li>
-          <li><b>Suster-se:</b> O personagem resiste a um Derrubar ou Empurrar sofrido. Para isso, deve fazer um teste de Atletismo/Luta, precisando empatar para evitar a Condição.</li>
+          <li><b>Desagarrar:</b> O personagem evita um Agarrar sofrido. Para isso, deve fazer um teste de <b>Atletismo/Luta</b>, precisando <b>vencer</b> para evitar a Condição.</li>
+          <li><b>Suster-se:</b> O personagem resiste a um Derrubar ou Empurrar sofrido. Para isso, deve fazer um teste de <b>Atletismo/Luta</b>, precisando <b>empatar</b> para evitar a Condição.</li>
         </ul>
       </li>
 
@@ -841,23 +841,54 @@
     <ul id="lista-acoes-gerais">
       <li><b>Falar (Ação Livre):</b> O personagem conversa durante a Cena.</li>
       <li><b>Levantar-se (Ação Principal em Combate, Ação Livre em outras Cenas):</b> O personagem se levanta do chão.</li>
-      <li><b>Levantar rápido (Ação Rápida em Combate, Ação Livre em outras Cenas):</b> O personagem se levanta rapidamente. Para isso, deve fazer um teste de Acrobacia, precisando de um Sucesso para levantar-se. Se falhar, cai no chão gastando 1 Ação Principal.</li>
+      <li><b>Levantar rápido (Ação Rápida em Combate, Ação Livre em outras Cenas):</b> O personagem se levanta rapidamente. Para isso, deve fazer um teste de <b>Acrobacia DT Sucesso Normal</b> para levantar-se. Se falhar, cai no chão gastando 1 Ação Principal.</li>
       <li><b>Interagir com o ambiente (Ação Principal em Combate, Ação Livre em outras Cenas):</b> O personagem interage com o ambiente, como ligar um computador, ou procurar algo importante.</li>
       <li><b>Entregar/Receber Item (Ação Rápida em Combate, Ação Livre em outras Cenas):</b> O personagem entrega um Item para outro a alcance Pessoal, ou recebe um Item de outro a alcance Pessoal.</li>
       <li><b>Soltar Item (Ação Rápida em Combate, Ação Livre em outras Cenas):</b> O personagem larga um Item no chão.</li>
       <li><b>Apanhar Item (Ação Rápida em Combate, Ação Livre em outras Cenas):</b> O personagem apanha um Item a alcance Pessoal do chão.</li>
       <li><b>Jogar-se ao chão (Ação Rápida em Combate, Ação Livre em outras Cenas):</b> O personagem se atira ao chão a um alcance Pessoal rapidamente.</li>
-      <li><b>Primeiros socorros (Ação Principal):</b> O personagem trata os machucados de um outro personagem que está com a Condição Morrendo. Para isso, deve fazer um teste de Área - Medicina, precisando de um Sucesso Extremo para tratar o personagem.</li>
-      <li><b>Esconder-se (Ação Principal):</b> O personagem se esconde de um ou mais alvos. Para isso, deve fazer um teste de Furtividade DT Percepção do(s) alvo(s).</li>
-      <li><b>Roubar (Ação Principal):</b> O personagem rouba um Item de um alvo, seja ele uma arma empunhada ou objeto guardado. Para isso, deve fazer um teste de Crime, precisando vencer para roubar o Item do alvo.</li>
-      <li><b>Furtar (Ação Principal):</b> O personagem furta um Item de um alvo enquanto está furtivo, seja ele uma arma empunhada ou objeto guardado. Para isso, deve fazer um teste de Crime, precisando ter Sucesso para furtar o Item do alvo.</li>
-      <li><b>Provocar (Ação Principal):</b> O personagem provoca um alvo, tentando irritá-lo. Para isso, deve fazer um teste de Lábia DT Vontade, precisando vencer para provocar o alvo.</li>
-      <li><b>Intimidar (Ação Principal):</b> O personagem intimida um alvo, tentando amedrontá-lo. Para isso, deve fazer um teste de Intimidação DT Vontade, precisando vencer para intimidar o alvo.</li>
-      <li><b>Blefar (Ação Principal):</b> O personagem mente para um alvo, tentando enganá-lo. Para isso, deve fazer um teste de Lábia DT Intuição, precisando vencer para convencer o alvo.</li>
-      <li><b>Incentivar (Ação Principal):</b> O personagem incentiva um alvo, fornecendo vantagem de +1d20 no seu próximo teste. Para isso, deve fazer um teste de Diplomacia, precisando de um Sucesso Extremo para incentivar o alvo.</li>
+      <li><b>Primeiros socorros (Ação Principal):</b> O personagem trata os machucados de um outro personagem que está com a Condição Morrendo. Para isso, deve fazer um teste de <b>Área - Medicina</b>, precisando de um <b>Sucesso Extremo</b> para tratar o personagem.</li>
+      <li><b>Esconder-se (Ação Principal):</b> O personagem se esconde de um ou mais alvos. Para isso, deve fazer um teste de <b>Furtividade DT Percepção</b> do(s) alvo(s).</li>
+      <li><b>Roubar (Ação Principal):</b> O personagem rouba um Item de um alvo, seja ele uma arma empunhada ou objeto guardado. Para isso, deve fazer um teste de <b>Crime</b>, precisando <b>vencer</b> para roubar o Item do alvo.</li>
+      <li><b>Furtar (Ação Principal):</b> O personagem furta um Item de um alvo enquanto está furtivo, seja ele uma arma empunhada ou objeto guardado. Para isso, deve fazer um teste de <b>Crime</b>, precisando ter <b>Sucesso</b> para furtar o Item do alvo.</li>
+      <li><b>Provocar (Ação Principal):</b> O personagem provoca um alvo, tentando irritá-lo. Para isso, deve fazer um teste de <b>Lábia DT Vontade</b> do alvo, precisando <b>vencer</b> para provocar o alvo.</li>
+      <li><b>Intimidar (Ação Principal):</b> O personagem intimida um alvo, tentando amedrontá-lo. Para isso, deve fazer um teste de <b>Intimidação DT Vontade</b> do alvo, precisando <b>vencer</b> para intimidar o alvo.</li>
+      <li><b>Blefar (Ação Principal):</b> O personagem mente para um alvo, tentando enganá-lo. Para isso, deve fazer um teste de <b>Lábia DT Intuição</b> do alvo, precisando <b>vencer</b> para convencer o alvo.</li>
+      <li><b>Incentivar (Ação Principal):</b> O personagem incentiva um alvo, fornecendo vantagem de +1d20 no seu próximo teste. Para isso, deve fazer um teste de <b>Diplomacia DT Sucesso Extremo</b> para incentivar o alvo.</li>
     </ul>
 
     <h2 id="mecanicas-adicionais">Mecânicas Adicionais</h2>
+    <p>Aqui estão algumas mecânicas que podem entrar em diferentes tipos de Cena:</p>
+    <br>
+    <ul id="lista-mecanicas-adicionais">
+      <li><b>Movimento Furtivo:</b> Durante uma Cena, os personagens decidem tentar agir sem fazer barulho ou chamar atenção.
+        <br>
+        Enquanto estiverem assim, a Cena ganha uma medida chamada <b>Alerta</b>, que começa normalmente com <b>nível 0</b>.
+        
+        <h3>Lista de níveis de Alerta:</h3>
+        <ul id="lista-alerta">
+          <li><b>Alerta 0:</b> Despercebidos - Ninguém suspeita da presença dos personagens.</li>
+          <li><b>Alerta 1:</b> Suspeita Fraca - O inimigo percebeu algo estranho, mas ignorou.</li>
+          <li><b>Alerta 2:</b> Suspeita Alta - O inimigo percebeu algo estranho e está prestes a verificar.</li>
+          <li><b>Alerta 3:</b> Procurando - O inimigo começa a procurar algo estranho pelo lugar.</li>
+          <li><b>Alerta 4:</b> Caçando - O inimigo procura ativamente os personagens, bem próximo do local onde estão (qualquer Ação demanda teste de Furtividade DT tipo de Sucesso definido pela Ação).</li>
+          <li><b>Alerta 5:</b> Descobertos - Os personagens são percebidos, encerrando a mecânica.</li>
+        </ul>
+        <br>
+      
+        Nessa mecânica, existem alguns tipos de Ações que podem ser feitas:
+        <br><br>
+
+        <b>Discreta:</b> Uma Ação que não tem riscos de chamar atenção (<em>não é necessário</em> fazer teste de Furtividade; <b>Alerta 4</b> precisa de teste de <b>Furtividade DT Normal</b>), como tentar ouvir uma conversa, olhar um objeto discretamente, ficar parado, entre outras.
+        <br><br>
+        <b>Arriscada:</b> Uma Ação que tem risco de chamar atenção (é necessário fazer teste de <b>Furtividade DT Normal</b>; <b>Alerta 4</b> precisa de teste de <b>Furtividade DT Bom</b>. Fracasso aumenta <b>+1 no Alerta</b>), como atravessar uma sala ocupada, seguir alguém, abrir uma porta, mexer em uma estante, entre outras.
+        <br><br>
+        <b>Barulhenta:</b> Uma Ação que tem alto risco de chamar atenção (é necessário fazer teste de <b>Furtividade DT Extremo</b>; <b>Alerta 4</b> é <em>impossível ter Sucesso</em>. Fracasso aumenta <b>+3 no Alerta</b>), como arrombar uma porta, correr, quebrar uma janela, entre outras.
+        <br><br>
+        Para definir se uma Ação é <b>Discreta</b>, <b>Arriscada</b> ou <b>Barulhenta</b>, o mestre deve analisar o contexto da Cena, e quem é o inimigo da mecânica.
+        <br><br>
+        Algumas Ações, como dar um tiro por exemplo, elevam o nível de Alerta para 5 <em>instantaneamente</em>, ficando a critério do mestre quais Ações podem ocasionar isso.
+      </li>
 
     <h2 id="condicoes">Condições</h2>
 

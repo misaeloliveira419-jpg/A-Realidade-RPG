@@ -66,8 +66,16 @@ h3{
   margin: 0 auto;
   line-height: 1.5;
 }
-#lista-exemplos-casos-especiais li:last-of-type{
+#lista-exemplos-casos-especiais li{
   margin-top: 20px;
+}
+#lista-distancias{
+  font-size: 14px;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+#lista-distancias li:last-of-type{
   margin-bottom: 40px;
 }
 
@@ -207,6 +215,24 @@ a{
 #lista-acoes-gerais li{
   margin-top: 20px;
 }
+#lista-mecanicas-adicionais{
+  font-size: 16px;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+#lista-mecanicas-adicionais li{
+  margin-top: 20px;
+}
+#lista-alerta{
+  font-size: 14px;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+#lista-alerta li{
+  margin-top: 5px;
+}
 
 /*Tela níveis e habilidades*/
 
@@ -222,6 +248,12 @@ a{
     grid-template-columns: 1fr;
   }
   #lista-explicacao-testes li{
+    max-width: 95%;
+  }
+  #lista-explicacao-tipos-sucesso li{
+    max-width: 95%;
+  }
+  #lista-exemplos-casos-especiais li{
     max-width: 95%;
   }
   #lista-perfil-personagem li{
@@ -268,6 +300,12 @@ a{
     max-width: 95%;
   }
   #lista-acoes-gerais li{
+    max-width: 95%;
+  }
+  #lista-mecanicas-adicionais li{
+    max-width: 95%;
+  }
+  #lista-alerta li{
     max-width: 95%;
   }
 }

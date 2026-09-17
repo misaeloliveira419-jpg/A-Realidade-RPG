@@ -1,7 +1,7 @@
 /*Tela sistema*/
 
-document.getElementById("mecanica-testes").addEventListener("click", () => {
-  abrirTelaSite("tela-mecanica-testes");
+document.getElementById("mecanicas-basicas").addEventListener("click", () => {
+  abrirTelaSite("tela-mecanicas-basicas");
 });
 
 document.getElementById("criacao-personagem").addEventListener("click", () => {
