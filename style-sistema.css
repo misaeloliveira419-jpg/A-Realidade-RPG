@@ -39,10 +39,10 @@ h3{
   transform: scale(1.05);
 }
 
-/*Tela mecânica de testes*/
+/*Tela mecânicas básicas*/
 
-#tela-mecanica-testes h1,
-#tela-mecanica-testes h2{
+#tela-mecanicas-basicas h1,
+#tela-mecanicas-basicas h2{
   text-shadow: 2px 1px 12px rgb(175,175,175);
 }
 #lista-explicacao-testes{
@@ -142,11 +142,14 @@ a{
 #lista-consequencias-idade li{
   margin-top: 20px;
 }
+#lista-consequencias-idade li:last-of-type{
+  margin-bottom: 40px;
+}
 
 /*Tela cenas e ações*/
 
-#tela-cenas-acoes-mecanicas h1,
-#tela-cenas-acoes-mecanicas h2{
+#tela-cenas-acoes h1,
+#tela-cenas-acoes h2{
   text-shadow: 2px 1px 12px rgb(180,140,0);
 }
 #lista-turnos-rodadas{
@@ -215,23 +218,33 @@ a{
 #lista-acoes-gerais li{
   margin-top: 20px;
 }
-#lista-mecanicas-adicionais{
-  font-size: 16px;
-  max-width: 600px;
-  margin: 0 auto;
-  line-height: 1.5;
+#lista-acoes-gerais li:last-of-type{
+  margin-bottom: 40px;
 }
-#lista-mecanicas-adicionais li{
-  margin-top: 20px;
+
+/*Tela mecânicas adicionais*/
+
+#tela-mecanicas-adicionais h1,
+#tela-mecanicas-adicionais h2{
+  text-shadow: 2px 1px 12px rgb(180,140,0);
 }
 #lista-alerta{
-  font-size: 14px;
+  font-size: 16px;
   max-width: 600px;
   margin: 0 auto;
   line-height: 1.5;
 }
 #lista-alerta li{
   margin-top: 5px;
+}
+#lista-acoes-movimento-furtivo{
+  font-size: 16px;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+#lista-acoes-movimento-furtivo li{
+  margin-top: 20px;
 }
 
 /*Tela níveis e habilidades*/
@@ -302,10 +315,10 @@ a{
   #lista-acoes-gerais li{
     max-width: 95%;
   }
-  #lista-mecanicas-adicionais li{
+  #lista-alerta li{
     max-width: 95%;
   }
-  #lista-alerta li{
+  #lista-acoes-movimento-furtivo li{
     max-width: 95%;
   }
 }

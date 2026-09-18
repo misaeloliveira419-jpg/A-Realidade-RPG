@@ -96,17 +96,28 @@
           <li class="lista-subtopicos-sistema" data-tela="tela-criacao-personagem" data-alvo="consequencias-idade">Consequências de Idade</li>
         </ul>
       </li>
-      <li id="cenas-acoes-mecanicas" class="topicos-sistema">
-        Cenas, Ações e Mecânicas
+      <li id="cenas-acoes" class="topicos-sistema">
+        Cenas e Ações
         <ul>
-          <li class="lista-subtopicos-sistema" data-tela="tela-cenas-acoes-mecanicas" data-alvo="tipos-cena">Tipos de Cena</li>
-          <li class="lista-subtopicos-sistema" data-tela="tela-cenas-acoes-mecanicas" data-alvo="cena-exploracao">Cena de Exploração</li>
-          <li class="lista-subtopicos-sistema" data-tela="tela-cenas-acoes-mecanicas" data-alvo="cena-interludio">Cena de Interlúdio</li>
-          <li class="lista-subtopicos-sistema" data-tela="tela-cenas-acoes-mecanicas" data-alvo="cena-investigacao">Cena de Investigação</li>
-          <li class="lista-subtopicos-sistema" data-tela="tela-cenas-acoes-mecanicas" data-alvo="cena-combate">Cena de Combate</li>
-          <li class="lista-subtopicos-sistema" data-tela="tela-cenas-acoes-mecanicas" data-alvo="acoes-gerais">Ações Gerais</li>
-          <li class="lista-subtopicos-sistema" data-tela="tela-cenas-acoes-mecanicas" data-alvo="mecanicas-adicionais">Mecânicas Adicionais</li>
-          <li class="lista-subtopicos-sistema" data-tela="tela-cenas-acoes-mecanicas" data-alvo="condicoes">Condições</li>
+          <li class="lista-subtopicos-sistema" data-tela="tela-cenas-acoes" data-alvo="tipos-cena">Tipos de Cena</li>
+          <li class="lista-subtopicos-sistema" data-tela="tela-cenas-acoes" data-alvo="cena-exploracao">Cena de Exploração</li>
+          <li class="lista-subtopicos-sistema" data-tela="tela-cenas-acoes" data-alvo="cena-interludio">Cena de Interlúdio</li>
+          <li class="lista-subtopicos-sistema" data-tela="tela-cenas-acoes" data-alvo="cena-investigacao">Cena de Investigação</li>
+          <li class="lista-subtopicos-sistema" data-tela="tela-cenas-acoes" data-alvo="cena-combate">Cena de Combate</li>
+          <li class="lista-subtopicos-sistema" data-tela="tela-cenas-acoes" data-alvo="acoes-gerais">Ações Gerais</li>
+        </ul>
+      </li>
+      <li id="mecanicas-adicionais" class="topicos-sistema">
+        Mecânicas Adicionais
+        <ul>
+          <li class="lista-subtopicos-sistema" data-tela="tela-mecanicas-adicionais" data-alvo="movimento-furtivo">Movimento Furtivo</li>
+          <li class="lista-subtopicos-sistema" data-tela="tela-mecanicas-adicionais" data-alvo="ajudar">Ajudar</li>
+          <li class="lista-subtopicos-sistema" data-tela="tela-mecanicas-adicionais" data-alvo="testes-coletivos">Testes Coletivos</li>
+          <li class="lista-subtopicos-sistema" data-tela="tela-mecanicas-adicionais" data-alvo="testes-prolongados">Testes Prolongados</li>
+          <li class="lista-subtopicos-sistema" data-tela="tela-mecanicas-adicionais" data-alvo="destrancar-arrombar">Destrancar e Arrombar</li>
+          <li class="lista-subtopicos-sistema" data-tela="tela-mecanicas-adicionais" data-alvo="invadir-sistema">Invadir Sistema</li>
+          <li class="lista-subtopicos-sistema" data-tela="tela-mecanicas-adicionais" data-alvo="perseguicoes">Perseguições</li>
+          <li class="lista-subtopicos-sistema" data-tela="tela-mecanicas-adicionais" data-alvo="condicoes">Condições</li>
         </ul>
       </li>
       <li id="niveis-habilidades" class="topicos-sistema">
@@ -132,7 +143,7 @@
     <h2 id="termos-importantes">Termos Importantes</h2>
 
     <h2 id="testes-pericia">Testes de Perícia</h2>
-    <p>Os testes de Perícia são uma forma de decidir o quão bem uma ação é realizada baseado na sorte e na familiaridade que um personagem tem com aquela ação. Eles funcionam da seguinte maneira:</p>
+    <p>Os testes de Perícia são uma forma de decidir o quão bem uma Ação é realizada baseado na sorte e na familiaridade que um personagem tem com aquela Ação. Eles funcionam da seguinte maneira:</p>
     <br><br>
     <p><b>Situação:</b> Seu personagem (você) quer se esconder de uma ameaça. Ele tem a Perícia <b>Furtividade 13</b> e o Atributo <b>Físico 2</b>.</p>
     <br>
@@ -143,11 +154,11 @@
       <br>
       <li>Depois de rolar, ele busca o valor mais <b>baixo</b> entre os resultados (nesse caso: 8), e compara com o seu valor na Perícia (nesse caso: <b>Furtividade 13</b>).</li>
       <br>
-      <li>Se o resultado for maior que o valor da Perícia dele, o personagem fracassa sua ação;
+      <li>Se o resultado for maior que o valor da Perícia dele, o personagem Fracassa sua Ação;
         <br>
-        Se o resultado for igual ou menor que o valor da Perícia dele, o personagem teve sucesso na ação.
+        Se o resultado for igual ou menor que o valor da Perícia dele, o personagem teve Sucesso na Ação.
         <br>
-        No caso desse exemplo, o personagem teve sucesso na sua ação.</li>
+        No caso desse exemplo, o personagem teve Sucesso na sua Ação.</li>
     </ol>
     <br>
     <p>Para definir o quão bem o personagem teve um sucesso, ou o quão mal ele teve um fracasso, existem os <b>tipos de sucesso</b>.</p>
@@ -155,10 +166,10 @@
     <h2 id="tipos-sucesso">Tipos de sucesso</h2>
     <ul id="lista-explicacao-tipos-sucesso">
       <li><b style="color: red;">DESASTRE:</b> acontece se o menor resultado do teste for 20. Pode gerar consequências horríveis, como quebrar um computador ao tentar consertá-lo, ou sofrer dano ao tentar arrombar uma porta.</li>
-      <li><b style="color: rgb(185,185,185);">FRACASSO:</b> acontece se o menor resultado do teste for maior que o valor da perícia usada. O personagem não consegue realizar a ação.</li>
-      <li><b style="color: rgb(0,190,30);">NORMAL:</b> acontece se o menor resultado do teste for igual ou menor que o valor da perícia usada. O personagem realiza a ação de maneira simples.</li>
-      <li><b style="color: rgb(0,140,245);">BOM:</b> acontece se o menor resultado do teste for igual ou menor que a metade, 1/2, do valor da perícia usada. O personagem realiza a ação de uma forma excelente.</li>
-      <li><b style="color: rgb(255,100,0);">EXTREMO:</b> acontece se o menor resultado do teste for igual ou menor que 1/5 do valor da perícia usada. O personagem realiza a ação de maneira esplêndida, praticamente perfeita.</li>
+      <li><b style="color: rgb(185,185,185);">FRACASSO:</b> acontece se o menor resultado do teste for maior que o valor da perícia usada. O personagem não consegue realizar a Ação.</li>
+      <li><b style="color: rgb(0,190,30);">NORMAL:</b> acontece se o menor resultado do teste for igual ou menor que o valor da perícia usada. O personagem realiza a Ação de maneira simples.</li>
+      <li><b style="color: rgb(0,140,245);">BOM:</b> acontece se o menor resultado do teste for igual ou menor que a metade, 1/2, do valor da perícia usada. O personagem realiza a Ação de uma forma excelente.</li>
+      <li><b style="color: rgb(255,100,0);">EXTREMO:</b> acontece se o menor resultado do teste for igual ou menor que 1/5 do valor da perícia usada. O personagem realiza a Ação de maneira esplêndida, praticamente perfeita.</li>
     </ul>
 
     <h2 id="testes-dano">Testes de Dano</h2>
@@ -683,13 +694,13 @@
     
   </div>
 
-  <!--Tela cenas, ações e mecânicas-->
+  <!--Tela cenas e ações-->
 
-  <div id="tela-cenas-acoes-mecanicas" class="tela-site">
+  <div id="tela-cenas-acoes" class="tela-site">
     <button class="botao-voltar" data-voltar="tela-sistema" type="button">← Voltar</button>
 
-    <h1>CENAS, AÇÕES E MECÂNICAS</h1>
-    <p>A Cena é um momento o qual os personagens estão fazendo algum tipo de ação com algum objetivo, seja esse descansar, investigar, entre outros.</p>
+    <h1>CENAS E AÇÕES</h1>
+    <p>A Cena é um momento o qual os personagens estão fazendo algum tipo de Ação com algum objetivo, seja esse descansar, investigar, entre outros.</p>
     <br>
     <p>Em cada Cena, existem os <b>turnos</b> e <b>rodadas</b>:</p>
     <br>
@@ -710,7 +721,7 @@
     <h2 id="cena-exploracao">Cena de Exploração</h2>
     <p>Uma Cena de Exploração é caracterizada pela exploração de uma área ou região, com o objetivo de conhecer melhor o ambiente de uma maneira geral, como um shopping, parque, etc.</p>
     <br>
-    <p>Nesse tipo de Cena, existem Áreas de Interesse: regiões que despertam maior interesse no personagem. O personagem é livre para caminhar e conversar, podendo usar 2 tipos de ação: <b>Observar</b> e <b>Interagir</b>.</p>
+    <p>Nesse tipo de Cena, existem Áreas de Interesse: regiões que despertam maior interesse no personagem. O personagem é livre para caminhar e conversar, podendo usar 2 tipos de Ação: <b>Observar</b> e <b>Interagir</b>.</p>
     <br>
     <p>A cada rodada, o personagem pode fazer 1 Ação de Exploração.</p>
     <br>
@@ -759,7 +770,7 @@
     <br>
     <p>Durante uma Cena de Combate, um personagem pode fazer <b>2 Ações Principais</b>, <b>até 2 Ações Rápidas</b>, e uma quantidade <b>variável de Reações</b>.</p>
     <br>
-    <p>Uma <b>Ação Principal</b> é uma ação que exige maior esforço, que demora mais para ser realizada, ou que impacta diretamente no Combate.</p>
+    <p>Uma <b>Ação Principal</b> é uma Ação que exige maior esforço, que demora mais para ser realizada, ou que impacta diretamente no Combate.</p>
     <br>
     <h3>Lista de Ações Principais de Combate:</h3>
     <ul id="lista-acoes-combate">
@@ -792,7 +803,7 @@
     </ul>
     <br><br>
 
-    <p>Uma <b>Ação Rápida</b> é uma ação simples e rápida, a qual demanda pouco tempo para ser feita, ou que pode ser feita em conjunto de outras ações, como <b>entregar/receber um item</b> que já foi sacado, olhar ao redor, etc.</p>
+    <p>Uma <b>Ação Rápida</b> é uma Ação simples e rápida, a qual demanda pouco tempo para ser feita, ou que pode ser feita em conjunto de outras ações, como <b>entregar/receber um item</b> que já foi sacado, olhar ao redor, etc.</p>
     <br>
     <h3>Lista de Ações Rápidas de Combate:</h3>
     <ul id="lista-acoes-combate">
@@ -817,9 +828,9 @@
 
       <li><b>Reações a Ações de Ataque:</b>
         <ul id="sub-lista-acoes-combate">
-          <li><b>Esquivar:</b> O personagem desvia de um Ataque sofrido. Para isso, deve fazer um teste de <b>Reflexo</b>, precisando <b>vencer</b> para desviar do ataque.</li>
-          <li><b>Bloquear:</b> O personagem resiste ao Ataque fisicamente. Para isso, deve fazer um teste de <b>Fortitude</b>, precisando <b>empatar</b> para bloquear o ataque.</li>
-          <li><b>Contra-atacar:</b> O personagem contra-ataca um alvo que acabou de fazer um Ataque. Para fazer isso, deve fazer um teste de <b>Luta</b> (ou outra perícia situacional). Se <b>vencer</b>, acerta o contra-ataque; Se <b>empatar</b>, o atacante dá metade do dano do Ataque e o defensor dá metade do dano do Contra-ataque; Se <b>perder</b>, sofre o dano do Ataque e tem uma desvantagem de -1d20 no próximo teste de Perícia.</li>
+          <li><b>Esquivar:</b> O personagem desvia de um Ataque sofrido. Para isso, deve fazer um teste de <b>Reflexo</b>, precisando <b>vencer</b> para desviar do ataque (não é possível Esquivar de um tiro de uma arma de fogo ou precisão).</li>
+          <li><b>Bloquear:</b> O personagem resiste ao Ataque fisicamente. Para isso, deve fazer um teste de <b>Fortitude</b>, precisando <b>empatar</b> para bloquear o ataque (não é possível Bloquear um tiro de uma arma de fogo ou precisão).</li>
+          <li><b>Contra-atacar:</b> O personagem contra-ataca um alvo que acabou de fazer um Ataque. Para fazer isso, deve fazer um teste de <b>Luta</b> (ou outra perícia situacional). Se <b>vencer</b>, acerta o contra-ataque; Se <b>empatar</b>, o atacante dá metade do dano do Ataque e o defensor dá metade do dano do Contra-ataque; Se <b>perder</b>, sofre o dano do Ataque e tem uma desvantagem de -1d20 no próximo teste de Perícia (não é possível Contra-atacar um ataque a distância).</li>
           <li><b>Intrometer-se:</b> O personagem se põe na frente de um alvo a alcance Pessoal que está prestes a sofrer um Ataque. Para isso, deve fazer um teste de <b>Reflexo DT Sucesso Bom</b> para se pôr a frente do alvo.</li>
         </ul>
       </li>
@@ -848,51 +859,79 @@
       <li><b>Apanhar Item (Ação Rápida em Combate, Ação Livre em outras Cenas):</b> O personagem apanha um Item a alcance Pessoal do chão.</li>
       <li><b>Jogar-se ao chão (Ação Rápida em Combate, Ação Livre em outras Cenas):</b> O personagem se atira ao chão a um alcance Pessoal rapidamente.</li>
       <li><b>Primeiros socorros (Ação Principal):</b> O personagem trata os machucados de um outro personagem que está com a Condição Morrendo. Para isso, deve fazer um teste de <b>Área - Medicina</b>, precisando de um <b>Sucesso Extremo</b> para tratar o personagem.</li>
-      <li><b>Esconder-se (Ação Principal):</b> O personagem se esconde de um ou mais alvos. Para isso, deve fazer um teste de <b>Furtividade DT Percepção</b> do(s) alvo(s).</li>
+      <li><b>Esconder-se (Ação Principal):</b> O personagem se esconde de um ou mais alvos. Para isso, deve fazer um teste de <b>Furtividade DT Percepção do(s) alvo(s)</b>.</li>
       <li><b>Roubar (Ação Principal):</b> O personagem rouba um Item de um alvo, seja ele uma arma empunhada ou objeto guardado. Para isso, deve fazer um teste de <b>Crime</b>, precisando <b>vencer</b> para roubar o Item do alvo.</li>
       <li><b>Furtar (Ação Principal):</b> O personagem furta um Item de um alvo enquanto está furtivo, seja ele uma arma empunhada ou objeto guardado. Para isso, deve fazer um teste de <b>Crime</b>, precisando ter <b>Sucesso</b> para furtar o Item do alvo.</li>
-      <li><b>Provocar (Ação Principal):</b> O personagem provoca um alvo, tentando irritá-lo. Para isso, deve fazer um teste de <b>Lábia DT Vontade</b> do alvo, precisando <b>vencer</b> para provocar o alvo.</li>
-      <li><b>Intimidar (Ação Principal):</b> O personagem intimida um alvo, tentando amedrontá-lo. Para isso, deve fazer um teste de <b>Intimidação DT Vontade</b> do alvo, precisando <b>vencer</b> para intimidar o alvo.</li>
-      <li><b>Blefar (Ação Principal):</b> O personagem mente para um alvo, tentando enganá-lo. Para isso, deve fazer um teste de <b>Lábia DT Intuição</b> do alvo, precisando <b>vencer</b> para convencer o alvo.</li>
+      <li><b>Provocar (Ação Principal):</b> O personagem provoca um alvo, tentando irritá-lo. Para isso, deve fazer um teste de <b>Lábia DT Vontade do alvo</b>, precisando <b>vencer</b> para provocar o alvo.</li>
+      <li><b>Intimidar (Ação Principal):</b> O personagem intimida um alvo, tentando amedrontá-lo. Para isso, deve fazer um teste de <b>Intimidação DT Vontade do alvo</b>, precisando <b>vencer</b> para intimidar o alvo.</li>
+      <li><b>Blefar (Ação Principal):</b> O personagem mente para um alvo, tentando enganá-lo. Para isso, deve fazer um teste de <b>Lábia DT Intuição do alvo</b>, precisando <b>vencer</b> para convencer o alvo.</li>
       <li><b>Incentivar (Ação Principal):</b> O personagem incentiva um alvo, fornecendo vantagem de +1d20 no seu próximo teste. Para isso, deve fazer um teste de <b>Diplomacia DT Sucesso Extremo</b> para incentivar o alvo.</li>
     </ul>
+  
+  </div>
 
-    <h2 id="mecanicas-adicionais">Mecânicas Adicionais</h2>
-    <p>Aqui estão algumas mecânicas que podem entrar em diferentes tipos de Cena:</p>
+  <!--Tela mecânicas adicionais-->
+
+  <div id="tela-mecanicas-adicionais" class="tela-site">
+    <button class="botao-voltar" data-voltar="tela-sistema" type="button">← Voltar</button>
+
+    <h1>MECÂNICAS ADICIONAIS</h1>
+    <p>Aqui estão as explicações de algumas mecânicas que podem entrar em diferentes tipos de Cena.</p>
+    
+    <h2 id="movimento-furtivo">Movimento Furtivo</h2>
+    <p>Durante uma Cena, os personagens decidem tentar agir sem fazer barulho ou chamar atenção.</p>
     <br>
-    <ul id="lista-mecanicas-adicionais">
-      <li><b>Movimento Furtivo:</b> Durante uma Cena, os personagens decidem tentar agir sem fazer barulho ou chamar atenção.
-        <br>
-        Enquanto estiverem assim, a Cena ganha uma medida chamada <b>Alerta</b>, que começa normalmente com <b>nível 0</b>.
-        
-        <h3>Lista de níveis de Alerta:</h3>
-        <ul id="lista-alerta">
-          <li><b>Alerta 0:</b> Despercebidos - Ninguém suspeita da presença dos personagens.</li>
-          <li><b>Alerta 1:</b> Suspeita Fraca - O inimigo percebeu algo estranho, mas ignorou.</li>
-          <li><b>Alerta 2:</b> Suspeita Alta - O inimigo percebeu algo estranho e está prestes a verificar.</li>
-          <li><b>Alerta 3:</b> Procurando - O inimigo começa a procurar algo estranho pelo lugar.</li>
-          <li><b>Alerta 4:</b> Caçando - O inimigo procura ativamente os personagens, bem próximo do local onde estão (qualquer Ação demanda teste de Furtividade DT tipo de Sucesso definido pela Ação).</li>
-          <li><b>Alerta 5:</b> Descobertos - Os personagens são percebidos, encerrando a mecânica.</li>
-        </ul>
-        <br>
-      
-        Nessa mecânica, existem alguns tipos de Ações que podem ser feitas:
-        <br><br>
+    <p>Enquanto estiverem assim, a Cena ganha uma medida chamada <b>Alerta</b>, que começa normalmente com <b>nível 0</b>.</p>
+    <br>
+    
+    <h3>Lista de níveis de Alerta:</h3>
+    <ul id="lista-alerta">
+      <li><b>Alerta 0:</b> Despercebidos - Ninguém suspeita da presença dos personagens.</li>
+      <li><b>Alerta 1:</b> Suspeita Fraca - O inimigo percebeu algo estranho, mas ignorou.</li>
+      <li><b>Alerta 2:</b> Suspeita Alta - O inimigo percebeu algo estranho e está prestes a verificar.</li>
+      <li><b>Alerta 3:</b> Procurando - O inimigo começa a procurar algo estranho pelo lugar.</li>
+      <li><b>Alerta 4:</b> Caçando - O inimigo procura ativamente os personagens, bem próximo do local onde estão (qualquer Ação demanda teste de <b>Furtividade DT tipo de Sucesso definido pela Ação</b>).</li>
+      <li><b>Alerta 5:</b> Descobertos - Os personagens são percebidos, encerrando a mecânica.</li>
+    </ul>
+    <br><br>
+  
+    <p>Nessa mecânica, existem alguns tipos de Ações que podem ser feitas, sendo elas a <b>Discreta</b>, <b>Arriscada</b> e <b>Barulhenta</b>.</p>
+    <br>
+    
+    <h3>Lista de Ações de Movimento Furtivo:</h3>
+    <ul id="lista-acoes-movimento-furtivo">
+      <li><b>Discreta:</b> Uma Ação que não tem riscos de chamar atenção (<em>não é necessário</em> fazer teste de Furtividade; <b>Alerta 4</b> precisa de teste de <b>Furtividade DT Normal</b>), como tentar ouvir uma conversa, olhar um objeto discretamente, ficar parado, entre outras.</li>
+      <li><b>Arriscada:</b> Uma Ação que tem risco de chamar atenção (é necessário fazer teste de <b>Furtividade DT Normal</b>; <b>Alerta 4</b> precisa de teste de <b>Furtividade DT Bom</b>. Fracasso aumenta <b>+1 no Alerta</b>), como atravessar uma sala ocupada, seguir alguém, abrir uma porta, mexer em uma estante, entre outras.</li>
+      <li><b>Barulhenta:</b> Uma Ação que tem alto risco de chamar atenção (é necessário fazer teste de <b>Furtividade DT Extremo</b>; <b>Alerta 4</b> é <em>impossível ter Sucesso</em>. Fracasso aumenta <b>+3 no Alerta</b>), como arrombar uma porta, correr, quebrar uma janela, entre outras.</li>
+    </ul>
+    <br><br>
+    
+    <p>Para definir se uma Ação é <b>Discreta</b>, <b>Arriscada</b> ou <b>Barulhenta</b>, o mestre deve analisar o contexto da Cena, e quem é o inimigo da mecânica.</p>
+    <br>
+    <p>Algumas Ações, como dar um tiro por exemplo, elevam o nível de Alerta para 5 <em>instantaneamente</em>, ficando a critério do mestre quais Ações podem ocasionar isso.</p>
 
-        <b>Discreta:</b> Uma Ação que não tem riscos de chamar atenção (<em>não é necessário</em> fazer teste de Furtividade; <b>Alerta 4</b> precisa de teste de <b>Furtividade DT Normal</b>), como tentar ouvir uma conversa, olhar um objeto discretamente, ficar parado, entre outras.
-        <br><br>
-        <b>Arriscada:</b> Uma Ação que tem risco de chamar atenção (é necessário fazer teste de <b>Furtividade DT Normal</b>; <b>Alerta 4</b> precisa de teste de <b>Furtividade DT Bom</b>. Fracasso aumenta <b>+1 no Alerta</b>), como atravessar uma sala ocupada, seguir alguém, abrir uma porta, mexer em uma estante, entre outras.
-        <br><br>
-        <b>Barulhenta:</b> Uma Ação que tem alto risco de chamar atenção (é necessário fazer teste de <b>Furtividade DT Extremo</b>; <b>Alerta 4</b> é <em>impossível ter Sucesso</em>. Fracasso aumenta <b>+3 no Alerta</b>), como arrombar uma porta, correr, quebrar uma janela, entre outras.
-        <br><br>
-        Para definir se uma Ação é <b>Discreta</b>, <b>Arriscada</b> ou <b>Barulhenta</b>, o mestre deve analisar o contexto da Cena, e quem é o inimigo da mecânica.
-        <br><br>
-        Algumas Ações, como dar um tiro por exemplo, elevam o nível de Alerta para 5 <em>instantaneamente</em>, ficando a critério do mestre quais Ações podem ocasionar isso.
-      </li>
+    <h2 id="ajudar">Ajudar</h2>
+    <p>A mecânica de Ajudar é uma mecânica que ocorre em situações que um personagem tenta colaborar com outro durante sua Ação.</p>
+    <br>
+    <p>Quando isso acontecer, os jogadores definem o <b>Agente</b> (o personagem principal que faz a Ação) e o <b>Ajudante</b> (o personagem que ajuda o Agente).</p>
+    <br>
+    <p>Após decidir, o <b>Agente</b> rola o teste que precisa para fazer sua Ação, </p>
+
+    <h2 id="testes-coletivos">Testes Coletivos</h2>
+
+    <h2 id="testes-prolongados">Testes Prolongados</h2>
+
+    <h2 id="destrancar-arrombar">Destrancar e Arrombar</h2>
+
+    <h2 id="invadir-sistema">Invadir Sistema</h2>
+
+    <h2 id="perseguicoes">Perseguições</h2>
 
     <h2 id="condicoes">Condições</h2>
 
   </div>
+
+
 
   <!--Tela níveis e habilidades-->
 

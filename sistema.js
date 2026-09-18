@@ -8,8 +8,12 @@ document.getElementById("criacao-personagem").addEventListener("click", () => {
   abrirTelaSite("tela-criacao-personagem");
 });
 
-document.getElementById("cenas-acoes-mecanicas").addEventListener("click", () => {
-  abrirTelaSite("tela-cenas-acoes-mecanicas");
+document.getElementById("cenas-acoes").addEventListener("click", () => {
+  abrirTelaSite("tela-cenas-acoes");
+});
+
+document.getElementById("mecanicas-adicionais").addEventListener("click", () => {
+  abrirTelaSite("tela-mecanicas-adicionais");
 });
 
 document.getElementById("niveis-habilidades").addEventListener("click", () => {
