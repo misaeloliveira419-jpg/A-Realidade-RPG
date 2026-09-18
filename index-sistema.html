@@ -111,7 +111,6 @@
         Mecânicas Adicionais
         <ul>
           <li class="lista-subtopicos-sistema" data-tela="tela-mecanicas-adicionais" data-alvo="movimento-furtivo">Movimento Furtivo</li>
-          <li class="lista-subtopicos-sistema" data-tela="tela-mecanicas-adicionais" data-alvo="ajudar">Ajudar</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-mecanicas-adicionais" data-alvo="testes-coletivos">Testes Coletivos</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-mecanicas-adicionais" data-alvo="testes-prolongados">Testes Prolongados</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-mecanicas-adicionais" data-alvo="destrancar-arrombar">Destrancar e Arrombar</li>
@@ -165,19 +164,21 @@
 
     <h2 id="tipos-sucesso">Tipos de sucesso</h2>
     <ul id="lista-explicacao-tipos-sucesso">
+      <li><b style="color: rgb(155, 0, 0);">DESASTRE DUPLO:</b> acontece se todos os resultados do teste forem 20. Gera consequências desvastadoras, como cair no chão e sofrer dano ao tentar esquivar, ou quebrar a perna ao tentar arrombar uma porta. O personagem sofre um dano mínimo de 1 PV e 1 PD.</li>
       <li><b style="color: red;">DESASTRE:</b> acontece se o menor resultado do teste for 20. Pode gerar consequências horríveis, como quebrar um computador ao tentar consertá-lo, ou sofrer dano ao tentar arrombar uma porta.</li>
       <li><b style="color: rgb(185,185,185);">FRACASSO:</b> acontece se o menor resultado do teste for maior que o valor da perícia usada. O personagem não consegue realizar a Ação.</li>
       <li><b style="color: rgb(0,190,30);">NORMAL:</b> acontece se o menor resultado do teste for igual ou menor que o valor da perícia usada. O personagem realiza a Ação de maneira simples.</li>
       <li><b style="color: rgb(0,140,245);">BOM:</b> acontece se o menor resultado do teste for igual ou menor que a metade, 1/2, do valor da perícia usada. O personagem realiza a Ação de uma forma excelente.</li>
       <li><b style="color: rgb(255,100,0);">EXTREMO:</b> acontece se o menor resultado do teste for igual ou menor que 1/5 do valor da perícia usada. O personagem realiza a Ação de maneira esplêndida, praticamente perfeita.</li>
+      <li><b style="color: rgb(255,255,0);">EXTREMO DUPLO:</b> acontece se todos os resultados do teste forem iguais ou menores que 1/5 do valor da perícia usada. O personagem realiza a Ação de maneira perfeita, ganhando certas vantagens.</li>
     </ul>
-
+    
     <h2 id="testes-dano">Testes de Dano</h2>
     <p>Os testes de dano definem a <b>quantidade de dano</b> que um personagem causou (geralmente em PV ou PD) em algo ou alguém. Eles são rolados após um pedido do mestre ao jogador para que ele role o dano que ele causou, ou após um dano que o próprio jogador sofreu, este sendo rolado pelo mestre.</p>
     <br>
     <p>Os dados usados para testes de dano geralmente são o <b>d4</b>, <b>d6</b>, <b>d8</b>, <b>d10</b>, e <b>d12</b>.</p>
     <br>
-    <p>Existem casos em que esse teste não irá acontecer, como por exemplo, quando um personagem sofre um <b>dano mínimo</b>, 1 PV ou 1 PD, ou quando o personagem sofre um <b>dano máximo</b>, que geralmente ocorre quando o teste que causou esse dano teve <b>Sucesso Extremo</b>.</p>
+    <p>Existem casos em que esse teste não irá acontecer, como por exemplo, quando um personagem sofre um <b>dano mínimo</b>, 1 PV ou 1 PD, ou quando o personagem sofre um <b>dano máximo</b>.</p>
     
 
     <h2 id="casos-especiais">Casos Especiais</h2>
@@ -775,7 +776,7 @@
     <h3>Lista de Ações Principais de Combate:</h3>
     <ul id="lista-acoes-combate">
 
-      <li><b>Ações de Ataque:</b> O personagem faz um teste de Luta ou outra perícia situacional contra a Reação do alvo (quem vence o teste depende do tipo de Reação usada).</li>
+      <li><b>Ações de Ataque:</b> O personagem faz um teste de Luta ou outra perícia situacional contra a Reação do alvo (quem vence o teste depende do tipo de Reação usada). Se um Ataque com Sucesso Extremo for acertado, o dano causado é máximo.</li>
         <ul id="sub-lista-acoes-combate">
           <li><b>Padrão:</b> O personagem desfere um golpe único em um alvo.</li>
           <li><b>Rajada:</b> O personagem desfere até 3 golpes de uma só vez no mesmo Ataque, sendo que a cada novo golpe, ele tem penalidade de -1d20 no teste (por exemplo, dar 2 golpes diminui 1d20 no teste). Porém, se acertar o Ataque, os dados de dano são multiplicados pela <b>quantidade de golpes dada</b> (ou seja, se acertar um Ataque que daria 1d8 de dano dando 2 golpes, o dano será 2d8).</li>
@@ -910,14 +911,12 @@
     <br>
     <p>Algumas Ações, como dar um tiro por exemplo, elevam o nível de Alerta para 5 <em>instantaneamente</em>, ficando a critério do mestre quais Ações podem ocasionar isso.</p>
 
-    <h2 id="ajudar">Ajudar</h2>
-    <p>A mecânica de Ajudar é uma mecânica que ocorre em situações que um personagem tenta colaborar com outro durante sua Ação.</p>
+    <h2 id="testes-coletivos">Testes Coletivos</h2>
+    <p>A mecânica de Teste Coletivo é uma mecânica que ocorre em situações que um personagem tenta colaborar outro a fazer uma Ação.</p>
     <br>
     <p>Quando isso acontecer, os jogadores definem o <b>Agente</b> (o personagem principal que faz a Ação) e o <b>Ajudante</b> (o personagem que ajuda o Agente).</p>
     <br>
-    <p>Após decidir, o <b>Agente</b> rola o teste que precisa para fazer sua Ação, </p>
-
-    <h2 id="testes-coletivos">Testes Coletivos</h2>
+    <p>Após decidir, o <b>Agente</b> rola uma quantidade de d20 para a Perícia igual ao seu <b>valor no Atributo + 1d20 por Nível da Perícia do Ajudante</b>.</p>
 
     <h2 id="testes-prolongados">Testes Prolongados</h2>
 
