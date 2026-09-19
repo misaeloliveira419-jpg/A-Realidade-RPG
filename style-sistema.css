@@ -118,6 +118,15 @@ a{
 #lista-atributos li{
   margin-top: 20px;
 }
+#lista-niveis-pericias{
+  font-size: 14px;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+#lista-niveis-pericias li{
+  margin-top: 5px;
+}
 #lista-pericias{
   display: grid;
   grid-auto-flow: column;
@@ -281,6 +290,9 @@ a{
     max-width: 95%;
   }
   #lista-atributos li{
+    max-width: 95%;
+  }
+  #lista-niveis-pericias li{
     max-width: 95%;
   }
   #lista-pericias{

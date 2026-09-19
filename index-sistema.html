@@ -112,7 +112,7 @@
         <ul>
           <li class="lista-subtopicos-sistema" data-tela="tela-mecanicas-adicionais" data-alvo="movimento-furtivo">Movimento Furtivo</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-mecanicas-adicionais" data-alvo="testes-coletivos">Testes Coletivos</li>
-          <li class="lista-subtopicos-sistema" data-tela="tela-mecanicas-adicionais" data-alvo="testes-prolongados">Testes Prolongados</li>
+          <li class="lista-subtopicos-sistema" data-tela="tela-mecanicas-adicionais" data-alvo="acoes-prolongadas">Ações Prolongadas</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-mecanicas-adicionais" data-alvo="destrancar-arrombar">Destrancar e Arrombar</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-mecanicas-adicionais" data-alvo="invadir-sistema">Invadir Sistema</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-mecanicas-adicionais" data-alvo="perseguicoes">Perseguições</li>
@@ -164,13 +164,13 @@
 
     <h2 id="tipos-sucesso">Tipos de sucesso</h2>
     <ul id="lista-explicacao-tipos-sucesso">
-      <li><b style="color: rgb(155, 0, 0);">DESASTRE DUPLO:</b> acontece se todos os resultados do teste forem 20. Gera consequências desvastadoras, como cair no chão e sofrer dano ao tentar esquivar, ou quebrar a perna ao tentar arrombar uma porta. O personagem sofre um dano mínimo de 1 PV e 1 PD.</li>
+      <li><b style="color: rgb(180, 0, 0);">DESASTRE DUPLO:</b> acontece se todos os resultados do teste forem 20 (mínimo 2d20). Gera consequências desvastadoras, como cair no chão e sofrer dano ao tentar esquivar, ou quebrar a perna ao tentar arrombar uma porta. O personagem sofre um dano mínimo de 1 PV e 1 PD.</li>
       <li><b style="color: red;">DESASTRE:</b> acontece se o menor resultado do teste for 20. Pode gerar consequências horríveis, como quebrar um computador ao tentar consertá-lo, ou sofrer dano ao tentar arrombar uma porta.</li>
       <li><b style="color: rgb(185,185,185);">FRACASSO:</b> acontece se o menor resultado do teste for maior que o valor da perícia usada. O personagem não consegue realizar a Ação.</li>
       <li><b style="color: rgb(0,190,30);">NORMAL:</b> acontece se o menor resultado do teste for igual ou menor que o valor da perícia usada. O personagem realiza a Ação de maneira simples.</li>
       <li><b style="color: rgb(0,140,245);">BOM:</b> acontece se o menor resultado do teste for igual ou menor que a metade, 1/2, do valor da perícia usada. O personagem realiza a Ação de uma forma excelente.</li>
       <li><b style="color: rgb(255,100,0);">EXTREMO:</b> acontece se o menor resultado do teste for igual ou menor que 1/5 do valor da perícia usada. O personagem realiza a Ação de maneira esplêndida, praticamente perfeita.</li>
-      <li><b style="color: rgb(255,255,0);">EXTREMO DUPLO:</b> acontece se todos os resultados do teste forem iguais ou menores que 1/5 do valor da perícia usada. O personagem realiza a Ação de maneira perfeita, ganhando certas vantagens.</li>
+      <li><b style="color: rgb(255,220,0);">EXTREMO DUPLO:</b> acontece se todos os resultados do teste forem iguais ou menores que 1/5 do valor da perícia usada (mínimo 2d20). O personagem realiza a Ação de maneira perfeita, ganhando certas vantagens.</li>
     </ul>
     
     <h2 id="testes-dano">Testes de Dano</h2>
@@ -527,6 +527,19 @@
     <br>
     <p>Por exemplo, ter 9 pontos na Perícia Intuição faz com que para ter Sucesso em um teste dessa Perícia, o resultado da rolagem de d20 precise ser <b>igual ou menor do que 9</b>.</p>
     <br>
+    <p>As Perícias também possuem níveis, que são as classificações de valor que uma Perícia tem.</p>
+    <br>
+
+    <h3>Lista de Níveis de Perícia:</h3>
+    <ul id="lista-niveis-pericias">
+      <li><b>Nível 0:</b> Perícias com valor de 1 a 3;</li>
+      <li><b>Nível 1:</b> Perícias com valor de 4 a 6;</li>
+      <li><b>Nível 2:</b> Perícias com valor de 7 a 9;</li>
+      <li><b>Nível 3:</b> Perícias com valor de 10 a 12;</li>
+      <li><b>Nível 4:</b> Perícias com valor de 13 a 14;</li>
+    </ul>
+    <br><br>
+
     <p>Todas as Perícias de um personagem iniciam em <b>4 pontos</b>, e a partir disso o jogador pode distribuir mais <b>25 pontos</b> entre essas Perícias, com <u>limite</u> de <b>12 pontos</b> por Perícia.</p>
     <br>
     <p>Uma Perícia pode ser reduzida até <b>1 ponto</b>, com limite de soma de <b>15 pontos</b> abaixo de <b>4 pontos</b> nas Perícias (por exemplo, ter 1 ponto em uma Perícia faz com que a soma abaixo de 4 pontos seja 3 pontos).</p>
@@ -796,6 +809,7 @@
       <li><b>Ações Especiais:</b>
         <ul id="sub-lista-acoes-combate">
           <li><b>Mirar:</b> O personagem passa um turno inteiro mirando o ataque, ganhando vantagem de +1d20 no próximo ataque ao alvo escolhido.</li>
+          <li><b>Preparar:</b> O personagem guarda uma Ação, para que seja feita em qualquer rodada até o fim do turno (o jogador não pode mudar essa Ação, apenas desfazê-la).</li>
           <li><b>Investida:</b> O personagem gasta 2 Ações e 1 PV percorrendo seu Deslocamento + Atletismo, e desfere um Ataque físico em um alvo. O dano desse ataque aumenta em +2d6, porém o personagem tem penalidade de -1d20 nas suas Reações até o início da sua próxima rodada.</li>
           <li><b>Levantar-se:</b> O personagem se levanta do chão.</li>
           <li><b>Interagir com o ambiente:</b> O personagem interage com o ambiente, como ligar um computador, ou procurar algo importante.</li>
@@ -914,13 +928,25 @@
     <h2 id="testes-coletivos">Testes Coletivos</h2>
     <p>A mecânica de Teste Coletivo é uma mecânica que ocorre em situações que um personagem tenta colaborar outro a fazer uma Ação.</p>
     <br>
-    <p>Quando isso acontecer, os jogadores definem o <b>Agente</b> (o personagem principal que faz a Ação) e o <b>Ajudante</b> (o personagem que ajuda o Agente).</p>
+    <p>Quando isso acontecer, os jogadores definem o <b>Agente</b> (o personagem principal que faz a Ação) e o <b>Ajudante</b> (o personagem que ajuda o Agente; no <b>máximo um</b>).</p>
     <br>
     <p>Após decidir, o <b>Agente</b> rola uma quantidade de d20 para a Perícia igual ao seu <b>valor no Atributo + 1d20 por Nível da Perícia do Ajudante</b>.</p>
+    <br>
+    <p>Se o Ajudante tiver um <b>Nível de Perícia igual a 4</b>, ao invés de acrescentar +3d20 no teste do Agente, ele adiciona +2d20 e +2 na Perícia do Agente naquela rolagem.</p>
+    <br><br>
+    <p>Em certas situações, todos os personagens irão querer/precisar fazer Ações em conjunto, como na mecânica de Movimento Furtivo vista anteriormente. Nessas situações, o mestre deve usar da criatividade para criar mecânicas novas que favoreçam o andamento da Cena, podendo ou não se basear nas mecânicas já existentes nesse sistema.</p>
 
-    <h2 id="testes-prolongados">Testes Prolongados</h2>
+    <h2 id="acoes-prolongadas">Ações Prolongadas</h2>
+    <p>As Ações Prolongadas são testes que funcionam para fazer Ações que duram mais de uma rodada, como por exemplo, manter um portão segurado constantemente para que ele não se feche.</p>
+    <br>
+    <p>Quando essa mecânica for utilizada, o(s) personagem(ens) que está(ão) fazendo a Ação Prolongada devem fazer os testes necessários a cada rodada, precisando de um <b>Sucesso</b> para conseguir manter/avançar para que a Ação seja bem sucedida. A duração desse tipo de teste depende exclusivamente de onde o mestre vai aplicar e como, sendo seu papel controlar essa funcionalidade.</p>
+    <br>
+    <p>Nessa mecânica, os personagens têm um <b>limite de Fracassos</b> que podem obter definido pelo mestre, e se esse limite for atingido, a Ação vai ser totalmente desfeita. O mestre pode definir também se os personagens vão conseguir tentar de novo fazer a Ação, dependendo das situações e contexto da Cena.</p>
+    <br>
+    <p>Em alguns casos específicos, um personagem pode tentar ganhar <b>2 Sucessos</b> de uma só vez na rodada. Para isso, ele deve gastar <b>1 PV ou 1 PD</b> (a depender da situação), e fazer o teste da Ação. Se tiver <b>Sucesso</b>, ele ganha <b>2 Sucessos</b> de uma só vez; Se <b>Fracassar</b>, ele obtém <b>2 Fracassos</b> de uma só vez.</p>
 
     <h2 id="destrancar-arrombar">Destrancar e Arrombar</h2>
+    <p></p>
 
     <h2 id="invadir-sistema">Invadir Sistema</h2>
 
