@@ -79,35 +79,11 @@ h3{
   margin-bottom: 40px;
 }
 
-/*Tela criação de personagem*/
+/*Tela pontos de ficha*/
 
-#tela-criacao-personagem h1,
-#tela-criacao-personagem h2{
-  text-shadow: 2px 1px 12px rgb(150,0,225);
-}
-#lista-perfil-personagem{
-  font-size: 14px;
-  max-width: 500px;
-  margin: 0 auto;
-  line-height: 1.5;
-}
-#lista-perfil-personagem li{
-  margin-top: 20px;
-}
-a{
-  color: rgb(100,175,175);
-}
-#lista-ocupacoes-personagem{
-  display: grid;
-  grid-auto-flow: column;
-  grid-template-rows: repeat(39, auto);
-  font-size: 16px;
-  max-width: 1200px;
-  margin: 0 auto;
-  line-height: 1.5;
-}
-#lista-ocupacoes-personagem li{
-  margin-top: 20px;
+#tela-pontos-ficha h1,
+#tela-pontos-ficha h2{
+  text-shadow: 2px 1px 12px rgb(175,175,175);
 }
 #lista-atributos{
   font-size: 14px;
@@ -139,8 +115,40 @@ a{
 #lista-pericias li{
   margin-top: 20px;
 }
-#ir-para-cenas-acoes{
+#ir-para-mecanicas-adicionais{
   color: rgb(180,140,0);
+}
+
+
+/*Tela criação de personagem*/
+
+#tela-criacao-personagem h1,
+#tela-criacao-personagem h2{
+  text-shadow: 2px 1px 12px rgb(150,0,225);
+}
+#lista-perfil-personagem{
+  font-size: 14px;
+  max-width: 500px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+#lista-perfil-personagem li{
+  margin-top: 20px;
+}
+a{
+  color: rgb(100,175,175);
+}
+#lista-ocupacoes-personagem{
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(39, auto);
+  font-size: 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+#lista-ocupacoes-personagem li{
+  margin-top: 20px;
 }
 #lista-consequencias-idade{
   font-size: 16px;
@@ -255,6 +263,33 @@ a{
 #lista-acoes-movimento-furtivo li{
   margin-top: 20px;
 }
+#lista-ajuda{
+  font-size: 16px;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+#lista-ajuda li{
+  margin-top: 5px;
+}
+#lista-tentativas-destrancar{
+  font-size: 16px;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+#lista-tentativas-destrancar li{
+  margin-top: 20px;
+}
+#lista-eventos-invadir-sistema{
+  font-size: 16px;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+#lista-eventos-invadir-sistema li{
+  margin-top: 20px;
+}
 
 /*Tela níveis e habilidades*/
 
@@ -278,17 +313,6 @@ a{
   #lista-exemplos-casos-especiais li{
     max-width: 95%;
   }
-  #lista-perfil-personagem li{
-    max-width: 95%;
-  }
-  #lista-ocupacoes-personagem{
-    display: grid;
-    grid-auto-flow: row;
-    grid-template-rows: repeat(1, auto);
-  }
-  #lista-ocupacoes-personagem li{
-    max-width: 95%;
-  }
   #lista-atributos li{
     max-width: 95%;
   }
@@ -301,6 +325,17 @@ a{
     grid-template-rows: repeat(1, auto);
   }
   #lista-pericias li{
+    max-width: 95%;
+  }
+  #lista-perfil-personagem li{
+    max-width: 95%;
+  }
+  #lista-ocupacoes-personagem{
+    display: grid;
+    grid-auto-flow: row;
+    grid-template-rows: repeat(1, auto);
+  }
+  #lista-ocupacoes-personagem li{
     max-width: 95%;
   }
   #lista-consequencias-idade li{
@@ -331,6 +366,15 @@ a{
     max-width: 95%;
   }
   #lista-acoes-movimento-furtivo li{
+    max-width: 95%;
+  }
+  #lista-ajuda li{
+    max-width: 95%;
+  }
+  #lista-tentativas-destrancar li{
+    max-width: 95%;
+  }
+  #lista-eventos-invadir-sistema li{
     max-width: 95%;
   }
 }

@@ -4,6 +4,11 @@ document.getElementById("mecanicas-basicas").addEventListener("click", () => {
   abrirTelaSite("tela-mecanicas-basicas");
 });
 
+document.getElementById("pontos-ficha").addEventListener("click", () => {
+  document.body.scrollTop = 0;
+  abrirTelaSite("tela-pontos-ficha");
+});
+
 document.getElementById("criacao-personagem").addEventListener("click", () => {
   abrirTelaSite("tela-criacao-personagem");
 });

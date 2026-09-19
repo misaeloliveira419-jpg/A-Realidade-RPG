@@ -81,17 +81,23 @@
           <li class="lista-subtopicos-sistema" data-tela="tela-mecanicas-basicas" data-alvo="distancias">Distâncias</li>
         </ul>
       </li>
+      <li id="pontos-ficha" class="topicos-sistema">
+        Pontos de Ficha
+        <ul>
+          <li class="lista-subtopicos-sistema" data-tela="tela-pontos-ficha" data-alvo="atributos">Atributos</li>
+          <li class="lista-subtopicos-sistema" data-tela="tela-pontos-ficha" data-alvo="pericias">Perícias</li>
+          <li class="lista-subtopicos-sistema" data-tela="tela-pontos-ficha" data-alvo="pontos-vitalidade">Pontos de Vitalidade (PV)</li>
+          <li class="lista-subtopicos-sistema" data-tela="tela-pontos-ficha" data-alvo="pontos-determinacao">Pontos de Determinação (PD)</li>
+          <li class="lista-subtopicos-sistema" data-tela="tela-pontos-ficha" data-alvo="pontos-credito">Pontos de Crédito (PC)</li>
+        </ul>
+      </li>
       <li id="criacao-personagem" class="topicos-sistema">
         Criação de personagem
         <ul>
           <li class="lista-subtopicos-sistema" data-tela="tela-criacao-personagem" data-alvo="conceito-personagem">Conceito do Personagem</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-criacao-personagem" data-alvo="perfil-personagem">Perfil do Personagem</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-criacao-personagem" data-alvo="ocupacao-personagem">Ocupação do Personagem</li>
-          <li class="lista-subtopicos-sistema" data-tela="tela-criacao-personagem" data-alvo="atributos">Atributos</li>
-          <li class="lista-subtopicos-sistema" data-tela="tela-criacao-personagem" data-alvo="pericias">Perícias</li>
-          <li class="lista-subtopicos-sistema" data-tela="tela-criacao-personagem" data-alvo="pontos-vitalidade">Pontos de Vitalidade (PV)</li>
-          <li class="lista-subtopicos-sistema" data-tela="tela-criacao-personagem" data-alvo="pontos-determinacao">Pontos de Determinação (PD)</li>
-          <li class="lista-subtopicos-sistema" data-tela="tela-criacao-personagem" data-alvo="pontos-credito">Pontos de Crédito (PC)</li>
+          <li class="lista-subtopicos-sistema" data-tela="tela-criacao-personagem" data-alvo="atributos-pericias">Atributos e Perícias do Personagem</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-criacao-personagem" data-alvo="itens-capacidade-carga">Itens e Capacidade de Carga</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-criacao-personagem" data-alvo="consequencias-idade">Consequências de Idade</li>
         </ul>
@@ -113,7 +119,8 @@
           <li class="lista-subtopicos-sistema" data-tela="tela-mecanicas-adicionais" data-alvo="movimento-furtivo">Movimento Furtivo</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-mecanicas-adicionais" data-alvo="testes-coletivos">Testes Coletivos</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-mecanicas-adicionais" data-alvo="acoes-prolongadas">Ações Prolongadas</li>
-          <li class="lista-subtopicos-sistema" data-tela="tela-mecanicas-adicionais" data-alvo="destrancar-arrombar">Destrancar e Arrombar</li>
+          <li class="lista-subtopicos-sistema" data-tela="tela-mecanicas-adicionais" data-alvo="destrancar">Destrancar</li>
+          <li class="lista-subtopicos-sistema" data-tela="tela-mecanicas-adicionais" data-alvo="arrombar">Arrombar</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-mecanicas-adicionais" data-alvo="invadir-sistema">Invadir Sistema</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-mecanicas-adicionais" data-alvo="perseguicoes">Perseguições</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-mecanicas-adicionais" data-alvo="condicoes">Condições</li>
@@ -207,6 +214,159 @@
       <li><b>Extremo:</b> 72 metros / 48 quadrados;</li>
       <li><b>Infinito:</b> ∞ metros / ∞ quadrados.</li>
     </ul>
+
+  </div>
+
+  <!--Tela pontos de ficha-->
+
+  <div id="tela-pontos-ficha" class="tela-site">
+    <button class="botao-voltar" data-voltar="tela-sistema" type="button">← Voltar</button>
+
+    <h1>PONTOS DE FICHA</h1>
+    <p>Nesse subtópico vão estar algumas explicações sobre algumas características que vão aparecer recorrentemente nas fichas.</p>
+
+    <h2 id="atributos">Atributos</h2>
+    <p>Os Atributos são as capacidades físicas, mentais, e emocionais que um personagem possui. Um valor de um Atributo define a <b>quantidade de d20</b> que serão rolados para um Teste de Perícia (com <em>exceção</em> do <b>Deslocamento</b>).</p>
+    <br>
+    <p>Por exemplo, ter 2 pontos no Atributo Físico faz com que o Teste de uma Perícia que use esse Atributo seja rolada com <b>2d20</b>.</p>
+    <br>
+    <p>Se um Atributo for <b>0</b>, o jogador rola 2d20 e pega o pior resultado.</p>
+    <br>
+    <h3>Lista de Atributos:</h3>
+    <ul id="lista-atributos">
+      <li><b style="background: linear-gradient(rgb(150,50,0), rgb(210,70,50), rgb(100,150,175)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">FÍSICO:</b> Atributo que define as capacidades físicas de um personagem, como força, coordenação motora, resistência, etc.</li>
+      <li><b style="background: linear-gradient(rgb(180,180,210), rgb(100,100,100), rgb(220,200,220)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">COGNIÇÃO:</b> Atributo que define as capacidades mentais de um personagem, como raciocínio lógico, análise de informações, memória, etc.</li>
+      <li><b style="background: linear-gradient(rgb(225,225,25), rgb(150,175,100), rgb(75,100,125)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">PRESENÇA:</b> Atributo que define as capacidades emocionais de um personagem, como interação social, empatia, autocontrole, etc.</li>
+      <li><b style="background: linear-gradient(rgb(100,60,135), rgb(230,130,60), rgb(90,75,50)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">DESLOCAMENTO:</b> Atributo que define a quantidade de metros/quadrados que um personagem consegue se movimentar em uma rodada.</li>
+    </ul>
+
+    <h2 id="pericias">Perícias</h2>
+    <p>As Perícias são um conjunto de ações, proficiências e conhecimentos que um personagem possui. o valor de uma Perícia define o <b>resultado máximo</b> que um d20 precisa ter para que o personagem consiga executá-la.</p>
+    <br>
+    <p>Por exemplo, ter 9 pontos na Perícia Intuição faz com que para ter Sucesso em um teste dessa Perícia, o resultado da rolagem de d20 precise ser <b>igual ou menor do que 9</b>.</p>
+    <br>
+    <p>As Perícias também possuem níveis, que são as classificações de valor que uma Perícia tem.</p>
+    <br>
+
+    <h3>Lista de Níveis de Perícia:</h3>
+    <ul id="lista-niveis-pericias">
+      <li><b>Nível 0:</b> Perícias com valor de <b>1 a 3</b>. O personagem ter conhecimentos quase <b>nulos</b> sobre o assunto;</li>
+      <li><b>Nível 1:</b> Perícias com valor de <b>4 a 6</b>. O persoagem é <b>leigo</b> sobre o assunto;</li>
+      <li><b>Nível 2:</b> Perícias com valor de <b>7 a 9</b>. O personagem tem <b>conhecimentos básicos</b> sobre o assunto;</li>
+      <li><b>Nível 3:</b> Perícias com valor de <b>10 a 12</b>. O personagem tem <b>conhecimentos avançados</b> sobre o assunto;</li>
+      <li><b>Nível 4:</b> Perícias com valor de <b>13 a 14</b>. O personagem tem <b>conhecimentos profissionais</b> sobre o assunto;</li>
+    </ul>
+    <br><br>
+
+    <p>Toda Perícia tem um Atributo base, esse Atributo nem sempre é o mesmo para todas as situações, ou seja, há casos em que uma Perícia que usa o Atributo Físico, pode usar o Atributo Cognição, por exemplo.</p>
+    <br>
+
+    <h3>Lista de Perícias:</h3>
+    <ul id="lista-pericias">
+      <li><b>ACROBACIA:</b> Realizar movimentos ágeis, saltos, equilíbrios e manobras corporais.
+        <br>
+        Atributo: Físico.</li>
+      <li><b>ADESTRAMENTO:</b> Lidar, treinar e compreender o comportamento de animais.
+        <br>
+        Atributo: Presença.</li>
+      <li><b>ÁREA - ARTES:</b> Criar, interpretar e compreender diferentes formas de expressão artística.
+        <br>
+        Atributo: Presença.</li>
+      <li><b>ATLETISMO:</b> Executar atividades físicas que envolvam força, corrida e esforço corporal.
+        <br>
+        Atributo: Físico.</li>
+      <li><b>ATUALIDADES:</b> Conhecer acontecimentos recentes, cultura popular e informações contemporâneas.
+        <br>
+        Atributo: Cognição.</li>
+      <li><b>ÁREA - COMPUTAÇÃO:</b> Utilizar, programar e compreender computadores, redes e sistemas digitais.
+        <br>
+        Atributo: Cognição.</li>
+      <li><b>CONDUÇÃO:</b> Dirigir e controlar veículos em diferentes situações.
+        <br>
+        Atributo: Físico.</li>
+      <li><b>CRIME:</b> Conhecer e executar práticas ilegais, como arrombamentos e furtos.
+        <br>
+        Atributo: Físico.</li>
+      <li><b>DIPLOMACIA:</b> Convencer e negociar através de argumentos sinceros e boa comunicação.
+        <br>
+        Atributo: Presença.</li>
+      <li><b>ÁREA - ENGENHARIA:</b> Compreender, construir e reparar máquinas, estruturas e sistemas técnicos.
+        <br>
+        Atributo: Cognição.</li>
+      <li><b>ÁREA - EXATAS:</b> Aplicar conhecimentos de matemática, física, estatística e áreas relacionadas.
+        <br>
+        Atributo: Cognição.</li>
+      <li><b>FORTITUDE:</b> Resistir a dor, esforço físico, doenças e condições adversas.
+        <br>
+        Atributo: Físico.</li>
+      <li><b>FURTIVIDADE:</b> Mover-se e agir sem chamar atenção ou ser percebido.
+        <br>
+        Atributo: Físico.</li>
+      <li><b>ÁREA - HUMANAS:</b> Conhecer história, filosofia, sociologia, política e outras ciências humanas.
+        <br>
+        Atributo: Cognição.</li>
+      <li><b>INTIMIDAÇÃO:</b> Influenciar alguém através de ameaça, pressão ou imposição.
+        <br>
+        Atributo: Presença.</li>
+      <li><b>INTUIÇÃO:</b> Interpretar emoções, intenções e comportamentos de outras pessoas.
+        <br>
+        Atributo: Presença.</li>
+      <li><b>LÁBIA:</b> Convencer, enganar ou improvisar através da fala.
+        <br>
+        Atributo: Presença.</li>
+      <li><b>ÁREA - LINGUAGEM:</b> Compreender e utilizar idiomas, escrita e conhecimentos linguísticos.
+        <br>
+        Atributo: Cognição.</li>
+      <li><b>LUTA:</b> Combater corpo a corpo utilizando golpes, armas corpo a corpo ou técnicas físicas.
+        <br>
+        Atributo: Físico.</li>
+      <li><b>ÁREA - MEDICINA:</b> Identificar e tratar ferimentos, doenças e condições de saúde.
+        <br>
+        Atributo: Cognição.</li>
+      <li><b>ÁREA - NATUREZA:</b> Conhecer animais, plantas, ecossistemas e fenômenos naturais.
+        <br>
+        Atributo: Cognição.</li>
+      <li><b>PERCEPÇÃO:</b> Notar detalhes, estímulos e acontecimentos ao seu redor.
+        <br>
+        Atributo: Cognição.</li>
+      <li><b>PONTARIA:</b> Utilizar armas e objetos que exigem precisão à distância.
+        <br>
+        Atributo: Físico.</li>
+      <li><b>REFLEXO:</b> Reagir rapidamente a perigos, movimentos e acontecimentos repentinos.
+        <br>
+        Atributo: Físico.</li>
+      <li><b>ÁREA - RELIGIÃO:</b> Conhecer crenças, tradições, símbolos e práticas religiosas.
+        <br>
+        Atributo: Cognição/Presença.</li>
+      <li><b>SEDUÇÃO:</b> Influenciar alguém através de charme, atração e interesse pessoal.
+        <br>
+        Atributo: Presença.</li>
+      <li><b>SOBREVIVÊNCIA:</b> Manter-se seguro e encontrar recursos em ambientes hostis.
+        <br>
+        Atributo: Cognição.</li>
+      <li><b>VONTADE:</b> Resistir a medo, pressão emocional, manipulação e desgaste mental.
+        <br>
+        Atributo: Presença.</li>
+    </ul>
+
+    <h2 id="pontos-vitalidade">Pontos de Vitalidade (PV)</h2>
+    <p>Os Pontos de Vitalidade, ou PV, são a medida de saúde física de um personagem, indicando seu cansaço e ferimentos físicos. O cálculo de PV é:</p>
+    <br>
+    <p><b>PV = 15 + Físico + Fortitude / 2 (arredondado para baixo)</b></p>
+    <br>
+    <p>Um personagem pode perder PV sempre que ele fizer um esforço físico, ou quando sofrer ferimentos. Para recuperar PV, um personagem deve ser tratado, ou descansar. Há certas Condições que um personagem pode adquirir por conta de alterações no seu PV. Isso é abordado em <a id="ir-para-mecanicas-adicionais" href="#" onclick="abrirTelaSite('tela-mecanicas-adicionais')">Mecânicas Adicionais</a>.</p>
+    
+    <h2 id="pontos-determinacao">Pontos de Determinação (PD)</h2>
+    <p>Os Pontos de Determinação, ou PD, são a medida de saúde mental de um personagem, indicando seu estresse e racionalidade. O cálculo de PD é:</p>
+    <br>
+    <p><b>PD = 20 + Presença + Vontade / 2 (arredondado para baixo)</b></p>
+    <br>
+    <p>Um personagem pode perder PD usando Habilidades, sofrendo danos mentais, entre outros. Para recuperar PD, um personagem deve se acalmar, ou descansar. Há certas Condições que um personagem pode adquirir por conta de alterações no seu PD. Isso é abordado em <a id="ir-para-mecanicas-adicionais" href="#" onclick="abrirTelaSite('tela-mecanicas-adicionais')">Mecânicas Adicionais</a>.</p>
+
+    <h2 id="pontos-credito">Pontos de Crédito (PC)</h2>
+    <p>Os Pontos de Crédito, ou PC, são os pontos de finanças de um personagem, esses pontos podem ser usados para "comprar" itens, ou para gastar em outras atividades. O PC inicial é calculado como:</p>
+    <br>
+    <p><b>PC = </b></p>
 
   </div>
 
@@ -503,155 +663,14 @@
         Perícias: Adestramento, Atletismo, Sobrevivência.</li>
     </ul>
 
-    <h2 id="atributos">Atributos</h2>
-    <p>Os Atributos do personagem são as capacidades físicas, mentais, e emocionais que ele possui. Um valor de um Atributo define a <b>quantidade de d20</b> que serão rolados para um Teste de Perícia (com <em>exceção</em> do <b>Deslocamento</b>).</p>
+    <h2 id="atributos-pericias">Atributos e Perícias do Personagem</h2>
+    <p>Um personagem tem <b>4 pontos de Atributo</b> para distribuir entre Físico, Cognição e Presença, sendo que há um <u>limite máximo</u> de <b>3 pontos por Atributo</b>, e <u>limite mínimo</u> de <b>0 ponto por Atributo</b>.</p>
     <br>
-    <p>Por exemplo, ter 2 pontos no Atributo Físico faz com que o Teste de uma Perícia que use esse Atributo seja rolada com <b>2d20</b>.</p>
+    <p>O Atributo <b>Deslocamento</b> tem um valor base de 9 metros / 6 quadrados, e pode variar dependendo da situação, de Habilidades, de Itens, de Condições, etc.</p>
     <br>
-    <p>Se um Atributo for <b>0</b>, o jogador rola 2d20 e pega o pior resultado.</p>
-    <br>
-    <h3>Lista de Atributos:</h3>
-    <ul id="lista-atributos">
-      <li><b style="background: linear-gradient(rgb(150,50,0), rgb(210,70,50), rgb(100,150,175)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">FÍSICO:</b> Atributo que define as capacidades físicas de um personagem, como força, coordenação motora, resistência, etc.</li>
-      <li><b style="background: linear-gradient(rgb(180,180,210), rgb(100,100,100), rgb(220,200,220)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">COGNIÇÃO:</b> Atributo que define as capacidades mentais de um personagem, como raciocínio lógico, análise de informações, memória, etc.</li>
-      <li><b style="background: linear-gradient(rgb(225,225,25), rgb(150,175,100), rgb(75,100,125)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">PRESENÇA:</b> Atributo que define as capacidades emocionais de um personagem, como interação social, empatia, autocontrole, etc.</li>
-      <li><b style="background: linear-gradient(rgb(100,60,135), rgb(230,130,60), rgb(90,75,50)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">DESLOCAMENTO:</b> Atributo que define a quantidade de metros/quadrados que um personagem consegue se movimentar em uma rodada.</li>
-    </ul>
-    <br>
-    <p>Um personagem tem <b>4 pontos</b> de Atributo para distribuir entre Físico, Cognição e Presença, sendo que há um <u>limite máximo</u> de <b>3 pontos</b> por Atributo, e <u>limite mínimo</u> de <b>0 ponto</b> por Atributo.</p>
-    <br>
-    <p>O Atributo <b>Deslocamento</b> tem um valor base de 9 metros / 6 quadrados, e pode variar dependendo da situação, de habilidades, de itens, de condições, etc.</p>
-
-    <h2 id="pericias">Perícias</h2>
-    <p>As Perícias são um conjunto de ações, proficiências e conhecimentos que o personagem possui. o valor de uma Perícia define o <b>resultado máximo</b> que um d20 precisa ter para que o personagem consiga executá-la.</p>
-    <br>
-    <p>Por exemplo, ter 9 pontos na Perícia Intuição faz com que para ter Sucesso em um teste dessa Perícia, o resultado da rolagem de d20 precise ser <b>igual ou menor do que 9</b>.</p>
-    <br>
-    <p>As Perícias também possuem níveis, que são as classificações de valor que uma Perícia tem.</p>
-    <br>
-
-    <h3>Lista de Níveis de Perícia:</h3>
-    <ul id="lista-niveis-pericias">
-      <li><b>Nível 0:</b> Perícias com valor de 1 a 3;</li>
-      <li><b>Nível 1:</b> Perícias com valor de 4 a 6;</li>
-      <li><b>Nível 2:</b> Perícias com valor de 7 a 9;</li>
-      <li><b>Nível 3:</b> Perícias com valor de 10 a 12;</li>
-      <li><b>Nível 4:</b> Perícias com valor de 13 a 14;</li>
-    </ul>
-    <br><br>
-
-    <p>Todas as Perícias de um personagem iniciam em <b>4 pontos</b>, e a partir disso o jogador pode distribuir mais <b>25 pontos</b> entre essas Perícias, com <u>limite</u> de <b>12 pontos</b> por Perícia.</p>
+    <p>Todas as <b>Perícias</b> de um personagem iniciam em <b>4 pontos</b>, e a partir disso o jogador pode distribuir mais <b>25 pontos</b> entre essas Perícias, com <u>limite</u> de <b>12 pontos</b> por Perícia.</p>
     <br>
     <p>Uma Perícia pode ser reduzida até <b>1 ponto</b>, com limite de soma de <b>15 pontos</b> abaixo de <b>4 pontos</b> nas Perícias (por exemplo, ter 1 ponto em uma Perícia faz com que a soma abaixo de 4 pontos seja 3 pontos).</p>
-    <br>
-    <p>Toda Perícia tem um Atributo base, esse Atributo nem sempre é o mesmo para todas as situações, ou seja, há casos em que uma Perícia que usa o Atributo Físico, pode usar o Atributo Cognição, por exemplo.</p>
-    <br>
-    <h3>Lista de Perícias:</h3>
-    <ul id="lista-pericias">
-      <li><b>ACROBACIA:</b> Realizar movimentos ágeis, saltos, equilíbrios e manobras corporais.
-        <br>
-        Atributo: Físico.</li>
-      <li><b>ADESTRAMENTO:</b> Lidar, treinar e compreender o comportamento de animais.
-        <br>
-        Atributo: Presença.</li>
-      <li><b>ÁREA - ARTES:</b> Criar, interpretar e compreender diferentes formas de expressão artística.
-        <br>
-        Atributo: Presença.</li>
-      <li><b>ATLETISMO:</b> Executar atividades físicas que envolvam força, corrida e esforço corporal.
-        <br>
-        Atributo: Físico.</li>
-      <li><b>ATUALIDADES:</b> Conhecer acontecimentos recentes, cultura popular e informações contemporâneas.
-        <br>
-        Atributo: Cognição.</li>
-      <li><b>ÁREA - COMPUTAÇÃO:</b> Utilizar, programar e compreender computadores, redes e sistemas digitais.
-        <br>
-        Atributo: Cognição.</li>
-      <li><b>CONDUÇÃO:</b> Dirigir e controlar veículos em diferentes situações.
-        <br>
-        Atributo: Físico.</li>
-      <li><b>CRIME:</b> Conhecer e executar práticas ilegais, como arrombamentos e furtos.
-        <br>
-        Atributo: Físico.</li>
-      <li><b>DIPLOMACIA:</b> Convencer e negociar através de argumentos sinceros e boa comunicação.
-        <br>
-        Atributo: Presença.</li>
-      <li><b>ÁREA - ENGENHARIA:</b> Compreender, construir e reparar máquinas, estruturas e sistemas técnicos.
-        <br>
-        Atributo: Cognição.</li>
-      <li><b>ÁREA - EXATAS:</b> Aplicar conhecimentos de matemática, física, estatística e áreas relacionadas.
-        <br>
-        Atributo: Cognição.</li>
-      <li><b>FORTITUDE:</b> Resistir a dor, esforço físico, doenças e condições adversas.
-        <br>
-        Atributo: Físico.</li>
-      <li><b>FURTIVIDADE:</b> Mover-se e agir sem chamar atenção ou ser percebido.
-        <br>
-        Atributo: Físico.</li>
-      <li><b>ÁREA - HUMANAS:</b> Conhecer história, filosofia, sociologia, política e outras ciências humanas.
-        <br>
-        Atributo: Cognição.</li>
-      <li><b>INTIMIDAÇÃO:</b> Influenciar alguém através de ameaça, pressão ou imposição.
-        <br>
-        Atributo: Presença.</li>
-      <li><b>INTUIÇÃO:</b> Interpretar emoções, intenções e comportamentos de outras pessoas.
-        <br>
-        Atributo: Presença.</li>
-      <li><b>LÁBIA:</b> Convencer, enganar ou improvisar através da fala.
-        <br>
-        Atributo: Presença.</li>
-      <li><b>ÁREA - LINGUAGEM:</b> Compreender e utilizar idiomas, escrita e conhecimentos linguísticos.
-        <br>
-        Atributo: Cognição.</li>
-      <li><b>LUTA:</b> Combater corpo a corpo utilizando golpes, armas corpo a corpo ou técnicas físicas.
-        <br>
-        Atributo: Físico.</li>
-      <li><b>ÁREA - MEDICINA:</b> Identificar e tratar ferimentos, doenças e condições de saúde.
-        <br>
-        Atributo: Cognição.</li>
-      <li><b>ÁREA - NATUREZA:</b> Conhecer animais, plantas, ecossistemas e fenômenos naturais.
-        <br>
-        Atributo: Cognição.</li>
-      <li><b>PERCEPÇÃO:</b> Notar detalhes, estímulos e acontecimentos ao seu redor.
-        <br>
-        Atributo: Cognição.</li>
-      <li><b>PONTARIA:</b> Utilizar armas e objetos que exigem precisão à distância.
-        <br>
-        Atributo: Físico.</li>
-      <li><b>REFLEXO:</b> Reagir rapidamente a perigos, movimentos e acontecimentos repentinos.
-        <br>
-        Atributo: Físico.</li>
-      <li><b>ÁREA - RELIGIÃO:</b> Conhecer crenças, tradições, símbolos e práticas religiosas.
-        <br>
-        Atributo: Cognição/Presença.</li>
-      <li><b>SEDUÇÃO:</b> Influenciar alguém através de charme, atração e interesse pessoal.
-        <br>
-        Atributo: Presença.</li>
-      <li><b>SOBREVIVÊNCIA:</b> Manter-se seguro e encontrar recursos em ambientes hostis.
-        <br>
-        Atributo: Cognição.</li>
-      <li><b>VONTADE:</b> Resistir a medo, pressão emocional, manipulação e desgaste mental.
-        <br>
-        Atributo: Presença.</li>
-    </ul>
-
-    <h2 id="pontos-vitalidade">Pontos de Vitalidade (PV)</h2>
-    <p>Os Pontos de Vitalidade, ou PV, são a medida de saúde física de um personagem, indicando seu cansaço e ferimentos físicos. O cálculo de PV é:</p>
-    <br>
-    <p><b>PV = 15 + Físico + Fortitude / 2 (arredondado para baixo)</b></p>
-    <br>
-    <p>Um personagem pode perder PV sempre que ele fizer um esforço físico, ou quando sofrer ferimentos. Para recuperar PV, um personagem deve ser tratado, ou descansar. Há certas Condições que um personagem pode adquirir por conta de alterações no seu PV. Isso é abordado em Cenas e Ações. <a id="ir-para-cenas-acoes" href="#" onclick="abrirTelaSite('tela-cenas-acoes-mecanicas')">Ir para Cenas e Ações</a>.</p>
-    
-    <h2 id="pontos-determinacao">Pontos de Determinação (PD)</h2>
-    <p>Os Pontos de Determinação, ou PD, são a medida de saúde mental de um personagem, indicando seu estresse e racionalidade. O cálculo de PD é:</p>
-    <br>
-    <p><b>PD = 20 + Presença + Vontade / 2 (arredondado para baixo)</b></p>
-    <br>
-    <p>Um personagem pode perder PD usando Habilidades, sofrendo danos mentais, entre outros. Para recuperar PD, um personagem deve se acalmar, ou descansar. Há certas Condições que um personagem pode adquirir por conta de alterações no seu PD. Isso é abordado em Cenas e Ações. <a id="ir-para-cenas-acoes" href="#" onclick="abrirTelaSite('tela-cenas-acoes-mecanicas')">Ir para Cenas e Ações</a>.</p>
-
-    <h2 id="pontos-credito">Pontos de Crédito (PC)</h2>
-    <p>Os Pontos de Crédito, ou PC, são os pontos de finanças de um personagem, esses pontos podem ser usados para "comprar" itens, ou para gastar em outras atividades. O PC inicial é calculado como:</p>
-    <br>
-    <p><b>PC = </b></p>
 
     <h2 id="itens-capacidade-carga">Itens e Capacidade de Carga</h2>
     <p>Os itens são objetos que um personagem pode portar ou possuir, cada um tendo funções diferentes entre si. Os itens são separados em 2 categorias: <b>Itens Comuns</b> e <b>Itens Especiais</b>. Cada item possui um Peso, que é determinado pelo espaço ocupado, e pela massa do objeto. A seguir, estão listadas as duas categorias:</p>
@@ -915,7 +934,7 @@
     
     <h3>Lista de Ações de Movimento Furtivo:</h3>
     <ul id="lista-acoes-movimento-furtivo">
-      <li><b>Discreta:</b> Uma Ação que não tem riscos de chamar atenção (<em>não é necessário</em> fazer teste de Furtividade; <b>Alerta 4</b> precisa de teste de <b>Furtividade DT Normal</b>), como tentar ouvir uma conversa, olhar um objeto discretamente, ficar parado, entre outras.</li>
+      <li><b>Discreta:</b> Uma Ação que não tem riscos de chamar atenção (<em>não é necessário</em> fazer teste de Furtividade; <b>Alerta 4</b> precisa de teste de <b>Furtividade DT Normal</b>. Fracasso aumenta <b>+1 no Alerta</b>), como tentar ouvir uma conversa, olhar um objeto discretamente, ficar parado, entre outras.</li>
       <li><b>Arriscada:</b> Uma Ação que tem risco de chamar atenção (é necessário fazer teste de <b>Furtividade DT Normal</b>; <b>Alerta 4</b> precisa de teste de <b>Furtividade DT Bom</b>. Fracasso aumenta <b>+1 no Alerta</b>), como atravessar uma sala ocupada, seguir alguém, abrir uma porta, mexer em uma estante, entre outras.</li>
       <li><b>Barulhenta:</b> Uma Ação que tem alto risco de chamar atenção (é necessário fazer teste de <b>Furtividade DT Extremo</b>; <b>Alerta 4</b> é <em>impossível ter Sucesso</em>. Fracasso aumenta <b>+3 no Alerta</b>), como arrombar uma porta, correr, quebrar uma janela, entre outras.</li>
     </ul>
@@ -932,8 +951,17 @@
     <br>
     <p>Após decidir, o <b>Agente</b> rola uma quantidade de d20 para a Perícia igual ao seu <b>valor no Atributo + 1d20 por Nível da Perícia do Ajudante</b>.</p>
     <br>
-    <p>Se o Ajudante tiver um <b>Nível de Perícia igual a 4</b>, ao invés de acrescentar +3d20 no teste do Agente, ele adiciona +2d20 e +2 na Perícia do Agente naquela rolagem.</p>
-    <br><br>
+    
+    <h3>Lista de Níveis de ajuda:</h3>
+    <ul id="lista-ajuda">
+      <li><b>Nível 0:</b> <b>-1d20</b> no teste.</li>
+      <li><b>Nível 1:</b> <b>+0d20</b> no teste.</li>
+      <li><b>Nível 2:</b> <b>+1d20</b> no teste.</li>
+      <li><b>Nível 3:</b> <b>+2d20</b> no teste.</li>
+      <li><b>Nível 4:</b> <b>+2d20</b> no teste e <b>+2</b> na Perícia.</li>
+    </ul>
+    <br>
+
     <p>Em certas situações, todos os personagens irão querer/precisar fazer Ações em conjunto, como na mecânica de Movimento Furtivo vista anteriormente. Nessas situações, o mestre deve usar da criatividade para criar mecânicas novas que favoreçam o andamento da Cena, podendo ou não se basear nas mecânicas já existentes nesse sistema.</p>
 
     <h2 id="acoes-prolongadas">Ações Prolongadas</h2>
@@ -945,12 +973,89 @@
     <br>
     <p>Em alguns casos específicos, um personagem pode tentar ganhar <b>2 Sucessos</b> de uma só vez na rodada. Para isso, ele deve gastar <b>1 PV ou 1 PD</b> (a depender da situação), e fazer o teste da Ação. Se tiver <b>Sucesso</b>, ele ganha <b>2 Sucessos</b> de uma só vez; Se <b>Fracassar</b>, ele obtém <b>2 Fracassos</b> de uma só vez.</p>
 
-    <h2 id="destrancar-arrombar">Destrancar e Arrombar</h2>
-    <p></p>
+    <h2 id="destrancar">Destrancar</h2>
+    <p>Há situações nas quais os personagens poderão se ver diante de um obstáculo impedindo seu avanço, como um cofre que precisa ser destrancado, ou uma porta trancada por exemplo.</p>
+    <br>
+    <p>Se o obstáculo não for um puzzle a ser resolvido (como a senha de um cofre que pode ser descoberta investigando), nesses casos, o mestre pode aplicar a regra de <b>Destrancar</b>.</p>
+    <br>
+    <p>Para <b>Destrancar</b>, o mestre pode definir o quão difícil é Destrancar o objeto, e baseado na dificuldade, rolar uma quantidade de dados (podem ser de d4 a d10).</p>
+    <br>
+    <p>Após fazer essa rolagem, o mestre deve guardar a ordem que ele quer para si mesmo, e deve pedir para que o personagem que vai tentar Destrancar <b>adivinhar</b> os valores dos dados que ele jogou.</p>
+    <br>
+    <p>Por exemplo, o mestre rola 1d4 e 2d6 para determinar os valores da tranca de uma porta (resultados 2, 5, e 3 respectivamente). Após isso, o mestre deve informar ao jogador que a tranca tem 1d4 e 2d6 para serem descobertos.</p>
+    <br>
+    <p>Então, o jogador deve selecionar esses dados e tentar adivinhar exatamente a ordem dos resultados (não precisa descobrir a ordem dos dados, apenas se a mesa escolher uma dificuldade maior para essa mecânica).</p>
+    <br>
+    <p>Baseado nos valores dos dados que o jogador determinar (por exemplo: 4, 3, e 3 respectivamente), o mestre deve dizer para cada valor a relação que ele tem com os valores corretos. O mestre só pode falar <b>Menor</b>, <b>Igual</b> ou <b>Maior</b> para cada um dos valores (essas 3 falas podem variar de mesa para mesa, podendo escolher dificultar a mecânica e falar por exemplo Tic, Tac, e Toc).</p>
+    <br>
+    <p>Nesse exemplo, o mestre diz: <b>Maior</b> para o valor 4 (corresponde ao 2), <b>Menor</b> para o valor 3 (corresponde ao 5), e <b>Igual</b> para o valor 3 (corresponde ao 3).</p>
+    <br>
+    <p>Existe um número máximo de tentativas que um personagem pode tentar para Destrancar. Essa quantidade é baseada no Nível da Perícia Crime do personagem.</p>
+    <br>
+
+    <h3>Lista de tentativas de Destrancar:</h3>
+    <ul id="lista-tentativas-destrancar">
+      <li><b>Crime Nível 0 (1-3):</b> <b>3 tentativas</b> se houver pelo menos 1d10 na tranca; <b>2 tentativas</b> se houver pelo menos 1d8 na tranca; <b>1 tentativa</b> se houver pelo menos 1d6 na tranca; 1 <b>tentativa</b> se houver apenas 1d4 na tranca.</li>
+      <li><b>Crime Nível 1 (4-6):</b> <b>4 tentativas</b> se houver pelo menos 1d10 na tranca; <b>3 tentativas</b> se houver pelo menos 1d8 na tranca; <b>2 tentativas</b> se houver pelo menos 1d6 na tranca; 1 <b>tentativa</b> se houver apenas 1d4 na tranca.</li>
+      <li><b>Crime Nível 2 (7-9):</b> <b>5 tentativas</b> se houver pelo menos 1d10 na tranca; <b>4 tentativas</b> se houver pelo menos 1d8 na tranca; <b>3 tentativas</b> se houver pelo menos 1d6 na tranca; 2 <b>tentativas</b> se houver apenas 1d4 na tranca.</li> 
+      <li><b>Crime Nível 3 (10-12):</b> <b>6 tentativas</b> se houver pelo menos 1d10 na tranca; <b>5 tentativas</b> se houver pelo menos 1d8 na tranca; <b>4 tentativas</b> se houver pelo menos 1d6 na tranca; 3 <b>tentativas</b> se houver apenas 1d4 na tranca.</li>
+      <li><b>Crime Nível 4 (13-14):</b> <b>7 tentativas</b> se houver pelo menos 1d10 na tranca; <b>6 tentativas</b> se houver pelo menos 1d8 na tranca; <b>5 tentativas</b> se houver pelo menos 1d6 na tranca; 4 <b>tentativas</b> se houver apenas 1d4 na tranca.</li>
+    </ul>
+    <br>
+
+    <p>Se após as tentativas, o personagem não conseguir Destrancar e outro personagem, ou o mesmo, quiser tentar de novo, eles terão que gastar <b>1 PD</b> e terão apenas <b>+1 tentativa</b>. A cada nova tentativa, o <b>número de PD's gasto</b> aumenta em <b>+1</b> (no caso descrito, após tentar novamente e fracassar, os personagens terão que gastar <b>2 PD</b> para +1 tentativa).</p>
+    <br>
+    <p>O mestre pode ainda aplicar essa mecânica a momentos em que a tranca é baseada em números, e há dicas dos valores necessários, limitando a quantidade de tentativas para que os personagens tentem Destrancar o obstáculo.</p>
+
+    <h2 id="arrombar">Arrombar</h2>
+    <p>Além de tentar Destrancar, os personagens podem escolher tentar <b>Arrombar</b>, que é forçar para que uma porta abra por exemplo.</p>
+    <br>
+    <p>Caso isso aconteça, o personagem que tentar <b>Arrombar</b> deve gastar <b>1 PV</b> e fazer um teste de <b>Atletismo DT Sucesso definido pelo obstáculo</b>.</p>
+    <br>
+    <p>Se o personagem tiver <b>Sucesso</b>, o obstáculo é quebrado; Se tiver um <b>Fracasso</b>, pode facilitar o teste em <b>1 nível de Sucesso</b> caso tenha tido um <b>Sucesso Normal ou Bom</b> no seu teste (por exemplo, se o obstáculo precisar de um <b>Sucesso Bom</b>, e o personagem teve <b>Sucesso Normal</b>, <em>diminui</em> o <b>Sucesso</b> necessário para <b>Normal</b>).</p>
 
     <h2 id="invadir-sistema">Invadir Sistema</h2>
+    <p>Essa mecânica pode ser usada para situações em que um personagem está tentando vencer um firewall ou algum tipo de defesa desse sistema.</p>
+    <br>
+    <p>Aplicando essa mecânica, o personagem que está tentando <b>Invadir o Sistema</b> deve a cada rodada fazer um teste de <b>Área - Computação DT Sucesso definido pela dificuldade de acessar o sistema</b>.</p>
+    <br>
+    <p>Tendo <b>Sucesso</b>, o personagem aplica um dano de <b>1d6 Pontos de Resistência (PR)</b> na defesa do sistema (Extremo causa <b>dano máximo</b>); Se tiver um <b>Fracasso</b>, sofre um dano de 1 PD.</p>
+    <br>
+    <p>Se a defesa do sistema não sofrer <em>nenhum dano</em> durante <b>1 rodada</b>, ela <b>recupera 2 PR</b>.</p>
+    <br>
+    <p>A cada rodada durante essa mecânica, acontecerá um <b>Evento</b>, que são situações que mudam algumas coisas durante aquela rodada. O mestre rolará 1d8 para decidir qual o <b>Evento</b> a cada novo início de rodada.</p>
+    <br>
+
+    <h3>Lista de Eventos:</h3>
+    <ul id="lista-eventos-invadir-sistema">
+      <li><b>Evento 1: Acessível</b> - O sistema torna-se mais acessível durante a rodada, porém causa mais dano se Fracassar.
+        <br>
+        +2 de dano durante a rodada.</li>
+      <li><b>Evento 2: Conveniente</b> - Seu aparelho começa a travar e torna mais difícil a tentativa de acesso ao sistema.
+        <br>
+        A DT do teste aumenta em 1 nível.</li>
+      <li><b>Evento 3: Vírus</b> - Vários anúncios e propagandas começam a aparecer na tela do aparelho do personagem.
+        <br>
+        O personagem deve fazer um teste de Reflexo DT Sucesso Normal para fechar todas as abas e continuar a invasão. Se fracassar perde a rodada.</li>
+      <li><b>Evento 4: Desconectado</b> - Um cabo do seu aparelho se desconecta.
+        <br>      
+        O personagem perde a rodada reconectando o cabo, ou pede ajuda para que outro personagem reconecte o cabo por ele.</li>
+      <li><b>Evento 5: Contra-ataque</b> - O sistema tenta bloquear o acesso do personagem ao seu aparelho.
+        <br>
+        O personagem deve fazer um teste de Área - Computação DT Sucesso Bom para evitar ser invadido. Se tiver um Sucesso Extremo, dá 6 de dano de PR na defesa do sistema; Se Fracassar, sofre 2 PD.</li>
+      <li><b>Evento 6: Minucioso</b> - O sistema fica bem mais difícil de ser acessado, e o personagem deve ficar atento para não Fracassar.
+        <br>
+        Em caso de Fracasso, a defesa do sistema recupera +1d6 de PR.</li>
+      <li><b>Evento 7: Defesa Falha</b> - A defesa do sistema falha por um momento, deixando a oportunidade para que seja invadida.
+        <br>
+        A DT do teste diminui em 1 nível.</li>
+      <li><b>Evento 8: Senha</b> - Durante a rodada, o sistema exige uma senha com uma dica para o personagem.
+        <br>
+        O jogador tem 15 segundos para resolver um mini-puzzle fornecido pelo mestre, como uma <em>charada</em>, <em>o que é o que é</em>, <em>raciocínio lógico</em>, entre outras. Se o jogador acertar, dá 1d6 de dano de PR na defesa do sistema.</li>
+    </ul>
 
     <h2 id="perseguicoes">Perseguições</h2>
+    <p></p>
 
     <h2 id="condicoes">Condições</h2>
 
