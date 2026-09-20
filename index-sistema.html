@@ -676,7 +676,7 @@
     <p>Os itens são objetos que um personagem pode portar ou possuir, cada um tendo funções diferentes entre si. Os itens são separados em 2 categorias: <b>Itens Comuns</b> e <b>Itens Especiais</b>. Cada item possui um Peso, que é determinado pelo espaço ocupado, e pela massa do objeto. A seguir, estão listadas as duas categorias:</p>
     <br>
     <h3>Itens Comuns:</h3>
-    <ul id="lista-itens-comuns">
+    <ul id="lista-itens">
       <li><b>Celular:</b> Um pequeno dispositivo eletrônico usado para fazer chamadas, enviar mensagens e acessar ferramentas como lanterna e câmera.
       <br>
       Peso: 0,5.</li>
@@ -686,7 +686,7 @@
     </ul>
     <br>
     <h3>Itens Especiais:</h3>
-    <ul id="lista-itens-especiais">
+    <ul id="lista-itens">
 
     </ul>
 
@@ -862,8 +862,8 @@
 
       <li><b>Reações a Ações de Ataque:</b>
         <ul id="sub-lista-acoes-combate">
-          <li><b>Esquivar:</b> O personagem desvia de um Ataque sofrido. Para isso, deve fazer um teste de <b>Reflexo</b>, precisando <b>vencer</b> para desviar do ataque (não é possível Esquivar de um tiro de uma arma de fogo ou precisão).</li>
-          <li><b>Bloquear:</b> O personagem resiste ao Ataque fisicamente. Para isso, deve fazer um teste de <b>Fortitude</b>, precisando <b>empatar</b> para bloquear o ataque (não é possível Bloquear um tiro de uma arma de fogo ou precisão).</li>
+          <li><b>Esquivar:</b> O personagem desvia de um Ataque sofrido. Para isso, deve fazer um teste de <b>Reflexo</b>, precisando <b>vencer</b> para desviar do ataque (não é possível Esquivar de um tiro de uma Arma de Fogo ou Precisão).</li>
+          <li><b>Bloquear:</b> O personagem resiste ao Ataque fisicamente. Para isso, deve fazer um teste de <b>Fortitude</b>, precisando <b>empatar</b> para bloquear o ataque (não é possível Bloquear um tiro de uma Arma de Fogo ou Precisão).</li>
           <li><b>Contra-atacar:</b> O personagem contra-ataca um alvo que acabou de fazer um Ataque. Para fazer isso, deve fazer um teste de <b>Luta</b> (ou outra perícia situacional). Se <b>vencer</b>, acerta o contra-ataque; Se <b>empatar</b>, o atacante dá metade do dano do Ataque e o defensor dá metade do dano do Contra-ataque; Se <b>perder</b>, sofre o dano do Ataque e tem uma desvantagem de -1d20 no próximo teste de Perícia (não é possível Contra-atacar um ataque a distância).</li>
           <li><b>Intrometer-se:</b> O personagem se põe na frente de um alvo a alcance Pessoal que está prestes a sofrer um Ataque. Para isso, deve fazer um teste de <b>Reflexo DT Sucesso Bom</b> para se pôr a frente do alvo.</li>
         </ul>
@@ -879,15 +879,15 @@
     </ul>
     <br><br>
 
-    <p>Além das Ações, também há tipos de <b>Cobertura/Camuflagem</b> que um personagem pode obter para se proteger melhor dos Ataques.</p>
+    <p>Além das Ações, também há tipos de <b>Proteções</b> que um personagem pode obter para se proteger melhor dos Ataques, como <b>Coberturas</b> e <b>Camuflagens</b>.</p>
     <br>
 
-    <h3>Lista de Coberturas:</h3>
-    <ul id="lista-coberturas">
-      <li><b>Cobertura Parcial:</b> O personagem está atrás de algum sólido que cobre parcialmente seu corpo. Ele recebe vantagem de <b>+1d20</b> para <b>Reagir</b> a Ataques à distância.</li>
-      <li><b>Cobertura Total:</b> O personagem está totalmente coberto por algum sólido. Ele recebe vantagem de <b>+1d20 e +2 na Perícia</b> para <b>Reagir</b> a Ataques à distância.</li>
+    <h3>Lista de Proteções:</h3>
+    <ul id="lista-protecoes">
+      <li><b>Cobertura Parcial:</b> O personagem está atrás de algum sólido que cobre parcialmente seu corpo. Ele recebe vantagem de <b>+1d20</b> para <b>Reagir</b> a Ataques à distância, e pode Reagir a tiros de Armas de Fogo e Precisão.</li>
+      <li><b>Cobertura Total:</b> O personagem está totalmente coberto por algum sólido. Ele fica <b>imune</b> a Ataques diretos.</li>
       <li><b>Camuflagem Parcial:</b> O personagem está parcialmente coberto por algum tipo de gás ou fumaça que bloqueia uma visão completa dele. Qualquer um que tentar Atacá-lo recebe desvantagem de <b>-1d20 no Ataque</b>.</li>
-      <li><b>Camuflagem Total:</b> O personagem está totalmente camuflado por algum tipo de gás ou fumaça. Qualquer um que tentar Atacá-lo recebe desvantagem de <b>-2d20 no Ataque</b>.</li>
+      <li><b>Camuflagem Total:</b> O personagem está totalmente camuflado por algum tipo de gás ou fumaça, ficando <b>invisível</b> para outros personagens. Um personagem com <b>Camuflagem Total</b> pode dar <b>Ataques Desprevinidos</b> em inimigos, e não pode ser <b>visto</b>.</li>
     </ul>
 
     <h2 id="acoes-gerais">Ações Gerais</h2>
@@ -1101,14 +1101,14 @@
       <li><b>ASFIXIADO:</b> O personagem não consegue respirar. Enquanto está <b>Asfixiado</b>, o personagem pode prender a respiração por um número de turnos igual ao seu Físico. Depois disso, deve fazer um teste de <b>Fortitude DT Normal + 1 nível por teste anterior</b>. Se Fracassar, cai <b>Inconsciente</b> e perde <b>1d6 de PV</b> por turno até conseguir respirar novamente ou morrer.</li>
       <li><b>ATORDOADO:</b> O personagem fica <b>Desprevenido</b> e não pode fazer ações.</li>
       <li><b>CAÍDO:</b> Deitado no chão. O personagem sofre desvantagem de <b>-2d20 para fazer Ataques corpo a corpo</b> e seu <b>Deslocamento</b> é reduzido a <b>1,5 metros</b>. Além disso, sofre desvantagem de <b>-1d20 para Reagir a Ataques corpo a corpo</b>, mas recebe <b>+1d20 para Reagir a ataques à distância</b>.</li>
-      <li><b>CEGO:</b> O personagem fica <b>Desprevenido</b> e <b>Lento</b>, não pode fazer testes de <b>Percepção</b> para observar e sofre desvantagem de <b>-2d20 em testes de Perícias com Atributo base Físico</b>. Todos os alvos de seus Ataques recebem <b>Camuflagem Total</b>. Você é considerado <b>Cego</b> enquanto estiver em uma área de escuridão total, a menos que algo lhe permita perceber no escuro.</li>
-      <li><b>CONFUSO:</b> </li>
-      <li><b>DEBILITADO:</b> </li>
-      <li><b>DESPREVINIDO:</b> </li>
-      <li><b>DOENTE:</b> </li>
-      <li><b>EM CHAMAS:</b> </li>
-      <li><b>ENJOADO:</b> </li>
-      <li><b>ENLOUQUECENDO:</b> </li>
+      <li><b>CEGO:</b> O personagem fica <b>Desprevenido</b> e <b>Lento</b>, não pode fazer testes de <b>Percepção</b> para observar e sofre desvantagem de <b>-2d20 em testes de Perícias com Atributo base Físico</b>. Todos os alvos de seus Ataques recebem <b>Camuflagem Total</b>. Um personagem é considerado <b>Cego</b> enquanto estiver em uma área de escuridão total, a menos que algo lhe permita perceber no escuro, ou se estiver com os olhos fechados por exemplo.</li>
+      <li><b>CONFUSO:</b> O personagem comporta-se de modo aleatório. O jogador rola <b>1d6</b> no início de seus turnos: <b>1</b> - Movimenta-se em uma direção escolhida em uma rolagem de 1d8; <b>2-3</b> - Não pode fazer ações e fica balbuceando de forma incoerente; <b>4-5</b> - Usa as mãos (ou uma arma que estiver empunhando) para atacar o ser mais próximo, ou a si mesmo se estiver sozinho (nesse caso, apenas o jogador apenas rola o dano); <b>6</b> - A Condição termina e pode agir normalmente.</li>
+      <li><b>DEBILITADO:</b> O personagem sofre desvantagem de <b>-2d20 em testes de Perícia com Atributo base Físico</b>.</li>
+      <li><b>DESPREVINIDO:</b> Despreparado para Reagir. O personagem sofre desvantagem de <b>-2d20 em Reações</b>. Um personagem fica <b>Desprevinido</b> contra inimigos que não possa perceber.</li>
+      <li><b>DOENTE:</b> Sob efeito de uma doença.</li>
+      <li><b>EM CHAMAS:</b> O personagem está pegando fogo. No início de suas rodadas, sofre <b>1d6 de dano de fogo</b>. O personagem pode gastar uma <b>Ação Completa</b> para apagar o fogo com as mãos. Imersão em água também apaga as chamas.</li>
+      <li><b>ENJOADO:</b> O personagem só pode realizar <b>uma Ação de cada tipo na sua rodada em Combates</b>, e demora <b>2 turnos para fazer uma Ação Principal em outras Cenas</b>.</li>
+      <li><b>ENLOUQUECENDO:</b> Se iniciar <b>3 rodadas Enlouquecendo</b> na mesma Cena (não necessariamente consecutivos), você fica insano - seu personagem se torna um NPC. A Condição pode ser encerrada com um teste de Diplomacia DT Sucesso Extremo, ou por qualquer efeito que cure pelo menos 1 PD.</li>
       <li><b>ENREDADO:</b> </li>
       <li><b>ENVENENADO:</b> </li>
       <li><b>ESMORECIDO:</b> </li>

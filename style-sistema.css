@@ -150,6 +150,15 @@ a{
 #lista-ocupacoes-personagem li{
   margin-top: 20px;
 }
+#lista-itens{
+  font-size: 16px;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+#lista-itens li{
+  margin-top: 20px;
+}
 #lista-consequencias-idade{
   font-size: 16px;
   max-width: 500px;
@@ -226,13 +235,13 @@ a{
 #sub-lista-acoes-combate li{
   margin-top: 5px;
 }
-#lista-coberturas{
+#lista-protecoes{
   font-size: 16px;
   max-width: 600px;
   margin: 0 auto;
   line-height: 1.5;
 }
-#lista-coberturas li{
+#lista-protecoes li{
   margin-top: 5px;
 }
 #lista-acoes-gerais{
@@ -378,6 +387,9 @@ a{
     grid-template-rows: repeat(1, auto);
   }
   #lista-ocupacoes-personagem li{
+    max-width: 95%;
+  }
+  #lista-itens li{
     max-width: 95%;
   }
   #lista-consequencias-idade li{
