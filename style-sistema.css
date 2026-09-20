@@ -216,7 +216,7 @@ a{
 }
 #lista-acoes-combate{
   font-size: 16px;
-  max-width: 600px;
+  max-width: 800px;
   margin: 0 auto;
   line-height: 1.5;
 }
@@ -226,9 +226,18 @@ a{
 #sub-lista-acoes-combate li{
   margin-top: 5px;
 }
-#lista-acoes-gerais{
+#lista-coberturas{
   font-size: 16px;
   max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+#lista-coberturas li{
+  margin-top: 5px;
+}
+#lista-acoes-gerais{
+  font-size: 16px;
+  max-width: 700px;
   margin: 0 auto;
   line-height: 1.5;
 }
@@ -289,6 +298,39 @@ a{
 }
 #lista-eventos-invadir-sistema li{
   margin-top: 20px;
+}
+#lista-acoes-perseguicoes-cacador{
+  font-size: 16px;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+#lista-acoes-perseguicoes-cacador li{
+  margin-top: 20px;
+}
+#lista-acoes-perseguicoes-perseguido{
+  font-size: 16px;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+#lista-acoes-perseguicoes-perseguido li{
+  margin-top: 20px;
+}
+#lista-condicoes{
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(20, auto);
+  font-size: 16px;
+  max-width: 1000px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+#lista-condicoes li{
+  margin-top: 20px;
+}
+#lista-condicoes li:last-of-type{
+  margin-bottom: 40px;
 }
 
 /*Tela níveis e habilidades*/
@@ -359,6 +401,9 @@ a{
   #sub-lista-acoes-combate li{
     max-width: 95%;
   }
+  #lista-coberturas li{
+    max-width: 95%;
+  }
   #lista-acoes-gerais li{
     max-width: 95%;
   }
@@ -375,6 +420,20 @@ a{
     max-width: 95%;
   }
   #lista-eventos-invadir-sistema li{
+    max-width: 95%;
+  }
+  #lista-acoes-perseguicoes-cacador li{
+    max-width: 95%;
+  }
+  #lista-acoes-perseguicoes-perseguido li{
+    max-width: 95%;
+  }
+  #lista-condicoes{
+    display: grid;
+    grid-auto-flow: row;
+    grid-template-rows: repeat(1, auto);
+  }
+  #lista-condicoes li{
     max-width: 95%;
   }
 }

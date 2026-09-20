@@ -171,13 +171,13 @@
 
     <h2 id="tipos-sucesso">Tipos de sucesso</h2>
     <ul id="lista-explicacao-tipos-sucesso">
-      <li><b style="color: rgb(180, 0, 0);">DESASTRE DUPLO:</b> acontece se todos os resultados do teste forem 20 (mínimo 2d20). Gera consequências desvastadoras, como cair no chão e sofrer dano ao tentar esquivar, ou quebrar a perna ao tentar arrombar uma porta. O personagem sofre um dano mínimo de 1 PV e 1 PD.</li>
-      <li><b style="color: red;">DESASTRE:</b> acontece se o menor resultado do teste for 20. Pode gerar consequências horríveis, como quebrar um computador ao tentar consertá-lo, ou sofrer dano ao tentar arrombar uma porta.</li>
-      <li><b style="color: rgb(185,185,185);">FRACASSO:</b> acontece se o menor resultado do teste for maior que o valor da perícia usada. O personagem não consegue realizar a Ação.</li>
-      <li><b style="color: rgb(0,190,30);">NORMAL:</b> acontece se o menor resultado do teste for igual ou menor que o valor da perícia usada. O personagem realiza a Ação de maneira simples.</li>
-      <li><b style="color: rgb(0,140,245);">BOM:</b> acontece se o menor resultado do teste for igual ou menor que a metade, 1/2, do valor da perícia usada. O personagem realiza a Ação de uma forma excelente.</li>
-      <li><b style="color: rgb(255,100,0);">EXTREMO:</b> acontece se o menor resultado do teste for igual ou menor que 1/5 do valor da perícia usada. O personagem realiza a Ação de maneira esplêndida, praticamente perfeita.</li>
-      <li><b style="color: rgb(255,220,0);">EXTREMO DUPLO:</b> acontece se todos os resultados do teste forem iguais ou menores que 1/5 do valor da perícia usada (mínimo 2d20). O personagem realiza a Ação de maneira perfeita, ganhando certas vantagens.</li>
+      <li><b style="color: rgb(160,50,0);">DESASTRE DUPLO:</b> acontece se todos os resultados do teste forem 20 (mínimo 2d20). Gera consequências desvastadoras, como cair no chão e sofrer dano ao tentar esquivar, ou quebrar a perna ao tentar arrombar uma porta. O personagem sofre um dano mínimo de 1 PV e 1 PD.</li>
+      <li><b style="color: rgb(210,0,0);">DESASTRE:</b> acontece se o menor resultado do teste for 20. Pode gerar consequências horríveis, como quebrar um computador ao tentar consertá-lo, ou sofrer dano ao tentar arrombar uma porta.</li>
+      <li><b style="color: rgb(110,110,110);">FRACASSO:</b> acontece se o menor resultado do teste for maior que o valor da perícia usada. O personagem não consegue realizar a Ação.</li>
+      <li><b style="color: rgb(5,160,30);">NORMAL:</b> acontece se o menor resultado do teste for igual ou menor que o valor da perícia usada. O personagem realiza a Ação de maneira simples.</li>
+      <li><b style="color: rgb(0,75,175);">BOM:</b> acontece se o menor resultado do teste for igual ou menor que a metade, 1/2, do valor da perícia usada. O personagem realiza a Ação de uma forma excelente.</li>
+      <li><b style="color: rgb(210,85,0);">EXTREMO:</b> acontece se o menor resultado do teste for igual ou menor que 1/5 do valor da perícia usada. O personagem realiza a Ação de maneira esplêndida, praticamente perfeita.</li>
+      <li><b style="color: rgb(200,175,0);">EXTREMO DUPLO:</b> acontece se todos os resultados do teste forem iguais ou menores que 1/5 do valor da perícia usada (mínimo 2d20). O personagem realiza a Ação de maneira perfeita, ganhando certas vantagens.</li>
     </ul>
     
     <h2 id="testes-dano">Testes de Dano</h2>
@@ -825,7 +825,7 @@
 
       <li><b>Ação de Movimento:</b> O personagem se move em uma distância máxima igual ao seu Deslocamento.</li>
       
-      <li><b>Ações Especiais:</b>
+      <li><b>Ações Especiais:</b> Algumas Ações Adicionais que o personagem pode fazer durante a Cena.
         <ul id="sub-lista-acoes-combate">
           <li><b>Mirar:</b> O personagem passa um turno inteiro mirando o ataque, ganhando vantagem de +1d20 no próximo ataque ao alvo escolhido.</li>
           <li><b>Preparar:</b> O personagem guarda uma Ação, para que seja feita em qualquer rodada até o fim do turno (o jogador não pode mudar essa Ação, apenas desfazê-la).</li>
@@ -876,6 +876,18 @@
         </ul>
       </li>
 
+    </ul>
+    <br><br>
+
+    <p>Além das Ações, também há tipos de <b>Cobertura/Camuflagem</b> que um personagem pode obter para se proteger melhor dos Ataques.</p>
+    <br>
+
+    <h3>Lista de Coberturas:</h3>
+    <ul id="lista-coberturas">
+      <li><b>Cobertura Parcial:</b> O personagem está atrás de algum sólido que cobre parcialmente seu corpo. Ele recebe vantagem de <b>+1d20</b> para <b>Reagir</b> a Ataques à distância.</li>
+      <li><b>Cobertura Total:</b> O personagem está totalmente coberto por algum sólido. Ele recebe vantagem de <b>+1d20 e +2 na Perícia</b> para <b>Reagir</b> a Ataques à distância.</li>
+      <li><b>Camuflagem Parcial:</b> O personagem está parcialmente coberto por algum tipo de gás ou fumaça que bloqueia uma visão completa dele. Qualquer um que tentar Atacá-lo recebe desvantagem de <b>-1d20 no Ataque</b>.</li>
+      <li><b>Camuflagem Total:</b> O personagem está totalmente camuflado por algum tipo de gás ou fumaça. Qualquer um que tentar Atacá-lo recebe desvantagem de <b>-2d20 no Ataque</b>.</li>
     </ul>
 
     <h2 id="acoes-gerais">Ações Gerais</h2>
@@ -1055,9 +1067,73 @@
     </ul>
 
     <h2 id="perseguicoes">Perseguições</h2>
-    <p></p>
+    <p>A mecânica de Perseguições é uma mecânica para situações que os personagens precisem fugir de algum perigo que está os perseguindo.</p>
+    <br>
+    <p>Se uma Perseguição iniciar, o(s) <b>Caçador(es)</b> será(ão) o último a agir na rodada, ficando atrás do(s) <b>Perseguido(s)</b>.</p>
+    <br>
+    <p>Durante os turnos, o(s) Caçador(es) e o(s) Perseguido(s) podem fazer as Ações que estão a seguir.</p>
+    <br>
+
+    <h3>Lista de Ações de Perseguição de Caçador:</h3>
+    <ul id="lista-acoes-perseguicoes-cacador">
+      <li><b></b></li>
+      <li><b></b></li>
+      <li><b></b></li>
+    </ul>
+
+    <h3>Lista de Ações de Perseguição de Perseguido:</h3>
+    <ul id="lista-acoes-perseguicoes-perseguido">
+      <li><b></b></li>
+      <li><b></b></li>
+      <li><b></b></li>
+    </ul>
 
     <h2 id="condicoes">Condições</h2>
+    <p>As Condições são alterações que podem ser aplicadas em um personagem depois de alguma Ação sofrida.</p>
+    <br>
+
+    <h3>Lista de Condições:</h3>
+    <ul id="lista-condicoes">
+      <li><b>ABALADO:</b> O personagem sofre desvantagem de <b>-1d20</b> em testes de Perícia.</li>
+      <li><b>AGARRADO:</b> O personagem fica <b>Desprevinido</b> e <b>Imóvel</b>, sofre desvantagem de <b>-1d20 em testes de Ataque</b>, e só pode Atacar com <b>Armas Leves</b>. Se um personagem fizer um Ataque à distância contra um dos alvos envolvidos, há <b>50% de chance</b> de acertar o alvo errado.</li>
+      <li><b>ALQUEBRADO:</b> O custo de Habilidades aumenta em +1 PD para o personagem.</li>
+      <li><b>APAROVADO:</b> O personagem sofre desvantagem de <b>-2d20</b> em testes de Perícia e deve <b>fugir da fonte do medo</b> da maneira mais eficiente possível (pode parar de fugir se a perder de vista ou ficar a alcance médio). Se não puder fugir, pode agir normalmente, mas não pode se aproximar voluntariamente da fonte do medo.</li>
+      <li><b>ASFIXIADO:</b> O personagem não consegue respirar. Enquanto está <b>Asfixiado</b>, o personagem pode prender a respiração por um número de turnos igual ao seu Físico. Depois disso, deve fazer um teste de <b>Fortitude DT Normal + 1 nível por teste anterior</b>. Se Fracassar, cai <b>Inconsciente</b> e perde <b>1d6 de PV</b> por turno até conseguir respirar novamente ou morrer.</li>
+      <li><b>ATORDOADO:</b> O personagem fica <b>Desprevenido</b> e não pode fazer ações.</li>
+      <li><b>CAÍDO:</b> Deitado no chão. O personagem sofre desvantagem de <b>-2d20 para fazer Ataques corpo a corpo</b> e seu <b>Deslocamento</b> é reduzido a <b>1,5 metros</b>. Além disso, sofre desvantagem de <b>-1d20 para Reagir a Ataques corpo a corpo</b>, mas recebe <b>+1d20 para Reagir a ataques à distância</b>.</li>
+      <li><b>CEGO:</b> O personagem fica <b>Desprevenido</b> e <b>Lento</b>, não pode fazer testes de <b>Percepção</b> para observar e sofre desvantagem de <b>-2d20 em testes de Perícias com Atributo base Físico</b>. Todos os alvos de seus Ataques recebem <b>Camuflagem Total</b>. Você é considerado <b>Cego</b> enquanto estiver em uma área de escuridão total, a menos que algo lhe permita perceber no escuro.</li>
+      <li><b>CONFUSO:</b> </li>
+      <li><b>DEBILITADO:</b> </li>
+      <li><b>DESPREVINIDO:</b> </li>
+      <li><b>DOENTE:</b> </li>
+      <li><b>EM CHAMAS:</b> </li>
+      <li><b>ENJOADO:</b> </li>
+      <li><b>ENLOUQUECENDO:</b> </li>
+      <li><b>ENREDADO:</b> </li>
+      <li><b>ENVENENADO:</b> </li>
+      <li><b>ESMORECIDO:</b> </li>
+      <li><b>EXAUSTO:</b> </li>
+      <li><b>FASCINADO:</b> </li>
+      <li><b>FATIGADO:</b> </li>
+      <li><b>FRACO:</b> </li>
+      <li><b>FRUSTRADO:</b> </li>
+      <li><b>IMÓVEL:</b> </li>
+      <li><b>INCONSCIENTE:</b> </li>
+      <li><b>INDEFESO:</b> </li>
+      <li><b>LENTO:</b> </li>
+      <li><b>MACHUCADO:</b> </li>
+      <li><b>MORRENDO:</b> </li>
+      <li><b>OFUSCADO:</b> </li>
+      <li><b>PARALISADO:</b> </li>
+      <li><b>PASMO:</b> </li>
+      <li><b>PERTURBADO:</b> </li>
+      <li><b>PETRIFICADO:</b> </li>
+      <li><b>SANGRANDO:</b> </li>
+      <li><b>SURDO:</b> </li>
+      <li><b>SURPREENDIDO:</b> </li>
+      <li><b>VICIADO:</b> </li>
+      <li><b>VULNERÁVEL:</b> </li>
+    </ul>
 
   </div>
 
