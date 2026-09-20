@@ -88,7 +88,6 @@
           <li class="lista-subtopicos-sistema" data-tela="tela-pontos-ficha" data-alvo="pericias">Perícias</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-pontos-ficha" data-alvo="pontos-vitalidade">Pontos de Vitalidade (PV)</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-pontos-ficha" data-alvo="pontos-determinacao">Pontos de Determinação (PD)</li>
-          <li class="lista-subtopicos-sistema" data-tela="tela-pontos-ficha" data-alvo="pontos-credito">Pontos de Crédito (PC)</li>
         </ul>
       </li>
       <li id="criacao-personagem" class="topicos-sistema">
@@ -98,6 +97,7 @@
           <li class="lista-subtopicos-sistema" data-tela="tela-criacao-personagem" data-alvo="perfil-personagem">Perfil do Personagem</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-criacao-personagem" data-alvo="ocupacao-personagem">Ocupação do Personagem</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-criacao-personagem" data-alvo="atributos-pericias">Atributos e Perícias do Personagem</li>
+          <li class="lista-subtopicos-sistema" data-tela="tela-criacao-personagem" data-alvo="pontos-credito">Pontos de Crédito (PC)</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-criacao-personagem" data-alvo="itens-capacidade-carga">Itens e Capacidade de Carga</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-criacao-personagem" data-alvo="consequencias-idade">Consequências de Idade</li>
         </ul>
@@ -362,11 +362,6 @@
     <p><b>PD = 20 + Presença + Vontade / 2 (arredondado para baixo)</b></p>
     <br>
     <p>Um personagem pode perder PD usando Habilidades, sofrendo danos mentais, entre outros. Para recuperar PD, um personagem deve se acalmar, ou descansar. Há certas Condições que um personagem pode adquirir por conta de alterações no seu PD. Isso é abordado em <a id="ir-para-mecanicas-adicionais" href="#" onclick="abrirTelaSite('tela-mecanicas-adicionais')">Mecânicas Adicionais</a>.</p>
-
-    <h2 id="pontos-credito">Pontos de Crédito (PC)</h2>
-    <p>Os Pontos de Crédito, ou PC, são os pontos de finanças de um personagem, esses pontos podem ser usados para "comprar" itens, ou para gastar em outras atividades. O PC inicial é calculado como:</p>
-    <br>
-    <p><b>PC = </b></p>
 
   </div>
 
@@ -672,23 +667,439 @@
     <br>
     <p>Uma Perícia pode ser reduzida até <b>1 ponto</b>, com limite de soma de <b>15 pontos</b> abaixo de <b>4 pontos</b> nas Perícias (por exemplo, ter 1 ponto em uma Perícia faz com que a soma abaixo de 4 pontos seja 3 pontos).</p>
 
-    <h2 id="itens-capacidade-carga">Itens e Capacidade de Carga</h2>
-    <p>Os itens são objetos que um personagem pode portar ou possuir, cada um tendo funções diferentes entre si. Os itens são separados em 2 categorias: <b>Itens Comuns</b> e <b>Itens Especiais</b>. Cada item possui um Peso, que é determinado pelo espaço ocupado, e pela massa do objeto. A seguir, estão listadas as duas categorias:</p>
+    <h2 id="pontos-credito">Pontos de Crédito (PC)</h2>
+    <p>Os Pontos de Crédito, ou PC, são os pontos de finanças de um personagem, esses pontos podem ser usados para "comprar" itens durante a criação do personagem.</p>
     <br>
-    <h3>Itens Comuns:</h3>
-    <ul id="lista-itens">
-      <li><b>Celular:</b> Um pequeno dispositivo eletrônico usado para fazer chamadas, enviar mensagens e acessar ferramentas como lanterna e câmera.
-      <br>
-      Peso: 0,5.</li>
-      <li><b>Microfone:</b> Dispositivo portátil simples para gravação e transmissão de voz.
-        <br>
-        Peso: 0,5.</li>
-    </ul>
-    <br>
-    <h3>Itens Especiais:</h3>
-    <ul id="lista-itens">
+    <p>O PC inicial de um personagem é definido pela sua Ocupação, variando entre 6 a 14 Pontos de Crédito iniciais.</p>
 
-    </ul>
+    <h2 id="itens-capacidade-carga">Itens e Capacidade de Carga</h2>
+    <p>Os itens são objetos que um personagem pode portar ou possuir, cada um tendo funções diferentes entre si.</p>
+    <br>
+    <p>Os itens são separados em 2 categorias: <b>Itens Comuns</b> e <b>Itens Especiais</b>. Cada item possui um <b>Peso</b>, que é determinado pelo espaço ocupado, e pela massa do objeto.</p>
+    <br>
+    <p><b>Itens Comuns</b> são Itens que qualquer tipo de personagem pode obter, sendo bens que qualquer pessoa normalmente possui.</p>
+    <br>
+    <p><b>Itens Especiais</b> são Itens específicos de uma Ocupação, ou que podem ser obtidos com maior facilidade por um personagem naquela Ocupação.</p>
+    <br>
+    <p>Cada Item pode possuir <b>Compatibilidade</b> com uma Ocupação, diminuindo seu custo em <b>-1 PC</b> caso o personagem seja da mesma Ocupação da Compatibilidade.</p>
+    <br>
+    <p>O jogador ainda pode escolher um Item Especial para seu personagem mesmo que ele não esteja entre as Ocupações com Compatibilidade, mas deve <em>justificar</em> para o mestre o porquê do personagem possuir aquele Item.</p>
+    <br>
+
+    <h3>Itens Comuns:</h3>
+    <table class="tabela-itens">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Peso</th>
+          <th>Custo</th>
+          <th>Compatibilidade</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Celular</td>
+          <td>0,5</td>
+          <td>1 PC</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>Mochila</td>
+          <td>-1,5</td>
+          <td>1 PC</td>
+          <td>Andarilho, Estudante, Guia</td>
+        </tr>
+        <tr>
+          <td>Lanterna</td>
+          <td>0,5</td>
+          <td>1 PC</td>
+          <td>Andarilho, Bombeiro, Guia, Policial</td>
+        </tr>
+        <tr>
+          <td>Guarda-chuva/Capa de chuva</td>
+          <td>1</td>
+          <td>1 PC</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>Power bank</td>
+          <td>0,5</td>
+          <td>1 PC</td>
+          <td>Estudante, Jornalista, Programador</td>
+        </tr>
+        <tr>
+          <td>Fone de ouvido</td>
+          <td>0,1</td>
+          <td>1 PC</td>
+          <td>Estudante, Músico</td>
+        </tr>
+        <tr>
+          <td>Rádio portátil</td>
+          <td>0,5</td>
+          <td>1 PC</td>
+          <td>Bombeiro, Guia, Marinheiro, Policial</td>
+        </tr>
+        <tr>
+          <td>Caixa de ferramentas simples</td>
+          <td>2</td>
+          <td>2 PC</td>
+          <td>Eletricista, Engenheiro, Mecânico, Operário</td>
+        </tr>
+        <tr>
+          <td>Kit básico de primeiros socorros</td>
+          <td>1</td>
+          <td>2 PC</td>
+          <td>Enfermeiro, Médico, Socorrista, Veterinário</td>
+        </tr>
+        <tr>
+          <td>Binóculos</td>
+          <td>0,5</td>
+          <td>2 PC</td>
+          <td>Caçador de recompensas, Guia, Jornalista, Policial</td>
+        </tr>
+        <tr>
+          <td>Câmera digital simples</td>
+          <td>0,5</td>
+          <td>2 PC</td>
+          <td>Designer, Fotógrafo, Jornalista</td>
+        </tr>
+        <tr>
+          <td>Gravador de áudio</td>
+          <td>0,2</td>
+          <td>2 PC</td>
+          <td>Detetive, Jornalista, Músico</td>
+        </tr>
+        <tr>
+          <td>Notebook</td>
+          <td>1,5</td>
+          <td>2 PC</td>
+          <td>Cientista, Estudante, Pesquisador, Professor, Programador</td>
+        </tr>
+        <tr>
+          <td>Tablet</td>
+          <td>0,5</td>
+          <td>2 PC</td>
+          <td>Designer, Empresário, Estudante, Professor</td>
+        </tr>
+        <tr>
+          <td>Instrumento musical simples</td>
+          <td>2</td>
+          <td>2 PC</td>
+          <td>Artista, Músico</td>
+        </tr>
+        <tr>
+          <td>Bicicleta</td>
+          <td>-</td>
+          <td>2 PC</td>
+          <td>Andarilho, Atleta, Estudante</td>
+        </tr>
+        <tr>
+          <td>Barraca e equipamento básico de camping</td>
+          <td>3</td>
+          <td>2 PC</td>
+          <td>Andarilho, Guia, Habitante de comunidade tradicional</td>
+        </tr>
+        <tr>
+          <td>Console portátil</td>
+          <td>0,5</td>
+          <td>2 PC</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>Smartphone avançado</td>
+          <td>0,5</td>
+          <td>2 PC</td>
+          <td>Empresário, Jornalista, Programador</td>
+        </tr>
+        <tr>
+          <td>Televisão</td>
+          <td>-</td>
+          <td>2 PC</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>Equipamento simples de academia</td>
+          <td>-</td>
+          <td>2 PC</td>
+          <td>Atleta, Lutador, Personal trainer</td>
+        </tr>
+        <tr>
+          <td>Computador de mesa</td>
+          <td>-</td>
+          <td>3 PC</td>
+          <td>Designer, Estudante, Pesquisador, Programador</td>
+        </tr>
+        <tr>
+          <td>Motocicleta</td>
+          <td>-</td>
+          <td>4 PC</td>
+          <td>Motorista, Policial, Taxista</td>
+        </tr>
+        <tr>
+          <td>Automóvel simples</td>
+          <td>-</td>
+          <td>6 PC</td>
+          <td>Empresário, Motorista, Taxista</td>
+        </tr>
+        <tr>
+          <td>Automóvel de maior valor</td>
+          <td>-</td>
+          <td>8 PC</td>
+          <td>Empresário</td>
+        </tr>
+      </tbody>
+    </table>
+    <br>
+
+    <h3>Itens Especiais:</h3>
+    <table class="tabela-itens">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Peso</th>
+          <th>Custo</th>
+          <th>Compatibilidade</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Algemas</td>
+          <td>0,5</td>
+          <td>2 PC</td>
+          <td>Caçador de recompensas, Policial</td>
+        </tr>
+        <tr>
+          <td>Cassetete</td>
+          <td>1</td>
+          <td>2 PC</td>
+          <td>Policial, Soldado</td>
+        </tr>
+        <tr>
+          <td>Kit de maquiagem profissional</td>
+          <td>1</td>
+          <td>2 PC</td>
+          <td>Artista, Ator</td>
+        </tr>
+        <tr>
+          <td>Kit de adestramento</td>
+          <td>1,5</td>
+          <td>2 PC</td>
+          <td>Tratador de zoológico, Treinador de animais, Vaqueiro</td>
+        </tr>
+        <tr>
+          <td>Equipamento religioso especializado</td>
+          <td>1</td>
+          <td>2 PC</td>
+          <td>Líder de culto, Membro do clero, Missionário</td>
+        </tr>
+        <tr>
+          <td>Ferramentas de tatuagem</td>
+          <td>1,5</td>
+          <td>3 PC</td>
+          <td>Tatuador</td>
+        </tr>
+        <tr>
+          <td>Kit de body piercing</td>
+          <td>1</td>
+          <td>3 PC</td>
+          <td>Body Piercer</td>
+        </tr>
+        <tr>
+          <td>Kit profissional de mecânica</td>
+          <td>3</td>
+          <td>3 PC</td>
+          <td>Engenheiro, Mecânico</td>
+        </tr>
+        <tr>
+          <td>Kit profissional de eletricista</td>
+          <td>2</td>
+          <td>3 PC</td>
+          <td>Eletricista, Engenheiro</td>
+        </tr>
+        <tr>
+          <td>Equipamento de escalada</td>
+          <td>2,5</td>
+          <td>3 PC</td>
+          <td>Alpinista, Bombeiro</td>
+        </tr>
+        <tr>
+          <td>Equipamento profissional de fotografia</td>
+          <td>2</td>
+          <td>3 PC</td>
+          <td>Fotógrafo, Jornalista</td>
+        </tr>
+        <tr>
+          <td>Equipamento profissional de gravação</td>
+          <td>2,5</td>
+          <td>3 PC</td>
+          <td>Jornalista, Músico</td>
+        </tr>
+        <tr>
+          <td>Instrumento musical profissional</td>
+          <td>2</td>
+          <td>3 PC</td>
+          <td>Músico</td>
+        </tr>
+        <tr>
+          <td>Kit de disfarce</td>
+          <td>1</td>
+          <td>3 PC</td>
+          <td>Ator, Criminoso, Espião</td>
+        </tr>
+        <tr>
+          <td>Kit de arrombamento</td>
+          <td>0,5</td>
+          <td>3 PC</td>
+          <td>Criminoso, Detetive, Espião</td>
+        </tr>
+        <tr>
+          <td>Kit de sobrevivência</td>
+          <td>2,5</td>
+          <td>3 PC</td>
+          <td>Andarilho, Guia, Habitante de comunidade tradicional, Soldado</td>
+        </tr>
+        <tr>
+          <td>Equipamento veterinário</td>
+          <td>2</td>
+          <td>3 PC</td>
+          <td>Tratador de zoológico, Veterinário</td>
+        </tr>
+        <tr>
+          <td>Drone</td>
+          <td>1,5</td>
+          <td>3 PC</td>
+          <td>Engenheiro, Fotógrafo, Jornalista</td>
+        </tr>
+        <tr>
+          <td>Rádio profissional</td>
+          <td>0,5</td>
+          <td>3 PC</td>
+          <td>Bombeiro, Oficial militar, Policial, Soldado</td>
+        </tr>
+        <tr>
+          <td>Material profissional de pintura/escultura</td>
+          <td>2,5</td>
+          <td>3 PC</td>
+          <td>Artesão, Artista</td>
+        </tr>
+        <tr>
+          <td>Equipamento culinário profissional</td>
+          <td>2,5</td>
+          <td>3 PC</td>
+          <td>Cozinheiro</td>
+        </tr>
+        <tr>
+          <td>Maleta profissional de trabalho</td>
+          <td>1,5</td>
+          <td>3 PC</td>
+          <td>Advogado, Contador, Empresário</td>
+        </tr>
+        <tr>
+          <td>Equipamento avançado de navegação</td>
+          <td>1,5</td>
+          <td>3 PC</td>
+          <td>Guia, Marinheiro, Piloto</td>
+        </tr>
+        <tr>
+          <td>Kit médico profissional</td>
+          <td>2</td>
+          <td>4 PC</td>
+          <td>Enfermeiro, Médico, Socorrista</td>
+        </tr>
+        <tr>
+          <td>Kit de laboratório portátil</td>
+          <td>3</td>
+          <td>4 PC</td>
+          <td>Cientista, Farmacêutico, Pesquisador</td>
+        </tr>
+        <tr>
+          <td>Equipamento forense</td>
+          <td>2,5</td>
+          <td>4 PC</td>
+          <td>Cirurgião forense, Detetive</td>
+        </tr>
+        <tr>
+          <td>Equipamento de mergulho</td>
+          <td>5</td>
+          <td>4 PC</td>
+          <td>Marinheiro, Mergulhador</td>
+        </tr>
+        <tr>
+          <td>Colete balístico</td>
+          <td>2,5</td>
+          <td>4 PC</td>
+          <td>Caçador de recompensas, Policial, Soldado</td>
+        </tr>
+        <tr>
+          <td>Computador profissional</td>
+          <td>2</td>
+          <td>4 PC</td>
+          <td>Cientista, Designer, Programador</td>
+        </tr>
+        <tr>
+          <td>Equipamento de bombeiro</td>
+          <td>4</td>
+          <td>4 PC</td>
+          <td>Bombeiro</td>
+        </tr>
+        <tr>
+          <td>Documentação falsa</td>
+          <td>0,1</td>
+          <td>4 PC</td>
+          <td>Criminoso, Espião</td>
+        </tr>
+        <tr>
+          <td>Equipamento profissional de vigilância</td>
+          <td>2</td>
+          <td>4 PC</td>
+          <td>Detetive, Espião, Policial</td>
+        </tr>
+        <tr>
+          <td>Equipamento de comunicação militar</td>
+          <td>2</td>
+          <td>4 PC</td>
+          <td>Oficial militar, Soldado</td>
+        </tr>
+        <tr>
+          <td>Máquina/Ferramenta industrial portátil</td>
+          <td>4</td>
+          <td>4 PC</td>
+          <td>Engenheiro, Mecânico, Operário</td>
+        </tr>
+        <tr>
+          <td>Equipamento cirúrgico</td>
+          <td>2</td>
+          <td>5 PC</td>
+          <td>Cirurgião forense, Médico</td>
+        </tr>
+        <tr>
+          <td>Pistola</td>
+          <td>1</td>
+          <td>5 PC</td>
+          <td>Caçador de recompensas, Criminoso, Oficial militar, Policial, Soldado</td>
+        </tr>
+        <tr>
+          <td>Revólver</td>
+          <td>1</td>
+          <td>5 PC</td>
+          <td>Caçador de recompensas, Criminoso, Policial</td>
+        </tr>
+        <tr>
+          <td>Espingarda</td>
+          <td>3</td>
+          <td>6 PC</td>
+          <td>Agricultor, Caçador de recompensas, Policial, Soldado</td>
+        </tr>
+        <tr>
+          <td>Rifle</td>
+          <td>3,5</td>
+          <td>6 PC</td>
+          <td>Caçador de recompensas, Oficial militar, Soldado</td>
+        </tr>
+      </tbody>
+    </table>
+    <br>
+    
 
     <h2 id="consequencias-idade">Consequências de Idade</h2>
     <p>As Consequências de Idade são os efeitos gerados a partir da idade do personagem. O jogador deve escolher <b>uma</b> dentre as Consequências de cada idade para o seu personagem no momento que ele atingir a idade descrita (não pode repetir uma Consequência).</p>
