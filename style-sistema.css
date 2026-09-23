@@ -316,31 +316,38 @@ a{
 #lista-eventos-invadir-sistema li{
   margin-top: 20px;
 }
-#lista-acoes-perseguicoes-cacador{
+#lista-sucessos-pontos-sucesso{
+  font-size: 16px;
+  max-width: 400px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+#lista-acoes-cacador{
   font-size: 16px;
   max-width: 600px;
   margin: 0 auto;
   line-height: 1.5;
 }
-#lista-acoes-perseguicoes-cacador li{
+#lista-acoes-cacador li{
   margin-top: 20px;
 }
-#lista-acoes-perseguicoes-perseguido{
+#lista-acoes-presa{
   font-size: 16px;
   max-width: 600px;
   margin: 0 auto;
   line-height: 1.5;
 }
-#lista-acoes-perseguicoes-perseguido li{
+#lista-acoes-presa li{
   margin-top: 20px;
 }
 #lista-condicoes{
   display: grid;
   grid-auto-flow: column;
-  grid-template-rows: repeat(20, auto);
+  grid-template-rows: repeat(16, auto);
   font-size: 16px;
   max-width: 1000px;
   margin: 0 auto;
+  grid-column-gap: 40px;
   line-height: 1.5;
 }
 #lista-condicoes li{

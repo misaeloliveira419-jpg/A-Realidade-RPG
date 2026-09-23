@@ -1016,8 +1016,8 @@
       <li><b>35-37 a 44-46 anos e 45-47 a 59-61 anos:</b>
         <br>
         <ul>
-          <li></li>
-          <li></li>
+          <li><b>Fadiga:</b> </li>
+          <li><b>Canseira:</b></li>
           <li></li>
           <li></li>
         </ul>
@@ -1026,7 +1026,7 @@
       <li><b>60-62 a 74-76 anos e 75-77 a 89-91 anos:</b>
         <br>
         <ul>
-          <li></li>
+          <li><b>Catarata:</b> </li>
           <li></li>
           <li></li>
         </ul>
@@ -1387,64 +1387,77 @@
     <br>
     <p>Se uma Perseguição iniciar, o(s) <b>Caçador(es)</b> será(ão) o último a agir na rodada, ficando atrás da(s) <b>Presa(s)</b>.</p>
     <br>
-    <p>A Perseguição é dividida em <b>Zonas</b>, que são regiões as quais os personagens avançam para conseguir fugir.</p>
+    <p>A área da Perseguição é dividida em <b>Zonas</b>, que são regiões as quais os personagens precisam avançar para conseguir capturar/evitar serem pegos.</p>
     <br>
-    <p>No início da Perseguição, o(s) <b>Caçador(es)</b> </p>
-    <p>Durante os turnos, o(s) Caçador(es) e o(s) Perseguido(s) podem fazer as Ações que estão a seguir.</p>
+    <p>Se o <b>Caçador</b> estiver na mesma Zona que uma <b>Presa</b>, a <b>Presa</b> é pega; Se houverem 2 <b>Presas</b> na mesma <b>Zona</b> que um <b>Caçador</b>, a <b>Presa</b> capturada é a que tiver menos <b>Pontos de Sucesso</b> (serão explicados mais a frente); Se houverem 2 <b>Presas</b> na mesma <b>Zona</b> que um <b>Caçador</b> com a mesma quantidade de <b>Pontos de Sucesso</b>, o <b>Caçador</b> pode escolher qual <b>Presa</b> capturar.</p>
+    <br>
+    <p>No início da Perseguição, o <b>Caçador</b> inicia no início de sua Zona, há uma <b>Zona livre</b> entre o <b>Caçador</b> e a <b>Presa</b>, e a <b>Presa</b> inicia uma <b>Zona</b> a frente da <b>Zona livre</b> (o mestre pode alterar esse posicionamento baseado no contexto).</p>
+    <br>
+    <p>Para avançar, os personagens têm <b>Pontos de Sucesso (PS)</b>. Os PS definem a posição de um personagem dentro de uma <b>Zona</b>, e a distância para avançar para uma próxima <b>Zona</b>.</p>
+    <br>
+    <p>Para conseguir avançar de <b>Zona</b>, um personagem precisa de um soma total de <b>3 Pontos de Sucesso</b>. Cada tipo de Sucesso dá uma quantidade de PS diferente:</p>
+    <br>
+    <ul id="lista-sucessos-pontos-sucesso">
+      <li><b>Sucesso Normal:</b> 1 PS;</li>
+      <li><b>Sucesso Bom:</b> 2 PS;</li>
+      <li><b>Sucesso Extremo:</b> 3 PS.</li>
+    </ul>
+    <br>
+    <p>Para obter <b>PS</b>, os personagens podem fazer as seguintes Ações:</p>
     <br>
 
-    <h3>Lista de Ações de Perseguição de Caçador:</h3>
-    <ul id="lista-acoes-perseguicoes-cacador">
+    <h3>Ações de Caçador:</h3>
+    <ul id="lista-acoes-cacador">
       <li><b></b></li>
       <li><b></b></li>
       <li><b></b></li>
     </ul>
 
-    <h3>Lista de Ações de Perseguição de Perseguido:</h3>
-    <ul id="lista-acoes-perseguicoes-perseguido">
+    <h3>Ações de Presa:</h3>
+    <ul id="lista-acoes-presa">
       <li><b></b></li>
       <li><b></b></li>
       <li><b></b></li>
     </ul>
 
     <h2 id="condicoes">Condições</h2>
-    <p>As Condições são alterações que podem ser aplicadas em um personagem depois de alguma Ação sofrida.</p>
+    <p>As Condições são alterações que podem ser aplicadas em um personagem depois de alguma Ação sofrida, dando algum tipo de malefício ao personagem.</p>
     <br>
 
     <h3>Lista de Condições:</h3>
     <ul id="lista-condicoes">
       <li><b>ABALADO:</b> O personagem sofre desvantagem de <b>-1d20 em testes de Perícia</b>.</li>
-      <li><b>AGARRADO:</b> O personagem fica <b>Desprevinido</b> e <b>Imóvel</b>, e sofre desvantagem de <b>-1d20 em testes de Ataque</b>. Se um personagem fizer um Ataque à distância contra um dos alvos envolvidos, há <b>50% de chance</b> de acertar o alvo errado.</li>
-      <li><b>APAROVADO:</b> O personagem sofre desvantagem de <b>-2d20 em testes de Perícia com Atributo base Presença</b> e deve <b>fugir da fonte do medo</b> da maneira mais eficiente possível (pode parar de fugir se a perder de vista ou ficar a alcance médio). Se não puder fugir, pode agir normalmente, mas não pode se aproximar voluntariamente da fonte do medo.</li>
-      <li><b>ASFIXIADO:</b> O personagem não consegue respirar. Enquanto está <b>Asfixiado</b>, o personagem pode prender a respiração por um número de turnos igual ao seu Físico. Depois disso, deve fazer um teste de <b>Fortitude DT Normal + 1 nível por teste anterior</b>. Se <b>Fracassar</b>, cai <b>Inconsciente</b> e perde <b>1d6 de PV</b> por turno até conseguir respirar novamente ou morrer.</li>
-      <li><b>ATORDOADO:</b> O personagem fica <b>Desprevenido</b> e não pode fazer ações.</li>
+      <li><b>AGARRADO:</b> O personagem fica <b>Desprevinido</b> e <b>Imóvel</b>, e sofre desvantagem de <b>-1d20 em testes de Ataque</b>. Se um personagem fizer um Ataque à distância contra um dos alvos envolvidos, há <b>50% de chance de acertar o alvo errado</b>.</li>
+      <li><b>APAROVADO:</b> Ainda mais Pasmo. O personagem sofre desvantagem de <b>-2d20 em testes de Perícia com Atributo base Presença</b> e deve <b>fugir da fonte do medo até que não a veja ou esteja a alcance médio dela</b>. Se <b>não puder</b> fugir, pode <b>agir normalmente</b>, mas <b>não pode se aproximar voluntariamente da fonte do medo</b>.</li>
+      <li><b>ASFIXIADO:</b> O personagem não consegue respirar. Enquanto está <b>Asfixiado</b>, o personagem pode <b>prender a respiração</b> por um número de turnos igual ao seu <b>Físico</b>. Depois disso, deve fazer um teste de <b>Fortitude DT Normal + 1 nível por teste anterior</b>. Se <b>Fracassar</b>, cai <b>Inconsciente</b> e perde <b>1d6 de PV por turno</b> até conseguir respirar novamente ou morrer.</li>
+      <li><b>ATORDOADO:</b> O personagem fica <b>Desprevenido</b> e <b>não</b> pode fazer <b>Ações</b>.</li>
       <li><b>CAÍDO:</b> Deitado no chão. O personagem sofre desvantagem de <b>-2d20 para fazer Ataques corpo a corpo</b> e seu <b>Deslocamento</b> é reduzido a <b>1,5 metros</b>. Além disso, sofre desvantagem de <b>-1d20 para Reagir a Ataques corpo a corpo</b>, mas recebe <b>+1d20 para Reagir a ataques à distância</b>.</li>
-      <li><b>CEGO:</b> O personagem fica <b>Desprevenido</b> e <b>Lento</b>, não pode fazer testes de <b>Percepção</b> para observar e sofre desvantagem de <b>-2d20 em testes de Perícia com Atributo base Físico</b>. Todos os alvos de seus Ataques recebem <b>Camuflagem Total</b>. Um personagem é considerado <b>Cego</b> enquanto estiver em uma área de escuridão total, a menos que algo lhe permita perceber no escuro, ou se estiver com os olhos fechados por exemplo.</li>
-      <li><b>DESPREVINIDO:</b> Despreparado para Reagir. O personagem sofre desvantagem de <b>-2d20 em Reações</b>. Um personagem fica <b>Desprevinido</b> contra inimigos que não possa perceber.</li>
-      <li><b>DOENTE:</b> Sob efeito de uma doença.</li>
-      <li><b>EM CHAMAS:</b> O personagem está pegando fogo. No início de suas rodadas, sofre <b>1d6 de dano de fogo</b>. O personagem pode gastar uma <b>Ação Completa</b> para apagar o fogo com as mãos. Imersão em água também apaga as chamas.</li>
-      <li><b>ENJOADO:</b> O personagem só pode realizar <b>uma Ação de cada tipo na sua rodada em Combates</b>, e demora <b>2 turnos para fazer uma Ação Principal em outras Cenas</b>.</li>
-      <li><b>ENLOUQUECENDO:</b> O personagem fica com 0 PD. Se iniciar <b>3 rodadas Enlouquecendo na mesma Cena</b> (não necessariamente consecutivos), você fica insano - seu personagem se torna um NPC. A Condição pode ser encerrada com um teste de Diplomacia DT Sucesso Extremo, ou por qualquer efeito que cure pelo menos 1 PD.</li>
-      <li><b>ENVENENADO:</b> Sob efeito de um veneno.</li>
-      <li><b>ESMORECIDO:</b> cansado mentalmente.</li>
-      <li><b>EXAUSTO:</b> O personagem sofre desvantagem de <b>-2d20 em testes de Perícia com Atributo base Físico</b>.</li>
-      <li><b>FASCINADO:</b> </li>
+      <li><b>CEGO:</b> O personagem fica <b>Desprevenido</b> e <b>Lento</b>, não pode fazer testes de <b>Percepção para observar</b> e sofre desvantagem de <b>-2d20 em testes de Perícia com Atributo base Físico</b>. Todos os alvos de seus Ataques recebem <b>Camuflagem Total</b>. Um personagem é considerado <b>Cego</b> enquanto estiver em uma área de escuridão total, a menos que algo lhe permita perceber no escuro, ou se estiver com os olhos fechados, por exemplo.</li>
+      <li><b>DESPREVINIDO:</b> O personagem sofre desvantagem de <b>-2d20 em Reações</b>. Um personagem fica <b>Desprevinido</b> contra inimigos que <b>não possa perceber</b>.</li>
+      <li><b>DOENTE:</b> Sob efeito de uma <b>doença</b>.</li>
+      <li><b>EM CHAMAS:</b> O personagem está pegando fogo. No início de suas rodadas, sofre <b>1d6 de dano de fogo</b>. O personagem pode gastar uma <b>Ação Completa</b> para <b>apagar o fogo</b> com as mãos. <b>Imersão em água</b> também <b>apaga as chamas</b>.</li>
+      <li><b>ENJOADO:</b> O personagem só pode realizar <b>uma Ação de cada tipo na sua rodada em Combates</b>, e demora <b>2 turnos</b> para fazer uma <b>Ação Principal em outras Cenas</b>.</li>
+      <li><b>ENLOUQUECENDO:</b> O personagem está com 0 PD. Se iniciar <b>3 rodadas Enlouquecendo na mesma Cena</b> (não necessariamente consecutivos), você fica <b>enlouquecido</b> (seu personagem se torna um NPC). A <b>Condição</b> pode ser <b>encerrada</b> com um teste de <b>Diplomacia DT Sucesso Extremo</b>, ou por <b>qualquer efeito</b> que <b>cure</b> pelo menos <b>1 PD</b>.</li>
+      <li><b>ENVENENADO:</b> Sob efeito de um <b>veneno</b>.</li>
+      <li><b>ESMORECIDO:</b> O personagem sofre desvantagem de <b>-1d20 em testes de Perícia com Atributo base Intelecto</b>.</li>
+      <li><b>EXAUSTO:</b> Ainda mais Fatigado. O personagem sofre desvantagem de <b>-2d20 em testes de Perícia com Atributo base Físico</b>.</li>
+      <li><b>FASCINADO:</b> O personagem entra em transe e deve se <b>aproximar da fonte do fascínio</b> ou <b>olhar para ele fixamente</b>. Se <b>não conseguir</b>, <b>perde 2 PD</b>.</li>
       <li><b>FATIGADO:</b> O personagem sofre desvantagem de <b>-1d20 em testes de Perícia com Atributo base Físico</b>.</li>
-      <li><b>FLANQUEADO:</b> o personagem está cercado por 2 ou mais inimigos. Sofre desvantagem de <b>-1d20 em testes de Reação</b>.</li>
-      <li><b>FRUSTRADO:</b> triste e brava por não conseguir algo.</li>
-      <li><b>IMÓVEL:</b> O personagem é incapaz de se mover. Seu <b>Deslocamento</b> é nulo.</li>
-      <li><b>INCONSCIENTE:</b> O personagem cai desmaiado. Pode ser reanimado com um teste de Área - Medicina DT Sucesso Normal.</li>
-      <li><b>INDEFESO:</b> sem capacidade de se defender.</li>
-      <li><b>LENTO:</b> O personagem tem o <b>Deslocamento reduzido para 6 metros</b>.</li>
-      <li><b>MACHUCADO:</b> O personagem está com <b>metade ou menos</b> de seu PV.</li>
-      <li><b>MORRENDO:</b> 0 PV.</li>
+      <li><b>FLANQUEADO:</b> o personagem está <b>cercado corpo a corpo</b> por <b>2 ou mais inimigos em uma linha reta</b>. Sofre desvantagem de <b>-1d20 em testes de Reação</b>.</li>
+      <li><b>FRUSTRADO:</b> O personagem <b>perde 1 PD</b>.</li>
+      <li><b>IMÓVEL:</b> O personagem é incapaz de se mover. Seu <b>Deslocamento é nulo</b>.</li>
+      <li><b>INCONSCIENTE:</b> O personagem cai desmaiado, sendo suscetível a um <b>Golpe de Misericórdia</b>. Pode ser <b>reanimado</b> com um teste de <b>Área - Medicina DT Sucesso Normal</b>.</li>
+      <li><b>INDEFESO:</b> O personagem se torna suscetível a sofrer um <b>Golpe de Misericórdia</b>.</li>
+      <li><b>LENTO:</b> O personagem tem o <b>Deslocamento reduzido pela metade</b>.</li>
+      <li><b>MACHUCADO:</b> O personagem está com <b>metade ou menos</b> de seu <b>PV</b>.</li>
+      <li><b>MORRENDO:</b> O personagem está com 0 PV. Se iniciar <b>3 rodadas Morrendo na mesma Cena</b> (não necessariamente consecutivas) o personagem <b>morre</b>. É necessário fazer um teste de <b>Área - Medicina DT Sucesso Extremo</b> para <b>tirar essa Condição</b>. Se ela for <b>curada</b>, o personagem <b>recupera 1 PV</b>.</li>
       <li><b>OFUSCADO:</b> O personagem sofre desvantagem de <b>-1d20 em testes de Percepção</b>.</li>
       <li><b>PASMO:</b> O personagem sofre desvantagem de <b>-1d20 em testes de Perícia com Atributo base Presença</b>.</li>
-      <li><b>PERTURBADO:</b> O personagem <b>perde 1 rodada</b> em choque. A partir da <b>2° rodada</b>, deve fazer um teste de <b>Vontade DT Sucesso Extremo - 1 nível por rodada</b> para conseguir se recompor. Outros personagens podem fazer um teste de <b>Diplomacia</b> para diminuir em 1 nível a DT do teste por tipo de Sucesso.</li>
-      <li><b>SANGRANDO:</b> O personagem perde 1d6 PV por turno enquanto está com essa Condição.</li>
-      <li><b>SURDO:</b> O personagem não consegue ouvir, ou fazer testes de Percepção para ouvir.</li>
-      <li><b>SURPREENDIDO:</b> O personagem não consegue Reagir.</li>
-      <li><b>VICIADO:</b> Sob efeito de um vício. O personagem precisa saciar o vício no máximo a cada 12 horas. Se não o fizer, perde 2 PD e fica Abalado.</li>
+      <li><b>PERTURBADO:</b> O personagem <b>perde 1 rodada</b> em choque. A partir da <b>2° rodada</b>, deve fazer um teste de <b>Vontade DT Sucesso Extremo -1 nível por rodada</b> para conseguir se <b>recompor</b>. Outros personagens podem fazer um teste de <b>Diplomacia</b> para diminuir em 1 nível a DT do teste por tipo de Sucesso.</li>
+      <li><b>SANGRANDO:</b> O personagem <b>perde 1d6 PV por turno</b> enquanto está com essa Condição.</li>
+      <li><b>SURDO:</b> O personagem <b>não consegue ouvir</b>, <b>nem</b> fazer testes de <b>Percepção para ouvir</b>.</li>
+      <li><b>SURPREENDIDO:</b> O personagem <b>não consegue Reagir</b>.</li>
+      <li><b>VICIADO:</b> Sob efeito de um vício. O personagem precisa <b>saciar o vício no máximo a cada 12 horas</b>. Se <b>não</b> o fizer, <b>perde 2 PD</b> e fica <b>Abalado</b>.</li>
     </ul>
 
   </div>
