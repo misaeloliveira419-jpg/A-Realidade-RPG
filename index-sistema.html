@@ -352,16 +352,29 @@
     <h2 id="pontos-vitalidade">Pontos de Vitalidade (PV)</h2>
     <p>Os Pontos de Vitalidade, ou PV, são a medida de saúde física de um personagem, indicando seu cansaço e ferimentos físicos. O cálculo de PV é:</p>
     <br>
-    <p><b>PV = 15 + Físico + Fortitude / 2 (arredondado para baixo)</b></p>
+    <p><b>PV = 15 + Físico + 1/2 * Fortitude + 1/4 * Atletismo</b> (arredondado para baixo)</p>
     <br>
-    <p>Um personagem pode perder PV sempre que ele fizer um esforço físico, ou quando sofrer ferimentos. Para recuperar PV, um personagem deve ser tratado, ou descansar. Há certas Condições que um personagem pode adquirir por conta de alterações no seu PV. Isso é abordado em <a id="ir-para-mecanicas-adicionais" href="#" onclick="abrirTelaSite('tela-mecanicas-adicionais')">Mecânicas Adicionais</a>.</p>
+    <p>Um personagem pode perder PV sempre que ele fizer um esforço físico, ou quando sofrer ferimentos. Para recuperar PV, um personagem deve ser tratado, ou descansar.</p>
+    <br>
+    <p>Se um personagem sofrer <b>metade ou mais de seu PV</b> em pontos de dano em uma única rodada, ele deve fazer um teste de <b>Fortitude DT Bom</b>. Se Fracassar, cai <b>Inconsciente</b> e fica <b>Abalado</b> até o fim da Cena; Se tiver Sucesso, consegue se manter de pé e evita a Condição.</p>
+    <br>
+    <p>Se um personagem chegar a <b>0 PV</b>, ele adquire a Condição <b>Morrendo</b>.</p>
+    <br>
+    <p>Essas Condições são explicadas em <a id="ir-para-mecanicas-adicionais" href="#" onclick="abrirTelaSite('tela-mecanicas-adicionais')">Mecânicas Adicionais</a>.</p>
     
     <h2 id="pontos-determinacao">Pontos de Determinação (PD)</h2>
     <p>Os Pontos de Determinação, ou PD, são a medida de saúde mental de um personagem, indicando seu estresse e racionalidade. O cálculo de PD é:</p>
     <br>
-    <p><b>PD = 20 + Presença + Vontade / 2 (arredondado para baixo)</b></p>
+    <p><b>PD = 20 + Presença + Vontade / 2</b> (arredondado para baixo)</p>
     <br>
-    <p>Um personagem pode perder PD usando Habilidades, sofrendo danos mentais, entre outros. Para recuperar PD, um personagem deve se acalmar, ou descansar. Há certas Condições que um personagem pode adquirir por conta de alterações no seu PD. Isso é abordado em <a id="ir-para-mecanicas-adicionais" href="#" onclick="abrirTelaSite('tela-mecanicas-adicionais')">Mecânicas Adicionais</a>.</p>
+    <p>Um personagem pode perder PD usando Habilidades, sofrendo danos mentais, entre outros. Para recuperar PD, um personagem deve se acalmar, ou descansar.</p>
+    <br>
+    <p>Se um personagem perder <b>10 ou mais PD</b> em uma única rodada, ele adquire a Condição <b>Perturbado</b> até o fim da Cena.</p>
+    <br>
+    <p>Se um personagem chegar a <b>0 PD</b>, ele adquire a Condição <b>Enlouquecendo</b>.</p>
+    <br>
+    <p>Essas Condições são explicadas em <a id="ir-para-mecanicas-adicionais" href="#" onclick="abrirTelaSite('tela-mecanicas-adicionais')">Mecânicas Adicionais</a>.</p>
+    <br><br>
 
   </div>
 
@@ -1030,17 +1043,17 @@
       <li><b>60-62 a 74-76 anos e 75-77 a 89-91 anos:</b>
         <br>
         <ul>
-          <li><b>Má audição:</b> O personagem tem desvantagem permanente de <b>-1d20 em testes de Percepção</b>.</li>
+          <li><b>Sentidos Ofuscados:</b> O personagem tem desvantagem permanente de <b>-1d20 em testes de Percepção</b>.</li>
           <li><b>Esquecido:</b> O personagem confunde informações. Sempre que rolar um teste de Perícia com Atributo base Intelecto, tem 25% de chance (tirar 1 em 1d4) de <b>Fracasso garantido</b>.</li>
-          <li><b>Mal Súbito:</b> Você tem 25% (tirar 1 em 1d4) de cair <b>Inconsciente</b> e <b>Morrendo</b> sempre que perder mais do que 5 PV em uma única rodada.</li>
+          <li><b>Juntas fracas:</b> O personagem tem desvantagem permanente de <b>-2 em Acrobacia, Atletismo, Luta, e Reflexo</b>.</li>
         </ul>
       </li>
       <br>
       <li><b>90-92+ anos:</b>
         <br>
         <ul>
-          <li><b>Juntas fracas:</b> O personagem perde <b>1/2 do Deslocamento</b> (arredonda para baixo) e não consegue fazer a Ação <b>Investida</b>.</li>
           <li><b>Ossos de vidro:</b> Sempre que sofrer dano de impacto ou queda, perde <b>+2 PV</b> adicionais.</li>
+          <li><b>Mal Súbito:</b> Você tem 25% (tirar 1 em 1d4) de cair <b>Inconsciente</b> e <b>Morrendo</b> sempre que perder mais do que 5 PV em uma única rodada.</li>
         </ul>
       </li>
     </ul>
@@ -1410,21 +1423,21 @@
       <li><b>Sucesso Extremo:</b> 3 PS.</li>
     </ul>
     <br>
-    <p>Para obter <b>PS</b>, os personagens podem fazer as seguintes Ações:</p>
+    <p>Para obter <b>PS</b>, os personagens podem fazer uma Ação dentre as Ações abaixo:</p>
     <br>
 
     <h3>Ações de Caçador:</h3>
     <ul id="lista-acoes-cacador">
-      <li><b></b></li>
-      <li><b></b></li>
-      <li><b></b></li>
+      <li><b>Perseguir:</b> O Caçador corre atrás de sua Presa. Teste de <b>Atletismo ou Acrobacia</b> (dá +1 PS em caso de Sucesso, e -1 PS em Fracasso).</li>
+      <li><b>Criar Obstáculo:</b> O Caçador pode usar o cenário, algum Item, ou artifício para atrapalhar o caminho de todos que estiverem até <b>2 Zonas</b> a frente. A depender da dificuldade da Ação e da Perícia usada, deve fazer um teste com DT definida pelo mestre.</li>
     </ul>
 
     <h3>Ações de Presa:</h3>
     <ul id="lista-acoes-presa">
-      <li><b></b></li>
-      <li><b></b></li>
-      <li><b></b></li>
+      <li><b>Fugir:</b> A Presa corre para o mais longe possível do Caçador. Teste de Atletismo ou Acrobacia (dá +1 PS em caso de Sucesso, e -1 PS em Fracasso).</li>
+      <li><b>Despistar:</b> A Presa se esconde em algum lugar possível dentro do cenário. Teste de <b>Furtividade DT Percepção do Caçador</b> (o Caçador tem +3d20 no teste, -1d20 por distância em Zonas).</li>
+      <li><b>Ajudar:</b> A Presa passa sua rodada ajudando um aliado a Fugir. Teste de <b>Sobrevivência DT Sucesso Bom</b> dá vantagem de <b>+1d20</b>, <b>Sucesso Extremo</b> dá vantagem de <b>+2d20</b>.</li>
+      <li><b>Criar Obstáculo:</b> A Presa pode usar o cenário, algum Item, ou artifício para atrapalhar o caminho de todos que estiverem qualquer <b>Zona</b> atrás (inclui outras Presas ou Caçadores). A DT do teste de <b>Atletismo ou Acrobacia</b> dos afetados é aumentada em <b>+1 nível</b>.</li>
     </ul>
 
     <h2 id="condicoes">Condições</h2>
