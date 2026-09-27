@@ -171,13 +171,13 @@
 
     <h2 id="tipos-sucesso">Tipos de sucesso</h2>
     <ul id="lista-explicacao-tipos-sucesso">
-      <li><b style="color: rgb(160,50,0);">DESASTRE DUPLO:</b> acontece se todos os resultados do teste forem 20 (mínimo 2d20). Gera consequências desvastadoras, como cair no chão e sofrer dano ao tentar esquivar, ou quebrar a perna ao tentar arrombar uma porta. O personagem sofre um dano mínimo de 1 PV e 1 PD.</li>
-      <li><b style="color: rgb(210,0,0);">DESASTRE:</b> acontece se o menor resultado do teste for 20. Pode gerar consequências horríveis, como quebrar um computador ao tentar consertá-lo, ou sofrer dano ao tentar arrombar uma porta.</li>
-      <li><b style="color: rgb(110,110,110);">FRACASSO:</b> acontece se o menor resultado do teste for maior que o valor da perícia usada. O personagem não consegue realizar a Ação.</li>
+      <li><b style="color: rgb(170,60,0);">DESASTRE MÁXIMO:</b> acontece se todos os resultados do teste forem 20 (mínimo 2d20). Gera consequências desvastadoras, como cair no chão e sofrer dano ao tentar esquivar, ou quebrar a perna ao tentar arrombar uma porta. O personagem sofre um dano mínimo de 1 PV e 1 PD e fica Frustrado na rodada.</li>
+      <li><b style="color: rgb(210,0,0);">DESASTRE:</b> acontece se o menor resultado do teste for 20. Pode gerar consequências horríveis, como quebrar um computador ao tentar consertá-lo, ou sofrer dano ao tentar arrombar uma porta. O personagem fica Frustrado na rodada.</li>
+      <li><b style="color: rgb(130,130,130);">FRACASSO:</b> acontece se o menor resultado do teste for maior que o valor da perícia usada. O personagem não consegue realizar a Ação.</li>
       <li><b style="color: rgb(5,160,30);">NORMAL:</b> acontece se o menor resultado do teste for igual ou menor que o valor da perícia usada. O personagem realiza a Ação de maneira simples.</li>
       <li><b style="color: rgb(0,75,175);">BOM:</b> acontece se o menor resultado do teste for igual ou menor que a metade, 1/2, do valor da perícia usada. O personagem realiza a Ação de uma forma excelente.</li>
       <li><b style="color: rgb(210,85,0);">EXTREMO:</b> acontece se o menor resultado do teste for igual ou menor que 1/5 do valor da perícia usada. O personagem realiza a Ação de maneira esplêndida, praticamente perfeita.</li>
-      <li><b style="color: rgb(200,175,0);">EXTREMO DUPLO:</b> acontece se todos os resultados do teste forem iguais ou menores que 1/5 do valor da perícia usada (mínimo 2d20). O personagem realiza a Ação de maneira perfeita, ganhando certas vantagens.</li>
+      <li><b style="color: rgb(200,175,0);">EXTREMO MÁXIMO:</b> acontece se todos os resultados do teste forem iguais ou menores que 1/5 do valor da perícia usada (mínimo 2d20). O personagem realiza a Ação de maneira perfeita, e fica Incentivado.</li>
     </ul>
     
     <h2 id="testes-dano">Testes de Dano</h2>
@@ -352,7 +352,7 @@
     <h2 id="pontos-vitalidade">Pontos de Vitalidade (PV)</h2>
     <p>Os Pontos de Vitalidade, ou PV, são a medida de saúde física de um personagem, indicando seu cansaço e ferimentos físicos. O cálculo de PV é:</p>
     <br>
-    <p><b>PV = 15 + Físico + 1/2 * Fortitude + 1/4 * Atletismo</b> (arredondado para baixo)</p>
+    <p><b>PV = 15 + Físico + Fortitude/2 + Atletismo/4</b> (arredondado para baixo)</p>
     <br>
     <p>Um personagem pode perder PV sempre que ele fizer um esforço físico, ou quando sofrer ferimentos. Para recuperar PV, um personagem deve ser tratado, ou descansar.</p>
     <br>
@@ -365,7 +365,7 @@
     <h2 id="pontos-determinacao">Pontos de Determinação (PD)</h2>
     <p>Os Pontos de Determinação, ou PD, são a medida de saúde mental de um personagem, indicando seu estresse e racionalidade. O cálculo de PD é:</p>
     <br>
-    <p><b>PD = 20 + Presença + Vontade / 2</b> (arredondado para baixo)</p>
+    <p><b>PD = 20 + Presença + Vontade/2</b> (arredondado para baixo)</p>
     <br>
     <p>Um personagem pode perder PD usando Habilidades, sofrendo danos mentais, entre outros. Para recuperar PD, um personagem deve se acalmar, ou descansar.</p>
     <br>
@@ -686,17 +686,19 @@
     <p>O PC inicial de um personagem é definido pela sua Ocupação, variando entre 6 a 14 Pontos de Crédito iniciais.</p>
 
     <h2 id="itens-capacidade-carga">Itens e Capacidade de Carga</h2>
-    <p>Os itens são objetos que um personagem pode portar ou possuir, cada um tendo funções diferentes entre si.</p>
+    <p>Os Itens são objetos que um personagem pode portar ou possuir, cada um tendo funções diferentes entre si. Nesse subtópico, irão ser abordados os Itens Iniciais dos personagens.</p>
     <br>
-    <p>Os itens são separados em 2 categorias: <b>Itens Comuns</b> e <b>Itens Especiais</b>. Cada item possui um <b>Peso</b>, que é determinado pelo espaço ocupado, e pela massa do objeto.</p>
+    <p>Os Itens Iniciais são separados em 2 categorias: <b>Itens Comuns</b> e <b>Itens Especiais</b>. Cada item possui um <b>Peso</b>, que é determinado pelo espaço ocupado, e pela massa do objeto, e um <b>Custo</b>, que é o quão raro e caro é cada item.</p>
+    <br>
+    <p>Um personagem pode ter Itens Iniciais além dos Itens disponíveis, cabendo ao mestre e ao jogador criarem este Item e definir suas propriedades.</p>
+    <br>
+    <p>O <u>limite</u> de Itens que um personagem possui é definido pela sua <b>Capacidade de Carga</b>.</p>
+    <br>
+    <p><b>Capacidade de Carga = 5 + Físico + Atletismo/4</b> (arredondado para baixo)</p>
     <br>
     <p><b>Itens Comuns</b> são Itens que qualquer tipo de personagem pode obter, sendo bens que qualquer pessoa normalmente possui.</p>
     <br>
-    <p><b>Itens Especiais</b> são Itens específicos de uma Ocupação, ou que podem ser obtidos com maior facilidade por um personagem naquela Ocupação.</p>
-    <br>
-    <p>Cada Item pode possuir <b>Compatibilidade</b> com uma Ocupação, diminuindo seu custo em <b>-1 PC</b> caso o personagem seja da mesma Ocupação da Compatibilidade.</p>
-    <br>
-    <p>O jogador ainda pode escolher um Item Especial para seu personagem mesmo que ele não esteja entre as Ocupações com Compatibilidade, mas deve <em>justificar</em> para o mestre o porquê do personagem possuir aquele Item.</p>
+    <p>Cada Item pode possuir <b>Compatibilidade</b> com uma Ocupação, diminuindo seu Custo em <b>-1 PC</b> caso o personagem seja da mesma Ocupação da Compatibilidade. Há um <u>limite</u> de <b>2 Itens</b> para essa diminuição, ou seja, Itens escolhidos após esses não terão seu Custo reduzido.</p>
     <br>
 
     <h3>Itens Comuns:</h3>
@@ -713,29 +715,38 @@
       <tbody>
         <tr>
           <td>Mochila</td>
-          <td>Item para guardar outros objetos.</td>
+          <td>Item para guardar outros objetos dentro dele.</td>
           <td>-1</td>
           <td>1 PC</td>
           <td>Andarilho, Estudante, Guia, Missionário, Vagabundo</td>
         </tr>
         <tr>
           <td>Celular</td>
-          <td>Aparelho eletrônico pequeno para uso pessoal.</td>
+          <td>Aparelho eletrônico pequeno para uso pessoal.
+            <br>
+            Consome bateria.
+          </td>
           <td>0,5</td>
           <td>1 PC</td>
           <td>-</td>
         </tr>
         <tr>
           <td>Lanterna</td>
-          <td>Objeto que ilumina em linha reta até um alcance Curto (9 metros na área que apontar).</td>
+          <td>Objeto que ilumina em linha reta até um alcance Curto (9 metros na área que apontar).
+            <br>
+            Consome bateria.
+          </td>
           <td>0,5</td>
           <td>1 PC</td>
           <td>Andarilho, Bombeiro, Garimpeiro, Guia, Marinheiro, Porteiro</td>
         </tr>
         <tr>
           <td>Necessáire</td>
-          <td>Bolsinha que guarda itens pequenos e úteis dentro dela. Serve como um kit específico (não pode usar como um mesmo kit 2 vezes). 3 usos.</td>
-          <td>1</td>
+          <td>Bolsinha que guarda itens pequenos e úteis dentro dela. Serve como um qualquer Kit (não pode usar como um mesmo Kit mais de uma vez).
+            <br>
+            3 usos.
+          </td>
+          <td>1,5</td>
           <td>1 PC</td>
           <td>Body Piercer, Prostituta, Tatuador</td>
         </tr>
@@ -748,21 +759,30 @@
         </tr>
         <tr>
           <td>Binóculos</td>
-          <td>Objeto usado para enxergar mais longe. +3 em Percepção.</td>
+          <td>Objeto usado para enxergar mais longe.
+            <br>
+            +3 em Percepção.
+          </td>
           <td>0,5</td>
           <td>2 PC</td>
           <td>Caçador de recompensas, Guia</td>
         </tr>
         <tr>
           <td>Tablet</td>
-          <td>Aparelho eletrônico médio para uso pessoal.</td>
+          <td>Aparelho eletrônico médio para uso pessoal.
+            <br>
+            Consome bateria.
+          </td>
           <td>1</td>
           <td>2 PC</td>
           <td>Arquiteto, Bibliotecário, Curador de Museu, Designer, Editor, Empresário, Juiz, Político, Professor, Secretário</td>
         </tr>
         <tr>
           <td>Notebook</td>
-          <td>Aparelho eletrônico grande e móvel para uso pessoal.</td>
+          <td>Aparelho eletrônico grande e móvel para uso pessoal.
+            <br>
+            Consome bateria.
+          </td>
           <td>1,5</td>
           <td>2 PC</td>
           <td>Arquiteto, Bibliotecário, Cientista, Designer, Editor, Escritor, Estudante, Pesquisador, Professor, Programador, Psicólogo, Psiquiatra, Secretário</td>
@@ -790,6 +810,11 @@
         </tr>
       </tbody>
     </table>
+    <br><br>
+
+    <p><b>Itens Especiais</b> são Itens específicos de uma Ocupação, ou que podem ser obtidos com maior facilidade por um personagem naquela Ocupação.</p>
+    <br>
+    <p>O jogador ainda pode escolher um <b>Item Especial</b> para seu personagem mesmo que ele não esteja entre as Ocupações com Compatibilidade, mas deve <em>justificar</em> para o mestre o porquê do personagem possuir aquele Item.</p>
     <br>
 
     <h3>Itens Especiais:</h3>
@@ -820,24 +845,78 @@
         </tr>
         <tr>
           <td>Rádio comunicador</td>
-          <td>Rádio usado para se comunicar com outros rádios. Alcance Extremo de sinal.</td>
+          <td>Rádio usado para se comunicar com outros rádios.
+            <br>
+            Alcance Extremo de sinal.
+          </td>
           <td>0,5</td>
           <td>3 PC</td>
           <td>Bombeiro, Marinheiro, Oficial militar, Porteiro, Soldado</td>
         </tr>
         <tr>
+          <td>Cartucho de balas curtas</td>
+          <td>Pequeno cartucho para guardar balas pequenas.
+            <br>
+            50 balas.
+          </td>
+          <td>1</td>
+          <td>3 PC</td>
+          <td>Caçador de recompensas, Criminoso, Oficial militar, Policial, Soldado</td>
+        </tr>
+        <tr>
           <td>Kit de arrombamento</td>
-          <td>Um conjunto de ferramentas para arrombar uma tranca. +3 em Crime.</td>
+          <td>Um conjunto de ferramentas para arrombar uma tranca.
+            <br>
+            +3 em Crime.
+          </td>
           <td>1</td>
           <td>3 PC</td>
           <td>Criminoso, Detetive, Espião</td>
         </tr>
         <tr>
+          <td>Cartucho de balas longas</td>
+          <td>Pequeno cartucho para guardar balas longas.
+            <br>
+            50 balas.
+          </td>
+          <td>2</td>
+          <td>3 PC</td>
+          <td>Agricultor, Caçador de recompensas, Oficial militar, Soldado</td>
+        </tr>
+        <tr>
           <td>Kit de artes</td>
-          <td>Um conjunto de itens de pintura, artes corporais, etc. +1d20 em Artes. 3 usos.</td>
+          <td>Um conjunto de itens de pintura, artes corporais, etc. 3 usos.</td>
           <td>2</td>
           <td>3 PC</td>
           <td>Artesão, Artista, Ator, Body Piercer, Tatuador</td>
+        </tr>
+        <tr>
+          <td>Colete balístico</td>
+          <td>Vestimenta para proteção a balas.
+            <br>
+            +2 de Resistência a dano balístico.
+          </td>
+          <td>1</td>
+          <td>4 PC</td>
+          <td>Caçador de recompensas, Policial, Soldado</td>
+        </tr>
+        <tr>
+          <td>Revólver</td>
+          <td>Uma arma de fogo pequena.
+            <br>
+            Munição: 6 balas curtas;
+            <br>
+            Saque: Ação Principal;
+            <br>
+            Recarga: Ação Principal;
+            <br>
+            Alcance: Curto;
+            <br>
+            Dano: 2d6+3 balístico.
+          </td>
+          <td>1</td>
+          <td>4 PC</td>
+          <td>-</td>
         </tr>
         <tr>
           <td>Kit de escalada</td>
@@ -845,13 +924,6 @@
           <td>1,5</td>
           <td>4 PC</td>
           <td>Alpinista, Bombeiro</td>
-        </tr>
-        <tr>
-          <td>Colete balístico</td>
-          <td>Vestimenta para proteção a balas. Resistência 2 a dano balístico.</td>
-          <td>1,5</td>
-          <td>4 PC</td>
-          <td>Caçador de recompensas, Policial, Soldado</td>
         </tr>
         <tr>
           <td>Kit de disfarce</td>
@@ -862,38 +934,104 @@
         </tr>
         <tr>
           <td>Kit de ciências</td>
-          <td>Um conjunto de ferramentas e equipamentos químicos, biológicos, etc.</td>
+          <td>Um conjunto portátil de equipamentos utilizados para coletar e analisar amostras químicas, biológicas e materiais desconhecidos.</td>
           <td>3</td>
           <td>4 PC</td>
           <td>Cientista, Cirurgião forense, Farmacêutico, Pesquisador</td>
         </tr>
         <tr>
           <td>Pistola</td>
-          <td>Uma arma de fogo pequena e de saque rápido. Munição: Balas Curtas; Saque: Ação Rápida; Alcance: Curto; Dano: 1d12+2.</td>
+          <td>Uma arma de fogo pequena e de recarga rápida.
+            <br>
+            Munição: 16 balas curtas;
+            <br>
+            Saque: Ação Rápida;
+            <br>
+            Recarga: Ação Rápida;
+            <br>
+            Alcance: Curto;
+            <br>
+            Dano: 1d12+2 balístico.
+          </td>
           <td>1</td>
           <td>5 PC</td>
           <td>Caçador de recompensas, Criminoso, Oficial militar, Policial, Soldado</td>
         </tr>
         <tr>
-          <td>Revólver</td>
-          <td>Uma arma de fogo pequena. Munição: Balas Curtas; Saque: Ação Principal; Alcance: Curto; Dano: 2d12+2.</td>
-          <td>1</td>
-          <td>5 PC</td>
-          <td>-</td>
-        </tr>
-        <tr>
           <td>Espingarda</td>
-          <td>Uma arma de fogo grande. Munição: Balas Curtas; Saque: Ação Principal; Alcance: Curto (desvantagem de -1d6 por distância); Dano: 4d6+4.</td>
+          <td>Uma arma de fogo grande usada para ataques a curto alcance.
+            <br>
+            Munição: 8 balas longas;
+            <br>
+            Saque: Ação Principal;
+            <br>
+            Recarga: Ação Principal;
+            <br>
+            Alcance: Pessoal (desvantagem de -1d6 de dano por distância);
+            <br>
+            Dano: 4d6+4 balístico.
+          </td>
           <td>2,5</td>
           <td>6 PC</td>
           <td>Agricultor, Policial</td>
         </tr>
         <tr>
           <td>Rifle</td>
-          <td>Uma arma de fogo grande. Munição: Balas Longas; Saque: Ação Principal; Alcance: Médio; Dano: 3d8+2.</td>
+          <td>Uma arma de fogo grande usada a longas distâncias.
+            <br>
+            Munição: 25 balas longas;
+            <br>
+            Saque: Ação Principal;
+            <br>
+            Recarga: Ação Principal;
+            <br>
+            Alcance: Longo;
+            <br>
+            Dano: 3d8+2 balístico.
+          </td>
           <td>2,5</td>
           <td>6 PC</td>
           <td>Caçador de recompensas, Oficial militar, Soldado</td>
+        </tr>
+        <tr>
+          <td>Submetralhadora</td>
+          <td>Uma arma compacta e com grande capacidade destrutiva.
+            <br>
+            Munição: 50 balas curtas;
+            <br>
+            Saque: Ação Principal;
+            <br>
+            Recarga: Ação Principal;
+            <br>
+            Alcance: Médio;
+            <br>
+            Ataque: Até 2 tiros sem desvantagem;
+            <br>
+            Dano: 1d12+4 balístico.
+          </td>
+          <td>1,5</td>
+          <td>7 PC</td>
+          <td>Policial, Soldado</td>
+        </tr>
+        <tr>
+          <td>Metralhadora</td>
+          <td>Uma arma grande e pesada e com enorme capacidade destrutiva.
+            <br>
+            Munição: 100 balas longas;
+            <br>
+            Saque: Ação Principal;
+            <br>
+            Recarga: Ação Principal;
+            <br>
+            Alcance: Longo;
+            <br>
+            Ataque: Até 2 tiros sem desvantagem;
+            <br>
+            Dano: 2d8+4 balístico.
+          </td>
+          <td>4</td>
+          <td>8 PC</td>
+          <td>-</td>
         </tr>
       </tbody>
     </table>
@@ -1124,10 +1262,10 @@
       <li><b>Esconder-se (Ação Principal):</b> O personagem se esconde de um ou mais alvos. Para isso, deve fazer um teste de <b>Furtividade DT Percepção do(s) alvo(s)</b>.</li>
       <li><b>Roubar (Ação Principal):</b> O personagem rouba um Item de um alvo, seja ele uma arma empunhada ou objeto guardado. Para isso, deve fazer um teste de <b>Crime DT Reflexo do alvo</b>, precisando <b>vencer</b> para roubar o Item do alvo.</li>
       <li><b>Furtar (Ação Principal):</b> O personagem furta um Item de um alvo enquanto está furtivo, seja ele uma arma empunhada ou objeto guardado. Para isso, deve fazer um teste de <b>Crime</b>, precisando ter <b>Sucesso</b> para furtar o Item do alvo.</li>
-      <li><b>Provocar (Ação Principal):</b> O personagem provoca um alvo, tentando irritá-lo. Para isso, deve fazer um teste de <b>Lábia DT Vontade do alvo</b>, precisando <b>vencer</b> para provocar o alvo.</li>
-      <li><b>Intimidar (Ação Principal):</b> O personagem intimida um alvo, tentando amedrontá-lo. Para isso, deve fazer um teste de <b>Intimidação DT Vontade do alvo</b>, precisando <b>vencer</b> para intimidar o alvo.</li>
+      <li><b>Provocar (Ação Principal):</b> O personagem provoca um alvo, tentando atrair sua atenção. Para isso, deve fazer um teste de <b>Lábia DT Vontade do alvo</b>, precisando <b>vencer</b> para provocar o alvo.</li>
+      <li><b>Intimidar (Ação Principal):</b> O personagem intimida um alvo, deixando-o <b>Pasmo</b>. Para isso, deve fazer um teste de <b>Intimidação DT Vontade do alvo</b>, precisando <b>vencer</b> para intimidar o alvo.</li>
       <li><b>Blefar (Ação Principal):</b> O personagem mente para um alvo, tentando enganá-lo. Para isso, deve fazer um teste de <b>Lábia DT Intuição do alvo</b>, precisando <b>vencer</b> para convencer o alvo.</li>
-      <li><b>Incentivar (Ação Principal):</b> O personagem incentiva um alvo, fornecendo vantagem de +1d20 no seu próximo teste. Para isso, deve fazer um teste de <b>Diplomacia DT Sucesso Extremo</b> para incentivar o alvo.</li>
+      <li><b>Incentivar (Ação Principal):</b> Uma vez na Cena, o personagem deixa um alvo <b>Incentivado</b>. Para isso, deve fazer um teste de <b>Diplomacia DT Sucesso Extremo</b> para Incentivar o alvo.</li>
       <li><b>Golpe de Misericórdia (Ação Principal):</b> O personagem finaliza um alvo que esteja <b>Indefeso</b> ou <b>Inconsciente</b>.</li>
     </ul>
   
@@ -1327,38 +1465,39 @@
 
     <h3>Lista de Condições:</h3>
     <ul id="lista-condicoes">
-      <li><b>ABALADO:</b> O personagem sofre desvantagem de <b>-1d20 em testes de Perícia</b>.</li>
-      <li><b>AGARRADO:</b> O personagem fica <b>Desprevinido</b> e <b>Imóvel</b>, e sofre desvantagem de <b>-1d20 em testes de Ataque</b>. Se um personagem fizer um Ataque à distância contra um dos alvos envolvidos, há <b>50% de chance de acertar o alvo errado</b>.</li>
-      <li><b>APAROVADO:</b> Ainda mais Pasmo. O personagem sofre desvantagem de <b>-2d20 em testes de Perícia com Atributo base Presença</b> e deve <b>fugir da fonte do medo até que não a veja ou esteja a alcance médio dela</b>. Se <b>não puder</b> fugir, pode <b>agir normalmente</b>, mas <b>não pode se aproximar voluntariamente da fonte do medo</b>.</li>
-      <li><b>ASFIXIADO:</b> O personagem não consegue respirar. Enquanto está <b>Asfixiado</b>, o personagem pode <b>prender a respiração</b> por um número de turnos igual ao seu <b>Físico</b>. Depois disso, deve fazer um teste de <b>Fortitude DT Normal + 1 nível por teste anterior</b>. Se <b>Fracassar</b>, cai <b>Inconsciente</b> e perde <b>1d6 de PV por turno</b> até conseguir respirar novamente ou morrer.</li>
-      <li><b>ATORDOADO:</b> O personagem fica <b>Desprevenido</b> e <b>não</b> pode fazer <b>Ações</b>.</li>
-      <li><b>CAÍDO:</b> Deitado no chão. O personagem sofre desvantagem de <b>-2d20 para fazer Ataques corpo a corpo</b> e seu <b>Deslocamento</b> é reduzido a <b>1,5 metros</b>. Além disso, sofre desvantagem de <b>-1d20 para Reagir a Ataques corpo a corpo</b>, mas recebe <b>+1d20 para Reagir a ataques à distância</b>.</li>
-      <li><b>CEGO:</b> O personagem fica <b>Desprevenido</b> e <b>Lento</b>, não pode fazer testes de <b>Percepção para observar</b> e sofre desvantagem de <b>-2d20 em testes de Perícia com Atributo base Físico</b>. Todos os alvos de seus Ataques recebem <b>Camuflagem Total</b>. Um personagem é considerado <b>Cego</b> enquanto estiver em uma área de escuridão total, a menos que algo lhe permita perceber no escuro, ou se estiver com os olhos fechados, por exemplo.</li>
-      <li><b>DESPREVINIDO:</b> O personagem sofre desvantagem de <b>-2d20 em Reações</b>. Um personagem fica <b>Desprevinido</b> contra inimigos que <b>não possa perceber</b>.</li>
-      <li><b>DOENTE:</b> Sob efeito de uma <b>doença</b>.</li>
-      <li><b>EM CHAMAS:</b> O personagem está pegando fogo. No início de suas rodadas, sofre <b>1d6 de dano de fogo</b>. O personagem pode gastar uma <b>Ação Completa</b> para <b>apagar o fogo</b> com as mãos. <b>Imersão em água</b> também <b>apaga as chamas</b>.</li>
-      <li><b>ENJOADO:</b> O personagem só pode realizar <b>uma Ação de cada tipo na sua rodada em Combates</b>, e demora <b>2 turnos</b> para fazer uma <b>Ação Principal em outras Cenas</b>.</li>
-      <li><b>ENLOUQUECENDO:</b> O personagem está com 0 PD. Se iniciar <b>3 rodadas Enlouquecendo na mesma Cena</b> (não necessariamente consecutivos), você fica <b>enlouquecido</b> (seu personagem se torna um NPC). A <b>Condição</b> pode ser <b>encerrada</b> com um teste de <b>Diplomacia DT Sucesso Extremo</b>, ou por <b>qualquer efeito</b> que <b>cure</b> pelo menos <b>1 PD</b>.</li>
-      <li><b>ENVENENADO:</b> Sob efeito de um <b>veneno</b>.</li>
-      <li><b>ESMORECIDO:</b> O personagem sofre desvantagem de <b>-1d20 em testes de Perícia com Atributo base Intelecto</b>.</li>
-      <li><b>EXAUSTO:</b> Ainda mais Fatigado. O personagem sofre desvantagem de <b>-2d20 em testes de Perícia com Atributo base Físico</b>.</li>
-      <li><b>FASCINADO:</b> O personagem entra em transe e deve se <b>aproximar da fonte do fascínio</b> ou <b>olhar para ele fixamente</b>. Se <b>não conseguir</b>, <b>perde 2 PD</b>.</li>
-      <li><b>FATIGADO:</b> O personagem sofre desvantagem de <b>-1d20 em testes de Perícia com Atributo base Físico</b>.</li>
-      <li><b>FLANQUEADO:</b> o personagem está <b>cercado corpo a corpo</b> por <b>2 ou mais inimigos em uma linha reta</b>. Sofre desvantagem de <b>-1d20 em testes de Reação</b>.</li>
-      <li><b>FRUSTRADO:</b> O personagem <b>perde 1 PD</b>.</li>
-      <li><b>IMÓVEL:</b> O personagem é incapaz de se mover. Seu <b>Deslocamento é nulo</b>.</li>
-      <li><b>INCONSCIENTE:</b> O personagem cai desmaiado, sendo suscetível a um <b>Golpe de Misericórdia</b>. Pode ser <b>reanimado</b> com um teste de <b>Área - Medicina DT Sucesso Normal</b>.</li>
-      <li><b>INDEFESO:</b> O personagem se torna suscetível a sofrer um <b>Golpe de Misericórdia</b>.</li>
-      <li><b>LENTO:</b> O personagem tem o <b>Deslocamento reduzido pela metade</b>.</li>
-      <li><b>MACHUCADO:</b> O personagem está com <b>metade ou menos</b> de seu <b>PV</b>.</li>
-      <li><b>MORRENDO:</b> O personagem está com 0 PV. Se iniciar <b>3 rodadas Morrendo na mesma Cena</b> (não necessariamente consecutivas) o personagem <b>morre</b>. É necessário fazer um teste de <b>Área - Medicina DT Sucesso Extremo</b> para <b>tirar essa Condição</b>. Se ela for <b>curada</b>, o personagem <b>recupera 1 PV</b>.</li>
-      <li><b>OFUSCADO:</b> O personagem sofre desvantagem de <b>-1d20 em testes de Percepção</b>.</li>
-      <li><b>PASMO:</b> O personagem sofre desvantagem de <b>-1d20 em testes de Perícia com Atributo base Presença</b>.</li>
-      <li><b>PERTURBADO:</b> O personagem <b>perde 1 rodada</b> em choque. A partir da <b>2° rodada</b>, deve fazer um teste de <b>Vontade DT Sucesso Extremo -1 nível por rodada</b> para conseguir se <b>recompor</b>. Outros personagens podem fazer um teste de <b>Diplomacia</b> para diminuir em 1 nível a DT do teste por tipo de Sucesso.</li>
-      <li><b>SANGRANDO:</b> O personagem <b>perde 1d6 PV por turno</b> enquanto está com essa Condição.</li>
-      <li><b>SURDO:</b> O personagem <b>não consegue ouvir</b>, <b>nem</b> fazer testes de <b>Percepção para ouvir</b>.</li>
-      <li><b>SURPREENDIDO:</b> O personagem <b>não consegue Reagir</b>.</li>
-      <li><b>VICIADO:</b> Sob efeito de um vício. O personagem precisa <b>saciar o vício no máximo a cada 12 horas</b>. Se <b>não</b> o fizer, <b>perde 2 PD</b> e fica <b>Abalado</b>.</li>
+      <li><b>ABALADO:</b> O personagem sofre desvantagem de -1d20 em testes de Perícia.</li>
+      <li><b>AGARRADO:</b> O personagem fica Desprevinido e Imóvel, e sofre desvantagem de -1d20 em testes de Ataque. Se um personagem fizer um Ataque à distância contra um dos alvos envolvidos, há 50% de chance de acertar o alvo errado.</li>
+      <li><b>APAROVADO:</b> Ainda mais Pasmo. O personagem sofre desvantagem de -2d20 em testes de Perícia com Atributo base Presença e deve fugir da fonte do medo até que não a veja ou esteja a alcance médio dela. Se não puder fugir, pode agir normalmente, mas não pode se aproximar voluntariamente da fonte do medo.</li>
+      <li><b>ASFIXIADO:</b> O personagem não consegue respirar. Enquanto está Asfixiado, o personagem pode prender a respiração por um número de turnos igual ao seu Físico. Depois disso, deve fazer um teste de Fortitude DT Normal + 1 nível por teste anterior. Se Fracassar, cai Inconsciente e perde 1d6 de PV por turno até conseguir respirar novamente ou morrer.</li>
+      <li><b>ATORDOADO:</b> O personagem fica Desprevenido e não pode fazer Ações.</li>
+      <li><b>CAÍDO:</b> Deitado no chão. O personagem sofre desvantagem de -2d20 para fazer Ataques corpo a corpo e seu Deslocamento é reduzido para 1,5 metros. Além disso, sofre desvantagem de -1d20 para Reagir a Ataques corpo a corpo, mas recebe +1d20 para Reagir a ataques à distância.</li>
+      <li><b>CEGO:</b> O personagem fica Desprevenido e Lento, não pode fazer testes de Percepção para observar e sofre desvantagem de -2d20 em testes de Perícia com Atributo base Físico. Todos os alvos de seus Ataques recebem Camuflagem Total. Um personagem é considerado Cego enquanto estiver em uma área de escuridão total, a menos que algo lhe permita perceber no escuro, ou se estiver com os olhos fechados, por exemplo.</li>
+      <li><b>DESPREVINIDO:</b> O personagem sofre desvantagem de -2d20 em Reações. Um personagem fica Desprevinido contra inimigos que não possa perceber.</li>
+      <li><b>DOENTE:</b> Sob efeito de uma doença.</li>
+      <li><b>EM CHAMAS:</b> O personagem está pegando fogo. No início de suas rodadas, sofre 1d6 de dano de fogo. O personagem pode gastar uma rodada inteira para apagar o fogo com as mãos. Imersão em água também apaga as chamas.</li>
+      <li><b>ENJOADO:</b> O personagem só pode realizar uma Ação de cada tipo na sua rodada em Combates, e demora 2 turnos para fazer uma Ação Principal em outras Cenas.</li>
+      <li><b>ENLOUQUECENDO:</b> O personagem está com 0 PD. Se iniciar 3 rodadas Enlouquecendo na mesma Cena (não necessariamente consecutivos), você fica enlouquecido (seu personagem se torna um NPC). A Condição pode ser encerrada com um teste de Diplomacia DT Sucesso Extremo, ou por qualquer efeito que cure pelo menos 1 PD.</li>
+      <li><b>ENVENENADO:</b> Sob efeito de um veneno.</li>
+      <li><b>ESMORECIDO:</b> O personagem sofre desvantagem de -1d20 em testes de Perícia com Atributo base Intelecto.</li>
+      <li><b>EXAUSTO:</b> Ainda mais Fatigado. O personagem sofre desvantagem de -2d20 em testes de Perícia com Atributo base Físico.</li>
+      <li><b>FASCINADO:</b> O personagem entra em transe e deve se aproximar da fonte do fascínio ou olhar para ele fixamente. Se não conseguir, perde 2 PD na sua rodada.</li>
+      <li><b>FATIGADO:</b> O personagem sofre desvantagem de -1d20 em testes de Perícia com Atributo base Físico.</li>
+      <li><b>FLANQUEADO:</b> O personagem está cercado corpo a corpo por 2 ou mais inimigos em lados opostos. Sofre desvantagem de -1d20 em testes de Reação.</li>
+      <li><b>FRUSTRADO:</b> O personagem tem um Desastre ou um Desastre Máximo. Perde 1 PD na rodada.</li>
+      <li><b>IMÓVEL:</b> O personagem é incapaz de se mover. Seu Deslocamento é nulo.</li>
+      <li><b>INCENTIVADO:</b> O personagem tem vantagem de +1d20 no seu próximo teste de Perícia.</li>
+      <li><b>INCONSCIENTE:</b> O personagem cai desmaiado, sendo suscetível a um Golpe de Misericórdia. Pode ser reanimado com um teste de Área - Medicina DT Sucesso Normal.</li>
+      <li><b>INDEFESO:</b> O personagem se torna suscetível a sofrer um Golpe de Misericórdia.</li>
+      <li><b>LENTO:</b> O personagem tem o Deslocamento reduzido pela metade.</li>
+      <li><b>MACHUCADO:</b> O personagem está com metade ou menos de seu PV.</li>
+      <li><b>MORRENDO:</b> O personagem está com 0 PV. Se iniciar 3 rodadas Morrendo na mesma Cena (não necessariamente consecutivas) o personagem morre. É necessário fazer um teste de Área - Medicina DT Sucesso Extremo para tirar essa Condição. Se ela for curada, o personagem recupera 1 PV.</li>
+      <li><b>OFUSCADO:</b> O personagem sofre desvantagem de -1d20 em testes de Percepção.</li>
+      <li><b>PASMO:</b> O personagem sofre desvantagem de -1d20 em testes de Perícia com Atributo base Presença.</li>
+      <li><b>PERTURBADO:</b> O personagem perde 1 rodada em estado de choque. A partir da 2° rodada, deve fazer um teste de Vontade DT Sucesso Extremo -1 nível por rodada para conseguir se recompor. Outros personagens podem fazer um teste de Diplomacia para diminuir em 1 nível a DT do teste por tipo de Sucesso.</li>
+      <li><b>SANGRANDO:</b> O personagem perde 1d6 PV por turno enquanto está com essa Condição.</li>
+      <li><b>SURDO:</b> O personagem não consegue ouvir, nem fazer testes de Percepção para ouvir.</li>
+      <li><b>SURPREENDIDO:</b> O personagem não consegue Reagir.</li>
+      <li><b>VICIADO:</b> Sob efeito de um vício. O personagem precisa saciar o vício no máximo a cada 12 horas</b>. Se <b>não</b> o fizer, <b>perde 2 PD</b> e fica <b>Abalado</b> até que sacie seu vício novamente.</li>
     </ul>
 
   </div>

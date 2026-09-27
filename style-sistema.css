@@ -410,6 +410,9 @@ a{
   #lista-turnos-rodadas li{
     max-width: 95%;
   }
+  .tabela-itens{
+    max-width: 95%;
+  }
   #lista-acoes-exploracao li{
     max-width: 95%;
   }
