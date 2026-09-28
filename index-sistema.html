@@ -110,6 +110,7 @@
           <li class="lista-subtopicos-sistema" data-tela="tela-cenas-acoes" data-alvo="cena-interludio">Cena de Interlúdio</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-cenas-acoes" data-alvo="cena-investigacao">Cena de Investigação</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-cenas-acoes" data-alvo="cena-combate">Cena de Combate</li>
+          <li class="lista-subtopicos-sistema" data-tela="tela-cenas-acoes" data-alvo="protecoes">Proteções</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-cenas-acoes" data-alvo="acoes-gerais">Ações Gerais</li>
         </ul>
       </li>
@@ -149,7 +150,7 @@
     <h2 id="termos-importantes">Termos Importantes</h2>
     <p>Em um rpg, são usados vários termos (palavras e expressões) com sentidos específicos no contexto do rpg, e nesse tópico esses termos serão abordados.</p>
     <br>
-    <p><b>Ataque à distância</b>: São Ataques realizados a alcances maiores do que Pessoais, como a alcance Curto, Médio, etc. Pode ser um tiro, arremesso, entre vários outros. Caso seja um Ataque com arma de fogo ou precisão, um alvo não pode reagir, dependendo apenas de um Sucesso do atacante.</p>
+    <p><b>Ataque à distância</b>: São Ataques realizados a alcances maiores do que Pessoais, como a alcance Curto, Médio, etc. Pode ser um tiro, arremesso, entre vários outros. Caso seja um Ataque com Arma de Fogo ou Precisão, um alvo não pode reagir, dependendo apenas de um Sucesso do atacante.</p>
     <br>
     <p><b>Dificuldade do Teste (DT)</b>: É o nível de dificuldade da ação que um personagem vai fazer, sendo definida por algum Tipo de Sucesso, por exemplo, ter DT Sucesso Bom significa que o personagem precisa de um Sucesso Bom para ter êxito na ação.</p>
     <br>
@@ -431,7 +432,7 @@
     <h2 id="ocupacao-personagem">Ocupação do Personagem</h2>
     <p>A Ocupação do personagem é o cargo que o personagem ocupa, seja ele um emprego, um status, ou uma característica social.</p>
     <br>
-    <p>O jogador deve escolher até <b>duas</b> dentre essas Ocupações. Cada uma delas tem Perícias listadas, elas são as <b>Perícias Naturais</b> de cada Pcupação.</p>
+    <p>O jogador deve escolher até <b>duas</b> dentre essas Ocupações. Cada uma delas tem Perícias listadas, elas são as <b>Perícias Naturais</b> de cada Ocupação.</p>
     <br>
     <p>Após escolher a Ocupação, o jogador deve distribuir <b>+5 pontos</b> entre as <b>Perícias Naturais</b> da sua Ocupação, com <u>limite</u> de <b>+3 pontos</b> por Perícia. Essas Perícias podem ultrapassar o <u>limite</u> de 12 pontos em uma única Perícia, tendo como novo limite <b>14 pontos</b>.</p>
     <br>
@@ -723,7 +724,9 @@
     <br>
     <p><b>Itens Comuns</b> são Itens que qualquer tipo de personagem pode obter, sendo bens que qualquer pessoa normalmente possui.</p>
     <br>
-    <p>Cada Item pode possuir <b>Compatibilidade</b> com uma Ocupação, diminuindo seu Custo em <b>-1 PC</b> caso o personagem seja da mesma Ocupação da Compatibilidade. Há um <u>limite</u> de <b>2 Itens</b> para essa diminuição, ou seja, Itens escolhidos após esses não terão seu Custo reduzido.</p>
+    <p>Cada Item pode possuir <b>Compatibilidade</b> com uma Ocupação, diminuindo seu Custo em <b>-1 PC</b> caso o personagem seja da mesma Ocupação da Compatibilidade. Há um <u>limite</u> de <b>2 Itens</b> para essa redução, ou seja, Itens escolhidos após esses não terão seu Custo reduzido.</p>
+    <br>
+    <p>Itens com <b>Peso</b> negativo diminuem a quantidade de carga que um personagem tem (por exemplo, se o personagem está com 3/8 da Capacidade de Carga, uma mochila diminui para 2/8).</p>
     <br>
 
     <h3>Itens Comuns:</h3>
@@ -746,6 +749,16 @@
           <td>Andarilho, Estudante, Guia, Missionário, Vagabundo</td>
         </tr>
         <tr>
+          <td>Lanterna</td>
+          <td>Objeto que ilumina em linha reta até um alcance Curto (9 metros na área que apontar).
+            <br>
+            Consome bateria.
+          </td>
+          <td>0,5</td>
+          <td>1 PC</td>
+          <td>Andarilho, Bombeiro, Garimpeiro, Guia, Marinheiro, Porteiro</td>
+        </tr>
+        <tr>
           <td>Celular</td>
           <td>Aparelho eletrônico pequeno para uso pessoal.
             <br>
@@ -756,14 +769,24 @@
           <td>-</td>
         </tr>
         <tr>
-          <td>Lanterna</td>
-          <td>Objeto que ilumina em linha reta até um alcance Curto (9 metros na área que apontar).
+          <td>Tablet</td>
+          <td>Aparelho eletrônico médio para uso pessoal.
             <br>
             Consome bateria.
           </td>
-          <td>0,5</td>
-          <td>1 PC</td>
-          <td>Andarilho, Bombeiro, Garimpeiro, Guia, Marinheiro, Porteiro</td>
+          <td>1</td>
+          <td>2 PC</td>
+          <td>Arquiteto, Bibliotecário, Curador de Museu, Designer, Editor, Empresário, Juiz, Político, Professor, Secretário</td>
+        </tr>
+        <tr>
+          <td>Notebook</td>
+          <td>Aparelho eletrônico grande e móvel para uso pessoal.
+            <br>
+            Consome bateria.
+          </td>
+          <td>1,5</td>
+          <td>2 PC</td>
+          <td>Arquiteto, Bibliotecário, Cientista, Designer, Editor, Escritor, Estudante, Pesquisador, Professor, Programador, Psicólogo, Psiquiatra, Secretário</td>
         </tr>
         <tr>
           <td>Gravador de áudio</td>
@@ -783,18 +806,10 @@
           <td>Caçador de recompensas, Guia</td>
         </tr>
         <tr>
-          <td>Tablet</td>
-          <td>Aparelho eletrônico médio para uso pessoal.
-            <br>
-            Consome bateria.
-          </td>
-          <td>1</td>
-          <td>2 PC</td>
-          <td>Arquiteto, Bibliotecário, Curador de Museu, Designer, Editor, Empresário, Juiz, Político, Professor, Secretário</td>
-        </tr>
-        <tr>
           <td>Necessáire</td>
-          <td>Bolsinha que guarda itens pequenos e úteis dentro dela. Serve como qualquer Kit (não pode usar como um mesmo Kit mais de uma vez).
+          <td>Bolsinha que guarda itens pequenos e úteis dentro dela.
+            <br>
+            Pode servir como um Kit de medicina e um Kit de artes (não pode usar como um mesmo Kit mais de uma vez).
             <br>
             2 usos.
           </td>
@@ -803,33 +818,34 @@
           <td>Body Piercer, Prostituta, Tatuador</td>
         </tr>
         <tr>
-          <td>Notebook</td>
-          <td>Aparelho eletrônico grande e móvel para uso pessoal.
-            <br>
-            Consome bateria.
-          </td>
-          <td>1,5</td>
-          <td>2 PC</td>
-          <td>Arquiteto, Bibliotecário, Cientista, Designer, Editor, Escritor, Estudante, Pesquisador, Professor, Programador, Psicólogo, Psiquiatra, Secretário</td>
-        </tr>
-        <tr>
           <td>Kit de ferramentas</td>
-          <td>Um conjunto de ferramentas como chaves, marretas, martelos, etc.</td>
-          <td>2</td>
+          <td>Um conjunto de ferramentas como chaves de fenda, chaves inglesas, marretas, martelos, etc.
+            <br>
+            Pode servir para ajudar a consertar objetos, como armas improvisadas, etc.
+          </td>
+          <td>3</td>
           <td>2 PC</td>
           <td>Eletricista, Engenheiro, Lenhador, Mecânico, Operário</td>
         </tr>
         <tr>
           <td>Kit de medicina</td>
-          <td>Um conjunto de itens como álcool, gazes, curativos, etc. +1d20 em Medicina. 3 usos.</td>
-          <td>2</td>
+          <td>Um conjunto de itens como álcool, gazes, curativos, etc.
+            <br>
+            +1d20 em Área - Medicina.
+            <br>
+            3 usos.
+          </td>
+          <td>3</td>
           <td>3 PC</td>
           <td>Cirurgião forense, Enfermeiro, Médico, Psiquiatra, Socorrista, Tratador de zoológico, Veterinário</td>
         </tr>
         <tr>
           <td>Kit de sobrevivência</td>
-          <td>Um conjunto de equipamentos como pequenas cabanas, camas, etc.</td>
-          <td>3</td>
+          <td>Um conjunto de equipamentos como pequenas cabanas, colchonetes, etc.
+            <br>
+            Pode servir para ter um Descanso Precário, etc.
+          </td>
+          <td>4</td>
           <td>3 PC</td>
           <td>Andarilho, Garimpeiro, Guia, Habitante de comunidade tradicional, Marinheiro</td>
         </tr>
@@ -855,18 +871,18 @@
       </thead>
       <tbody>
         <tr>
-          <td>Câmera fotográfica</td>
-          <td>Aparelho eletrônico usado para capturar imagens.</td>
-          <td>0,5</td>
-          <td>2 PC</td>
-          <td>Detetive, Fotógrafo, Jornalista</td>
-        </tr>
-        <tr>
           <td>Maleta profissional</td>
           <td>Maleta usada para guardar itens importantes dentro dela.</td>
           <td>-2</td>
           <td>3 PC</td>
           <td>Advogado, Contador, Empresário, Juiz, Político</td>
+        </tr>
+        <tr>
+          <td>Câmera fotográfica</td>
+          <td>Aparelho eletrônico usado para capturar imagens.</td>
+          <td>0,5</td>
+          <td>2 PC</td>
+          <td>Detetive, Fotógrafo, Jornalista</td>
         </tr>
         <tr>
           <td>Rádio comunicador</td>
@@ -879,6 +895,16 @@
           <td>Bombeiro, Marinheiro, Oficial militar, Porteiro, Soldado</td>
         </tr>
         <tr>
+          <td>Colete balístico</td>
+          <td>Vestimenta para proteção a balas.
+            <br>
+            +3 de Resistência a dano balístico.
+          </td>
+          <td>1</td>
+          <td>4 PC</td>
+          <td>Caçador de recompensas, Policial, Soldado</td>
+        </tr>
+        <tr>
           <td>Cartucho de balas curtas</td>
           <td>Pequeno cartucho para guardar balas pequenas.
             <br>
@@ -889,45 +915,18 @@
           <td>Caçador de recompensas, Criminoso, Oficial militar, Policial, Soldado</td>
         </tr>
         <tr>
-          <td>Kit de arrombamento</td>
-          <td>Um conjunto de ferramentas para arrombar uma tranca.
-            <br>
-            +3 em Crime.
-          </td>
-          <td>1</td>
-          <td>3 PC</td>
-          <td>Criminoso, Detetive, Espião</td>
-        </tr>
-        <tr>
           <td>Cartucho de balas longas</td>
           <td>Pequeno cartucho para guardar balas longas.
             <br>
             50 balas.
           </td>
           <td>2</td>
-          <td>3 PC</td>
+          <td>4 PC</td>
           <td>Agricultor, Caçador de recompensas, Oficial militar, Soldado</td>
         </tr>
         <tr>
-          <td>Kit de artes</td>
-          <td>Um conjunto de itens de pintura, artes corporais, etc. 3 usos.</td>
-          <td>2</td>
-          <td>3 PC</td>
-          <td>Artesão, Artista, Ator, Body Piercer, Tatuador</td>
-        </tr>
-        <tr>
-          <td>Colete balístico</td>
-          <td>Vestimenta para proteção a balas.
-            <br>
-            +2 de Resistência a dano balístico.
-          </td>
-          <td>1</td>
-          <td>4 PC</td>
-          <td>Caçador de recompensas, Policial, Soldado</td>
-        </tr>
-        <tr>
           <td>Revólver</td>
-          <td>Uma arma de fogo pequena.
+          <td>Uma Arma de Fogo pequena.
             <br>
             Munição: 6 balas curtas;
             <br>
@@ -935,7 +934,9 @@
             <br>
             Recarga: Ação Principal;
             <br>
-            Alcance: Curto;
+            Alcance: Curto (desvantagem de -1d20 no teste de Ataque por distância);
+            <br>
+            Ataque: Padrão (1 tiro) ou Rajada com limite de até 3 tiros;
             <br>
             Dano: 2d6+3 balístico.
           </td>
@@ -944,8 +945,133 @@
           <td>-</td>
         </tr>
         <tr>
+          <td>Pistola</td>
+          <td>Uma Arma de Fogo pequena e de recarga rápida.
+            <br>
+            Munição: 16 balas curtas;
+            <br>
+            Saque: Ação Rápida;
+            <br>
+            Recarga: Ação Rápida;
+            <br>
+            Alcance: Curto (desvantagem de -1d20 no teste de Ataque por distância);
+            <br>
+            Ataque: Padrão (1 tiro) ou Rajada com limite de 3 tiros;
+            <br>
+            Dano: 1d12+2 balístico.
+          </td>
+          <td>1</td>
+          <td>5 PC</td>
+          <td>Caçador de recompensas, Criminoso, Oficial militar, Policial, Soldado</td>
+        </tr>
+        <tr>
+          <td>Espingarda</td>
+          <td>Uma Arma de Fogo grande usada para ataques a curto alcance.
+            <br>
+            Munição: 8 balas longas;
+            <br>
+            Saque: Ação Principal;
+            <br>
+            Recarga: Ação Principal;
+            <br>
+            Alcance: Curto (desvantagem de -1d20 no teste de Ataque por distância, e desvantagem de -1d6 de dano por distância);
+            <br>
+            Ataque: Padrão (1 tiro) ou Rajada com limite de 3 tiros;
+            <br>
+            Dano: 4d6+4 balístico.
+          </td>
+          <td>2,5</td>
+          <td>6 PC</td>
+          <td>Agricultor, Policial</td>
+        </tr>
+        <tr>
+          <td>Rifle</td>
+          <td>Uma Arma de Fogo grande usada a longas distâncias.
+            <br>
+            Munição: 25 balas longas;
+            <br>
+            Saque: Ação Principal;
+            <br>
+            Recarga: Ação Principal;
+            <br>
+            Alcance: Longo (desvantagem de -1d20 no teste de Ataque por distância);
+            <br>
+            Ataque: Padrão (1 tiro) ou Rajada com limite de 3 tiros;
+            <br>
+            Dano: 3d8+2 balístico.
+          </td>
+          <td>2,5</td>
+          <td>6 PC</td>
+          <td>Caçador de recompensas, Oficial militar, Soldado</td>
+        </tr>
+        <tr>
+          <td>Submetralhadora</td>
+          <td>Uma Arma de Fogo compacta e com grande capacidade destrutiva.
+            <br>
+            Munição: 50 balas curtas;
+            <br>
+            Saque: Ação Principal;
+            <br>
+            Recarga: Ação Principal;
+            <br>
+            Alcance: Médio (desvantagem de -1d20 no teste de Ataque por distância);
+            <br>
+            Ataque: Padrão (1 tiro) ou Rajada de até 2 tiros sem desvantagem, limite de 4 tiros por Rajada;
+            <br>
+            Dano: 1d12+4 balístico.
+          </td>
+          <td>1,5</td>
+          <td>7 PC</td>
+          <td>Policial, Soldado</td>
+        </tr>
+        <tr>
+          <td>Metralhadora</td>
+          <td>Uma Arma de Fogo grande e pesada e com enorme capacidade destrutiva.
+            <br>
+            Munição: 100 balas longas;
+            <br>
+            Saque: Ação Principal;
+            <br>
+            Recarga: Ação Principal;
+            <br>
+            Alcance: Longo (desvantagem de -1d20 no teste de Ataque por distância);
+            <br>
+            Ataque: Padrão (1 tiro) ou Rajada de até 2 tiros sem desvantagem, limite de 4 tiros por Rajada;
+            <br>
+            Dano: 2d8+4 balístico.
+          </td>
+          <td>4</td>
+          <td>8 PC</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>Kit de arrombamento</td>
+          <td>Um conjunto de ferramentas para arrombar uma tranca.
+            <br>
+            +3 em Crime para Arrombar.
+          </td>
+          <td>1,5</td>
+          <td>3 PC</td>
+          <td>Criminoso, Detetive, Espião</td>
+        </tr>
+        <tr>
+          <td>Kit de artes</td>
+          <td>Um conjunto de itens de pintura, artes corporais, etc.
+            <br>
+            Pode servir para fazer pinturas, maquiagens, etc.
+            <br>
+            3 usos.
+          </td>
+          <td>3</td>
+          <td>3 PC</td>
+          <td>Artesão, Artista, Ator, Body Piercer, Tatuador</td>
+        </tr>
+        <tr>
           <td>Kit de escalada</td>
-          <td>Um conjunto de ferramentas e equipamentos como cordas, capacetes, arnês, etc.</td>
+          <td>Um conjunto de ferramentas e equipamentos como cordas, capacetes, arnês, etc.
+            <br>
+            Pode servir para escalar lugares altos, etc.
+          </td>
           <td>1,5</td>
           <td>4 PC</td>
           <td>Alpinista, Bombeiro</td>
@@ -962,104 +1088,13 @@
         </tr>
         <tr>
           <td>Kit de ciências</td>
-          <td>Um conjunto portátil de equipamentos utilizados para coletar e analisar amostras químicas, biológicas e materiais desconhecidos.</td>
+          <td>Um conjunto portátil de equipamentos cientificos profissionais.
+            <br>
+            Pode servir para coletar e analisar amostras químicas, biológicas e materiais desconhecidos.
+          </td>
           <td>3</td>
           <td>4 PC</td>
           <td>Cientista, Cirurgião forense, Farmacêutico, Pesquisador</td>
-        </tr>
-        <tr>
-          <td>Pistola</td>
-          <td>Uma arma de fogo pequena e de recarga rápida.
-            <br>
-            Munição: 16 balas curtas;
-            <br>
-            Saque: Ação Rápida;
-            <br>
-            Recarga: Ação Rápida;
-            <br>
-            Alcance: Curto;
-            <br>
-            Dano: 1d12+2 balístico.
-          </td>
-          <td>1</td>
-          <td>5 PC</td>
-          <td>Caçador de recompensas, Criminoso, Oficial militar, Policial, Soldado</td>
-        </tr>
-        <tr>
-          <td>Espingarda</td>
-          <td>Uma arma de fogo grande usada para ataques a curto alcance.
-            <br>
-            Munição: 8 balas longas;
-            <br>
-            Saque: Ação Principal;
-            <br>
-            Recarga: Ação Principal;
-            <br>
-            Alcance: Pessoal (desvantagem de -1d6 de dano por distância);
-            <br>
-            Dano: 4d6+4 balístico.
-          </td>
-          <td>2,5</td>
-          <td>6 PC</td>
-          <td>Agricultor, Policial</td>
-        </tr>
-        <tr>
-          <td>Rifle</td>
-          <td>Uma arma de fogo grande usada a longas distâncias.
-            <br>
-            Munição: 25 balas longas;
-            <br>
-            Saque: Ação Principal;
-            <br>
-            Recarga: Ação Principal;
-            <br>
-            Alcance: Longo;
-            <br>
-            Dano: 3d8+2 balístico.
-          </td>
-          <td>2,5</td>
-          <td>6 PC</td>
-          <td>Caçador de recompensas, Oficial militar, Soldado</td>
-        </tr>
-        <tr>
-          <td>Submetralhadora</td>
-          <td>Uma arma compacta e com grande capacidade destrutiva.
-            <br>
-            Munição: 50 balas curtas;
-            <br>
-            Saque: Ação Principal;
-            <br>
-            Recarga: Ação Principal;
-            <br>
-            Alcance: Médio;
-            <br>
-            Ataque: Padrão ou Rajada de até 2 tiros sem desvantagem, limite de 4 tiros por Rajada;
-            <br>
-            Dano: 1d12+4 balístico.
-          </td>
-          <td>1,5</td>
-          <td>7 PC</td>
-          <td>Policial, Soldado</td>
-        </tr>
-        <tr>
-          <td>Metralhadora</td>
-          <td>Uma arma grande e pesada e com enorme capacidade destrutiva.
-            <br>
-            Munição: 100 balas longas;
-            <br>
-            Saque: Ação Principal;
-            <br>
-            Recarga: Ação Principal;
-            <br>
-            Alcance: Longo;
-            <br>
-            Ataque: Padrão ou Rajada de até 2 tiros sem desvantagem, limite de 4 tiros por Rajada;
-            <br>
-            Dano: 2d8+4 balístico.
-          </td>
-          <td>4</td>
-          <td>8 PC</td>
-          <td>-</td>
         </tr>
       </tbody>
     </table>
@@ -1152,20 +1187,33 @@
     <h2 id="cena-interludio">Cena de Interlúdio</h2>
     <p>Uma Cena de Interlúdio ocorre quando os personagens estão em um momento de descanso e lazer, fazendo ações simples como conversar, ou interagindo com objetos sem fazer esforço, como mexer em um celular.</p>
     <br>
-    <p>Um personagem pode fazer 2 Ações de Interlúdio por Cena, podendo repetir a mesma Ação, ou fazer Ações diferentes durante a Cena.</p>
+    <p>Um personagem pode fazer <b>2 Ações de Interlúdio</b> por Cena, podendo repetir a mesma Ação, ou fazer Ações diferentes durante a Cena.</p>
     <br>
+
     <h3>Lista de Ações de Interlúdio:</h3>
-    <ul id="lista-acoes-interludio">
+    <ul class="lista-acoes-interludio">
       <li><b>Alimentar-se:</b> Você tem uma refeição nutritiva, consumindo 1 alimento. Recupera 3 PV e 1 PD.</li>
       <li><b>Dormir:</b> Você passa um tempo dormindo. Recupera 2 PV e 2 PD.</li>
       <li><b>Relaxar:</b> Você descansa fazendo atividades simples. Recupera 1 PV e 3 PD.</li>
       <li><b>Tratar:</b> Você cuida dos ferimentos/desgastes de uma pessoa (pode ser aplicado em si mesmo).
         <ul id="lista-acao-tratar">
-          <li><b>Medicina 5-8:</b> Recupera +1 PV;</li>
-          <li><b>Medicina 9-12:</b> Recupera +2 PV;</li>
-          <li><b>Medicina 13-14:</b> Recupera +3 PV.</li>
+          <li><b>Medicina Nível 2 (7-9):</b> Recupera +1 PV;</li>
+          <li><b>Medicina Nível 3 (10-12):</b> Recupera +2 PV;</li>
+          <li><b>Medicina Nível 4 (13-14):</b> Recupera +3 PV.</li>
         </ul>
       </li>
+    </ul>
+    <br><br>
+    
+    <p>Também existem os níveis de Ações de Interlúdio, variando entre <b>Descanso Horrível</b>, <b>Descanso Precário</b>, <b>Descanso Adequado</b>, e <b>Descanso Perfeito</b>.</p>
+    <br>
+
+    <h3>Lista de níveis de Ações de Interlúdio:</h3>
+    <ul class="lista-acoes-interludio">
+      <li><b>Descanso Horrível:</b> O personagem recupera 1 PV e 1 PD a menos por Ação.</li>
+      <li><b>Descanso Precário:</b> O personagem recupera 1 PV ou 1 PD a menos por Ação.</li>
+      <li><b>Descanso Adequado:</b> O personagem descansa normalmente.</li>
+      <li><b>Descanso Perfeito:</b> O personagem recupera 1 PV e 1 PD a mais por Ação.</li>
     </ul>
 
     <h2 id="cena-investigacao">Cena de Investigação</h2>
@@ -1186,19 +1234,17 @@
     <h2 id="cena-combate">Cena de Combate</h2>
     <p>Um Combate ocorre quando há algum tipo de confronto entre personagens, seja ele uma luta física, uma troca de tiros, etc.</p>
     <br>
-    <p>Durante uma Cena de Combate, um personagem pode fazer <b>1 Ação Completa</b>, <b>2 Ações Principais</b>, <b>até 2 Ações Rápidas</b>, e uma quantidade <b>variável de Reações</b>.</p>
-    <br>
-    <p>Uma <b>Ação Completa</b> é uma Ação que requer a rodada inteira do personagem fazendo essa única Ação.</p>
+    <p>Durante uma Cena de Combate, um personagem pode fazer <b>2 Ações Principais</b>, <b>até 2 Ações Rápidas</b>, e uma quantidade <b>variável de Reações</b>.</p>
     <br>
     <p>Uma <b>Ação Principal</b> é uma Ação que exige maior esforço, que demora mais para ser realizada, ou que impacta diretamente no Combate.</p>
     <br>
     <h3>Lista de Ações Principais de Combate:</h3>
     <ul class="lista-acoes-combate">
 
-      <li><b>Ações de Ataque:</b> O personagem faz um teste de Luta ou outra perícia situacional contra a Reação do alvo (quem vence o teste depende do tipo de Reação usada). Se um Ataque com Sucesso Extremo for acertado, o dano causado é máximo.</li>
+      <li><b>Ações de Ataque:</b> O personagem faz um teste de Luta ou outra perícia situacional contra a Reação do alvo (quem vence o teste depende do tipo de Reação usada). Se, tanto o atacante quanto o defensor, tiverem Fracasso, o Ataque não tem êxito; Em casos de Desastre, o mestre deve definir o que acontecerá. Se um Ataque com Sucesso Extremo for acertado, o dano causado é máximo. Fazer um Ataque com uma Arma de Fogo ou Precisão a alcance Pessoal, ou fazer um Ataque com uma Arma de Fogo ou Precisão com aliados a alcance Pessoal do alvo, causa desvantagem de -1d20 no teste de Ataque.</li>
         <ul class="sub-lista-acoes-combate">
           <li><b>Padrão:</b> O personagem desfere um golpe único em um alvo (1d4 + Físico de dano de impacto em golpes desarmados).</li>
-          <li><b>Rajada:</b> O personagem desfere até 3 golpes de uma só vez no mesmo Ataque, sendo que a cada novo golpe, ele tem penalidade de -1d20 no teste (por exemplo, dar 2 golpes diminui 1d20 no teste). Porém, se acertar o Ataque, os dados de dano são multiplicados pela <b>quantidade de golpes dada</b> (ou seja, se acertar um Ataque que daria 1d8 de dano dando 2 golpes, o dano será 2d8).</li>
+          <li><b>Rajada:</b> O personagem desfere até 3 golpes de uma só vez no mesmo Ataque, sendo que a cada novo golpe, ele tem penalidade de -1d20 no teste (por exemplo, dar 2 golpes diminui -1d20 no teste. Se um personagem chegar a 0d20 no teste e ainda puder dar mais um golpe, a cada novo golpe após isso tem desvantagem de -3 na Perícia do teste). Porém, se acertar o Ataque, os dados de dano são multiplicados pela <b>quantidade de golpes dada</b> (ou seja, se acertar um Ataque que daria 1d8 de dano dando 2 golpes, o dano será 2d8).</li>
         </ul>
       </li>
 
@@ -1214,11 +1260,9 @@
       
       <li><b>Ações Especiais:</b> Algumas Ações Adicionais que o personagem pode fazer durante a Cena.
         <ul class="sub-lista-acoes-combate">
-          <li><b>Mirar:</b> O personagem passa um turno inteiro mirando o ataque, ganhando vantagem de +1d20 no próximo ataque ao alvo escolhido.</li>
+          <li><b>Mirar:</b> O personagem passa a Ação inteira mirando o Ataque em um alvo, ganhando vantagem de +1d20 no próximo ataque ao alvo escolhido.</li>
           <li><b>Preparar:</b> O personagem guarda uma Ação, para que seja feita em qualquer rodada até o fim do turno (o jogador não pode mudar essa Ação, apenas desfazê-la).</li>
-          <li><b>Investida:</b> O personagem gasta 2 Ações e 1 PV percorrendo seu Deslocamento + Atletismo, e desfere um Ataque físico em um alvo. O dano desse ataque aumenta em +2d6, porém o personagem tem penalidade de -1d20 nas suas Reações até o início da sua próxima rodada.</li>
-          <li><b>Levantar-se:</b> O personagem se levanta do chão.</li>
-          <li><b>Interagir com o ambiente:</b> O personagem interage com o ambiente, como ligar um computador, ou procurar algo importante.</li>
+          <li><b>Investida:</b> O personagem gasta 2 Ações Principais e 2 PV percorrendo seu Deslocamento + 1 metro por valor de Atletismo, e desfere um Ataque físico em um alvo. O dano desse Ataque aumenta em +2d6, porém o personagem tem penalidade de -1d20 nas suas Reações até o início da sua próxima rodada.</li>
         </ul>
       </li>
     </ul>
@@ -1249,31 +1293,31 @@
 
       <li><b>Reações a Ações de Ataque:</b>
         <ul class="sub-lista-acoes-combate">
-          <li><b>Esquivar:</b> O personagem desvia de um Ataque sofrido. Para isso, deve fazer um teste de <b>Reflexo</b>, precisando <b>vencer</b> para desviar do ataque (não é possível Esquivar de um tiro de uma Arma de Fogo ou Precisão).</li>
+          <li><b>Esquivar:</b> O personagem desvia de um Ataque sofrido. Para isso, deve fazer um teste de <b>Reflexo</b>, precisando <b>vencer</b> para desviar do ataque (não é possível Esquivar de um tiro de uma Arma de Fogo ou Precisão, com exceção se estiver protegido por uma Cobertura Parcial).</li>
           <li><b>Bloquear:</b> O personagem resiste ao Ataque fisicamente. Para isso, deve fazer um teste de <b>Fortitude</b>, precisando <b>empatar</b> para bloquear o ataque (não é possível Bloquear um tiro de uma Arma de Fogo ou Precisão).</li>
-          <li><b>Contra-atacar:</b> O personagem contra-ataca um alvo que acabou de fazer um Ataque. Para fazer isso, deve fazer um teste de <b>Luta</b> (ou outra perícia situacional). Se <b>vencer</b>, acerta o contra-ataque; Se <b>empatar</b>, o atacante dá metade do dano do Ataque e o defensor dá metade do dano do Contra-ataque; Se <b>perder</b>, sofre o dano do Ataque e tem uma desvantagem de -1d20 no próximo teste de Perícia (não é possível Contra-atacar um ataque a distância).</li>
+          <li><b>Contra-atacar:</b> O personagem contra-ataca um alvo que acabou de fazer um Ataque. Para fazer isso, deve fazer um teste de <b>Luta</b> (ou outra perícia situacional). Se <b>vencer</b>, acerta o contra-ataque; Se <b>empatar</b>, o atacante dá metade do dano do Ataque e o defensor dá metade do dano do Contra-ataque; Se <b>perder</b> e for o alvo do Ataque, sofre o dano do Ataque e tem uma desvantagem de -1d20 no próximo teste de Perícia, e se <b>perder</b> mas não for o alvo do Ataque, apenas não acerta o Contra-ataque (não é possível Contra-atacar um ataque a distância).</li>
           <li><b>Intrometer-se:</b> O personagem se põe na frente de um alvo a alcance Pessoal que está prestes a sofrer um Ataque. Para isso, deve fazer um teste de <b>Reflexo DT Sucesso Bom</b> para se pôr a frente do alvo.</li>
         </ul>
       </li>
 
       <li><b>Reações a Ações Táticas:</b>
         <ul class="sub-lista-acoes-combate">
-          <li><b>Desagarrar:</b> O personagem evita um Agarrar sofrido. Para isso, deve fazer um teste de <b>Atletismo/Luta</b>, precisando <b>vencer</b> para evitar a Condição.</li>
-          <li><b>Suster-se:</b> O personagem resiste a um Derrubar ou Empurrar sofrido. Para isso, deve fazer um teste de <b>Atletismo/Luta</b>, precisando <b>empatar</b> para evitar a Condição.</li>
+          <li><b>Desagarrar:</b> O personagem evita um Agarrar sofrido. Para isso, deve fazer um teste de <b>Atletismo</b> ou <b>Luta</b>, precisando <b>vencer</b> para evitar a Condição.</li>
+          <li><b>Suster-se:</b> O personagem resiste a um Derrubar ou Empurrar sofrido. Para isso, deve fazer um teste de <b>Atletismo</b> ou <b>Luta</b>, precisando <b>empatar</b> para evitar ser Caído ou empurrado.</li>
         </ul>
       </li>
 
     </ul>
-    <br><br>
-
+    
+    <h2 id="protecoes">Proteções</h2>
     <p>Além das Ações, também há tipos de <b>Proteções</b> que um personagem pode obter para se proteger melhor dos Ataques, como <b>Coberturas</b> e <b>Camuflagens</b>.</p>
     <br>
 
     <h3>Lista de Proteções:</h3>
     <ul id="lista-protecoes">
-      <li><b>Cobertura Parcial:</b> O personagem está atrás de algum sólido que cobre parcialmente seu corpo. Ele recebe vantagem de <b>+1d20</b> para <b>Reagir</b> a Ataques à distância, e pode Reagir a tiros de Armas de Fogo e Precisão.</li>
+      <li><b>Cobertura Parcial:</b> O personagem está atrás de algum sólido que cobre parcialmente seu corpo. Ele recebe vantagem de <b>+1d20</b> para <b>Reagir</b> a Ataques à distância, e pode Reagir a tiros de Armas de Fogo e Precisão (sem vantagem).</li>
       <li><b>Cobertura Total:</b> O personagem está totalmente coberto por algum sólido. Ele fica <b>imune</b> a Ataques diretos.</li>
-      <li><b>Camuflagem Parcial:</b> O personagem está parcialmente coberto por algum tipo de gás ou fumaça que bloqueia uma visão completa dele. Qualquer um que tentar Atacá-lo recebe desvantagem de <b>-1d20 no Ataque</b>.</li>
+      <li><b>Camuflagem Parcial:</b> O personagem está parcialmente coberto por algum tipo de gás ou fumaça que bloqueia uma visão completa dele. Qualquer Ação que envolva perceber o personagem Camuflado recebe desvantagem de <b>-1d20</b>.</li>
       <li><b>Camuflagem Total:</b> O personagem está totalmente camuflado por algum tipo de gás ou fumaça, ficando <b>invisível</b> para outros personagens. Um personagem com <b>Camuflagem Total</b> pode dar <b>Ataques Desprevinidos</b> em inimigos, e não pode ser <b>visto</b>.</li>
     </ul>
 
@@ -1286,7 +1330,7 @@
       <li><b>Falar (Ação Livre):</b> O personagem conversa durante a Cena.</li>
       <li><b>Levantar-se (Ação Principal em Combate, Ação Livre em outras Cenas):</b> O personagem se levanta do chão.</li>
       <li><b>Levantar rápido (Ação Rápida em Combate, Ação Livre em outras Cenas):</b> O personagem se levanta rapidamente. Para isso, deve fazer um teste de <b>Acrobacia DT Sucesso Normal</b> para levantar-se. Se falhar, cai no chão gastando 1 Ação Principal.</li>
-      <li><b>Interagir com o ambiente (Ação Principal em Combate, Ação Livre em outras Cenas):</b> O personagem interage com o ambiente, como ligar um computador, ou procurar algo importante.</li>
+      <li><b>Interagir com o ambiente (Ação Principal):</b> O personagem interage com o ambiente, como ligar um computador, ou procurar algo importante.</li>
       <li><b>Entregar/Receber Item (Ação Rápida em Combate, Ação Livre em outras Cenas):</b> O personagem entrega um Item para outro a alcance Pessoal, ou recebe um Item de outro a alcance Pessoal.</li>
       <li><b>Soltar Item (Ação Rápida em Combate, Ação Livre em outras Cenas):</b> O personagem larga um Item no chão.</li>
       <li><b>Apanhar Item (Ação Rápida em Combate, Ação Livre em outras Cenas):</b> O personagem apanha um Item a alcance Pessoal do chão.</li>
@@ -1299,7 +1343,7 @@
       <li><b>Intimidar (Ação Principal):</b> O personagem intimida um alvo, deixando-o <b>Pasmo</b>. Para isso, deve fazer um teste de <b>Intimidação DT Vontade do alvo</b>, precisando <b>vencer</b> para intimidar o alvo.</li>
       <li><b>Blefar (Ação Principal):</b> O personagem mente para um alvo, tentando enganá-lo. Para isso, deve fazer um teste de <b>Lábia DT Intuição do alvo</b>, precisando <b>vencer</b> para convencer o alvo.</li>
       <li><b>Incentivar (Ação Principal):</b> Uma vez na Cena, o personagem deixa um alvo <b>Incentivado</b>. Para isso, deve fazer um teste de <b>Diplomacia DT Sucesso Extremo</b> para Incentivar o alvo.</li>
-      <li><b>Golpe de Misericórdia (Ação Principal):</b> O personagem finaliza um alvo que esteja <b>Indefeso</b> ou <b>Inconsciente</b>, ou faz uma Ação como se tivesse um <b>Sucesso Extremo</b>.</li>
+      <li><b>Acerto garantido (Ação Principal):</b> O personagem finaliza um alvo que esteja <b>Indefeso</b> ou <b>Inconsciente</b>, ou faz uma Ação como se tivesse um <b>Sucesso Extremo</b>. Uma situação que isso pode ocorrer é definida pelo mestre.</li>
     </ul>
   
   </div>
@@ -1410,7 +1454,7 @@
     <br>
     <p>Caso isso aconteça, o personagem que tentar <b>Arrombar</b> deve gastar <b>1 PV</b> e fazer um teste de <b>Atletismo DT Sucesso definido pelo obstáculo</b>.</p>
     <br>
-    <p>Se o personagem tiver <b>Sucesso</b>, o obstáculo é quebrado; Se tiver um <b>Fracasso</b>, pode facilitar o teste em <b>1 nível de Sucesso</b> caso tenha tido um <b>Sucesso Normal ou Bom</b> no seu teste (por exemplo, se o obstáculo precisar de um <b>Sucesso Bom</b>, e o personagem teve <b>Sucesso Normal</b>, <em>diminui</em> o <b>Sucesso</b> necessário para <b>Normal</b>).</p>
+    <p>Se o personagem atingir a DT, o obstáculo é quebrado; Se não atingir a DT, pode facilitar o teste em <b>1 nível de Sucesso</b> caso tenha tido um <b>Sucesso Normal ou Bom</b> no seu teste (por exemplo, se o obstáculo precisar de um <b>Sucesso Bom</b>, e o personagem teve <b>Sucesso Normal</b>, <em>diminui</em> o <b>Sucesso</b> necessário para <b>Normal</b>).</p>
 
     <h2 id="invadir-sistema">Invadir Sistema</h2>
     <p>Essa mecânica pode ser usada para situações em que um personagem está tentando vencer um firewall ou algum tipo de defesa desse sistema.</p>
@@ -1478,7 +1522,7 @@
 
     <h3>Ações de Caçador:</h3>
     <ul id="lista-acoes-cacador">
-      <li><b>Perseguir:</b> O Caçador corre atrás de sua Presa. Teste de <b>Atletismo ou Acrobacia</b> (esse últimodá +1 PS em caso de Sucesso, e -1 PS em Fracasso).</li>
+      <li><b>Perseguir:</b> O Caçador corre atrás de sua Presa. Teste de <b>Atletismo ou Acrobacia</b> (esse último dá +1 PS em caso de Sucesso, e -1 PS em Fracasso).</li>
       <li><b>Criar Obstáculo:</b> O Caçador pode usar o cenário, algum Item, ou artifício para atrapalhar o caminho de todos que estiverem até <b>2 Zonas</b> a frente. A depender da dificuldade da Ação e da Perícia usada, deve fazer um teste com DT definida pelo mestre.</li>
     </ul>
 
@@ -1528,12 +1572,10 @@
       <li><b>SANGRANDO:</b> O personagem perde 1d6 PV por turno enquanto está com essa Condição.</li>
       <li><b>SURDO:</b> O personagem não consegue ouvir, nem fazer testes de Percepção para ouvir.</li>
       <li><b>SURPREENDIDO:</b> O personagem não consegue Reagir.</li>
-      <li><b>VICIADO:</b> Sob efeito de um vício. O personagem precisa saciar o vício no máximo a cada 12 horas</b>. Se <b>não</b> o fizer, <b>perde 2 PD</b> e fica <b>Abalado</b> até que sacie seu vício novamente.</li>
+      <li><b>VICIADO:</b> Sob efeito de um vício. O personagem precisa saciar o vício no máximo a cada 12 horas. Se não o fizer, perde 2 PD e fica Abalado até que sacie seu vício novamente.</li>
     </ul>
 
   </div>
-
-
 
   <!--Tela níveis e habilidades-->
 
@@ -1541,6 +1583,7 @@
     <button class="botao-voltar" data-voltar="tela-sistema" type="button">← Voltar</button>
 
     <h1>NÍVEIS E HABILIDADES</h1>
+    <p>Nesse tópico, serão abordados todos os Níveis, Habilidades desses Níveis, formas de evoluir esses Níveis, etc. O primeiro tipo de Nível a ser tratado é o <b>Nível de Característica de Perfil (NCP)</b>.</p>
 
     <h2 id="ncp">Nível de Característica de Perfil (NCP)</h2>
 

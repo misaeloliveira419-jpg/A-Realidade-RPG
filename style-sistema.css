@@ -211,13 +211,13 @@ a{
 #lista-acoes-exploracao li{
   margin-top: 20px;
 }
-#lista-acoes-interludio{
+.lista-acoes-interludio{
   font-size: 16px;
   max-width: 600px;
   margin: 0 auto;
   line-height: 1.5;
 }
-#lista-acoes-interludio li{
+.lista-acoes-interludio li{
   margin-top: 20px;
 }
 #lista-acao-tratar{
@@ -257,7 +257,7 @@ a{
   line-height: 1.5;
 }
 #lista-protecoes li{
-  margin-top: 5px;
+  margin-top: 20px;
 }
 #lista-acoes-gerais{
   font-size: 16px;
@@ -433,7 +433,7 @@ a{
   #lista-acoes-exploracao li{
     max-width: 95%;
   }
-  #lista-acoes-interludio li{
+  .lista-acoes-interludio li{
     max-width: 95%;
   }
   #lista-acoes-investigacao li{
