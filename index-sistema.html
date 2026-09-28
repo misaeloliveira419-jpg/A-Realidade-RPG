@@ -438,7 +438,7 @@
     <br>
     <p>Se um personagem tiver <b>2 Ocupações</b>, ele poderá escolher <b>3</b> entre as Perícias Naturais das Ocupações para distribuir os 5 pontos bônus.</p>
     <br>
-    <p>Ocupações com Perícias divididas entre Áreas e Gerais, como Cientista e Estudante, devem ter no mínimo <b>uma</b> Perícia de Área, podendo ter até <b>todas</b> as Perícias Naturais como Perícias de Área.</p>
+    <p>Ocupações com Perícias divididas entre Áreas e Gerais, como Cientista e Estudante, devem ter no mínimo <b>uma</b> Perícia de Área, podendo ter até <b>todas</b> as 3 Perícias Naturais como Perícias de Área.</p>
     <br>
     <p>Todas as ocupações são divididas em 11 níveis, indo do Nível 0 ao Nível 10. <a href="#" onclick="abrirTelaSite('tela-niveis-habilidades')">Ir para Níveis e Habilidades</a>.</p>
     <br>
@@ -926,7 +926,7 @@
         </tr>
         <tr>
           <td>Revólver</td>
-          <td>Uma Arma de Fogo pequena.
+          <td>Uma Arma de Fogo pequena (já municiada).
             <br>
             Munição: 6 balas curtas;
             <br>
@@ -946,7 +946,7 @@
         </tr>
         <tr>
           <td>Pistola</td>
-          <td>Uma Arma de Fogo pequena e de recarga rápida.
+          <td>Uma Arma de Fogo pequena e de recarga rápida (já municiada).
             <br>
             Munição: 16 balas curtas;
             <br>
@@ -966,7 +966,7 @@
         </tr>
         <tr>
           <td>Espingarda</td>
-          <td>Uma Arma de Fogo grande usada para ataques a curto alcance.
+          <td>Uma Arma de Fogo grande usada para ataques a Curto alcance (já municiada).
             <br>
             Munição: 8 balas longas;
             <br>
@@ -986,7 +986,7 @@
         </tr>
         <tr>
           <td>Rifle</td>
-          <td>Uma Arma de Fogo grande usada a longas distâncias.
+          <td>Uma Arma de Fogo grande usada a longas distâncias (já municiada).
             <br>
             Munição: 25 balas longas;
             <br>
@@ -1006,7 +1006,7 @@
         </tr>
         <tr>
           <td>Submetralhadora</td>
-          <td>Uma Arma de Fogo compacta e com grande capacidade destrutiva.
+          <td>Uma Arma de Fogo compacta e com grande capacidade destrutiva (já municiada).
             <br>
             Munição: 50 balas curtas;
             <br>
@@ -1026,7 +1026,7 @@
         </tr>
         <tr>
           <td>Metralhadora</td>
-          <td>Uma Arma de Fogo grande e pesada e com enorme capacidade destrutiva.
+          <td>Uma Arma de Fogo grande e pesada e com enorme capacidade destrutiva (já municiada).
             <br>
             Munição: 100 balas longas;
             <br>
@@ -1067,14 +1067,14 @@
           <td>Artesão, Artista, Ator, Body Piercer, Tatuador</td>
         </tr>
         <tr>
-          <td>Kit de escalada</td>
-          <td>Um conjunto de ferramentas e equipamentos como cordas, capacetes, arnês, etc.
+          <td>Kit de ciências</td>
+          <td>Um conjunto portátil de equipamentos cientificos profissionais.
             <br>
-            Pode servir para escalar lugares altos, etc.
+            Pode servir para coletar e analisar amostras químicas, biológicas e materiais desconhecidos.
           </td>
-          <td>1,5</td>
+          <td>3</td>
           <td>4 PC</td>
-          <td>Alpinista, Bombeiro</td>
+          <td>Cientista, Cirurgião forense, Farmacêutico, Pesquisador</td>
         </tr>
         <tr>
           <td>Kit de disfarce</td>
@@ -1087,14 +1087,14 @@
           <td>Ator, Criminoso, Espião</td>
         </tr>
         <tr>
-          <td>Kit de ciências</td>
-          <td>Um conjunto portátil de equipamentos cientificos profissionais.
+          <td>Kit de escalada</td>
+          <td>Um conjunto de ferramentas e equipamentos como cordas, capacetes, arnês, etc.
             <br>
-            Pode servir para coletar e analisar amostras químicas, biológicas e materiais desconhecidos.
+            Pode servir para escalar lugares altos, etc.
           </td>
-          <td>3</td>
+          <td>1,5</td>
           <td>4 PC</td>
-          <td>Cientista, Cirurgião forense, Farmacêutico, Pesquisador</td>
+          <td>Alpinista, Bombeiro</td>
         </tr>
       </tbody>
     </table>
@@ -1205,7 +1205,7 @@
     </ul>
     <br><br>
     
-    <p>Também existem os níveis de Ações de Interlúdio, variando entre <b>Descanso Horrível</b>, <b>Descanso Precário</b>, <b>Descanso Adequado</b>, e <b>Descanso Perfeito</b>.</p>
+    <p>Também existem os níveis de Ações de Interlúdio, variando entre <b>Descanso Horrível</b>, <b>Descanso Precário</b>, <b>Descanso Adequado</b>, e <b>Descanso Perfeito</b> (a Ação <b>Tratar</b> não se encaixa nessa regra).</p>
     <br>
 
     <h3>Lista de níveis de Ações de Interlúdio:</h3>
@@ -1295,7 +1295,7 @@
         <ul class="sub-lista-acoes-combate">
           <li><b>Esquivar:</b> O personagem desvia de um Ataque sofrido. Para isso, deve fazer um teste de <b>Reflexo</b>, precisando <b>vencer</b> para desviar do ataque (não é possível Esquivar de um tiro de uma Arma de Fogo ou Precisão, com exceção se estiver protegido por uma Cobertura Parcial).</li>
           <li><b>Bloquear:</b> O personagem resiste ao Ataque fisicamente. Para isso, deve fazer um teste de <b>Fortitude</b>, precisando <b>empatar</b> para bloquear o ataque (não é possível Bloquear um tiro de uma Arma de Fogo ou Precisão).</li>
-          <li><b>Contra-atacar:</b> O personagem contra-ataca um alvo que acabou de fazer um Ataque. Para fazer isso, deve fazer um teste de <b>Luta</b> (ou outra perícia situacional). Se <b>vencer</b>, acerta o contra-ataque; Se <b>empatar</b>, o atacante dá metade do dano do Ataque e o defensor dá metade do dano do Contra-ataque; Se <b>perder</b> e for o alvo do Ataque, sofre o dano do Ataque e tem uma desvantagem de -1d20 no próximo teste de Perícia, e se <b>perder</b> mas não for o alvo do Ataque, apenas não acerta o Contra-ataque (não é possível Contra-atacar um ataque a distância).</li>
+          <li><b>Contra-atacar:</b> O personagem contra-ataca um alvo que acabou de fazer um Ataque. Para fazer isso, deve fazer um teste de <b>Luta</b> (ou outra perícia situacional). Se <b>vencer</b>, acerta o contra-ataque; Se <b>empatar</b>, o atacante dá metade do dano do Ataque e o defensor dá metade do dano do Contra-ataque; Se <b>perder</b> e for o alvo do Ataque, sofre o dano do Ataque e tem uma desvantagem de -1d20 no próximo teste de Perícia, e se <b>perder</b> mas não for o alvo do Ataque, apenas não acerta o Contra-ataque (não é possível Contra-atacar um Ataque à Distância).</li>
           <li><b>Intrometer-se:</b> O personagem se põe na frente de um alvo a alcance Pessoal que está prestes a sofrer um Ataque. Para isso, deve fazer um teste de <b>Reflexo DT Sucesso Bom</b> para se pôr a frente do alvo.</li>
         </ul>
       </li>
@@ -1315,7 +1315,7 @@
 
     <h3>Lista de Proteções:</h3>
     <ul id="lista-protecoes">
-      <li><b>Cobertura Parcial:</b> O personagem está atrás de algum sólido que cobre parcialmente seu corpo. Ele recebe vantagem de <b>+1d20</b> para <b>Reagir</b> a Ataques à distância, e pode Reagir a tiros de Armas de Fogo e Precisão (sem vantagem).</li>
+      <li><b>Cobertura Parcial:</b> O personagem está atrás de algum sólido que cobre parcialmente seu corpo. Ele recebe vantagem de <b>+1d20</b> para <b>Reagir</b> a Ataques à distância, e pode <b>Esquivar</b> de tiros de Armas de Fogo e Precisão (sem vantagem).</li>
       <li><b>Cobertura Total:</b> O personagem está totalmente coberto por algum sólido. Ele fica <b>imune</b> a Ataques diretos.</li>
       <li><b>Camuflagem Parcial:</b> O personagem está parcialmente coberto por algum tipo de gás ou fumaça que bloqueia uma visão completa dele. Qualquer Ação que envolva perceber o personagem Camuflado recebe desvantagem de <b>-1d20</b>.</li>
       <li><b>Camuflagem Total:</b> O personagem está totalmente camuflado por algum tipo de gás ou fumaça, ficando <b>invisível</b> para outros personagens. Um personagem com <b>Camuflagem Total</b> pode dar <b>Ataques Desprevinidos</b> em inimigos, e não pode ser <b>visto</b>.</li>
@@ -1343,7 +1343,7 @@
       <li><b>Intimidar (Ação Principal):</b> O personagem intimida um alvo, deixando-o <b>Pasmo</b>. Para isso, deve fazer um teste de <b>Intimidação DT Vontade do alvo</b>, precisando <b>vencer</b> para intimidar o alvo.</li>
       <li><b>Blefar (Ação Principal):</b> O personagem mente para um alvo, tentando enganá-lo. Para isso, deve fazer um teste de <b>Lábia DT Intuição do alvo</b>, precisando <b>vencer</b> para convencer o alvo.</li>
       <li><b>Incentivar (Ação Principal):</b> Uma vez na Cena, o personagem deixa um alvo <b>Incentivado</b>. Para isso, deve fazer um teste de <b>Diplomacia DT Sucesso Extremo</b> para Incentivar o alvo.</li>
-      <li><b>Acerto garantido (Ação Principal):</b> O personagem finaliza um alvo que esteja <b>Indefeso</b> ou <b>Inconsciente</b>, ou faz uma Ação como se tivesse um <b>Sucesso Extremo</b>. Uma situação que isso pode ocorrer é definida pelo mestre.</li>
+      <li><b>Acerto garantido (Ação Principal):</b> O personagem finaliza um alvo que esteja <b>Indefeso</b>, ou faz uma Ação como se tivesse um <b>Sucesso Extremo</b>. Uma situação que isso pode ocorrer é definida pelo mestre, geralmente sendo uma Cena sem um perigo ou pressa de fazer Ações.</li>
     </ul>
   
   </div>
@@ -1393,7 +1393,7 @@
     <br>
     <p>Quando isso acontecer, os jogadores definem o <b>Agente</b> (o personagem principal que faz a Ação) e o <b>Ajudante</b> (o personagem que ajuda o Agente; no <b>máximo um</b>).</p>
     <br>
-    <p>Após decidir, o <b>Agente</b> rola uma quantidade de d20 para a Perícia igual ao seu <b>valor no Atributo + 1d20 por Nível da Perícia do Ajudante (mínimo Nível 2)</b>.</p>
+    <p>Após decidir, o <b>Agente</b> rola uma quantidade de d20 para a Perícia igual ao seu <b>valor no Atributo</b>, e recebe um bônus determinado pelo <b>Nível da Perícia do Ajudante</b>, conforme a tabela abaixo. O Ajudante deve possuir, no mínimo, Nível 2 na Perícia utilizada.</p>
     <br>
     
     <h3>Lista de Níveis de ajuda:</h3>
@@ -1457,13 +1457,26 @@
     <p>Se o personagem atingir a DT, o obstáculo é quebrado; Se não atingir a DT, pode facilitar o teste em <b>1 nível de Sucesso</b> caso tenha tido um <b>Sucesso Normal ou Bom</b> no seu teste (por exemplo, se o obstáculo precisar de um <b>Sucesso Bom</b>, e o personagem teve <b>Sucesso Normal</b>, <em>diminui</em> o <b>Sucesso</b> necessário para <b>Normal</b>).</p>
 
     <h2 id="invadir-sistema">Invadir Sistema</h2>
-    <p>Essa mecânica pode ser usada para situações em que um personagem está tentando vencer um firewall ou algum tipo de defesa desse sistema.</p>
+    <p>Essa mecânica pode ser usada para situações em que um personagem está tentando vencer um firewall ou algum tipo de defesa de um sistema.</p>
     <br>
     <p>Aplicando essa mecânica, o personagem que está tentando <b>Invadir o Sistema</b> deve a cada rodada fazer um teste de <b>Área - Computação DT Sucesso definido pela dificuldade de acessar o sistema</b>.</p>
     <br>
-    <p>Tendo <b>Sucesso</b>, o personagem aplica um dano de <b>1d6 Pontos de Resistência (PR)</b> na defesa do sistema (Extremo causa <b>dano máximo</b>); Se tiver um <b>Fracasso</b>, sofre um dano de 1 PD.</p>
+    <p>Tendo <b>Sucesso</b>, o personagem aplica um dano de <b>1d6 Pontos de Resistência (PR)</b> na defesa do sistema (Extremo causa <b>dano máximo</b>); Se tiver um <b>Fracasso</b>, sofre um dano de <b>1 PD</b>.</p>
     <br>
     <p>Se a defesa do sistema não sofrer <em>nenhum dano</em> durante <b>1 rodada</b>, ela <b>recupera 2 PR</b>.</p>
+    <br>
+    <p>Existem 3 tipos de sistema, eles estão na tabela abaixo, e o mestre pode definir qual o tipo de sistema que o personagem tentará invadir.</p>
+    <br>
+
+    <h3>Lista de Tipos de Sistema:</h3>
+    <ul id="lista-tipos-sistema">
+      <li><b>Sistema Simples:</b> 30 PR - Defesa DT Normal</li>
+      <li><b>Sistema Intermediário:</b> 40 PR - Defesa DT Bom</li>
+      <li><b>Sistema Complexo:</b> 50 PR - Defesa DT Extremo</li>
+    </ul>
+    <br><br>
+
+    <p>Se o PR do sistema chegar a 0, a invasão é bem sucedida, e o sistema é acessado.</p>
     <br>
     <p>A cada rodada durante essa mecânica, acontecerá um <b>Evento</b>, que são situações que mudam algumas coisas durante aquela rodada. O mestre rolará 1d8 para decidir qual o <b>Evento</b> a cada novo início de rodada.</p>
     <br>
@@ -1533,6 +1546,11 @@
       <li><b>Ajudar:</b> A Presa passa sua rodada ajudando um aliado a Fugir. Teste de <b>Sobrevivência DT Sucesso Bom</b> dá vantagem de <b>+1d20</b>, <b>Sucesso Extremo</b> dá vantagem de <b>+2d20</b>.</li>
       <li><b>Criar Obstáculo:</b> A Presa pode usar o cenário, algum Item, ou artifício para atrapalhar o caminho de todos que estiverem qualquer <b>Zona</b> atrás (inclui outras Presas ou Caçadores). A DT do teste de <b>Atletismo ou Acrobacia</b> dos afetados é aumentada em <b>+1 nível</b>.</li>
     </ul>
+    <br><br>
+
+    <p>Se uma Presa for capturada pelo Caçador, inicia-se uma Cena de Combate entre os dois.</p>
+    <br>
+    <p>Para que um grupo de Presas fuja de um Caçador (ou grupo de Caçadores), todas elas devem Despistar o Caçador (seja se escondendo, seja fugindo até que ele as perca de vista), ou estar em um ponto inalcançável para o Caçador (como dentro de um helicóptero voando).</p>
 
     <h2 id="condicoes">Condições</h2>
     <p>As Condições são alterações que podem ser aplicadas em um personagem depois de alguma Ação sofrida, dando algum tipo de malefício ao personagem.</p>
@@ -1561,19 +1579,20 @@
       <li><b>FRUSTRADO:</b> O personagem tem um Desastre ou um Desastre Máximo. Perde 1 PD na rodada.</li>
       <li><b>IMÓVEL:</b> O personagem é incapaz de se mover. Seu Deslocamento é nulo.</li>
       <li><b>INCENTIVADO:</b> O personagem tem vantagem de +1d20 no seu próximo teste de Perícia.</li>
-      <li><b>INCONSCIENTE:</b> O personagem cai desmaiado, sendo suscetível a um Golpe de Misericórdia. Pode ser reanimado com um teste de Área - Medicina DT Sucesso Normal.</li>
-      <li><b>INDEFESO:</b> O personagem se torna suscetível a sofrer um Golpe de Misericórdia.</li>
+      <li><b>INCONSCIENTE:</b> O personagem cai desmaiado. Pode ser reanimado com um teste de Área - Medicina DT Sucesso Normal.</li>
+      <li><b>INDEFESO:</b> O personagem se torna suscetível a sofrer um Acerto garantido.</li>
       <li><b>LENTO:</b> O personagem tem o Deslocamento reduzido pela metade.</li>
       <li><b>MACHUCADO:</b> O personagem está com metade ou menos de seu PV.</li>
-      <li><b>MORRENDO:</b> O personagem está com 0 PV. Se iniciar 3 rodadas Morrendo na mesma Cena (não necessariamente consecutivas) o personagem morre. É necessário fazer um teste de Área - Medicina DT Sucesso Extremo para tirar essa Condição. Se ela for curada, o personagem recupera 1 PV.</li>
+      <li><b>MORRENDO:</b> O personagem está com 0 PV. Fica Caído, Indefeso, e não pode fazer ações. Se iniciar 3 rodadas Morrendo na mesma Cena (não necessariamente consecutivas) o personagem morre. É necessário fazer um teste de Área - Medicina DT Sucesso Extremo para tirar essa Condição. Se ela for curada, o personagem recupera 1 PV.</li>
       <li><b>OFUSCADO:</b> O personagem sofre desvantagem de -1d20 em testes de Percepção.</li>
       <li><b>PASMO:</b> O personagem sofre desvantagem de -1d20 em testes de Perícia com Atributo base Presença.</li>
-      <li><b>PERTURBADO:</b> O personagem perde 1 rodada em estado de choque. A partir da 2° rodada, deve fazer um teste de Vontade DT Sucesso Extremo -1 nível por rodada para conseguir se recompor. Outros personagens podem fazer um teste de Diplomacia para diminuir em 1 nível a DT do teste por tipo de Sucesso.</li>
+      <li><b>PERTURBADO:</b> O personagem perde 1 rodada Atordoado, em estado de choque. A partir da 2° rodada, deve fazer um teste de Vontade DT Sucesso Extremo -1 nível por rodada para conseguir se recompor. Outros personagens podem fazer um teste de Diplomacia para diminuir em 1 nível a DT do teste por tipo de Sucesso.</li>
       <li><b>SANGRANDO:</b> O personagem perde 1d6 PV por turno enquanto está com essa Condição.</li>
       <li><b>SURDO:</b> O personagem não consegue ouvir, nem fazer testes de Percepção para ouvir.</li>
       <li><b>SURPREENDIDO:</b> O personagem não consegue Reagir.</li>
       <li><b>VICIADO:</b> Sob efeito de um vício. O personagem precisa saciar o vício no máximo a cada 12 horas. Se não o fizer, perde 2 PD e fica Abalado até que sacie seu vício novamente.</li>
     </ul>
+    <br><br>
 
   </div>
 

@@ -314,6 +314,15 @@ a{
 #lista-tentativas-destrancar li{
   margin-top: 20px;
 }
+#lista-tipos-sistema{
+  font-size: 16px;
+  max-width: 500px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+#lista-tipos-sistema li{
+  margin-top: 20px;
+}
 #lista-eventos-invadir-sistema{
   font-size: 16px;
   max-width: 700px;
@@ -350,7 +359,7 @@ a{
 #lista-condicoes{
   display: grid;
   grid-auto-flow: column;
-  grid-template-rows: repeat(16, auto);
+  grid-template-rows: repeat(17, auto);
   font-size: 16px;
   max-width: 1000px;
   margin: 0 auto;
@@ -359,9 +368,6 @@ a{
 }
 #lista-condicoes li{
   margin-top: 20px;
-}
-#lista-condicoes li:last-of-type{
-  margin-bottom: 40px;
 }
 
 /*Tela níveis e habilidades*/
@@ -461,6 +467,9 @@ a{
     max-width: 95%;
   }
   #lista-tentativas-destrancar li{
+    max-width: 95%;
+  }
+  #lista-tipos-sistema li{
     max-width: 95%;
   }
   #lista-eventos-invadir-sistema li{
