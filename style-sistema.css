@@ -4,11 +4,18 @@ h2{
   margin-top: 40px;
   display: flex;
   justify-content: center;
+  margin-inline: auto;
   text-shadow: 2px 1px 12px black;
 }
 h3{
   display: flex;
   justify-content: center;
+  margin-inline: auto;
+}
+h4{
+  display: flex;
+  justify-content: center;
+  margin-inline: auto;
 }
 .lista-topicos-sistema{
   display: grid;
@@ -231,16 +238,16 @@ a{
 #lista-acoes-investigacao li{
   margin-top: 20px;
 }
-#lista-acoes-combate{
+.lista-acoes-combate{
   font-size: 16px;
   max-width: 800px;
   margin: 0 auto;
   line-height: 1.5;
 }
-#lista-acoes-combate li{
+.lista-acoes-combate li{
   margin-top: 20px;
 }
-#sub-lista-acoes-combate li{
+.sub-lista-acoes-combate li{
   margin-top: 5px;
 }
 #lista-protecoes{
@@ -367,6 +374,16 @@ a{
 /*Para celular*/
 
 @media (max-width: 700px) {
+  h2{
+    max-width: 95%;
+  }
+  h3{
+    margin: 0 auto;
+    max-width: 95%;
+  }
+  h4{
+    max-width: 95%;
+  }
   .lista-topicos-sistema{
     grid-template-columns: 1fr;
   }
@@ -404,13 +421,13 @@ a{
   #lista-ocupacoes-personagem li{
     max-width: 95%;
   }
+  .tabela-itens{
+    max-width: 95%;
+  }
   #lista-consequencias-idade li{
     max-width: 95%;
   }
   #lista-turnos-rodadas li{
-    max-width: 95%;
-  }
-  .tabela-itens{
     max-width: 95%;
   }
   #lista-acoes-exploracao li{
@@ -422,13 +439,13 @@ a{
   #lista-acoes-investigacao li{
     max-width: 95%;
   }
-  #lista-acoes-combate li{
+  .lista-acoes-combate li{
     max-width: 95%;
   }
-  #sub-lista-acoes-combate li{
+  .sub-lista-acoes-combate li{
     max-width: 95%;
   }
-  #lista-coberturas li{
+  #lista-protecoes li{
     max-width: 95%;
   }
   #lista-acoes-gerais li{
