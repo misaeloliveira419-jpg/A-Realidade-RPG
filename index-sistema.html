@@ -98,6 +98,7 @@
           <li class="lista-subtopicos-sistema" data-tela="tela-criacao-personagem" data-alvo="ocupacao-personagem">Ocupação do Personagem</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-criacao-personagem" data-alvo="atributos-pericias">Atributos e Perícias do Personagem</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-criacao-personagem" data-alvo="pontos-credito">Pontos de Crédito (PC)</li>
+          <li class="lista-subtopicos-sistema" data-tela="tela-criacao-personagem" data-alvo="coeficiente-credito">Coeficiente de Crédito de Ocupação (CO)</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-criacao-personagem" data-alvo="itens-capacidade-carga">Itens e Capacidade de Carga</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-criacao-personagem" data-alvo="consequencias-idade">Consequências de Idade</li>
         </ul>
@@ -131,9 +132,9 @@
         Níveis e Habilidades
         <ul>
           <li class="lista-subtopicos-sistema" data-tela="tela-niveis-habilidades" data-alvo="ncp">Nível de Característica de Perfil (NCP)</li>
-          <li class="lista-subtopicos-sistema" data-tela="tela-niveis-habilidades" data-alvo="habilidades-ncp">Habilidades de NCP</li>
+          <li class="lista-subtopicos-sistema" data-tela="tela-niveis-habilidades" data-alvo="habilidades-ncp">Habilidades de Perfil</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-niveis-habilidades" data-alvo="neo">Nível de Experiência na Ocupação (NEO)</li>
-          <li class="lista-subtopicos-sistema" data-tela="tela-niveis-habilidades" data-alvo="habilidades-neo">Habilidades de NEO</li>
+          <li class="lista-subtopicos-sistema" data-tela="tela-niveis-habilidades" data-alvo="habilidades-neo">Habilidades de Ocupação</li>
         </ul>
       </li>
     </ul>
@@ -447,83 +448,83 @@
 
     <h3>Lista de Ocupações:</h3>
     <ul id="lista-ocupacoes-personagem">
-      <li><b>ADVOGADO:</b> Especialista em leis, direitos e questões jurídicas. <br> <b>Perícias</b>: Diplomacia, Lábia, Área - Linguagem. <br> <b>12 PC</b>.</li>
-      <li><b>AGRICULTOR:</b> Trabalha com plantio, cultivo e atividades rurais. <br> <b>Perícias</b>: Adestramento, Área - Natureza, Sobrevivência. <br> <b>8 PC</b>.</li>
-      <li><b>ALPINISTA:</b> Especializado em escaladas e ambientes de grande altitude. <br> <b>Perícias</b>: Acrobacia, Atletismo, Fortitude. <br> <b>10 PC</b>.</li>
-      <li><b>ANDARILHO:</b> Viajante acostumado a percorrer longas distâncias. <br> <b>Perícias</b>: Fortitude, Percepção, Sobrevivência. <br> <b>6 PC</b>.</li>
-      <li><b>ARQUITETO:</b> Planeja construções, espaços e projetos arquitetônicos. <br> <b>Perícias</b>: Área - Artes, Área - Engenharia, Área - Exatas. <br> <b>12 PC</b>.</li>
-      <li><b>ARTESÃO:</b> Produz objetos manualmente com técnica e criatividade. <br> <b>Perícias</b>: Área - Artes, Área - Engenharia, Percepção. <br> <b>8 PC</b>.</li>
-      <li><b>ARTISTA:</b> Expressa ideias e emoções através da arte. <br> <b>Perícias</b>: Área - Artes, Intuição, Percepção. <br> <b>8 PC</b>.</li>
-      <li><b>ATLETA:</b> Pratica atividades físicas de forma competitiva ou profissional. <br> <b>Perícias</b>: Atletismo, Fortitude, Reflexo. <br> <b>10 PC</b>.</li>
-      <li><b>ATOR:</b> Interpreta personagens em apresentações e produções artísticas. <br> <b>Perícias</b>: Área - Artes, Lábia, Sedução. <br> <b>8 PC</b>.</li>
-      <li><b>BARTENDER:</b> Prepara bebidas e atende clientes em bares. <br> <b>Perícias</b>: Intuição, Lábia, Percepção. <br> <b>8 PC</b>.</li>
-      <li><b>BIBLIOTECÁRIO:</b> Organiza, preserva e administra livros e informações. <br> <b>Perícias</b>: Atualidades, Área - Humanas, Área - Linguagem. <br> <b>10 PC</b>.</li>
-      <li><b>BODY PIERCER:</b> Realiza perfurações corporais com precisão, higiene e conhecimento anatômico. <br> <b>Perícias</b>: Área - Artes, Área - Medicina, Percepção. <br> <b>8 PC</b>.</li>
-      <li><b>BOMBEIRO:</b> Atua no combate a incêndios e em resgates. <br> <b>Perícias</b>: Atletismo, Fortitude, Área - Medicina. <br> <b>10 PC</b>.</li>
-      <li><b>CAÇADOR DE RECOMPENSAS:</b> Localiza e captura pessoas em troca de pagamento. <br> <b>Perícias</b>: Crime, Percepção, Pontaria. <br> <b>10 PC</b>.</li>
-      <li><b>CIENTISTA:</b> Pesquisa e estuda fenômenos de uma área científica. <br> <b>Perícias</b>: <br> Áreas - Computação, Engenharia, Exatas, Medicina, Natureza; <br> Gerais - Atualidades, Percepção. <br> <b>12 PC</b>.</li>
-      <li><b>CIRURGIÃO FORENSE:</b> Analisa corpos e evidências médicas relacionadas a mortes. <br> <b>Perícias</b>: Área - Medicina, Área - Natureza, Percepção. <br> <b>14 PC</b>.</li>
-      <li><b>CONTADOR:</b> Administra e analisa informações financeiras e contábeis. <br> <b>Perícias</b>: Atualidades, Área - Computação, Área - Exatas. <br> <b>12 PC</b>.</li>
-      <li><b>COZINHEIRO:</b> Prepara alimentos e domina técnicas culinárias. <br> <b>Perícias</b>: Área - Artes, Área - Natureza, Percepção. <br> <b>8 PC</b>.</li>
-      <li><b>CRIMINOSO:</b> Atua em atividades ilegais e no submundo do crime. <br> <b>Perícias</b>: Crime, Furtividade, Lábia. <br> <b>8 PC</b>.</li>
-      <li><b>CURADOR DE MUSEU:</b> Preserva, pesquisa e organiza acervos e exposições. <br> <b>Perícias</b>: Área - Artes, Atualidades, Área - Humanas. <br> <b>10 PC</b>.</li>
-      <li><b>DESIGNER:</b> Desenvolve projetos visuais, funcionais ou estéticos. <br> <b>Perícias</b>: Área - Artes, Área - Computação, Percepção. <br> <b>10 PC</b>.</li>
-      <li><b>DETETIVE:</b> Investiga pessoas, acontecimentos e situações suspeitas. <br> <b>Perícias</b>: Crime, Intuição, Percepção. <br> <b>10 PC</b>.</li>
-      <li><b>DUBLÊ:</b> Realiza cenas perigosas e acrobacias profissionais. <br> <b>Perícias</b>: Acrobacia, Condução, Reflexo. <br> <b>10 PC</b>.</li>
-      <li><b>EDITOR:</b> Revisa, organiza e aprimora conteúdos para publicação. <br> <b>Perícias</b>: Área - Artes, Atualidades, Percepção. <br> <b>10 PC</b>.</li>
-      <li><b>ELETRICISTA:</b> Instala e realiza manutenção em sistemas elétricos. <br> <b>Perícias</b>: Área - Engenharia, Área - Exatas, Percepção. <br> <b>10 PC</b>.</li>
-      <li><b>EMPRESÁRIO:</b> Administra negócios, recursos e atividades comerciais. <br> <b>Perícias</b>: Atualidades, Intuição, Lábia. <br> <b>14 PC</b>.</li>
-      <li><b>ENFERMEIRO:</b> Presta cuidados médicos e acompanha pacientes. <br> <b>Perícias</b>: Diplomacia, Intuição, Área - Medicina. <br> <b>10 PC</b>.</li>
-      <li><b>ENGENHEIRO:</b> Desenvolve e aplica soluções técnicas para problemas complexos. <br> <b>Perícias</b>: Área - Computação, Área - Engenharia, Área - Exatas. <br> <b>12 PC</b>.</li>
-      <li><b>ESCRITOR:</b> Produz obras e conteúdos através da escrita. <br> <b>Perícias</b>: Área - Artes, Área - Humanas, Área - Linguagem. <br> <b>8 PC</b>.</li>
-      <li><b>ESPIÃO:</b> Obtém informações secretas através de infiltração e espionagem. <br> <b>Perícias</b>: Furtividade, Intuição, Lábia. <br> <b>10 PC</b>.</li>
-      <li><b>ESTUDANTE:</b> Dedica-se ao aprendizado e à formação em determinada área. <br> <b>Perícias</b>: <br> Áreas - Artes, Computação, Engenharia, Exatas, Humanas, Linguagem, Medicina, Natureza, Religião; <br> Geral - Atualidades. <br> <b>6 PC</b>.</li>
-      <li><b>FARMACÊUTICO:</b> Trabalha com medicamentos, substâncias e seus efeitos. <br> <b>Perícias</b>: Área - Exatas, Área - Medicina, Área - Natureza. <br> <b>12 PC</b>.</li>
-      <li><b>FOTÓGRAFO:</b> Registra imagens utilizando técnicas fotográficas. <br> <b>Perícias</b>: Área - Artes, Percepção, Reflexo. <br> <b>8 PC</b>.</li>
-      <li><b>GARÇOM/GARÇONETE:</b> Atende clientes e serve alimentos e bebidas. <br> <b>Perícias</b>: Diplomacia, Intuição, Reflexo. <br> <b>8 PC</b>.</li>
-      <li><b>GARIMPEIRO:</b> Busca e extrai minerais e materiais valiosos. <br> <b>Perícias</b>: Fortitude, Área - Natureza, Sobrevivência. <br> <b>8 PC</b>.</li>
-      <li><b>GUIA:</b> Orienta pessoas durante viagens, passeios ou expedições. <br> <b>Perícias</b>: Diplomacia, Percepção, Sobrevivência. <br> <b>8 PC</b>.</li>
-      <li><b>HABITANTE DE COMUNIDADE TRADICIONAL:</b> Vive segundo conhecimentos e práticas tradicionais de sua comunidade. <br> <b>Perícias</b>: Área - Natureza, Área - Religião, Sobrevivência. <br> <b>10 PC</b>.</li>
-      <li><b>JORNALISTA:</b> Investiga acontecimentos e produz informações para o público. <br> <b>Perícias</b>: Atualidades, Área - Linguagem, Percepção. <br> <b>10 PC</b>.</li>
-      <li><b>JUIZ:</b> Analisa processos e toma decisões com base nas leis. <br> <b>Perícias</b>: Área - Humanas, Intuição, Área - Linguagem. <br> <b>14 PC</b>.</li>
-      <li><b>LENHADOR:</b> Trabalha com corte, manejo e transporte de madeira. <br> <b>Perícias</b>: Atletismo, Fortitude, Área - Natureza. <br> <b>8 PC</b>.</li>
-      <li><b>LOJISTA:</b> Administra uma loja e negocia produtos com clientes. <br> <b>Perícias</b>: Atualidades, Diplomacia, Intuição. <br> <b>10 PC</b>.</li>
-      <li><b>LUTADOR:</b> Especializado em combate corporal e artes marciais. <br> <b>Perícias</b>: Atletismo, Luta, Reflexo. <br> <b>8 PC</b>.</li>
-      <li><b>MARINHEIRO:</b> Trabalha a bordo de embarcações e conhece a vida marítima. <br> <b>Perícias</b>: Condução, Área - Engenharia, Sobrevivência. <br> <b>10 PC</b>.</li>
-      <li><b>MECÂNICO:</b> Conserta e realiza manutenção em máquinas e veículos. <br> <b>Perícias</b>: Área - Engenharia, Área - Exatas, Percepção. <br> <b>10 PC</b>.</li>
-      <li><b>MÉDICO:</b> Diagnostica doenças e realiza tratamentos médicos. <br> <b>Perícias</b>: Intuição, Área - Medicina, Área - Natureza. <br> <b>14 PC</b>.</li>
-      <li><b>MEMBRO DO CLERO:</b> Exerce funções religiosas dentro de uma instituição. <br> <b>Perícias</b>: Diplomacia, Área - Religião, Área - Linguagem. <br> <b>8 PC</b>.</li>
-      <li><b>MERGULHADOR:</b> Atua profissionalmente em ambientes subaquáticos. <br> <b>Perícias</b>: Atletismo, Fortitude, Sobrevivência. <br> <b>10 PC</b>.</li>
-      <li><b>MISSIONÁRIO:</b> Viaja para divulgar crenças e auxiliar comunidades. <br> <b>Perícias</b>: Área - Linguagem, Área - Religião, Sobrevivência. <br> <b>8 PC</b>.</li>
-      <li><b>MORDOMO:</b> Administra residências e atende às necessidades de seus moradores. <br> <b>Perícias</b>: Diplomacia, Intuição, Percepção. <br> <b>10 PC</b>.</li>
-      <li><b>MOTORISTA:</b> Conduz veículos profissionalmente. <br> <b>Perícias</b>: Condução, Percepção, Reflexo. <br> <b>8 PC</b>.</li>
-      <li><b>MÚSICO:</b> Compõe, interpreta ou executa músicas profissionalmente. <br> <b>Perícias</b>: Área - Artes, Diplomacia, Lábia. <br> <b>8 PC</b>.</li>
-      <li><b>OFICIAL MILITAR:</b> Lidera e coordena integrantes das forças armadas. <br> <b>Perícias</b>: Diplomacia, Luta, Pontaria. <br> <b>12 PC</b>.</li>
-      <li><b>OPERÁRIO:</b> Executa trabalhos manuais em indústrias, obras ou fábricas. <br> <b>Perícias</b>: Atletismo, Área - Engenharia, Fortitude. <br> <b>8 PC</b>.</li>
-      <li><b>PESQUISADOR:</b> Busca, analisa e produz novos conhecimentos. <br> <b>Perícias</b>: <br> Áreas - Computação, Engenharia, Exatas, Humanas, Medicina, Natureza; <br> Gerais: Atualidades, Percepção. <br> <b>10 PC</b>.</li>
-      <li><b>PERSONAL TRAINER:</b> Orienta e acompanha o treinamento físico de outras pessoas. <br> <b>Perícias</b>: Atletismo, Diplomacia, Área - Medicina. <br> <b>10 PC</b>.</li>
-      <li><b>PILOTO:</b> Conduz aeronaves ou outros veículos especializados. <br> <b>Perícias</b>: Condução, Área - Engenharia, Área - Exatas. <br> <b>12 PC</b>.</li>
-      <li><b>POLICIAL:</b> Mantém a segurança pública e atua no cumprimento da lei. <br> <b>Perícias</b>: Intimidação, Luta, Pontaria. <br> <b>10 PC</b>.</li>
-      <li><b>POLÍTICO:</b> Atua na administração pública e representação da sociedade. <br> <b>Perícias</b>: Atualidades, Diplomacia, Lábia. <br> <b>12 PC</b>.</li>
-      <li><b>PORTEIRO:</b> Controla o acesso e auxilia na segurança de um local. <br> <b>Perícias</b>: Atualidades, Diplomacia, Percepção. <br> <b>8 PC</b>.</li>
-      <li><b>PROFESSOR:</b> Ensina conhecimentos e orienta o aprendizado de outras pessoas. <br> <b>Perícias</b>: <br> Áreas - Artes, Computação, Engenharia, Exatas, Humanas, Linguagem, Medicina, Natureza, Religião; <br> Gerais: Diplomacia, Intuição. <br> <b>10 PC</b>.</li>
-      <li><b>PROGRAMADOR:</b> Desenvolve e mantém programas e sistemas computacionais. <br> <b>Perícias</b>: Área - Computação, Área - Engenharia, Área - Exatas. <br> <b>12 PC</b>.</li>
-      <li><b>PROSTITUTA:</b> Oferece serviços sexuais em troca de pagamento. <br> <b>Perícias</b>: Intuição, Lábia, Sedução. <br> <b>8 PC</b>.</li>
-      <li><b>PSICÓLOGO:</b> Estuda comportamentos e auxilia pessoas emocionalmente. <br> <b>Perícias</b>: Diplomacia, Área - Humanas, Intuição. <br> <b>10 PC</b>.</li>
-      <li><b>PSIQUIATRA:</b> Médico especializado em saúde e transtornos mentais. <br> <b>Perícias</b>: Área - Humanas, Intuição, Área - Medicina. <br> <b>14 PC</b>.</li>
-      <li><b>SECRETÁRIO:</b> Organiza informações, documentos, compromissos e atividades administrativas. <br> <b>Perícias</b>: Atualidades, Área - Computação, Diplomacia. <br> <b>10 PC</b>.</li>
-      <li><b>SINDICALISTA:</b> Representa e defende interesses de trabalhadores organizados. <br> <b>Perícias</b>: Diplomacia, Área - Humanas, Lábia. <br> <b>8 PC</b>.</li>
-      <li><b>SOCORRISTA:</b> Presta atendimento imediato em emergências e acidentes. <br> <b>Perícias</b>: Área - Medicina, Área - Natureza, Percepção. <br> <b>10 PC</b>.</li>
-      <li><b>SOLDADO:</b> Atua diretamente em operações e atividades militares. <br> <b>Perícias</b>: Luta, Pontaria, Sobrevivência. <br> <b>10 PC</b>.</li>
-      <li><b>TATUADOR:</b> Cria e aplica tatuagens usando técnicas artísticas e de higiene. <br> <b>Perícias</b>: Área- Artes, Área - Medicina, Reflexo. <br> <b>10 PC</b>.</li>
-      <li><b>TAXISTA:</b> Transporta passageiros profissionalmente pela cidade. <br> <b>Perícias</b>: Atualidades, Condução, Diplomacia. <br> <b>8 PC</b>.</li>
-      <li><b>TÉCNICO DE HIGIENIZAÇÃO HOSPITALAR:</b> Realiza limpeza e descontaminação de ambientes hospitalares. <br> <b>Perícias</b>: Fortitude, Área - Medicina, Percepção. <br> <b>8 PC</b>.</li>
-      <li><b>TRATADOR DE ZOOLÓGICO:</b> Cuida de animais mantidos em zoológicos. <br> <b>Perícias</b>: Adestramento, Área - Natureza, Percepção. <br> <b>8 PC</b>.</li>
-      <li><b>TREINADOR DE ANIMAIS:</b> Ensina e condiciona comportamentos em animais. <br> <b>Perícias</b>: Adestramento, Intuição, Área - Natureza. <br> <b>8 PC</b>.</li>
-      <li><b>VAGABUNDO:</b> Vive sem ocupação ou residência estável, sobrevivendo como pode. <br> <b>Perícias</b>: Lábia, Percepção, Sobrevivência. <br> <b>6 PC</b>.</li>
-      <li><b>VENDEDOR:</b> Negocia e comercializa produtos ou serviços. <br> <b>Perícias</b>: Diplomacia, Intuição, Lábia. <br> <b>8 PC</b>.</li>
-      <li><b>VETERINÁRIO:</b> Cuida da saúde e do tratamento de animais. <br> <b>Perícias</b>: Adestramento, Área - Medicina, Área - Natureza. <br> <b>12 PC</b>.</li>
-      <li><b>VAQUEIRO:</b> Maneja e cuida de gado e outros animais rurais. <br> <b>Perícias</b>: Adestramento, Atletismo, Sobrevivência. <br> <b>8 PC</b>.</li>
+      <li><b>ADVOGADO:</b> Especialista em leis, direitos e questões jurídicas. <br> <b>Perícias</b>: Diplomacia, Lábia, Área - Linguagem. <br> <b>12 PC;</b> <br> <b>CO</b>: 750.</li>
+      <li><b>AGRICULTOR:</b> Trabalha com plantio, cultivo e atividades rurais. <br> <b>Perícias</b>: Adestramento, Área - Natureza, Sobrevivência. <br> <b>8 PC;</b> <br> <b>CO</b>: 300.</li>
+      <li><b>ALPINISTA:</b> Especializado em escaladas e ambientes de grande altitude. <br> <b>Perícias</b>: Acrobacia, Atletismo, Fortitude. <br> <b>10 PC;</b> <br> <b>CO</b>: 500.</li>
+      <li><b>ANDARILHO:</b> Viajante acostumado a percorrer longas distâncias. <br> <b>Perícias</b>: Fortitude, Percepção, Sobrevivência. <br> <b>6 PC;</b> <br> <b>CO</b>: 100.</li>
+      <li><b>ARQUITETO:</b> Planeja construções, espaços e projetos arquitetônicos. <br> <b>Perícias</b>: Área - Artes, Área - Engenharia, Área - Exatas. <br> <b>12 PC;</b> <br> <b>CO</b>: 750.</li>
+      <li><b>ARTESÃO:</b> Produz objetos manualmente com técnica e criatividade. <br> <b>Perícias</b>: Área - Artes, Área - Engenharia, Percepção. <br> <b>8 PC;</b> <br> <b>CO</b>: 300.</li>
+      <li><b>ARTISTA:</b> Expressa ideias e emoções através da arte. <br> <b>Perícias</b>: Área - Artes, Intuição, Percepção. <br> <b>8 PC;</b> <br> <b>CO</b>: 300.</li>
+      <li><b>ATLETA:</b> Pratica atividades físicas de forma competitiva ou profissional. <br> <b>Perícias</b>: Atletismo, Fortitude, Reflexo. <br> <b>10 PC;</b> <br> <b>CO</b>: 500.</li>
+      <li><b>ATOR:</b> Interpreta personagens em apresentações e produções artísticas. <br> <b>Perícias</b>: Área - Artes, Lábia, Sedução. <br> <b>8 PC;</b> <br> <b>CO</b>: 300.</li>
+      <li><b>BARTENDER:</b> Prepara bebidas e atende clientes em bares. <br> <b>Perícias</b>: Intuição, Lábia, Percepção. <br> <b>8 PC;</b> <br> <b>CO</b>: 300.</li>
+      <li><b>BIBLIOTECÁRIO:</b> Organiza, preserva e administra livros e informações. <br> <b>Perícias</b>: Atualidades, Área - Humanas, Área - Linguagem. <br> <b>10 PC;</b> <br> <b>CO</b>: 500.</li>
+      <li><b>BODY PIERCER:</b> Realiza perfurações corporais com precisão, higiene e conhecimento anatômico. <br> <b>Perícias</b>: Área - Artes, Área - Medicina, Percepção. <br> <b>8 PC;</b> <br> <b>CO</b>: 300.</li>
+      <li><b>BOMBEIRO:</b> Atua no combate a incêndios e em resgates. <br> <b>Perícias</b>: Atletismo, Fortitude, Área - Medicina. <br> <b>10 PC;</b> <br> <b>CO</b>: 750.</li>
+      <li><b>CAÇADOR DE RECOMPENSAS:</b> Localiza e captura pessoas em troca de pagamento. <br> <b>Perícias</b>: Crime, Percepção, Pontaria. <br> <b>10 PC;</b> <br> <b>CO</b>: 500.</li>
+      <li><b>CIENTISTA:</b> Pesquisa e estuda fenômenos de uma área científica. <br> <b>Perícias</b>: <br> Áreas - Computação, Engenharia, Exatas, Medicina, Natureza; <br> Gerais - Atualidades, Percepção. <br> <b>12 PC;</b> <br> <b>CO</b>: 750.</li>
+      <li><b>CIRURGIÃO FORENSE:</b> Analisa corpos e evidências médicas relacionadas a mortes. <br> <b>Perícias</b>: Área - Medicina, Área - Natureza, Percepção. <br> <b>14 PC;</b> <br> <b>CO</b>: 1000.</li>
+      <li><b>CONTADOR:</b> Administra e analisa informações financeiras e contábeis. <br> <b>Perícias</b>: Atualidades, Área - Computação, Área - Exatas. <br> <b>12 PC;</b> <br> <b>CO</b>: 750.</li>
+      <li><b>COZINHEIRO:</b> Prepara alimentos e domina técnicas culinárias. <br> <b>Perícias</b>: Área - Artes, Área - Natureza, Percepção. <br> <b>8 PC;</b> <br> <b>CO</b>: 300.</li>
+      <li><b>CRIMINOSO:</b> Atua em atividades ilegais e no submundo do crime. <br> <b>Perícias</b>: Crime, Furtividade, Lábia. <br> <b>8 PC;</b> <br> <b>CO</b>: 300.</li>
+      <li><b>CURADOR DE MUSEU:</b> Preserva, pesquisa e organiza acervos e exposições. <br> <b>Perícias</b>: Área - Artes, Atualidades, Área - Humanas. <br> <b>10 PC;</b> <br> <b>CO</b>: 500.</li>
+      <li><b>DESIGNER:</b> Desenvolve projetos visuais, funcionais ou estéticos. <br> <b>Perícias</b>: Área - Artes, Área - Computação, Percepção. <br> <b>10 PC;</b> <br> <b>CO</b>: 500.</li>
+      <li><b>DETETIVE:</b> Investiga pessoas, acontecimentos e situações suspeitas. <br> <b>Perícias</b>: Crime, Intuição, Percepção. <br> <b>10 PC;</b> <br> <b>CO</b>: 500.</li>
+      <li><b>DUBLÊ:</b> Realiza cenas perigosas e acrobacias profissionais. <br> <b>Perícias</b>: Acrobacia, Condução, Reflexo. <br> <b>10 PC;</b> <br> <b>CO</b>: 500.</li>
+      <li><b>EDITOR:</b> Revisa, organiza e aprimora conteúdos para publicação. <br> <b>Perícias</b>: Área - Artes, Atualidades, Percepção. <br> <b>10 PC;</b> <br> <b>CO</b>: 500.</li>
+      <li><b>ELETRICISTA:</b> Instala e realiza manutenção em sistemas elétricos. <br> <b>Perícias</b>: Área - Engenharia, Área - Exatas, Percepção. <br> <b>10 PC;</b> <br> <b>CO</b>: 500.</li>
+      <li><b>EMPRESÁRIO:</b> Administra negócios, recursos e atividades comerciais. <br> <b>Perícias</b>: Atualidades, Intuição, Lábia. <br> <b>14 PC;</b> <br> <b>CO</b>: 1000.</li>
+      <li><b>ENFERMEIRO:</b> Presta cuidados médicos e acompanha pacientes. <br> <b>Perícias</b>: Diplomacia, Intuição, Área - Medicina. <br> <b>10 PC;</b> <br> <b>CO</b>: 750.</li>
+      <li><b>ENGENHEIRO:</b> Desenvolve e aplica soluções técnicas para problemas complexos. <br> <b>Perícias</b>: Área - Computação, Área - Engenharia, Área - Exatas. <br> <b>12 PC;</b> <br> <b>CO</b>: 750.</li>
+      <li><b>ESCRITOR:</b> Produz obras e conteúdos através da escrita. <br> <b>Perícias</b>: Área - Artes, Área - Humanas, Área - Linguagem. <br> <b>8 PC;</b> <br> <b>CO</b>: 300.</li>
+      <li><b>ESPIÃO:</b> Obtém informações secretas através de infiltração e espionagem. <br> <b>Perícias</b>: Furtividade, Intuição, Lábia. <br> <b>10 PC;</b> <br> <b>CO</b>: 750.</li>
+      <li><b>ESTUDANTE:</b> Dedica-se ao aprendizado e à formação em determinada área. <br> <b>Perícias</b>: <br> Áreas - Artes, Computação, Engenharia, Exatas, Humanas, Linguagem, Medicina, Natureza, Religião; <br> Geral - Atualidades. <br> <b>6 PC;</b> <br> <b>CO</b>: 100.</li>
+      <li><b>FARMACÊUTICO:</b> Trabalha com medicamentos, substâncias e seus efeitos. <br> <b>Perícias</b>: Área - Exatas, Área - Medicina, Área - Natureza. <br> <b>12 PC;</b> <br> <b>CO</b>: 750.</li>
+      <li><b>FOTÓGRAFO:</b> Registra imagens utilizando técnicas fotográficas. <br> <b>Perícias</b>: Área - Artes, Percepção, Reflexo. <br> <b>8 PC;</b> <br> <b>CO</b>: 300.</li>
+      <li><b>GARÇOM/GARÇONETE:</b> Atende clientes e serve alimentos e bebidas. <br> <b>Perícias</b>: Diplomacia, Intuição, Reflexo. <br> <b>8 PC;</b> <br> <b>CO</b>: 300.</li>
+      <li><b>GARIMPEIRO:</b> Busca e extrai minerais e materiais valiosos. <br> <b>Perícias</b>: Fortitude, Área - Natureza, Sobrevivência. <br> <b>8 PC;</b> <br> <b>CO</b>: 300.</li>
+      <li><b>GUIA:</b> Orienta pessoas durante viagens, passeios ou expedições. <br> <b>Perícias</b>: Diplomacia, Percepção, Sobrevivência. <br> <b>8 PC;</b> <br> <b>CO</b>: 300.</li>
+      <li><b>HABITANTE DE COMUNIDADE TRADICIONAL:</b> Vive segundo conhecimentos e práticas tradicionais de sua comunidade. <br> <b>Perícias</b>: Área - Natureza, Área - Religião, Sobrevivência. <br> <b>10 PC;</b> <br> <b>CO</b>: 500.</li>
+      <li><b>JORNALISTA:</b> Investiga acontecimentos e produz informações para o público. <br> <b>Perícias</b>: Atualidades, Área - Linguagem, Percepção. <br> <b>10 PC;</b> <br> <b>CO</b>: 500.</li>
+      <li><b>JUIZ:</b> Analisa processos e toma decisões com base nas leis. <br> <b>Perícias</b>: Área - Humanas, Intuição, Área - Linguagem. <br> <b>14 PC;</b> <br> <b>CO</b>: 1000.</li>
+      <li><b>LENHADOR:</b> Trabalha com corte, manejo e transporte de madeira. <br> <b>Perícias</b>: Atletismo, Fortitude, Área - Natureza. <br> <b>8 PC;</b> <br> <b>CO</b>: 300.</li>
+      <li><b>LOJISTA:</b> Administra uma loja e negocia produtos com clientes. <br> <b>Perícias</b>: Atualidades, Diplomacia, Intuição. <br> <b>10 PC;</b> <br> <b>CO</b>: 500.</li>
+      <li><b>LUTADOR:</b> Especializado em combate corporal e artes marciais. <br> <b>Perícias</b>: Atletismo, Luta, Reflexo. <br> <b>8 PC;</b> <br> <b>CO</b>: 300.</li>
+      <li><b>MARINHEIRO:</b> Trabalha a bordo de embarcações e conhece a vida marítima. <br> <b>Perícias</b>: Condução, Área - Engenharia, Sobrevivência. <br> <b>10 PC;</b> <br> <b>CO</b>: 500.</li>
+      <li><b>MECÂNICO:</b> Conserta e realiza manutenção em máquinas e veículos. <br> <b>Perícias</b>: Área - Engenharia, Área - Exatas, Percepção. <br> <b>10 PC;</b> <br> <b>CO</b>: 500.</li>
+      <li><b>MÉDICO:</b> Diagnostica doenças e realiza tratamentos médicos. <br> <b>Perícias</b>: Intuição, Área - Medicina, Área - Natureza. <br> <b>14 PC;</b> <br> <b>CO</b>: 1000.</li>
+      <li><b>MEMBRO DO CLERO:</b> Exerce funções religiosas dentro de uma instituição. <br> <b>Perícias</b>: Diplomacia, Área - Religião, Área - Linguagem. <br> <b>8 PC;</b> <br> <b>CO</b>: 300.</li>
+      <li><b>MERGULHADOR:</b> Atua profissionalmente em ambientes subaquáticos. <br> <b>Perícias</b>: Atletismo, Fortitude, Sobrevivência. <br> <b>10 PC;</b> <br> <b>CO</b>: 750.</li>
+      <li><b>MISSIONÁRIO:</b> Viaja para divulgar crenças e auxiliar comunidades. <br> <b>Perícias</b>: Área - Linguagem, Área - Religião, Sobrevivência. <br> <b>8 PC;</b> <br> <b>CO</b>: 300.</li>
+      <li><b>MORDOMO:</b> Administra residências e atende às necessidades de seus moradores. <br> <b>Perícias</b>: Diplomacia, Intuição, Percepção. <br> <b>10 PC;</b> <br> <b>CO</b>: 500.</li>
+      <li><b>MOTORISTA:</b> Conduz veículos profissionalmente. <br> <b>Perícias</b>: Condução, Percepção, Reflexo. <br> <b>8 PC;</b> <br> <b>CO</b>: 300.</li>
+      <li><b>MÚSICO:</b> Compõe, interpreta ou executa músicas profissionalmente. <br> <b>Perícias</b>: Área - Artes, Diplomacia, Lábia. <br> <b>8 PC;</b> <br> <b>CO</b>: 300.</li>
+      <li><b>OFICIAL MILITAR:</b> Lidera e coordena integrantes das forças armadas. <br> <b>Perícias</b>: Diplomacia, Luta, Pontaria. <br> <b>12 PC;</b> <br> <b>CO</b>: 1000.</li>
+      <li><b>OPERÁRIO:</b> Executa trabalhos manuais em indústrias, obras ou fábricas. <br> <b>Perícias</b>: Atletismo, Área - Engenharia, Fortitude. <br> <b>8 PC;</b> <br> <b>CO</b>: 300.</li>
+      <li><b>PESQUISADOR:</b> Busca, analisa e produz novos conhecimentos. <br> <b>Perícias</b>: <br> Áreas - Computação, Engenharia, Exatas, Humanas, Medicina, Natureza; <br> Gerais: Atualidades, Percepção. <br> <b>10 PC;</b> <br> <b>CO</b>: 750.</li>
+      <li><b>PERSONAL TRAINER:</b> Orienta e acompanha o treinamento físico de outras pessoas. <br> <b>Perícias</b>: Atletismo, Diplomacia, Área - Medicina. <br> <b>10 PC;</b> <br> <b>CO</b>: 500.</li>
+      <li><b>PILOTO:</b> Conduz aeronaves ou outros veículos especializados. <br> <b>Perícias</b>: Condução, Área - Engenharia, Área - Exatas. <br> <b>12 PC;</b> <br> <b>CO</b>: 1000.</li>
+      <li><b>POLICIAL:</b> Mantém a segurança pública e atua no cumprimento da lei. <br> <b>Perícias</b>: Intimidação, Luta, Pontaria. <br> <b>10 PC;</b> <br> <b>CO</b>: 750.</li>
+      <li><b>POLÍTICO:</b> Atua na administração pública e representação da sociedade. <br> <b>Perícias</b>: Atualidades, Diplomacia, Lábia. <br> <b>12 PC;</b> <br> <b>CO</b>: 750.</li>
+      <li><b>PORTEIRO:</b> Controla o acesso e auxilia na segurança de um local. <br> <b>Perícias</b>: Atualidades, Diplomacia, Percepção. <br> <b>8 PC;</b> <br> <b>CO</b>: 300.</li>
+      <li><b>PROFESSOR:</b> Ensina conhecimentos e orienta o aprendizado de outras pessoas. <br> <b>Perícias</b>: <br> Áreas - Artes, Computação, Engenharia, Exatas, Humanas, Linguagem, Medicina, Natureza, Religião; <br> Gerais: Diplomacia, Intuição. <br> <b>10 PC;</b> <br> <b>CO</b>: 500.</li>
+      <li><b>PROGRAMADOR:</b> Desenvolve e mantém programas e sistemas computacionais. <br> <b>Perícias</b>: Área - Computação, Área - Engenharia, Área - Exatas. <br> <b>12 PC;</b> <br> <b>CO</b>: 750.</li>
+      <li><b>PROSTITUTA:</b> Oferece serviços sexuais em troca de pagamento. <br> <b>Perícias</b>: Intuição, Lábia, Sedução. <br> <b>8 PC;</b> <br> <b>CO</b>: 500.</li>
+      <li><b>PSICÓLOGO:</b> Estuda comportamentos e auxilia pessoas emocionalmente. <br> <b>Perícias</b>: Diplomacia, Área - Humanas, Intuição. <br> <b>10 PC;</b> <br> <b>CO</b>: 500.</li>
+      <li><b>PSIQUIATRA:</b> Médico especializado em saúde e transtornos mentais. <br> <b>Perícias</b>: Área - Humanas, Intuição, Área - Medicina. <br> <b>14 PC;</b> <br> <b>CO</b>: 1000.</li>
+      <li><b>SECRETÁRIO:</b> Organiza informações, documentos, compromissos e atividades administrativas. <br> <b>Perícias</b>: Atualidades, Área - Computação, Diplomacia. <br> <b>10 PC;</b> <br> <b>CO</b>: 500.</li>
+      <li><b>SINDICALISTA:</b> Representa e defende interesses de trabalhadores organizados. <br> <b>Perícias</b>: Diplomacia, Área - Humanas, Lábia. <br> <b>8 PC;</b> <br> <b>CO</b>: 300.</li>
+      <li><b>SOCORRISTA:</b> Presta atendimento imediato em emergências e acidentes. <br> <b>Perícias</b>: Área - Medicina, Área - Natureza, Percepção. <br> <b>10 PC;</b> <br> <b>CO</b>: 500.</li>
+      <li><b>SOLDADO:</b> Atua diretamente em operações e atividades militares. <br> <b>Perícias</b>: Luta, Pontaria, Sobrevivência. <br> <b>10 PC;</b> <br> <b>CO</b>: 500.</li>
+      <li><b>TATUADOR:</b> Cria e aplica tatuagens usando técnicas artísticas e de higiene. <br> <b>Perícias</b>: Área- Artes, Área - Medicina, Reflexo. <br> <b>10 PC;</b> <br> <b>CO</b>: 500.</li>
+      <li><b>TAXISTA:</b> Transporta passageiros profissionalmente pela cidade. <br> <b>Perícias</b>: Atualidades, Condução, Diplomacia. <br> <b>8 PC;</b> <br> <b>CO</b>: 300.</li>
+      <li><b>TÉCNICO DE HIGIENIZAÇÃO HOSPITALAR:</b> Realiza limpeza e descontaminação de ambientes hospitalares. <br> <b>Perícias</b>: Fortitude, Área - Medicina, Percepção. <br> <b>8 PC;</b> <br> <b>CO</b>: 300.</li>
+      <li><b>TRATADOR DE ZOOLÓGICO:</b> Cuida de animais mantidos em zoológicos. <br> <b>Perícias</b>: Adestramento, Área - Natureza, Percepção. <br> <b>8 PC;</b> <br> <b>CO</b>: 300.</li>
+      <li><b>TREINADOR DE ANIMAIS:</b> Ensina e condiciona comportamentos em animais. <br> <b>Perícias</b>: Adestramento, Intuição, Área - Natureza. <br> <b>8 PC;</b> <br> <b>CO</b>: 500.</li>
+      <li><b>VAGABUNDO:</b> Vive sem ocupação ou residência estável, sobrevivendo como pode. <br> <b>Perícias</b>: Lábia, Percepção, Sobrevivência. <br> <b>6 PC;</b> <br> <b>CO</b>: 100.</li>
+      <li><b>VENDEDOR:</b> Negocia e comercializa produtos ou serviços. <br> <b>Perícias</b>: Diplomacia, Intuição, Lábia. <br> <b>8 PC;</b> <br> <b>CO</b>: 300.</li>
+      <li><b>VETERINÁRIO:</b> Cuida da saúde e do tratamento de animais. <br> <b>Perícias</b>: Adestramento, Área - Medicina, Área - Natureza. <br> <b>12 PC;</b> <br> <b>CO</b>: 750.</li>
+      <li><b>VAQUEIRO:</b> Maneja e cuida de gado e outros animais rurais. <br> <b>Perícias</b>: Adestramento, Atletismo, Sobrevivência. <br> <b>8 PC;</b> <br> <b>CO</b>: 300.</li>
     </ul>
 
     <h2 id="atributos-pericias">Atributos e Perícias do Personagem</h2>
@@ -541,6 +542,19 @@
     <p>O PC inicial de um personagem é definido pela sua Ocupação e por determinação do mestre e do contexto do personagem, variando entre 6 a 14 Pontos de Crédito iniciais.</p>
     <br>
     <p>Caso um personagem tenha <b>2 Ocupações</b>, os PC de cada Ocupação são divididos por 2 e somados para obter os PC finais do Personagem.</p>
+
+    <h2 id="coeficiente-credito">Coeficiente de Crédito de Ocupação (CO)</h2>
+    <p>O <b>Coeficiente de Crédito de Ocupação (CO)</b> é um valor constante que cada Ocupação tem, que determina o nível de <b>Crédito</b> (em <b>R$</b>) que um personagem tem no início de uma campanha.</p>
+    <br>
+    <p>O CO pode ser adaptado pelo mestre baseado no contexto do personagem do jogador, por exemplo: Um Empresário endividado, um Músico altamente famoso, etc.</p>
+    <br>
+    <p>Para determinar o <b>Crédito</b> que um personagem tem, é feito o seguinte cálculo:</p>
+    <br>
+    <h4>Crédito = Coeficiente de Crédito de Ocupação * (1/4 + PC restante)</h4>
+    <br>
+    <p>O <b>PC restante</b> é a quantidade de Pontos de Crédito que o personagem deixou de usar, por exemplo: um personagem pode ter 8 PC disponíveis e gastar apenas 5. Os 3 PC restantes serão aplicados no seu Crédito.</p>
+    <br>
+    <p>Esse Crédito não representa o nível salarial de um personagem, apenas o que ele possui de dinheiro disponível no início de uma campanha.</p>
 
     <h2 id="itens-capacidade-carga">Itens e Capacidade de Carga</h2>
     <p>Os Itens são objetos que um personagem pode portar ou possuir, cada um tendo funções diferentes entre si. Nesse subtópico, irão ser abordados os Itens Iniciais dos personagens.</p>
@@ -1435,15 +1449,85 @@
     <button class="botao-voltar" data-voltar="tela-sistema" type="button">← Voltar</button>
 
     <h1>NÍVEIS E HABILIDADES</h1>
-    <p>Nesse tópico, serão abordados todos os Níveis, Habilidades desses Níveis, formas de evoluir esses Níveis, etc. O primeiro tipo de Nível a ser tratado é o <b>Nível de Característica de Perfil (NCP)</b>.</p>
+    <p>Nesse tópico, serão abordados todos os Níveis, Habilidades desses Níveis, formas de evoluir esses Níveis, etc.</p>
+    <br>
+    <p>Como regra geral de Níveis, existem os <b>Pontos de Progresso (PP)</b>, que são Pontos responsáveis pelo avanço de um Nível de um personagem. Cada Nível tem seus próprios PP, assim um personagem pode estar em Níveis de Perfil e Ocupação totalmente distintos.</p>
+    <br>
+    <p>O mestre é o único responsável por determinar o ganho de <b>PP</b> de um personagem, mas deve seguir uma regra base de como conseguir esses Pontos.</p>
 
     <h2 id="ncp">Nível de Característica de Perfil (NCP)</h2>
 
-    <h2 id="habilidades-ncp">Habilidades de NCP</h2>
+    <div class="p-tabela">
+
+      <p>O <b>NCP</b> é um Nível de identificação do personagem, sendo um estilo de Nível psicológico.</p>
+      <br>
+      <p>Para ganhar PP e evoluir seu NCP, o jogador deve interpretar a forma de agir do personagem baseada no seu <b>Perfil</b>, e utilizar as <b>Habilidades</b> fornecidas por ele. Isso não significa que um personagem deve sempre buscar agir de uma maneira, quando uma situação pede outra, apenas indica que interpretar as ações e decisões do seu personagem será determinante para seu desenvolvimento.</p>
+      <br>
+      <p><b>Habilidades Pessoais</b> são Habilidades específicas de um personagem. O jogador em conjunto do mestre devem criar essas Habilidades, que podem variar de algo simples para uma mecânica mais complexa, mas sempre priorizando o balanceamento e a diversão.</p>
+      
+      <table class="tabela-niveis">
+        <thead>
+          <tr>
+            <th>NÍVEIS</th>
+            <th>BENEFÍCIOS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>NCP 0</td>
+            <td>Habilidade de Perfil - Categoria 0;
+              <br>
+              Habilidade Pessoal 1.
+            </td>
+          </tr>
+          <tr>
+            <td>NCP 1</td>
+            <td>Habilidade de Perfil - Categoria 1.</td>
+          </tr>
+          <tr>
+            <td>NCP 2</td>
+            <td>Evolução de Habilidade de Perfil - Categoria 1
+              <br>
+              ou
+              <br>
+              Habilidade de Perfil - Categoria 1 a 2.</td>
+            </td>
+          </tr>
+          <tr>
+            <td>NCP 3</td>
+            <td>Evolução de Habilidade Pessoal 1
+              <br>
+              ou
+              <br>
+              Habilidade Pessoal 2;
+              <br>
+              Habilidade de Perfil - Categoria 1 a 3.</td>
+          </tr>
+          <tr>
+            <td>NCP 4</td>
+            <td>Evolução de Habilidade de Perfil - Categoria 0 a 3.</td>
+          </tr>
+          <tr>
+            <td>NCP 5</td>
+            <td>Evolução de Habilidade Pessoal 1 ou 2;
+              <br>
+              Habilidade de Perfil - Categoria 1 a 3
+              <br>
+              ou
+              <br>
+              Habilidade Pessoal 3.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+
+    <h2 id="habilidades-ncp">Habilidades de Perfil</h2>
 
     <h2 id="neo">Nível de Experiência na Ocupação (NEO)</h2>
 
-    <h2 id="habilidades-neo">Habilidades de NEO</h2>
+    <h2 id="habilidades-neo">Habilidades de Ocupação</h2>
 
   </div>
 

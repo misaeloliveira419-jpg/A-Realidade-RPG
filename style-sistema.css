@@ -148,10 +148,11 @@ a{
 #lista-ocupacoes-personagem{
   display: grid;
   grid-auto-flow: column;
-  grid-template-rows: repeat(39, auto);
+  grid-template-rows: repeat(26, auto);
   font-size: 16px;
   max-width: 1200px;
   margin: 0 auto;
+  grid-column-gap: 40px;
   line-height: 1.5;
 }
 #lista-ocupacoes-personagem li{
@@ -375,6 +376,31 @@ a{
 #tela-niveis-habilidades h1,
 #tela-niveis-habilidades h2{
   text-shadow: 2px 1px 12px rgb(100,175,175);
+}
+.p-tabela{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin: 0 auto;
+  max-width: 1000px;
+}
+
+.tabela-niveis{
+  background-color: black;
+  border-collapse: collapse;
+  border: 2px solid white;
+  font-size: 16px;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  line-height: 1.5;
+  text-align: center;
+}
+.tabela-niveis th{
+  border: 2px solid white;
+}
+.tabela-niveis td{
+  border: 2px solid white;
 }
 
 /*Para celular*/
