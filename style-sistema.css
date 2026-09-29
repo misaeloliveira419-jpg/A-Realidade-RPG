@@ -171,6 +171,7 @@ a{
 }
 .tabela-itens th{
   border: 2px solid white;
+  padding: 10px;
 }
 .tabela-itens td{
   border: 2px solid white;
@@ -379,12 +380,28 @@ a{
 }
 .p-tabela{
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  grid-template-columns: minmax(0,1fr) minmax(0,1fr);
+  align-items: center;
+  gap: 30px;
+  width: calc(100% - 40px);
+  max-width: 1100px;
   margin: 0 auto;
-  max-width: 1000px;
 }
-
+.texto-niveis{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.texto-niveis p{
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  text-align: left;
+}
+.p-tabela .tabela-niveis{
+  width: 100%;
+  margin: 0;
+}
 .tabela-niveis{
   background-color: black;
   border-collapse: collapse;
@@ -400,6 +417,25 @@ a{
   border: 2px solid white;
 }
 .tabela-niveis td{
+  border: 2px solid white;
+}
+.tabela-habilidades{
+  background-color: black;
+  border-collapse: collapse;
+  border: 2px solid white;
+  font-size: 16px;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  margin-top: 20px;
+  line-height: 1.5;
+  text-align: center;
+}
+.tabela-habilidades th{
+  border: 2px solid white;
+  padding: 10px;
+}
+.tabela-habilidades td{
   border: 2px solid white;
 }
 
@@ -513,6 +549,13 @@ a{
     grid-template-rows: repeat(1, auto);
   }
   #lista-condicoes li{
+    max-width: 95%;
+  }
+  .p-tabela{
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+  .tabela-habilidades{
     max-width: 95%;
   }
 }
