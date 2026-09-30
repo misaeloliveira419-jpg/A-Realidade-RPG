@@ -66,7 +66,6 @@ footer{
 /*Botão de contas*/
 
 #criar-conta{
-  margin: 10px;
   padding: 12px;
   font-size: 14px;
   background: black;
@@ -75,9 +74,11 @@ footer{
   border-radius: 5px;
 }
 .area-conta{
-  position: relative;
-  display: inline-block;
+  position: fixed;
+  display: flex;
+  justify-self: end;
   margin: 10px;
+  z-index: 1000;
 }
 .area-conta #criar-conta{
   margin: 0;
