@@ -31,6 +31,9 @@
     margin-top: 10px;
     padding-inline: 50px;
 }
+#input-comentario:focus{
+    box-shadow: 0 0 20px rgb(150,0,225);
+}
 #fazer-comentario p{
     margin: 10px;
 }
