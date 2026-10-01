@@ -1,4 +1,44 @@
-h2{
+#tela-principal h2{
     text-align: center;
     margin-top: 100px;
+    background-color: black;
+    border: 2px solid white;
+    margin-inline: 70px;
+    padding: 10px;
+}
+#fazer-comentario{
+    background-color: black;
+    border: 2px solid white;
+    padding: 16px;
+    margin-inline: 10px;
+    border-radius: 5px;
+    font-size: 18px;
+}
+#input-comentario,
+#select-estrelas{
+    background-color: black;
+    border: 2px solid white;
+    color: white;
+    padding: 5px;
+}
+#input-comentario,
+#fazer-comentario p,
+#select-estrelas{
+    display: flex;
+    justify-self: center;
+}
+#input-comentario{
+    margin-top: 10px;
+    padding-inline: 50px;
+}
+#fazer-comentario p{
+    margin: 10px;
+}
+@media (min-width: 900px) {
+    #tela-principal h2{
+        margin-inline: 300px;
+    }
+    #fazer-comentario{
+        margin-inline: 400px;
+    }
 }
