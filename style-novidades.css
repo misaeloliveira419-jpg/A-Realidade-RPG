@@ -155,6 +155,44 @@
   text-align: center;
 }
 
+/* Opções dos comentários */
+
+.acoes-comentario{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-left: auto;
+}
+
+.botao-apagar-comentario{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  background-color: black;
+  color: white;
+  border: 1px solid white;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: color 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+
+.botao-apagar-comentario:hover{
+  color: rgb(255,70,70);
+  border-color: rgb(255,70,70);
+  box-shadow: 0 0 10px rgba(255,70,70,0.5);
+}
+
+.botao-apagar-comentario:disabled{
+  opacity: 0.5;
+  cursor: default;
+}
+
 /* Adaptação para telas menores */
 
 @media (max-width: 1000px){

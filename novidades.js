@@ -67,7 +67,7 @@ formularioComentario.addEventListener("submit", async evento => {
 
 /* Montagem dos comentários */
 
-function criarCardComentario(dados) {
+function criarCardComentario(dados, id) {
   const card = document.createElement("article");
   card.className = "card-comentario";
 
@@ -90,7 +90,47 @@ function criarCardComentario(dados) {
         "☆".repeat(5 - dados.nota)
       : "Sem nota";
 
-  cabecalho.append(nome, nota);
+  /* Opções do comentário */
+
+  const acoesComentario = document.createElement("div");
+  acoesComentario.className = "acoes-comentario";
+
+  acoesComentario.appendChild(nota);
+
+  if (dados.uid && auth.currentUser?.uid === dados.uid) {
+  const botaoApagar = document.createElement("button");
+
+  botaoApagar.type = "button";
+  botaoApagar.className = "botao-apagar-comentario";
+  botaoApagar.textContent = "✕";
+  botaoApagar.title = "Apagar comentário";
+  botaoApagar.setAttribute("aria-label", "Apagar comentário");
+
+  botaoApagar.addEventListener("click", async () => {
+    if (!confirm("Tem certeza de que deseja apagar seu comentário?")) return;
+
+    botaoApagar.disabled = true;
+
+    try {
+      if (auth.currentUser?.uid !== dados.uid) {
+        throw new Error("A conta conectada foi alterada.");
+      }
+
+      await db.collection("novidades").doc(id).delete();
+
+    } catch (erro) {
+      console.error("Erro ao apagar comentário:", erro);
+      alert("Não foi possível apagar seu comentário.");
+
+      } finally {
+      botaoApagar.disabled = false;
+      }
+    });
+
+    acoesComentario.appendChild(botaoApagar);
+  }
+
+  cabecalho.append(nome, acoesComentario);
 
   const comentario = document.createElement("p");
   comentario.className = "texto-comentario";
@@ -116,26 +156,34 @@ function criarCardComentario(dados) {
 
 /* Atualização da lista em tempo real */
 
+let comentariosCarregados = [];
+
+function atualizarListaComentarios() {
+  const fragmento = document.createDocumentFragment();
+
+  if (comentariosCarregados.length === 0) {
+    const aviso = document.createElement("p");
+    aviso.className = "aviso-comentarios";
+    aviso.textContent = "Ainda não há comentários. Seja o primeiro!";
+
+    fragmento.appendChild(aviso);
+
+  } else {
+    comentariosCarregados.forEach(documento => {
+      fragmento.appendChild(
+        criarCardComentario(documento.data(), documento.id)
+      );
+    });
+  }
+
+  listaComentarios.replaceChildren(fragmento);
+}
+
 db.collection("novidades")
   .orderBy("criadoEm", "desc")
   .onSnapshot(resultado => {
-    const fragmento = document.createDocumentFragment();
-
-    if (resultado.empty) {
-      const aviso = document.createElement("p");
-      aviso.className = "aviso-comentarios";
-      aviso.textContent = "Ainda não há comentários. Seja o primeiro!";
-      fragmento.appendChild(aviso);
-
-    } else {
-      resultado.forEach(documento => {
-        fragmento.appendChild(
-          criarCardComentario(documento.data())
-        );
-      });
-    }
-
-    listaComentarios.replaceChildren(fragmento);
+    comentariosCarregados = resultado.docs;
+    atualizarListaComentarios();
 
   }, erro => {
     console.error("Erro ao carregar comentários:", erro);
@@ -146,3 +194,9 @@ db.collection("novidades")
 
     listaComentarios.replaceChildren(aviso);
   });
+
+/* Atualizar permissões ao trocar de conta */
+
+auth.onAuthStateChanged(() => {
+  atualizarListaComentarios();
+});
