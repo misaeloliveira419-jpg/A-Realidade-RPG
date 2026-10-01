@@ -569,6 +569,11 @@ async function criarCampanha() {
     return;
   }
 
+  if (usuario.uid !== UID_CRIADOR_CAMPANHAS) {
+    alert("Somente o Misa Mouse pode criar campanhas.");
+    return;
+  }
+
   if (!nome) {
     alert("Digite um nome para a campanha.");
     return;
@@ -1117,9 +1122,27 @@ botaoSairCampanha.addEventListener("click", sairCampanha);
 
 document.querySelector("#tela-campanha .botao-voltar")?.addEventListener("click", cancelarEscutasCampanha);
 
+/* Autenticação e permissões de campanhas */
+
 auth.onAuthStateChanged(usuario => {
   iniciarEscutaCampanhas(usuario);
   verificarConviteNaURL(usuario);
+
+  const podeCriar = usuario?.uid === UID_CRIADOR_CAMPANHAS;
+
+  const secaoCriar = document.getElementById("secao-criar-campanha");
+
+  if (secaoCriar) {
+    secaoCriar.hidden = !podeCriar;
+  }
+
+  const legendaCard = cardAdicionarCampanha?.querySelector("span");
+
+  if (legendaCard) {
+    legendaCard.textContent = podeCriar
+      ? "ADICIONAR CAMPANHA"
+      : "ENTRAR EM CAMPANHA";
+  }
 });
 
 /*Fundo header dentro de tela campanha*/

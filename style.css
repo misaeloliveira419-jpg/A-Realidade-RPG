@@ -435,6 +435,10 @@ footer{
   display: flex;
   flex-direction: column;
   gap: 15px;
+  margin-top: 30px;
+}
+#secao-criar-campanha[hidden]{
+  display: none;
 }
 #secao-criar-campanha h2{
   text-align: center;
