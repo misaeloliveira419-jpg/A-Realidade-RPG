@@ -1,47 +1,180 @@
+/* Tela novidades */
+
 #tela-principal h2{
-    text-align: center;
-    margin-top: 100px;
-    background-color: black;
-    border: 2px solid white;
-    margin-inline: 70px;
-    padding: 10px;
+  text-align: center;
+  margin: 80px auto 25px;
+  background-color: black;
+  border: 2px solid white;
+  width: calc(100% - 40px);
+  max-width: 900px;
+  padding: 10px;
+  box-sizing: border-box;
 }
+
+/* Formulário de comentários */
+
 #fazer-comentario{
-    background-color: black;
-    border: 2px solid white;
-    padding: 16px;
-    margin-inline: 10px;
-    border-radius: 5px;
-    font-size: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: calc(100% - 40px);
+  max-width: 850px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: black;
+  border: 2px solid white;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 18px;
 }
-#input-comentario,
-#select-estrelas{
-    background-color: black;
-    border: 2px solid white;
-    color: white;
-    padding: 5px;
-}
-#input-comentario,
-#fazer-comentario p,
-#select-estrelas{
-    display: flex;
-    justify-self: center;
+.linha-comentario{
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  width: 100%;
 }
 #input-comentario{
-    margin-top: 10px;
-    padding-inline: 50px;
+  flex: 1;
+  min-width: 0;
+  min-height: 90px;
+  max-height: 260px;
+  padding: 12px;
+  background-color: black;
+  border: 2px solid white;
+  border-radius: 5px;
+  box-sizing: border-box;
+  color: white;
+  font-size: 15px;
+  line-height: 1.5;
+  text-align: left;
+  resize: none;
+  overflow-y: auto;
+  overflow-wrap: anywhere;
 }
 #input-comentario:focus{
-    box-shadow: 0 0 20px rgb(150,0,225);
+  outline: none;
+  box-shadow: 0 0 20px rgb(150,0,225);
 }
-#fazer-comentario p{
-    margin: 10px;
+#enviar-comentario{
+  flex-shrink: 0;
+  padding: 12px 18px;
+  margin-bottom: 2px;
+  background-color: black;
+  color: white;
+  border: 2px solid white;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
-@media (min-width: 900px) {
-    #tela-principal h2{
-        margin-inline: 300px;
-    }
-    #fazer-comentario{
-        margin-inline: 400px;
-    }
+#enviar-comentario:hover{
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgb(150,0,225);
+}
+#enviar-comentario:disabled{
+  opacity: 0.6;
+  cursor: default;
+}
+.label-nota{
+  margin-top: 10px;
+}
+#select-estrelas{
+  align-self: flex-start;
+  padding: 8px;
+  background-color: black;
+  border: 2px solid white;
+  border-radius: 5px;
+  color: white;
+  font-size: 14px;
+}
+
+/* Área dos comentários publicados */
+
+#comentarios-publicados{
+  width: calc(100% - 40px);
+  max-width: 1300px;
+  margin: 30px auto 70px;
+}
+#comentarios-publicados h2{
+  width: 100%;
+  max-width: none;
+  margin: 45px 0 25px;
+}
+#lista-comentarios{
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 20px;
+}
+
+/* Cards dos comentários */
+
+.card-comentario{
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background-color: black;
+  border: 2px solid white;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.cabecalho-comentario{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 12px;
+  border-bottom: 1px solid white;
+}
+.nome-comentario{
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-weight: bold;
+}
+.nota-comentario{
+  text-align: right;
+  white-space: nowrap;
+}
+.texto-comentario{
+  flex: 1;
+  width: auto;
+  max-width: none;
+  padding: 16px 12px;
+  margin: 0;
+  text-align: left;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.5;
+  font-size: 15px;
+}
+.data-comentario{
+  padding: 10px 12px;
+  border-top: 1px solid white;
+  color: rgb(190,190,190);
+  text-align: right;
+  font-size: 12px;
+}
+.aviso-comentarios{
+  grid-column: 1 / -1;
+  text-align: center;
+}
+
+/* Adaptação para telas menores */
+
+@media (max-width: 1000px){
+  #lista-comentarios{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 650px){
+  #lista-comentarios{
+    grid-template-columns: 1fr;
+  }
+  #fazer-comentario{
+    padding: 12px;
+  }
+  #enviar-comentario{
+    padding: 10px;
+  }
 }

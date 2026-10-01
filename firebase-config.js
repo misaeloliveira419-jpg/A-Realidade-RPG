@@ -12,6 +12,7 @@ if(!firebase.apps.length){
 }
 const auth = firebase.auth();
 const db = firebase.firestore();
+const UID_CRIADOR_CAMPANHAS = "rPK5mPWMpiRobFUmieKf7R2zCF52";
 auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(erro =>{
   console.error("Erro ao configurar persistência da conta:", erro);
   }

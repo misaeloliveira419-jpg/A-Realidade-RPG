@@ -79,11 +79,24 @@
 
     <h2>COMENTÁRIOS</h2>
 
-    <div id="fazer-comentario">
-      <label for="input-comentario"><b>Faça um comentário:</b></label>
-      <input type="text" id="input-comentario" placeholder="Deixe um comentário aqui...">
-      <p><b>Deixe sua nota:</b></p>
+    <!-- Formulário de comentários -->
+
+    <form id="fazer-comentario">
+      <label for="input-comentario">
+        <b>Faça um comentário:</b>
+      </label>
+
+      <div class="linha-comentario">
+        <textarea id="input-comentario" rows="3" maxlength="2000" placeholder="Deixe um comentário aqui..." required></textarea>
+        <button id="enviar-comentario" type="submit">Enviar</button>
+      </div>
+
+      <label for="select-estrelas" class="label-nota">
+        <b>Deixe sua nota:</b>
+      </label>
+
       <select id="select-estrelas">
+        <option value="" selected>Sem nota</option>
         <option value="0">☆☆☆☆☆ (0/5)</option>
         <option value="1">⭐☆☆☆☆ (1/5)</option>
         <option value="2">⭐⭐☆☆☆ (2/5)</option>
@@ -91,7 +104,13 @@
         <option value="4">⭐⭐⭐⭐☆ (4/5)</option>
         <option value="5">⭐⭐⭐⭐⭐ (5/5)</option>
       </select>
-    </div>
+    </form>
+
+    <!-- Comentários publicados -->
+
+    <section id="comentarios-publicados">
+      <div id="lista-comentarios"></div>
+    </section>
 
   </div>
 
