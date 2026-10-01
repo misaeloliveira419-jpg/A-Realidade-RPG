@@ -97,7 +97,9 @@ function criarCardComentario(dados, id) {
 
   acoesComentario.appendChild(nota);
 
-  if (dados.uid && auth.currentUser?.uid === dados.uid) {
+  const podeApagar = auth.currentUser?.uid === UID_CRIADOR_CAMPANHAS || (dados.uid && auth.currentUser?.uid === dados.uid);
+  
+  if (podeApagar) {
   const botaoApagar = document.createElement("button");
 
   botaoApagar.type = "button";
@@ -112,8 +114,10 @@ function criarCardComentario(dados, id) {
     botaoApagar.disabled = true;
 
     try {
-      if (auth.currentUser?.uid !== dados.uid) {
-        throw new Error("A conta conectada foi alterada.");
+      const usuarioAtual = auth.currentUser?.uid;
+
+      if (usuarioAtual !== UID_CRIADOR_CAMPANHAS && usuarioAtual !== dados.uid) {
+        throw new Error("Você não tem permissão para apagar este comentário.");
       }
 
       await db.collection("novidades").doc(id).delete();
