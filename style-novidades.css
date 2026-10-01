@@ -93,12 +93,7 @@
 #comentarios-publicados{
   width: calc(100% - 40px);
   max-width: 1300px;
-  margin: 30px auto 70px;
-}
-#comentarios-publicados h2{
-  width: 100%;
-  max-width: none;
-  margin: 45px 0 25px;
+  margin: 50px auto 70px;
 }
 #lista-comentarios{
   display: grid;
