@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="style-criacao-de-ficha.css"/>
+  <title>Criação de Ficha: A Realidade RPG</title>
+</head>
+<body>
+
+  <!--Cabeçalho da página-->
+  
+  <header>
+    <div class="area-conta">
+      <button id="criar-conta">Criar Conta</button>
+      <div id="menu-contas" class="menu-contas">
+        <div id="lista-outras-contas"></div>
+        <button id="adicionar-outra-conta" type="button">+ Adicionar outra conta</button>
+      </div>
+    </div>
+  </header>
+  <br><br><br><br><br><br>
+
+  <!--Tela de criar conta-->
+  
+  <div id="tela-criar-conta" class="tela-conta">
+    <div class="secao-criar-conta">
+      <button id="fechar-criar-conta" type="button">← Voltar</button>
+      <h2>CRIAR CONTA</h2>
+      <div class="opcoes-criar-conta">
+        <label for="email">E-mail:</label>
+        <input id="email" type="email" placeholder="Digite seu e-mail" autocomplete="email">
+        <label for="senha">Senha:</label>
+        <input id="senha" type="password" placeholder="Digite sua senha" autocomplete="new-password">
+        <label for="confirmar-senha">Confirmar senha:</label>
+        <input id="confirmar-senha" type="password" placeholder="Digite sua senha novamente" autocomplete="new-password">
+        <button id="confirmar-criar-conta" type="button">Criar Conta</button>
+        <div class="separador-conta">
+          <span></span>
+          <p>OU</p>
+          <span></span>
+        </div>
+        <button id="criar-conta-google" type="button">Continuar com Google</button>
+        <p id="erro-criar-conta"></p>
+      </div>
+    </div>
+  </div>
+  
+  <!--Tela para trocar para conta de e-mail-->
+  
+  <div id="tela-trocar-conta" class="tela-conta">
+    <div class="secao-criar-conta">
+      <button id="fechar-trocar-conta" type="button">← Voltar</button>
+      <h2 id="nome-trocar-conta">ENTRAR NA CONTA</h2>
+      
+      <div class="opcoes-criar-conta">
+        <label for="senha-trocar-conta">Senha:</label>
+        <input id="senha-trocar-conta" type="password" placeholder="Digite a senha da conta" autocomplete="current-password">
+        <button id="confirmar-trocar-conta" type="button">Entrar nesta conta</button>
+        <p id="erro-trocar-conta"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Etapa 1: Conceito do Personagem -->
+
+  <section id="tela-conceito" class="tela-site ativa etapa-criacao">
+    <button class="botao-voltar" onclick="window.location.href='index-suas-fichas.html'" type="button">← Voltar</button>
+
+    <form id="form-conceito" class="form-criacao">
+        <div class="cabecalho-criacao">
+        <span>ETAPA 1 DE 5</span>
+        <h1>CONCEITO DO PERSONAGEM</h1>
+        </div>
+
+        <div class="campos-criacao">
+        <label for="nome-personagem">Nome do Personagem *</label>
+        <input id="nome-personagem" type="text" maxlength="80" placeholder="Digite o nome do personagem..." required>
+
+        <label for="idade-personagem">Idade *</label>
+        <input id="idade-personagem" class="campo-idade" type="number" min="0" step="1" placeholder="Ex.: 25" required>
+
+        <hr>
+
+        <label for="aparencia-personagem">Aparência (opcional)</label>
+        <textarea id="aparencia-personagem" rows="4" maxlength="4000" placeholder="Descreva a aparência do seu personagem..."></textarea>
+
+        <label for="passado-personagem">Passado (opcional)</label>
+        <textarea id="passado-personagem" rows="6" maxlength="8000" placeholder="Conte um pouco sobre a história do seu personagem..."></textarea>
+        </div>
+
+        <p id="mensagem-conceito" class="mensagem-criacao" aria-live="polite"></p>
+
+        <div class="rodape-criacao">
+        <span>* Campos obrigatórios</span>
+        <button id="continuar-conceito" type="submit">Continuar →</button>
+        </div>
+    </form>
+  </section>
+
+  <!-- Etapa 2: Perfil do Personagem -->
+
+  <section id="tela-perfil" class="tela-site etapa-criacao">
+    <button class="botao-etapa-anterior" data-destino="tela-conceito" type="button">← Voltar</button>
+
+    <div class="etapa-em-construcao">
+        <span>ETAPA 2 DE 5</span>
+        <h1>PERFIL DO PERSONAGEM</h1>
+        <p>Esta será a próxima etapa que vamos desenvolver.</p>
+    </div>
+  </section>
+
+  <!-- Etapa 3: Ocupação do Personagem -->
+
+  <section id="tela-ocupacao" class="tela-site etapa-criacao">
+    <div class="etapa-em-construcao">
+        <span>ETAPA 3 DE 5</span>
+        <h1>OCUPAÇÃO DO PERSONAGEM</h1>
+    </div>
+  </section>
+
+  <!-- Etapa 4: Atributos e Perícias -->
+
+  <section id="tela-atributos-pericias" class="tela-site etapa-criacao">
+    <div class="etapa-em-construcao">
+        <span>ETAPA 4 DE 5</span>
+        <h1>ATRIBUTOS E PERÍCIAS DO PERSONAGEM</h1>
+    </div>
+  </section>
+
+  <!-- Etapa 5: Itens Iniciais -->
+
+  <section id="tela-itens-iniciais" class="tela-site etapa-criacao">
+    <div class="etapa-em-construcao">
+        <span>ETAPA 5 DE 5</span>
+        <h1>ITENS INICIAIS DO PERSONAGEM</h1>
+    </div>
+  </section>
+
+  <!-- Scripts -->
+
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="auten.js"></script>
+  <script src="script.js"></script>
+  <script src="criacao-de-ficha.js"></script>
+</body>
+</html>

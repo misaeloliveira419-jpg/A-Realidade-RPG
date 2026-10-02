@@ -1,0 +1,215 @@
+/* Tela Suas Fichas */
+
+.intro-suas-fichas{
+  width: calc(100% - 40px);
+  max-width: 1460px;
+  margin: 40px auto 30px;
+}
+.intro-suas-fichas h1{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 90px;
+  margin: 0;
+  background: black;
+  border: 3px solid white;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+.lista-suas-fichas{
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  width: calc(100% - 100px);
+  max-width: 1460px;
+  margin: 0 auto 50px;
+}
+
+/* Card criar ficha */
+
+.card-criar-ficha{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 310px;
+  background: black;
+  color: white;
+  border: 3px solid white;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+  overflow: hidden;
+}
+.card-criar-ficha:hover{
+  transform: scale(1.03);
+  box-shadow: 0 0 20px rgb(150,0,225);
+}
+.card-criar-ficha-topo{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 230px;
+  border-bottom: 2px solid white;
+  font-size: 88px;
+  font-weight: bold;
+}
+.card-criar-ficha-base{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 76px;
+  padding: 14px;
+  box-sizing: border-box;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* Card de ficha */
+
+.card-ficha-usuario{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 310px;
+  background: black;
+  color: white;
+  border: 3px solid white;
+  border-radius: 5px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card-ficha-usuario:hover{
+  transform: scale(1.03);
+  box-shadow: 0 0 20px rgb(150,0,225);
+}
+.topo-card-ficha{
+  display: grid;
+  grid-template-columns: minmax(140px, 34%) 1fr;
+  min-height: 230px;
+  border-bottom: 2px solid white;
+}
+.foto-card-ficha{
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 230px;
+  background: black;
+  border-right: 1px solid rgba(255,255,255,0.5);
+  overflow: hidden;
+}
+.foto-card-ficha img{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.foto-card-ficha.sem-foto{
+  font-size: 92px;
+  font-weight: bold;
+  color: white;
+}
+.infos-card-ficha{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 26px;
+  padding: 24px 18px;
+  box-sizing: border-box;
+  text-align: left;
+}
+.info-ficha-linha{
+  max-width: 100%;
+  font-size: 18px;
+  line-height: 1.45;
+}
+.rotulo-info-ficha{
+  display: block;
+  font-weight: bold;
+}
+.botao-excluir-ficha{
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  background: black;
+  color: white;
+  border: 2px solid white;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 20px;
+  transition: transform 0.3s, box-shadow 0.3s, color 0.3s, border-color 0.3s;
+}
+.botao-excluir-ficha:hover{
+  transform: scale(1.05);
+  color: rgb(255,80,80);
+  border-color: rgb(255,80,80);
+  box-shadow: 0 0 14px rgba(255,80,80,0.55);
+}
+.base-card-ficha{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 76px;
+  padding: 14px 18px;
+  box-sizing: border-box;
+}
+.nome-card-ficha{
+  font-size: 20px;
+  font-weight: bold;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+.seta-card-ficha{
+  flex-shrink: 0;
+  font-size: 34px;
+  line-height: 1;
+}
+
+/* Adaptação para celular */
+
+@media (max-width: 700px){
+  .lista-suas-fichas{
+    grid-template-columns: 1fr;
+    width: calc(100% - 100px);
+  }
+  .topo-card-ficha{
+    grid-template-columns: 120px 1fr;
+  }
+  .foto-card-ficha,
+  .foto-card-ficha.sem-foto{
+    min-height: 180px;
+  }
+  .foto-card-ficha.sem-foto{
+    font-size: 72px;
+  }
+  .infos-card-ficha{
+    gap: 18px;
+    padding: 18px 14px;
+  }
+  .info-ficha-linha{
+    font-size: 16px;
+  }
+  .nome-card-ficha{
+    font-size: 18px;
+  }
+}
+
+/* Adaptação para tablets e notebooks menores */
+
+@media (min-width: 701px) and (max-width: 1150px){
+  .lista-suas-fichas{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

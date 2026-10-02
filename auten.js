@@ -537,8 +537,14 @@ auth.onAuthStateChanged(async usuario => {
   const trocouDeConta = uidContaAnterior !== null && usuario && uidContaAnterior !== usuario.uid;
   
   if (trocouDeConta) {
-    document.querySelectorAll(".tela-site").forEach(tela => tela.classList.remove("ativa"));
-    document.getElementById("tela-principal")?.classList.add("ativa");
+    document.querySelectorAll(".tela-site").forEach(tela => {
+      tela.classList.remove("ativa");
+    });
+
+    const telaInicial = document.getElementById("tela-principal")
+      || document.querySelector(".tela-site");
+
+    telaInicial?.classList.add("ativa");
   }
   
   uidContaAnterior = usuario?.uid || null;

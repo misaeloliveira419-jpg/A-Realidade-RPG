@@ -1,0 +1,165 @@
+/* Tela de criação de ficha */
+
+.etapa-criacao{
+  padding-bottom: 30px;
+}
+.form-criacao{
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: calc(100% - 40px);
+  max-width: 850px;
+  min-height: calc(100vh - 140px);
+  margin: 30px auto;
+}
+
+/* Cabeçalho */
+
+.cabecalho-criacao{
+  text-align: center;
+}
+.cabecalho-criacao span,
+.etapa-em-construcao span{
+  color: rgb(190,160,225);
+  font-size: 13px;
+  font-weight: bold;
+}
+.cabecalho-criacao h1{
+  margin-top: 18px;
+  text-align: center;
+}
+
+/* Campos do formulário */
+
+.campos-criacao{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 25px;
+  background: black;
+  border: 2px solid white;
+  border-radius: 5px;
+}
+.campos-criacao label{
+  margin-top: 10px;
+  font-size: 17px;
+  font-weight: bold;
+}
+.campos-criacao input,
+.campos-criacao textarea{
+  width: 100%;
+  padding: 12px;
+  background: black;
+  color: white;
+  border: 2px solid rgb(170,170,170);
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 15px;
+  line-height: 1.5;
+}
+.campos-criacao input:focus,
+.campos-criacao textarea:focus{
+  outline: none;
+  border-color: white;
+  box-shadow: 0 0 15px rgb(150,0,225);
+}
+.campos-criacao .campo-idade{
+  max-width: 170px;
+}
+.campos-criacao textarea{
+  resize: vertical;
+  min-height: 100px;
+  overflow-wrap: anywhere;
+}
+.campos-criacao hr{
+  width: 100%;
+  margin: 15px 0;
+  border: none;
+  border-top: 1px solid rgb(100,100,100);
+}
+
+/* Mensagens e navegação */
+
+.mensagem-criacao{
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  text-align: left;
+  color: rgb(255,130,130);
+}
+.mensagem-criacao:empty{
+  display: none;
+}
+.rodape-criacao{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-top: auto;
+}
+.rodape-criacao span{
+  color: rgb(190,190,190);
+  font-size: 12px;
+}
+#continuar-conceito{
+  padding: 12px 24px;
+  background: black;
+  color: white;
+  border: 2px solid white;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+#continuar-conceito:hover{
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgb(150,0,225);
+}
+#continuar-conceito:disabled{
+  opacity: 0.6;
+  cursor: default;
+  transform: none;
+}
+
+/* Próximas etapas */
+
+.botao-etapa-anterior{
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  padding: 8px 16px;
+  background: black;
+  color: white;
+  border: 2px solid white;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 800;
+}
+.etapa-em-construcao{
+  width: calc(100% - 40px);
+  max-width: 850px;
+  margin: 70px auto;
+  text-align: center;
+}
+.etapa-em-construcao p{
+  margin-top: 30px;
+}
+
+/* Adaptação para celular */
+
+@media (max-width: 700px){
+  .form-criacao{
+    width: calc(100% - 24px);
+    margin-top: 20px;
+  }
+  .campos-criacao{
+    padding: 15px;
+  }
+  .cabecalho-criacao h1{
+    font-size: 25px;
+  }
+  .rodape-criacao{
+    padding-bottom: 15px;
+  }
+}
