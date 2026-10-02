@@ -197,15 +197,104 @@
 
   <section id="tela-ocupacao" class="tela-site etapa-criacao">
     <button class="botao-etapa-anterior" data-destino="tela-perfil" type="button">← Voltar</button>
-    <div class="etapa-em-construcao">
+
+    <form id="form-ocupacao" class="form-criacao form-ocupacao">
+
+      <div class="cabecalho-criacao">
         <span>ETAPA 3 DE 5</span>
         <h1>OCUPAÇÃO DO PERSONAGEM</h1>
-    </div>
+
+        <p class="descricao-etapa">
+          Escolha uma ou duas Ocupações para seu personagem.
+        </p>
+      </div>
+
+      <!-- Resumo das Ocupações escolhidas -->
+
+      <div class="resumo-ocupacoes">
+        <h2>OCUPAÇÃO SELECIONADA</h2>
+
+        <div id="nomes-ocupacoes-selecionadas" class="nomes-ocupacoes-selecionadas">
+          <span class="nenhuma-ocupacao">Nenhuma ainda</span>
+        </div>
+
+        <div class="bloco-resumo-ocupacao">
+          <strong>Perícias Naturais:</strong>
+
+          <div id="resumo-pericias-ocupacao" class="resumo-pericias-ocupacao">
+            <span>—</span>
+          </div>
+        </div>
+
+        <div class="valores-ocupacao">
+          <span>
+            <strong id="resumo-pc-ocupacao">—</strong> PC
+          </span>
+
+          <span>
+            CO: <strong id="resumo-co-ocupacao">—</strong>
+          </span>
+        </div>
+      </div>
+
+      <!-- Pesquisa -->
+
+      <div class="area-pesquisa-ocupacao">
+        <label for="pesquisa-ocupacao">Pesquisar Ocupação:</label>
+
+        <input
+          id="pesquisa-ocupacao"
+          type="search"
+          placeholder="Pesquise por nome, descrição ou Perícia..."
+          autocomplete="off"
+        >
+      </div>
+
+      <div class="cabecalho-lista-ocupacoes">
+        <strong>Lista de Ocupações</strong>
+        <span id="contador-ocupacoes">0 / 2 selecionadas</span>
+      </div>
+
+      <!-- Lista criada pelo JavaScript -->
+
+      <div id="lista-ocupacoes-criacao" class="lista-ocupacoes-criacao">
+        <p class="aviso-ocupacoes">Carregando Ocupações...</p>
+      </div>
+
+      <!-- Escolha das 3 Perícias Naturais -->
+
+      <section id="secao-escolha-pericias-naturais" class="secao-escolha-pericias-naturais" hidden>
+        <div class="cabecalho-pericias-naturais">
+          <div>
+            <h2>PERÍCIAS NATURAIS</h2>
+            <p id="regra-pericias-naturais">
+              Escolha 3 Perícias Naturais.
+            </p>
+          </div>
+
+          <strong id="contador-pericias-naturais">0 / 3</strong>
+        </div>
+
+        <div id="lista-escolha-pericias-naturais" class="lista-escolha-pericias-naturais"></div>
+      </section>
+
+      <p id="mensagem-ocupacao" class="mensagem-criacao" aria-live="polite"></p>
+
+      <div class="rodape-criacao">
+        <span>Escolha pelo menos uma Ocupação.</span>
+
+        <button id="continuar-ocupacao" type="submit" disabled>
+          Continuar →
+        </button>
+      </div>
+
+    </form>
   </section>
 
   <!-- Etapa 4: Atributos e Perícias -->
 
   <section id="tela-atributos-pericias" class="tela-site etapa-criacao">
+    <button class="botao-etapa-anterior" data-destino="tela-ocupacao" type="button">← Voltar</button>
     <div class="etapa-em-construcao">
         <span>ETAPA 4 DE 5</span>
         <h1>ATRIBUTOS E PERÍCIAS DO PERSONAGEM</h1>

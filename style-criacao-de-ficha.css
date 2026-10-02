@@ -156,7 +156,6 @@
   font-size: 15px;
   line-height: 1.6;
 }
-
 .lista-opcoes-perfil{
   display: flex;
   flex-direction: column;
@@ -170,14 +169,12 @@
   display: block;
   cursor: pointer;
 }
-
 .opcao-perfil input{
   position: absolute;
   width: 1px;
   height: 1px;
   opacity: 0;
 }
-
 .conteudo-perfil{
   display: flex;
   flex-direction: column;
@@ -188,23 +185,19 @@
   border-radius: 6px;
   transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
 }
-
 .opcao-perfil:hover .conteudo-perfil{
   border-color: white;
 }
-
 .opcao-perfil input:focus-visible + .conteudo-perfil{
   outline: 2px solid white;
   outline-offset: 4px;
 }
-
 .titulo-perfil{
   display: flex;
   align-items: center;
   gap: 14px;
   font-size: 21px;
 }
-
 .marcador-perfil{
   display: flex;
   align-items: center;
@@ -215,7 +208,6 @@
   border: 2px solid rgb(160,160,160);
   border-radius: 50%;
 }
-
 .descricao-perfil{
   color: rgb(220,220,220);
   font-size: 15px;
@@ -229,12 +221,10 @@
   border-color: rgb(150,0,200);
   box-shadow: 0 0 18px rgba(150,0,200,0.45);
 }
-
 .opcao-perfil input[value="proativo"]:checked + .conteudo-perfil .titulo-perfil{
   color: rgb(190,100,235);
   text-shadow: 0 0 10px rgb(150,0,200);
 }
-
 .opcao-perfil input[value="proativo"]:checked + .conteudo-perfil .marcador-perfil{
   border-color: rgb(150,0,200);
   background: rgb(150,0,200);
@@ -248,12 +238,10 @@
   border-color: rgb(200,220,0);
   box-shadow: 0 0 18px rgba(200,220,0,0.4);
 }
-
 .opcao-perfil input[value="reflexivo"]:checked + .conteudo-perfil .titulo-perfil{
   color: rgb(200,220,0);
   text-shadow: 0 0 10px rgb(200,220,0);
 }
-
 .opcao-perfil input[value="reflexivo"]:checked + .conteudo-perfil .marcador-perfil{
   border-color: rgb(200,220,0);
   background: rgb(200,220,0);
@@ -267,12 +255,10 @@
   border-color: rgb(0,200,50);
   box-shadow: 0 0 18px rgba(0,200,50,0.4);
 }
-
 .opcao-perfil input[value="adaptativo"]:checked + .conteudo-perfil .titulo-perfil{
   color: rgb(0,200,50);
   text-shadow: 0 0 10px rgb(0,200,50);
 }
-
 .opcao-perfil input[value="adaptativo"]:checked + .conteudo-perfil .marcador-perfil{
   border-color: rgb(0,200,50);
   background: rgb(0,200,50);
@@ -292,13 +278,279 @@
   cursor: pointer;
   transition: transform 0.3s, box-shadow 0.3s;
 }
-
 #continuar-perfil:hover:not(:disabled){
   transform: scale(1.05);
   box-shadow: 0 0 15px rgb(150,0,225);
 }
-
 #continuar-perfil:disabled{
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* Tela Ocupação do Personagem */
+
+.form-ocupacao{
+  max-width: 1000px;
+}
+
+/* Resumo */
+
+.resumo-ocupacoes{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 24px;
+  background: black;
+  border: 2px solid white;
+  border-radius: 5px;
+}
+.resumo-ocupacoes h2{
+  margin: 0;
+  text-align: center;
+  font-size: 18px;
+}
+.nomes-ocupacoes-selecionadas{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  min-height: 32px;
+}
+.nome-ocupacao-selecionada{
+  font-size: 24px;
+  font-weight: bold;
+  text-shadow: 0 0 12px rgb(150,0,225);
+}
+.nenhuma-ocupacao{
+  color: rgb(160,160,160);
+  font-style: italic;
+}
+.bloco-resumo-ocupacao{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.resumo-pericias-ocupacao{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.pericia-resumo-ocupacao{
+  padding: 6px 10px;
+  background: rgb(15,15,15);
+  border: 1px solid rgb(120,120,120);
+  border-radius: 5px;
+  font-size: 13px;
+}
+.valores-ocupacao{
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding-top: 16px;
+  border-top: 1px solid rgb(100,100,100);
+  font-size: 18px;
+}
+
+/* Pesquisa */
+
+.area-pesquisa-ocupacao{
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.area-pesquisa-ocupacao label{
+  font-size: 17px;
+  font-weight: bold;
+}
+#pesquisa-ocupacao{
+  width: 100%;
+  padding: 13px;
+  box-sizing: border-box;
+  background: black;
+  color: white;
+  border: 2px solid rgb(170,170,170);
+  border-radius: 5px;
+  font-size: 15px;
+}
+#pesquisa-ocupacao:focus{
+  outline: none;
+  border-color: white;
+  box-shadow: 0 0 15px rgb(150,0,225);
+}
+#pesquisa-ocupacao::-webkit-search-cancel-button{
+  cursor: pointer;
+}
+
+/* Cabeçalho da lista */
+
+.cabecalho-lista-ocupacoes{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  font-size: 16px;
+}
+
+/* Lista de Ocupações */
+
+.lista-ocupacoes-criacao{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 16px;
+}
+.card-ocupacao{
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  min-height: 230px;
+  padding: 18px;
+  box-sizing: border-box;
+  background: black;
+  color: white;
+  border: 2px solid rgb(120,120,120);
+  border-radius: 5px;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s, background 0.25s;
+}
+.card-ocupacao:hover{
+  transform: scale(1.02);
+  border-color: white;
+}
+.card-ocupacao.selecionada{
+  background: rgba(150,0,225,0.12);
+  border-color: rgb(150,0,225);
+  box-shadow: 0 0 16px rgba(150,0,225,0.45);
+}
+.nome-card-ocupacao{
+  font-size: 19px;
+  font-weight: bold;
+}
+.card-ocupacao.selecionada .nome-card-ocupacao{
+  text-shadow: 0 0 10px rgb(150,0,225);
+}
+.descricao-card-ocupacao{
+  flex: 1;
+  color: rgb(210,210,210);
+  font-size: 14px;
+  line-height: 1.5;
+}
+.detalhes-card-ocupacao{
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: 13px;
+  line-height: 1.45;
+}
+.valores-card-ocupacao{
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  padding-top: 10px;
+  margin-top: auto;
+  border-top: 1px solid rgb(80,80,80);
+  font-weight: bold;
+}
+.aviso-ocupacoes{
+  grid-column: 1 / -1;
+  max-width: none;
+  padding: 20px;
+  text-align: center;
+  color: rgb(190,190,190);
+}
+
+/* Escolha de Perícias Naturais */
+
+.secao-escolha-pericias-naturais{
+  padding: 22px;
+  background: black;
+  border: 2px solid white;
+  border-radius: 5px;
+}
+.secao-escolha-pericias-naturais[hidden]{
+  display: none;
+}
+.cabecalho-pericias-naturais{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  margin-bottom: 18px;
+}
+.cabecalho-pericias-naturais h2{
+  margin: 0 0 8px;
+  font-size: 18px;
+}
+.cabecalho-pericias-naturais p{
+  max-width: none;
+  margin: 0;
+  text-align: left;
+  color: rgb(190,190,190);
+}
+#contador-pericias-naturais{
+  flex-shrink: 0;
+}
+.lista-escolha-pericias-naturais{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.opcao-pericia-natural{
+  position: relative;
+  cursor: pointer;
+}
+.opcao-pericia-natural input{
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+.conteudo-pericia-natural{
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-height: 42px;
+  padding: 10px 12px;
+  box-sizing: border-box;
+  background: rgb(10,10,10);
+  border: 1px solid rgb(120,120,120);
+  border-radius: 5px;
+  transition: border-color 0.25s, background 0.25s, box-shadow 0.25s;
+}
+.opcao-pericia-natural:hover .conteudo-pericia-natural{
+  border-color: white;
+}
+.opcao-pericia-natural input:checked + .conteudo-pericia-natural{
+  background: rgba(150,0,225,0.15);
+  border-color: rgb(150,0,225);
+  box-shadow: 0 0 10px rgba(150,0,225,0.4);
+}
+.origem-area-pericia{
+  color: rgb(190,160,225);
+  font-size: 11px;
+}
+
+/* Continuar */
+
+#continuar-ocupacao{
+  padding: 12px 24px;
+  background: black;
+  color: white;
+  border: 2px solid white;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+#continuar-ocupacao:hover:not(:disabled){
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgb(150,0,225);
+}
+#continuar-ocupacao:disabled{
   opacity: 0.5;
   cursor: default;
 }
@@ -318,5 +570,19 @@
   }
   .rodape-criacao{
     padding-bottom: 15px;
+  }
+  .lista-ocupacoes-criacao,
+  .lista-escolha-pericias-naturais{
+    grid-template-columns: 1fr;
+  }
+  .valores-ocupacao{
+    flex-direction: column;
+    gap: 8px;
+  }
+  .cabecalho-pericias-naturais{
+    flex-direction: column;
+  }
+  .nome-ocupacao-selecionada{
+    font-size: 20px;
   }
 }
