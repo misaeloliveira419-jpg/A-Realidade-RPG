@@ -104,16 +104,99 @@
   <section id="tela-perfil" class="tela-site etapa-criacao">
     <button class="botao-etapa-anterior" data-destino="tela-conceito" type="button">← Voltar</button>
 
-    <div class="etapa-em-construcao">
+    <form id="form-perfil" class="form-criacao">
+
+        <div class="cabecalho-criacao">
         <span>ETAPA 2 DE 5</span>
         <h1>PERFIL DO PERSONAGEM</h1>
-        <p>Esta será a próxima etapa que vamos desenvolver.</p>
-    </div>
+
+        <p class="descricao-etapa">
+            O Perfil define como o personagem normalmente age ou reage
+            diante de uma situação. Escolha apenas um.
+        </p>
+        </div>
+
+        <!-- Opções de Perfil -->
+
+        <div class="lista-opcoes-perfil" role="radiogroup" aria-label="Escolha o Perfil do Personagem">
+
+        <!-- Proativo -->
+
+        <label class="opcao-perfil">
+            <input type="radio" name="perfil" value="proativo" required>
+
+            <span class="conteudo-perfil">
+            <span class="titulo-perfil">
+                <span class="marcador-perfil"></span>
+                <strong>PROATIVO</strong>
+            </span>
+
+            <span class="descricao-perfil">
+                O personagem é muito ativo, gosta de tomar a iniciativa
+                e tenta fazer ações não tão planejadas. É um personagem
+                que se sente como um homem-máquina, que não tem muito
+                tempo para pensar antes de tomar uma decisão.
+            </span>
+            </span>
+        </label>
+
+        <!-- Reflexivo -->
+
+        <label class="opcao-perfil">
+            <input type="radio" name="perfil" value="reflexivo" required>
+
+            <span class="conteudo-perfil">
+            <span class="titulo-perfil">
+                <span class="marcador-perfil"></span>
+                <strong>REFLEXIVO</strong>
+            </span>
+
+            <span class="descricao-perfil">
+                O personagem pensa antes de agir, prefere seguir um rumo
+                de ações planejadas, ou prefere analisar a situação
+                antes de tomar uma decisão.
+            </span>
+            </span>
+        </label>
+
+        <!-- Adaptativo -->
+
+        <label class="opcao-perfil">
+            <input type="radio" name="perfil" value="adaptativo" required>
+
+            <span class="conteudo-perfil">
+            <span class="titulo-perfil">
+                <span class="marcador-perfil"></span>
+                <strong>ADAPTATIVO</strong>
+            </span>
+
+            <span class="descricao-perfil">
+                O personagem varia seu modo de agir conforme a situação,
+                e está sempre pronto para agir em situações novas.
+                Ele é um personagem fluido, que consegue agir sob pressão,
+                ou que está disposto a mudar de forma.
+            </span>
+            </span>
+        </label>
+
+        </div>
+
+        <p id="mensagem-perfil" class="mensagem-criacao" aria-live="polite"></p>
+
+        <div class="rodape-criacao">
+        <span>Selecione um Perfil para continuar.</span>
+        <button id="continuar-perfil" type="submit" disabled>
+            Continuar →
+        </button>
+        </div>
+
+    </form>
   </section>
 
   <!-- Etapa 3: Ocupação do Personagem -->
 
   <section id="tela-ocupacao" class="tela-site etapa-criacao">
+    <button class="botao-etapa-anterior" data-destino="tela-perfil" type="button">← Voltar</button>
     <div class="etapa-em-construcao">
         <span>ETAPA 3 DE 5</span>
         <h1>OCUPAÇÃO DO PERSONAGEM</h1>

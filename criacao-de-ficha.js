@@ -8,6 +8,34 @@ const campoPassado = document.getElementById("passado-personagem");
 const mensagemConceito = document.getElementById("mensagem-conceito");
 const botaoContinuarConceito = document.getElementById("continuar-conceito");
 
+/* Elementos da tela de Perfil */
+
+const formPerfil = document.getElementById("form-perfil");
+const radiosPerfil = document.querySelectorAll('input[name="perfil"]');
+const mensagemPerfil = document.getElementById("mensagem-perfil");
+const botaoContinuarPerfil = document.getElementById("continuar-perfil");
+
+const perfisDisponiveis = ["proativo", "reflexivo", "adaptativo"];
+
+/* Seleção de Perfil */
+
+function obterPerfilSelecionado() {
+  return formPerfil.querySelector('input[name="perfil"]:checked')?.value || null;
+}
+
+function atualizarEstadoPerfil() {
+  const perfil = obterPerfilSelecionado();
+
+  botaoContinuarPerfil.disabled = !(
+    perfisDisponiveis.includes(perfil) &&
+    auth.currentUser &&
+    referenciaFichaAtual &&
+    fichaJaCriada
+  );
+}
+
+formPerfil.addEventListener("change", atualizarEstadoPerfil);
+
 let referenciaFichaAtual = null;
 let fichaJaCriada = false;
 let etapaSalva = 1;
@@ -62,9 +90,20 @@ async function carregarRascunho(id, usuario, versao) {
     campoAparencia.value = ficha.aparencia || "";
     campoPassado.value = ficha.passado || "";
 
+    /* Recuperar o Perfil escolhido */
+
+    radiosPerfil.forEach(radio => {
+      radio.checked = radio.value === ficha.perfil;
+    });
+
+    atualizarEstadoPerfil();
+
     mensagemConceito.textContent = "";
 
-    if (etapaSalva >= 2) {
+    if (etapaSalva >= 3) {
+      abrirEtapaCriacao("tela-ocupacao");
+
+    } else if (etapaSalva >= 2) {
       abrirEtapaCriacao("tela-perfil");
     }
 
@@ -89,6 +128,9 @@ auth.onAuthStateChanged(usuario => {
 
   if (uidAnteriorCriacao && uidAnteriorCriacao !== usuario?.uid) {
     formConceito.reset();
+    formPerfil.reset();
+    mensagemPerfil.textContent = "";
+    atualizarEstadoPerfil();
     referenciaFichaAtual = null;
     fichaJaCriada = false;
     etapaSalva = 1;
@@ -186,6 +228,7 @@ formConceito.addEventListener("submit", async evento => {
     history.replaceState({}, "", url.pathname + url.search);
 
     mensagemConceito.textContent = "";
+    atualizarEstadoPerfil();
     abrirEtapaCriacao("tela-perfil");
 
   } catch (erro) {
@@ -194,5 +237,60 @@ formConceito.addEventListener("submit", async evento => {
 
   } finally {
     botaoContinuarConceito.disabled = false;
+  }
+});
+
+/* Salvamento do Perfil */
+
+formPerfil.addEventListener("submit", async evento => {
+  evento.preventDefault();
+
+  const usuario = auth.currentUser;
+  const perfil = obterPerfilSelecionado();
+
+  if (!usuario) {
+    mensagemPerfil.textContent = "Entre em uma conta para continuar.";
+    return;
+  }
+
+  if (!perfisDisponiveis.includes(perfil)) {
+    mensagemPerfil.textContent = "Selecione um Perfil para continuar.";
+    return;
+  }
+
+  if (!referenciaFichaAtual || !fichaJaCriada) {
+    mensagemPerfil.textContent = "Salve o Conceito antes de escolher seu Perfil.";
+    return;
+  }
+
+  botaoContinuarPerfil.disabled = true;
+  mensagemPerfil.textContent = "Salvando Perfil...";
+
+  try {
+    await referenciaFichaAtual.update({
+      perfil: perfil,
+      etapaAtual: Math.max(etapaSalva, 3),
+      atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    /* Evitar navegar se a conta mudou durante o salvamento */
+
+    if (auth.currentUser?.uid !== usuario.uid) return;
+
+    etapaSalva = Math.max(etapaSalva, 3);
+
+    mensagemPerfil.textContent = "";
+    abrirEtapaCriacao("tela-ocupacao");
+
+  } catch (erro) {
+    console.error("Erro ao salvar Perfil:", erro);
+
+    if (auth.currentUser?.uid === usuario.uid) {
+      mensagemPerfil.textContent =
+        "Não foi possível salvar seu Perfil. Tente novamente.";
+    }
+
+  } finally {
+    atualizarEstadoPerfil();
   }
 });
