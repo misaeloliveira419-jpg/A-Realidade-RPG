@@ -278,15 +278,181 @@
 
   <section id="tela-atributos-pericias" class="tela-site etapa-criacao">
     <button class="botao-etapa-anterior" data-destino="tela-ocupacao" type="button">← Voltar</button>
-    <div class="etapa-em-construcao">
+
+    <form id="form-atributos-pericias" class="form-criacao form-atributos-pericias">
+
+      <div class="cabecalho-criacao">
         <span>ETAPA 4 DE 5</span>
         <h1>ATRIBUTOS E PERÍCIAS DO PERSONAGEM</h1>
-    </div>
+      </div>
+
+      <div class="grade-atributos-pericias">
+
+        <!-- Atributos -->
+
+        <section class="coluna-atributos-criacao">
+          <h2>ATRIBUTOS</h2>
+
+          <strong id="contador-atributos" class="contador-etapa-quatro">
+            3 / 4
+          </strong>
+
+          <div class="lista-atributos-criacao">
+
+            <!-- Físico -->
+
+            <label class="linha-atributo atributo-fisico">
+              <span class="nome-atributo">FÍSICO</span>
+
+              <span class="borda-valor-atributo">
+                <input
+                  id="atributo-fisico"
+                  class="input-atributo-principal"
+                  data-atributo="fisico"
+                  type="number"
+                  min="0"
+                  max="3"
+                  step="1"
+                  value="1"
+                  inputmode="numeric"
+                  aria-label="Valor de Físico"
+                >
+              </span>
+            </label>
+
+            <!-- Cognição -->
+
+            <label class="linha-atributo atributo-cognicao">
+              <span class="nome-atributo">COGNIÇÃO</span>
+
+              <span class="borda-valor-atributo">
+                <input
+                  id="atributo-cognicao"
+                  class="input-atributo-principal"
+                  data-atributo="cognicao"
+                  type="number"
+                  min="0"
+                  max="3"
+                  step="1"
+                  value="1"
+                  inputmode="numeric"
+                  aria-label="Valor de Cognição"
+                >
+              </span>
+            </label>
+
+            <!-- Presença -->
+
+            <label class="linha-atributo atributo-presenca">
+              <span class="nome-atributo">PRESENÇA</span>
+
+              <span class="borda-valor-atributo">
+                <input
+                  id="atributo-presenca"
+                  class="input-atributo-principal"
+                  data-atributo="presenca"
+                  type="number"
+                  min="0"
+                  max="3"
+                  step="1"
+                  value="1"
+                  inputmode="numeric"
+                  aria-label="Valor de Presença"
+                >
+              </span>
+            </label>
+
+            <!-- Deslocamento -->
+
+            <div class="linha-atributo atributo-deslocamento">
+              <span class="nome-atributo">DESLOCAMENTO</span>
+
+              <div class="borda-valor-deslocamento">
+                <div class="valor-deslocamento">
+                  <label>
+                    <input
+                      id="deslocamento-metros"
+                      type="number"
+                      min="0"
+                      step="0.1"
+                      value="9"
+                      inputmode="decimal"
+                      aria-label="Deslocamento em metros"
+                    >
+                    <span>m</span>
+                  </label>
+
+                  <span class="divisor-deslocamento">/</span>
+
+                  <label>
+                    <input
+                      id="deslocamento-quadrados"
+                      type="number"
+                      min="0"
+                      step="0.1"
+                      value="6"
+                      inputmode="decimal"
+                      aria-label="Deslocamento em quadrados"
+                    >
+                    <span>q</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Perícias -->
+
+        <section class="coluna-pericias-criacao">
+          <h2>PERÍCIAS</h2>
+
+          <div class="contadores-pericias">
+            <strong id="contador-pontos-pericias" class="contador-etapa-quatro">
+              0 / 25
+            </strong>
+
+            <strong id="contador-bonus-naturais">
+              Perícias Naturais: 0 / 5
+            </strong>
+
+            <p id="aviso-bonus-naturais" class="aviso-bonus-naturais">
+              Primeiro distribua todos os pontos normais de Perícia.
+              Depois, distribua os 5 pontos bônus entre suas Perícias Naturais.
+            </p>
+          </div>
+
+          <div id="lista-pericias-criacao" class="lista-pericias-criacao">
+            <p class="aviso-carregamento-pericias">
+              Carregando Perícias...
+            </p>
+          </div>
+        </section>
+
+      </div>
+
+      <p
+        id="mensagem-atributos-pericias"
+        class="mensagem-criacao"
+        aria-live="polite"
+      ></p>
+
+      <div class="rodape-criacao">
+        <span>Distribua todos os pontos para continuar.</span>
+
+        <button id="continuar-atributos-pericias" type="submit" disabled>
+          Continuar →
+        </button>
+      </div>
+
+    </form>
   </section>
 
   <!-- Etapa 5: Itens Iniciais -->
 
   <section id="tela-itens-iniciais" class="tela-site etapa-criacao">
+    <button class="botao-etapa-anterior" data-destino="tela-atributos-pericias" type="button">← Voltar</button>
     <div class="etapa-em-construcao">
         <span>ETAPA 5 DE 5</span>
         <h1>ITENS INICIAIS DO PERSONAGEM</h1>

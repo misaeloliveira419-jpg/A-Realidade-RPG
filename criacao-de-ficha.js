@@ -64,6 +64,158 @@ let ocupacoesDisponiveis = [];
 let ocupacoesSelecionadas = [];
 let periciasNaturaisSelecionadas = [];
 
+/* Elementos da tela de Atributos e Perícias */
+
+const formAtributosPericias =
+  document.getElementById("form-atributos-pericias");
+
+const contadorAtributos =
+  document.getElementById("contador-atributos");
+
+const campoFisico =
+  document.getElementById("atributo-fisico");
+
+const campoCognicao =
+  document.getElementById("atributo-cognicao");
+
+const campoPresenca =
+  document.getElementById("atributo-presenca");
+
+const campoDeslocamentoMetros =
+  document.getElementById("deslocamento-metros");
+
+const campoDeslocamentoQuadrados =
+  document.getElementById("deslocamento-quadrados");
+
+const listaPericiasCriacao =
+  document.getElementById("lista-pericias-criacao");
+
+const contadorPontosPericias =
+  document.getElementById("contador-pontos-pericias");
+
+const contadorBonusNaturais =
+  document.getElementById("contador-bonus-naturais");
+
+const avisoBonusNaturais =
+  document.getElementById("aviso-bonus-naturais");
+
+const mensagemAtributosPericias =
+  document.getElementById("mensagem-atributos-pericias");
+
+const botaoContinuarAtributosPericias =
+  document.getElementById("continuar-atributos-pericias");
+
+/* Estado da etapa 4 */
+
+let atributosPersonagem = {
+  fisico: 1,
+  cognicao: 1,
+  presenca: 1,
+  deslocamentoMetros: 9,
+  deslocamentoQuadrados: 6
+};
+
+let periciasSistema = [];
+let valoresPericias = {};
+
+const VALOR_BASE_PERICIA = 4;
+const PONTOS_PERICIA_INICIAIS = 25;
+const MAXIMO_PONTOS_RECUPERADOS = 15;
+
+const MAXIMO_PERICIA_NORMAL = 12;
+const MAXIMO_PERICIA_NATURAL = 14;
+
+const BONUS_NATURAL_TOTAL = 5;
+const BONUS_NATURAL_POR_PERICIA = 3;
+
+/* Carregar Perícias do Sistema */
+
+function criarIdPericia(nome) {
+  return normalizarBuscaOcupacao(nome)
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+function extrairPericiaDoSistema(item) {
+  const nome = item.querySelector("b")?.textContent
+    .trim()
+    .replace(/:$/, "");
+
+  if (!nome) return null;
+
+  return {
+    id: criarIdPericia(nome),
+    nome: nome
+  };
+}
+
+function inicializarValoresPericias() {
+  const idsAtuais = new Set();
+
+  periciasSistema.forEach(pericia => {
+    idsAtuais.add(pericia.id);
+
+    if (!valoresPericias[pericia.id]) {
+      valoresPericias[pericia.id] = {
+        valorDistribuido: VALOR_BASE_PERICIA,
+        bonusNatural: 0
+      };
+    }
+  });
+
+  Object.keys(valoresPericias).forEach(id => {
+    if (!idsAtuais.has(id)) {
+      delete valoresPericias[id];
+    }
+  });
+}
+
+async function carregarPericiasDoSistema() {
+  try {
+    const resposta = await fetch("index-sistema.html");
+
+    if (!resposta.ok) {
+      throw new Error("Não foi possível abrir index-sistema.html.");
+    }
+
+    const html = await resposta.text();
+    const documento =
+      new DOMParser().parseFromString(html, "text/html");
+
+    const itens = [
+      ...documento.querySelectorAll("#lista-pericias > li")
+    ];
+
+    periciasSistema = itens
+      .map(extrairPericiaDoSistema)
+      .filter(Boolean);
+
+    if (periciasSistema.length === 0) {
+      throw new Error("Nenhuma Perícia foi encontrada.");
+    }
+
+    inicializarValoresPericias();
+    renderizarEtapaAtributosPericias();
+
+    return true;
+
+  } catch (erro) {
+    console.error("Erro ao carregar Perícias:", erro);
+
+    listaPericiasCriacao.innerHTML =
+      `<p class="aviso-carregamento-pericias">
+        Não foi possível carregar as Perícias do Sistema.
+      </p>`;
+
+    botaoContinuarAtributosPericias.disabled = true;
+
+    return false;
+  }
+}
+
+const promessaPericiasSistema =
+  carregarPericiasDoSistema();
+
 /* Utilidades das Ocupações */
 
 function normalizarBuscaOcupacao(texto) {
@@ -314,7 +466,91 @@ async function carregarRascunho(id, usuario, versao) {
 
     mensagemConceito.textContent = "";
 
-    if (etapaSalva >= 4) {
+    /* Recuperar Atributos e Perícias */
+
+    await promessaPericiasSistema;
+
+    if (
+      versao !== versaoAutenticacao ||
+      auth.currentUser?.uid !== usuario.uid
+    ) return;
+
+    if (ficha.atributos) {
+      const atributos = ficha.atributos;
+
+      if (
+        Number.isInteger(atributos.fisico) &&
+        Number.isInteger(atributos.cognicao) &&
+        Number.isInteger(atributos.presenca)
+      ) {
+        atributosPersonagem.fisico =
+          atributos.fisico;
+
+        atributosPersonagem.cognicao =
+          atributos.cognicao;
+
+        atributosPersonagem.presenca =
+          atributos.presenca;
+      }
+
+      if (
+        Number.isFinite(
+          atributos.deslocamentoMetros
+        )
+      ) {
+        atributosPersonagem.deslocamentoMetros =
+          atributos.deslocamentoMetros;
+      }
+
+      if (
+        Number.isFinite(
+          atributos.deslocamentoQuadrados
+        )
+      ) {
+        atributosPersonagem.deslocamentoQuadrados =
+          atributos.deslocamentoQuadrados;
+      }
+    }
+
+    inicializarValoresPericias();
+
+    if (
+      ficha.pericias &&
+      typeof ficha.pericias === "object"
+    ) {
+      periciasSistema.forEach(pericia => {
+        const salva =
+          ficha.pericias[pericia.id];
+
+        if (!salva) return;
+
+        if (
+          Number.isInteger(
+            salva.valorDistribuido
+          )
+        ) {
+          valoresPericias[pericia.id].valorDistribuido =
+            salva.valorDistribuido;
+        }
+
+        if (
+          Number.isInteger(
+            salva.bonusNatural
+          )
+        ) {
+          valoresPericias[pericia.id].bonusNatural =
+            salva.bonusNatural;
+        }
+      });
+    }
+
+    sincronizarBonusComPericiasNaturais();
+    renderizarEtapaAtributosPericias();
+
+    if (etapaSalva >= 5) {
+      abrirEtapaCriacao("tela-itens-iniciais");
+
+    } else if (etapaSalva >= 4) {
       abrirEtapaCriacao("tela-atributos-pericias");
 
     } else if (etapaSalva >= 3) {
@@ -351,16 +587,40 @@ auth.onAuthStateChanged(usuario => {
     fichaJaCriada = false;
     etapaSalva = 1;
 
+    /* Limpar Ocupações */
+
     ocupacoesSelecionadas = [];
     periciasNaturaisSelecionadas = [];
 
     campoPesquisaOcupacao.value = "";
 
+    /* Limpar Atributos */
+
+    atributosPersonagem = {
+      fisico: 1,
+      cognicao: 1,
+      presenca: 1,
+      deslocamentoMetros: 9,
+      deslocamentoQuadrados: 6
+    };
+
+    /* Limpar Perícias */
+
+    valoresPericias = {};
+
+    inicializarValoresPericias();
+
+    /* Limpar mensagens */
+
     mensagemPerfil.textContent = "";
     mensagemOcupacao.textContent = "";
+    mensagemAtributosPericias.textContent = "";
+
+    /* Atualizar as telas */
 
     atualizarEstadoPerfil();
     renderizarTelaOcupacao();
+    renderizarEtapaAtributosPericias();
 
     history.replaceState({}, "", window.location.pathname);
     abrirEtapaCriacao("tela-conceito");
@@ -373,6 +633,7 @@ auth.onAuthStateChanged(usuario => {
     mensagemConceito.textContent = "Entre em uma conta para criar sua ficha.";
     botaoContinuarPerfil.disabled = true;
     botaoContinuarOcupacao.disabled = true;
+    botaoContinuarAtributosPericias.disabled = true;
     return;
   }
 
@@ -1083,6 +1344,11 @@ formOcupacao.addEventListener("submit", async evento => {
 
     mensagemOcupacao.textContent = "";
 
+    await promessaPericiasSistema;
+
+    sincronizarBonusComPericiasNaturais();
+    renderizarEtapaAtributosPericias();
+
     abrirEtapaCriacao("tela-atributos-pericias");
 
   } catch (erro) {
@@ -1095,5 +1361,722 @@ formOcupacao.addEventListener("submit", async evento => {
 
   } finally {
     atualizarEstadoOcupacao();
+  }
+});
+
+/* Atributos */
+
+function obterTotalAtributos() {
+  return (
+    atributosPersonagem.fisico +
+    atributosPersonagem.cognicao +
+    atributosPersonagem.presenca
+  );
+}
+
+function arredondarParaBaixoUmaCasa(valor) {
+  return Math.floor((valor + 0.0000001) * 10) / 10;
+}
+
+function renderizarAtributos() {
+  campoFisico.value = atributosPersonagem.fisico;
+  campoCognicao.value = atributosPersonagem.cognicao;
+  campoPresenca.value = atributosPersonagem.presenca;
+
+  campoDeslocamentoMetros.value =
+    atributosPersonagem.deslocamentoMetros;
+
+  campoDeslocamentoQuadrados.value =
+    atributosPersonagem.deslocamentoQuadrados;
+
+  contadorAtributos.textContent =
+    `${obterTotalAtributos()} / 4`;
+}
+
+function alterarAtributoPrincipal(chave, campo) {
+  const valorAnterior = atributosPersonagem[chave];
+  const novoValor = Number(campo.value);
+
+  mensagemAtributosPericias.textContent = "";
+
+  if (
+    !Number.isInteger(novoValor) ||
+    novoValor < 0 ||
+    novoValor > 3
+  ) {
+    campo.value = valorAnterior;
+
+    mensagemAtributosPericias.textContent =
+      "Os Atributos principais devem ter valores inteiros entre 0 e 3.";
+
+    return;
+  }
+
+  const totalSemAtributo =
+    obterTotalAtributos() - valorAnterior;
+
+  if (totalSemAtributo + novoValor > 4) {
+    campo.value = valorAnterior;
+
+    mensagemAtributosPericias.textContent =
+      "Você possui apenas 4 pontos de Atributo para distribuir.";
+
+    return;
+  }
+
+  atributosPersonagem[chave] = novoValor;
+
+  renderizarAtributos();
+  atualizarEstadoAtributosPericias();
+}
+
+document.querySelectorAll(".input-atributo-principal").forEach(campo => {
+  campo.addEventListener("change", () => {
+    alterarAtributoPrincipal(
+      campo.dataset.atributo,
+      campo
+    );
+  });
+});
+
+/* Deslocamento */
+
+campoDeslocamentoMetros.addEventListener("change", () => {
+  const metros = Number(campoDeslocamentoMetros.value);
+
+  mensagemAtributosPericias.textContent = "";
+
+  if (!Number.isFinite(metros) || metros < 0) {
+    renderizarAtributos();
+
+    mensagemAtributosPericias.textContent =
+      "Informe um valor válido de Deslocamento.";
+
+    return;
+  }
+
+  atributosPersonagem.deslocamentoMetros =
+    arredondarParaBaixoUmaCasa(metros);
+
+  atributosPersonagem.deslocamentoQuadrados =
+    arredondarParaBaixoUmaCasa(
+      atributosPersonagem.deslocamentoMetros / 1.5
+    );
+
+  renderizarAtributos();
+});
+
+campoDeslocamentoQuadrados.addEventListener("change", () => {
+  const quadrados = Number(campoDeslocamentoQuadrados.value);
+
+  mensagemAtributosPericias.textContent = "";
+
+  if (!Number.isFinite(quadrados) || quadrados < 0) {
+    renderizarAtributos();
+
+    mensagemAtributosPericias.textContent =
+      "Informe um valor válido de Deslocamento.";
+
+    return;
+  }
+
+  atributosPersonagem.deslocamentoQuadrados =
+    arredondarParaBaixoUmaCasa(quadrados);
+
+  atributosPersonagem.deslocamentoMetros =
+    arredondarParaBaixoUmaCasa(
+      atributosPersonagem.deslocamentoQuadrados * 1.5
+    );
+
+  renderizarAtributos();
+});
+
+/* Utilidades das Perícias */
+
+function ehPericiaNatural(pericia) {
+  const nome = normalizarBuscaOcupacao(pericia.nome);
+
+  return periciasNaturaisSelecionadas.some(periciaNatural => {
+    return normalizarBuscaOcupacao(periciaNatural) === nome;
+  });
+}
+
+function copiarValoresPericias() {
+  const copia = {};
+
+  Object.entries(valoresPericias).forEach(([id, dados]) => {
+    copia[id] = {
+      valorDistribuido: dados.valorDistribuido,
+      bonusNatural: dados.bonusNatural
+    };
+  });
+
+  return copia;
+}
+
+function obterResumoPontosPericias(
+  valores = valoresPericias
+) {
+  let gastosNormais = 0;
+  let pontosRecuperados = 0;
+  let bonusNatural = 0;
+
+  Object.values(valores).forEach(dados => {
+    if (dados.valorDistribuido > VALOR_BASE_PERICIA) {
+      gastosNormais +=
+        dados.valorDistribuido - VALOR_BASE_PERICIA;
+    }
+
+    if (dados.valorDistribuido < VALOR_BASE_PERICIA) {
+      pontosRecuperados +=
+        VALOR_BASE_PERICIA - dados.valorDistribuido;
+    }
+
+    bonusNatural += dados.bonusNatural;
+  });
+
+  return {
+    gastosNormais: gastosNormais,
+    pontosRecuperados: pontosRecuperados,
+    limiteNormal:
+      PONTOS_PERICIA_INICIAIS + pontosRecuperados,
+    bonusNatural: bonusNatural
+  };
+}
+
+function pontosNormaisCompletos() {
+  const resumo = obterResumoPontosPericias();
+
+  return resumo.gastosNormais === resumo.limiteNormal;
+}
+
+function obterValorFinalPericia(id) {
+  const dados = valoresPericias[id];
+
+  if (!dados) return VALOR_BASE_PERICIA;
+
+  return (
+    dados.valorDistribuido +
+    dados.bonusNatural
+  );
+}
+
+function sincronizarBonusComPericiasNaturais() {
+  periciasSistema.forEach(pericia => {
+    const dados = valoresPericias[pericia.id];
+
+    if (!dados) return;
+
+    if (!ehPericiaNatural(pericia)) {
+      dados.bonusNatural = 0;
+    }
+  });
+}
+
+function alterarValorPericia(id, novoValorFinal) {
+  const pericia =
+    periciasSistema.find(item => item.id === id);
+
+  const dadosAtuais = valoresPericias[id];
+
+  if (!pericia || !dadosAtuais) return false;
+
+  const natural = ehPericiaNatural(pericia);
+
+  const valorAtualFinal =
+    dadosAtuais.valorDistribuido +
+    dadosAtuais.bonusNatural;
+
+  const maximoFinal = natural
+    ? MAXIMO_PERICIA_NATURAL
+    : MAXIMO_PERICIA_NORMAL;
+
+  mensagemAtributosPericias.textContent = "";
+
+  if (
+    !Number.isInteger(novoValorFinal) ||
+    novoValorFinal < 1 ||
+    novoValorFinal > maximoFinal
+  ) {
+    mensagemAtributosPericias.textContent =
+      natural
+        ? "Uma Perícia Natural deve ter valor entre 1 e 14."
+        : "Uma Perícia deve ter valor entre 1 e 12.";
+
+    return false;
+  }
+
+  if (novoValorFinal === valorAtualFinal) {
+    return true;
+  }
+
+  const candidato = copiarValoresPericias();
+  const dados = candidato[id];
+
+  /* Diminuindo */
+
+  if (novoValorFinal < valorAtualFinal) {
+    let quantidade =
+      valorAtualFinal - novoValorFinal;
+
+    /*
+    Primeiro removemos bônus Natural.
+    Só depois começamos a reduzir o valor normal.
+    */
+
+    const removerBonus =
+      Math.min(quantidade, dados.bonusNatural);
+
+    dados.bonusNatural -= removerBonus;
+    quantidade -= removerBonus;
+
+    if (quantidade > 0) {
+      dados.valorDistribuido -= quantidade;
+    }
+
+    if (dados.valorDistribuido < 1) {
+      return false;
+    }
+
+    const resumoCandidato =
+      obterResumoPontosPericias(candidato);
+
+    if (
+      resumoCandidato.pontosRecuperados >
+      MAXIMO_PONTOS_RECUPERADOS
+    ) {
+      mensagemAtributosPericias.textContent =
+        "Você já recuperou o máximo de 15 pontos diminuindo Perícias.";
+
+      return false;
+    }
+
+    valoresPericias = candidato;
+
+    return true;
+  }
+
+  /* Aumentando */
+
+  const quantidade =
+    novoValorFinal - valorAtualFinal;
+
+  const resumoAtual =
+    obterResumoPontosPericias();
+
+  /* Ainda distribuindo os pontos normais */
+
+  if (
+    resumoAtual.gastosNormais <
+    resumoAtual.limiteNormal
+  ) {
+    dados.valorDistribuido += quantidade;
+
+    if (
+      dados.valorDistribuido >
+      MAXIMO_PERICIA_NORMAL
+    ) {
+      mensagemAtributosPericias.textContent =
+        "Durante a distribuição normal, uma Perícia pode chegar no máximo a 12.";
+
+      return false;
+    }
+
+    const resumoCandidato =
+      obterResumoPontosPericias(candidato);
+
+    if (
+      resumoCandidato.gastosNormais >
+      resumoCandidato.limiteNormal
+    ) {
+      mensagemAtributosPericias.textContent =
+        "Você não possui pontos normais suficientes para esse aumento.";
+
+      return false;
+    }
+
+    valoresPericias = candidato;
+
+    return true;
+  }
+
+  /* Pontos normais completos: fase de bônus */
+
+  if (!natural) {
+    mensagemAtributosPericias.textContent =
+      "Os pontos normais já foram distribuídos. Agora somente as Perícias Naturais podem receber pontos.";
+
+    return false;
+  }
+
+  dados.bonusNatural += quantidade;
+
+  if (
+    dados.bonusNatural >
+    BONUS_NATURAL_POR_PERICIA
+  ) {
+    mensagemAtributosPericias.textContent =
+      "Uma Perícia Natural pode receber no máximo +3 pontos bônus.";
+
+    return false;
+  }
+
+  const resumoCandidato =
+    obterResumoPontosPericias(candidato);
+
+  if (
+    resumoCandidato.bonusNatural >
+    BONUS_NATURAL_TOTAL
+  ) {
+    mensagemAtributosPericias.textContent =
+      "Você possui somente 5 pontos bônus de Perícias Naturais.";
+
+    return false;
+  }
+
+  if (
+    dados.valorDistribuido +
+    dados.bonusNatural >
+    MAXIMO_PERICIA_NATURAL
+  ) {
+    mensagemAtributosPericias.textContent =
+      "Uma Perícia Natural pode chegar no máximo a 14.";
+
+    return false;
+  }
+
+  valoresPericias = candidato;
+
+  return true;
+}
+
+/* Contadores das Perícias */
+
+function renderizarContadoresPericias() {
+  const resumo = obterResumoPontosPericias();
+
+  contadorPontosPericias.textContent =
+    `${resumo.gastosNormais} / ${resumo.limiteNormal}`;
+
+  contadorBonusNaturais.textContent =
+    `Perícias Naturais: ${resumo.bonusNatural} / 5`;
+
+  const normalCompleto =
+    resumo.gastosNormais === resumo.limiteNormal;
+
+  avisoBonusNaturais.classList.toggle(
+    "liberado",
+    normalCompleto
+  );
+
+  if (!normalCompleto && resumo.bonusNatural > 0) {
+    avisoBonusNaturais.textContent =
+      "Os bônus Naturais já escolhidos foram mantidos. Complete novamente os pontos normais antes de distribuir novos bônus.";
+
+  } else if (!normalCompleto) {
+    avisoBonusNaturais.textContent =
+      "Primeiro distribua todos os pontos normais de Perícia. Depois, distribua os 5 pontos bônus entre suas Perícias Naturais.";
+
+  } else if (resumo.bonusNatural < 5) {
+    avisoBonusNaturais.textContent =
+      "Pontos normais completos. Agora distribua os 5 pontos bônus somente entre suas Perícias Naturais.";
+
+  } else {
+    avisoBonusNaturais.textContent =
+      "Todos os pontos de Perícia foram distribuídos.";
+  }
+}
+
+/* Renderização das Perícias */
+
+function criarLinhaPericia(pericia) {
+  const dados = valoresPericias[pericia.id];
+
+  const valorNormal =
+    dados.valorDistribuido +
+    dados.bonusNatural;
+
+  const valorBom =
+    Math.floor(valorNormal / 2);
+
+  const valorExtremo =
+    Math.floor(valorNormal / 5);
+
+  const natural = ehPericiaNatural(pericia);
+
+  const linha = document.createElement("div");
+  linha.className = "linha-pericia-criacao";
+
+  if (natural) {
+    linha.classList.add("pericia-natural");
+  }
+
+  const nome = document.createElement("span");
+  nome.className = "nome-pericia-criacao";
+  nome.textContent = pericia.nome;
+
+  const valores = document.createElement("div");
+  valores.className = "valores-pericia";
+
+  /* Normal */
+
+  const caixaNormal = document.createElement("div");
+  caixaNormal.className = "caixa-normal-pericia";
+
+  const inputNormal = document.createElement("input");
+
+  inputNormal.type = "number";
+  inputNormal.step = "1";
+  inputNormal.min = "1";
+  inputNormal.max = natural ? "14" : "12";
+  inputNormal.value = valorNormal;
+
+  inputNormal.className = "input-normal-pericia";
+  inputNormal.title = "Sucesso Normal";
+
+  inputNormal.setAttribute(
+    "aria-label",
+    `${pericia.nome} - Sucesso Normal`
+  );
+
+  inputNormal.addEventListener("change", () => {
+    const novoValor = Number(inputNormal.value);
+
+    const alterou =
+      alterarValorPericia(
+        pericia.id,
+        novoValor
+      );
+
+    if (!alterou) {
+      inputNormal.value =
+        obterValorFinalPericia(pericia.id);
+    }
+
+    renderizarEtapaAtributosPericias();
+  });
+
+  caixaNormal.appendChild(inputNormal);
+
+  /* Bom */
+
+  const caixaBom = document.createElement("div");
+
+  caixaBom.className = "caixa-bom-pericia";
+  caixaBom.textContent = valorBom;
+  caixaBom.title = "Sucesso Bom";
+
+  caixaBom.setAttribute(
+    "aria-label",
+    `${pericia.nome} - Sucesso Bom: ${valorBom}`
+  );
+
+  /* Extremo */
+
+  const caixaExtremo = document.createElement("div");
+
+  caixaExtremo.className =
+    "caixa-extremo-pericia";
+
+  caixaExtremo.textContent =
+    valorExtremo;
+
+  caixaExtremo.title =
+    "Sucesso Extremo";
+
+  caixaExtremo.setAttribute(
+    "aria-label",
+    `${pericia.nome} - Sucesso Extremo: ${valorExtremo}`
+  );
+
+  valores.append(
+    caixaNormal,
+    caixaBom,
+    caixaExtremo
+  );
+
+  linha.append(
+    nome,
+    valores
+  );
+
+  return linha;
+}
+
+function renderizarListaPericiasCriacao() {
+  if (periciasSistema.length === 0) return;
+
+  const fragmento =
+    document.createDocumentFragment();
+
+  periciasSistema.forEach(pericia => {
+    fragmento.appendChild(
+      criarLinhaPericia(pericia)
+    );
+  });
+
+  listaPericiasCriacao.replaceChildren(fragmento);
+}
+
+function atualizarEstadoAtributosPericias() {
+  const resumo = obterResumoPontosPericias();
+
+  const atributosCompletos =
+    obterTotalAtributos() === 4;
+
+  const periciasCompletas =
+    resumo.gastosNormais === resumo.limiteNormal;
+
+  const naturaisCompletas =
+    resumo.bonusNatural === BONUS_NATURAL_TOTAL;
+
+  botaoContinuarAtributosPericias.disabled = !(
+    auth.currentUser &&
+    referenciaFichaAtual &&
+    fichaJaCriada &&
+    atributosCompletos &&
+    periciasCompletas &&
+    naturaisCompletas &&
+    periciasSistema.length > 0
+  );
+}
+
+function renderizarEtapaAtributosPericias() {
+  renderizarAtributos();
+  renderizarContadoresPericias();
+  renderizarListaPericiasCriacao();
+  atualizarEstadoAtributosPericias();
+}
+
+/* Salvamento dos Atributos e Perícias */
+
+formAtributosPericias.addEventListener("submit", async evento => {
+  evento.preventDefault();
+
+  const usuario = auth.currentUser;
+  const resumo = obterResumoPontosPericias();
+
+  if (!usuario) {
+    mensagemAtributosPericias.textContent =
+      "Entre em uma conta para continuar.";
+
+    return;
+  }
+
+  if (obterTotalAtributos() !== 4) {
+    mensagemAtributosPericias.textContent =
+      "Distribua os 4 pontos de Atributo.";
+
+    return;
+  }
+
+  if (
+    resumo.gastosNormais !==
+    resumo.limiteNormal
+  ) {
+    mensagemAtributosPericias.textContent =
+      "Distribua todos os pontos normais de Perícia.";
+
+    return;
+  }
+
+  if (
+    resumo.bonusNatural !==
+    BONUS_NATURAL_TOTAL
+  ) {
+    mensagemAtributosPericias.textContent =
+      "Distribua os 5 pontos bônus das Perícias Naturais.";
+
+    return;
+  }
+
+  if (
+    !referenciaFichaAtual ||
+    !fichaJaCriada
+  ) {
+    mensagemAtributosPericias.textContent =
+      "Salve as etapas anteriores antes de continuar.";
+
+    return;
+  }
+
+  const periciasParaSalvar = {};
+
+  periciasSistema.forEach(pericia => {
+    const dados =
+      valoresPericias[pericia.id];
+
+    periciasParaSalvar[pericia.id] = {
+      nome: pericia.nome,
+      valorDistribuido:
+        dados.valorDistribuido,
+      bonusNatural:
+        dados.bonusNatural
+    };
+  });
+
+  botaoContinuarAtributosPericias.disabled = true;
+
+  mensagemAtributosPericias.textContent =
+    "Salvando Atributos e Perícias...";
+
+  try {
+    await referenciaFichaAtual.update({
+      atributos: {
+        fisico:
+          atributosPersonagem.fisico,
+
+        cognicao:
+          atributosPersonagem.cognicao,
+
+        presenca:
+          atributosPersonagem.presenca,
+
+        deslocamentoMetros:
+          atributosPersonagem.deslocamentoMetros,
+
+        deslocamentoQuadrados:
+          atributosPersonagem.deslocamentoQuadrados
+      },
+
+      pericias: periciasParaSalvar,
+
+      etapaAtual:
+        Math.max(etapaSalva, 5),
+
+      atualizadoEm:
+        firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    if (
+      auth.currentUser?.uid !==
+      usuario.uid
+    ) return;
+
+    etapaSalva =
+      Math.max(etapaSalva, 5);
+
+    mensagemAtributosPericias.textContent = "";
+
+    abrirEtapaCriacao(
+      "tela-itens-iniciais"
+    );
+
+  } catch (erro) {
+    console.error(
+      "Erro ao salvar Atributos e Perícias:",
+      erro
+    );
+
+    if (
+      auth.currentUser?.uid ===
+      usuario.uid
+    ) {
+      mensagemAtributosPericias.textContent =
+        "Não foi possível salvar os Atributos e Perícias. Tente novamente.";
+    }
+
+  } finally {
+    atualizarEstadoAtributosPericias();
   }
 });
