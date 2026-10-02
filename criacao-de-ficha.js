@@ -54,8 +54,6 @@ const resumoPericiasOcupacao = document.getElementById("resumo-pericias-ocupacao
 const resumoPcOcupacao = document.getElementById("resumo-pc-ocupacao");
 const resumoCoOcupacao = document.getElementById("resumo-co-ocupacao");
 
-const secaoEscolhaPericiasNaturais = document.getElementById("secao-escolha-pericias-naturais");
-const listaEscolhaPericiasNaturais = document.getElementById("lista-escolha-pericias-naturais");
 const contadorPericiasNaturais = document.getElementById("contador-pericias-naturais");
 const regraPericiasNaturais = document.getElementById("regra-pericias-naturais");
 
@@ -580,10 +578,8 @@ function formatarNumeroOcupacao(valor) {
 
 function renderizarResumoOcupacoes() {
   const ocupacoes = obterOcupacoesSelecionadas();
-  const pericias = obterPericiasDisponiveis();
 
   nomesOcupacoesSelecionadas.replaceChildren();
-  resumoPericiasOcupacao.replaceChildren();
 
   if (ocupacoes.length === 0) {
     const nenhuma = document.createElement("span");
@@ -591,11 +587,6 @@ function renderizarResumoOcupacoes() {
     nenhuma.textContent = "Nenhuma ainda";
 
     nomesOcupacoesSelecionadas.appendChild(nenhuma);
-
-    const traco = document.createElement("span");
-    traco.textContent = "—";
-
-    resumoPericiasOcupacao.appendChild(traco);
 
     resumoPcOcupacao.textContent = "—";
     resumoCoOcupacao.textContent = "—";
@@ -610,15 +601,6 @@ function renderizarResumoOcupacoes() {
     nome.textContent = ocupacao.nome;
 
     nomesOcupacoesSelecionadas.appendChild(nome);
-  });
-
-  pericias.forEach(pericia => {
-    const item = document.createElement("span");
-
-    item.className = "pericia-resumo-ocupacao";
-    item.textContent = pericia;
-
-    resumoPericiasOcupacao.appendChild(item);
   });
 
   resumoPcOcupacao.textContent =
@@ -859,25 +841,61 @@ function validarPericiasNaturais() {
 function renderizarEscolhaPericiasNaturais() {
   const periciasDisponiveis = obterPericiasDisponiveis();
 
-  if (periciasDisponiveis.length <= 3) {
-    secaoEscolhaPericiasNaturais.hidden = true;
+  resumoPericiasOcupacao.replaceChildren();
 
-    periciasNaturaisSelecionadas = [
-      ...periciasDisponiveis
-    ];
+  /* Nenhuma Ocupação selecionada */
+
+  if (
+    ocupacoesSelecionadas.length === 0 ||
+    periciasDisponiveis.length === 0
+  ) {
+    periciasNaturaisSelecionadas = [];
+
+    contadorPericiasNaturais.hidden = true;
+    regraPericiasNaturais.hidden = true;
+
+    const traco = document.createElement("span");
+    traco.textContent = "—";
+
+    resumoPericiasOcupacao.appendChild(traco);
 
     return;
   }
 
-  secaoEscolhaPericiasNaturais.hidden = false;
+  /* Até 3 Perícias: todas são automaticamente Naturais */
+
+  if (periciasDisponiveis.length <= 3) {
+    periciasNaturaisSelecionadas = [
+      ...periciasDisponiveis
+    ];
+
+    contadorPericiasNaturais.hidden = true;
+    regraPericiasNaturais.hidden = true;
+
+    periciasDisponiveis.forEach(pericia => {
+      const item = document.createElement("span");
+
+      item.className = "pericia-resumo-ocupacao";
+      item.textContent = pericia;
+
+      resumoPericiasOcupacao.appendChild(item);
+    });
+
+    return;
+  }
+
+  /* Mais de 3 Perícias: jogador escolhe 3 */
 
   periciasNaturaisSelecionadas =
     periciasNaturaisSelecionadas.filter(pericia => {
       return periciasDisponiveis.includes(pericia);
     });
 
+  contadorPericiasNaturais.hidden = false;
   contadorPericiasNaturais.textContent =
     `${periciasNaturaisSelecionadas.length} / 3`;
+
+  regraPericiasNaturais.hidden = false;
 
   const ocupacoesEspeciais =
     obterOcupacoesComAreasObrigatorias();
@@ -973,7 +991,7 @@ function renderizarEscolhaPericiasNaturais() {
     fragmento.appendChild(label);
   });
 
-  listaEscolhaPericiasNaturais.replaceChildren(fragmento);
+  resumoPericiasOcupacao.appendChild(fragmento);
 }
 
 /* Estado geral da etapa */

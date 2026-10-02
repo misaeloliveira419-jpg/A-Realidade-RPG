@@ -462,44 +462,34 @@
   color: rgb(190,190,190);
 }
 
-/* Escolha de Perícias Naturais */
+/* Escolha das Perícias Naturais no resumo */
 
-.secao-escolha-pericias-naturais{
-  padding: 22px;
-  background: black;
-  border: 2px solid white;
-  border-radius: 5px;
-}
-.secao-escolha-pericias-naturais[hidden]{
-  display: none;
-}
-.cabecalho-pericias-naturais{
+.cabecalho-resumo-pericias{
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  gap: 20px;
-  margin-bottom: 18px;
-}
-.cabecalho-pericias-naturais h2{
-  margin: 0 0 8px;
-  font-size: 18px;
-}
-.cabecalho-pericias-naturais p{
-  max-width: none;
-  margin: 0;
-  text-align: left;
-  color: rgb(190,190,190);
+  align-items: center;
+  gap: 12px;
 }
 #contador-pericias-naturais{
   flex-shrink: 0;
+  color: rgb(190,160,225);
+  font-size: 13px;
 }
-.lista-escolha-pericias-naturais{
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
+.regra-pericias-resumo{
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  color: rgb(190,190,190);
+  text-align: left;
+  font-size: 12px;
+}
+#contador-pericias-naturais[hidden],
+.regra-pericias-resumo[hidden]{
+  display: none;
 }
 .opcao-pericia-natural{
   position: relative;
+  display: inline-flex;
   cursor: pointer;
 }
 .opcao-pericia-natural input{
@@ -511,13 +501,12 @@
 .conteudo-pericia-natural{
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  min-height: 42px;
-  padding: 10px 12px;
-  box-sizing: border-box;
-  background: rgb(10,10,10);
+  gap: 2px;
+  padding: 6px 10px;
+  background: rgb(15,15,15);
   border: 1px solid rgb(120,120,120);
   border-radius: 5px;
+  font-size: 13px;
   transition: border-color 0.25s, background 0.25s, box-shadow 0.25s;
 }
 .opcao-pericia-natural:hover .conteudo-pericia-natural{
@@ -530,7 +519,8 @@
 }
 .origem-area-pericia{
   color: rgb(190,160,225);
-  font-size: 11px;
+  font-size: 10px;
+  font-weight: normal;
 }
 
 /* Continuar */
@@ -571,8 +561,7 @@
   .rodape-criacao{
     padding-bottom: 15px;
   }
-  .lista-ocupacoes-criacao,
-  .lista-escolha-pericias-naturais{
+  .lista-ocupacoes-criacao{
     grid-template-columns: 1fr;
   }
   .valores-ocupacao{

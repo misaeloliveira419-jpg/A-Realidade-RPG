@@ -219,11 +219,18 @@
         </div>
 
         <div class="bloco-resumo-ocupacao">
-          <strong>Perícias Naturais:</strong>
+
+          <div class="cabecalho-resumo-pericias">
+            <strong>Perícias Naturais:</strong>
+            <strong id="contador-pericias-naturais" hidden>0 / 3</strong>
+          </div>
+
+          <p id="regra-pericias-naturais" class="regra-pericias-resumo" hidden></p>
 
           <div id="resumo-pericias-ocupacao" class="resumo-pericias-ocupacao">
             <span>—</span>
           </div>
+
         </div>
 
         <div class="valores-ocupacao">
@@ -242,12 +249,7 @@
       <div class="area-pesquisa-ocupacao">
         <label for="pesquisa-ocupacao">Pesquisar Ocupação:</label>
 
-        <input
-          id="pesquisa-ocupacao"
-          type="search"
-          placeholder="Pesquise por nome, descrição ou Perícia..."
-          autocomplete="off"
-        >
+        <input id="pesquisa-ocupacao" type="search" placeholder="Pesquise por nome, descrição ou Perícia..." autocomplete="off">
       </div>
 
       <div class="cabecalho-lista-ocupacoes">
@@ -261,31 +263,12 @@
         <p class="aviso-ocupacoes">Carregando Ocupações...</p>
       </div>
 
-      <!-- Escolha das 3 Perícias Naturais -->
-
-      <section id="secao-escolha-pericias-naturais" class="secao-escolha-pericias-naturais" hidden>
-        <div class="cabecalho-pericias-naturais">
-          <div>
-            <h2>PERÍCIAS NATURAIS</h2>
-            <p id="regra-pericias-naturais">
-              Escolha 3 Perícias Naturais.
-            </p>
-          </div>
-
-          <strong id="contador-pericias-naturais">0 / 3</strong>
-        </div>
-
-        <div id="lista-escolha-pericias-naturais" class="lista-escolha-pericias-naturais"></div>
-      </section>
-
       <p id="mensagem-ocupacao" class="mensagem-criacao" aria-live="polite"></p>
 
       <div class="rodape-criacao">
         <span>Escolha pelo menos uma Ocupação.</span>
 
-        <button id="continuar-ocupacao" type="submit" disabled>
-          Continuar →
-        </button>
+        <button id="continuar-ocupacao" type="submit" disabled>Continuar →</button>
       </div>
 
     </form>
