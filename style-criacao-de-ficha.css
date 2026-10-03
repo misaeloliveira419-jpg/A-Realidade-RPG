@@ -135,6 +135,11 @@
   border-radius: 5px;
   cursor: pointer;
   z-index: 800;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.botao-etapa-anterior:hover{
+  transform: scale(1.1);
+  box-shadow: 0 0 10px rgb(150,0,225);
 }
 .etapa-em-construcao{
   width: calc(100% - 40px);
