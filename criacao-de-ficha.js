@@ -66,44 +66,29 @@ let periciasNaturaisSelecionadas = [];
 
 /* Elementos da tela de Atributos e Perícias */
 
-const formAtributosPericias =
-  document.getElementById("form-atributos-pericias");
+const formAtributosPericias = document.getElementById("form-atributos-pericias");
 
-const contadorAtributos =
-  document.getElementById("contador-atributos");
+const contadorAtributos = document.getElementById("contador-atributos");
 
-const campoFisico =
-  document.getElementById("atributo-fisico");
+const campoFisico = document.getElementById("atributo-fisico");
 
-const campoCognicao =
-  document.getElementById("atributo-cognicao");
+const campoCognicao = document.getElementById("atributo-cognicao");
 
-const campoPresenca =
-  document.getElementById("atributo-presenca");
+const campoPresenca = document.getElementById("atributo-presenca");
 
-const campoDeslocamentoMetros =
-  document.getElementById("deslocamento-metros");
+const campoDeslocamentoMetros = document.getElementById("deslocamento-metros");
 
-const campoDeslocamentoQuadrados =
-  document.getElementById("deslocamento-quadrados");
+const campoDeslocamentoQuadrados = document.getElementById("deslocamento-quadrados");
 
-const listaPericiasCriacao =
-  document.getElementById("lista-pericias-criacao");
+const listaPericiasCriacao = document.getElementById("lista-pericias-criacao");
 
-const contadorPontosPericias =
-  document.getElementById("contador-pontos-pericias");
+const contadorPontosPericias = document.getElementById("contador-pontos-pericias");
 
-const contadorBonusNaturais =
-  document.getElementById("contador-bonus-naturais");
+const contadorBonusNaturais = document.getElementById("contador-bonus-naturais");
 
-const avisoBonusNaturais =
-  document.getElementById("aviso-bonus-naturais");
+const mensagemAtributosPericias = document.getElementById("mensagem-atributos-pericias");
 
-const mensagemAtributosPericias =
-  document.getElementById("mensagem-atributos-pericias");
-
-const botaoContinuarAtributosPericias =
-  document.getElementById("continuar-atributos-pericias");
+const botaoContinuarAtributosPericias = document.getElementById("continuar-atributos-pericias");
 
 /* Estado da etapa 4 */
 
@@ -1583,143 +1568,124 @@ function alterarValorPericia(id, novoValorFinal) {
 
   const natural = ehPericiaNatural(pericia);
 
-  const valorAtualFinal =
-    dadosAtuais.valorDistribuido +
-    dadosAtuais.bonusNatural;
-
-  const maximoFinal = natural
-    ? MAXIMO_PERICIA_NATURAL
-    : MAXIMO_PERICIA_NORMAL;
+  const bonusAtual = natural
+    ? dadosAtuais.bonusNatural
+    : 0;
 
   mensagemAtributosPericias.textContent = "";
 
   if (
     !Number.isInteger(novoValorFinal) ||
     novoValorFinal < 1 ||
-    novoValorFinal > maximoFinal
+    novoValorFinal > (
+      natural
+        ? MAXIMO_PERICIA_NATURAL
+        : MAXIMO_PERICIA_NORMAL
+    )
   ) {
     mensagemAtributosPericias.textContent =
       natural
-        ? "Uma Perícia Natural deve ter valor entre 1 e 14."
+        ? "Uma Perícia Natural deve ter valor final entre 1 e 14."
         : "Uma Perícia deve ter valor entre 1 e 12.";
 
     return false;
   }
 
-  if (novoValorFinal === valorAtualFinal) {
-    return true;
+  /*
+  O número exibido já inclui o bônus Natural.
+  Portanto retiramos o bônus para descobrir
+  qual seria o valor normal distribuído.
+  */
+
+  const novoValorDistribuido =
+    novoValorFinal - bonusAtual;
+
+  if (
+    !Number.isInteger(novoValorDistribuido) ||
+    novoValorDistribuido < 1
+  ) {
+    mensagemAtributosPericias.textContent =
+      "Reduza primeiro o bônus Natural dessa Perícia para diminuir seu valor até esse ponto.";
+
+    return false;
+  }
+
+  if (
+    novoValorDistribuido >
+    MAXIMO_PERICIA_NORMAL
+  ) {
+    mensagemAtributosPericias.textContent =
+      "Os pontos normais podem elevar uma Perícia no máximo até 12.";
+
+    return false;
   }
 
   const candidato = copiarValoresPericias();
-  const dados = candidato[id];
 
-  /* Diminuindo */
+  candidato[id].valorDistribuido =
+    novoValorDistribuido;
 
-  if (novoValorFinal < valorAtualFinal) {
-    let quantidade =
-      valorAtualFinal - novoValorFinal;
-
-    /*
-    Primeiro removemos bônus Natural.
-    Só depois começamos a reduzir o valor normal.
-    */
-
-    const removerBonus =
-      Math.min(quantidade, dados.bonusNatural);
-
-    dados.bonusNatural -= removerBonus;
-    quantidade -= removerBonus;
-
-    if (quantidade > 0) {
-      dados.valorDistribuido -= quantidade;
-    }
-
-    if (dados.valorDistribuido < 1) {
-      return false;
-    }
-
-    const resumoCandidato =
-      obterResumoPontosPericias(candidato);
-
-    if (
-      resumoCandidato.pontosRecuperados >
-      MAXIMO_PONTOS_RECUPERADOS
-    ) {
-      mensagemAtributosPericias.textContent =
-        "Você já recuperou o máximo de 15 pontos diminuindo Perícias.";
-
-      return false;
-    }
-
-    valoresPericias = candidato;
-
-    return true;
-  }
-
-  /* Aumentando */
-
-  const quantidade =
-    novoValorFinal - valorAtualFinal;
-
-  const resumoAtual =
-    obterResumoPontosPericias();
-
-  /* Ainda distribuindo os pontos normais */
+  const resumoCandidato =
+    obterResumoPontosPericias(candidato);
 
   if (
-    resumoAtual.gastosNormais <
-    resumoAtual.limiteNormal
+    resumoCandidato.pontosRecuperados >
+    MAXIMO_PONTOS_RECUPERADOS
   ) {
-    dados.valorDistribuido += quantidade;
-
-    if (
-      dados.valorDistribuido >
-      MAXIMO_PERICIA_NORMAL
-    ) {
-      mensagemAtributosPericias.textContent =
-        "Durante a distribuição normal, uma Perícia pode chegar no máximo a 12.";
-
-      return false;
-    }
-
-    const resumoCandidato =
-      obterResumoPontosPericias(candidato);
-
-    if (
-      resumoCandidato.gastosNormais >
-      resumoCandidato.limiteNormal
-    ) {
-      mensagemAtributosPericias.textContent =
-        "Você não possui pontos normais suficientes para esse aumento.";
-
-      return false;
-    }
-
-    valoresPericias = candidato;
-
-    return true;
-  }
-
-  /* Pontos normais completos: fase de bônus */
-
-  if (!natural) {
     mensagemAtributosPericias.textContent =
-      "Os pontos normais já foram distribuídos. Agora somente as Perícias Naturais podem receber pontos.";
+      "Você já recuperou o máximo de 15 pontos diminuindo Perícias.";
 
     return false;
   }
 
-  dados.bonusNatural += quantidade;
-
   if (
-    dados.bonusNatural >
-    BONUS_NATURAL_POR_PERICIA
+    resumoCandidato.gastosNormais >
+    resumoCandidato.limiteNormal
   ) {
     mensagemAtributosPericias.textContent =
-      "Uma Perícia Natural pode receber no máximo +3 pontos bônus.";
+      "Você não possui pontos normais suficientes para esse aumento.";
 
     return false;
   }
+
+  valoresPericias = candidato;
+
+  return true;
+}
+
+function alterarBonusNatural(id, novoBonus) {
+  const pericia =
+    periciasSistema.find(item => item.id === id);
+
+  const dadosAtuais =
+    valoresPericias[id];
+
+  if (
+    !pericia ||
+    !dadosAtuais ||
+    !ehPericiaNatural(pericia)
+  ) {
+    return false;
+  }
+
+  mensagemAtributosPericias.textContent = "";
+
+  if (
+    !Number.isInteger(novoBonus) ||
+    novoBonus < 0 ||
+    novoBonus > BONUS_NATURAL_POR_PERICIA
+  ) {
+    mensagemAtributosPericias.textContent =
+      "Cada Perícia Natural pode receber entre +0 e +3 pontos bônus.";
+
+    return false;
+  }
+
+  const candidato =
+    copiarValoresPericias();
+
+  candidato[id].bonusNatural =
+    novoBonus;
 
   const resumoCandidato =
     obterResumoPontosPericias(candidato);
@@ -1734,13 +1700,16 @@ function alterarValorPericia(id, novoValorFinal) {
     return false;
   }
 
+  const valorFinal =
+    candidato[id].valorDistribuido +
+    candidato[id].bonusNatural;
+
   if (
-    dados.valorDistribuido +
-    dados.bonusNatural >
+    valorFinal >
     MAXIMO_PERICIA_NATURAL
   ) {
     mensagemAtributosPericias.textContent =
-      "Uma Perícia Natural pode chegar no máximo a 14.";
+      "O valor final de uma Perícia Natural não pode ultrapassar 14.";
 
     return false;
   }
@@ -1753,38 +1722,14 @@ function alterarValorPericia(id, novoValorFinal) {
 /* Contadores das Perícias */
 
 function renderizarContadoresPericias() {
-  const resumo = obterResumoPontosPericias();
+  const resumo =
+    obterResumoPontosPericias();
 
   contadorPontosPericias.textContent =
     `${resumo.gastosNormais} / ${resumo.limiteNormal}`;
 
   contadorBonusNaturais.textContent =
     `Perícias Naturais: ${resumo.bonusNatural} / 5`;
-
-  const normalCompleto =
-    resumo.gastosNormais === resumo.limiteNormal;
-
-  avisoBonusNaturais.classList.toggle(
-    "liberado",
-    normalCompleto
-  );
-
-  if (!normalCompleto && resumo.bonusNatural > 0) {
-    avisoBonusNaturais.textContent =
-      "Os bônus Naturais já escolhidos foram mantidos. Complete novamente os pontos normais antes de distribuir novos bônus.";
-
-  } else if (!normalCompleto) {
-    avisoBonusNaturais.textContent =
-      "Primeiro distribua todos os pontos normais de Perícia. Depois, distribua os 5 pontos bônus entre suas Perícias Naturais.";
-
-  } else if (resumo.bonusNatural < 5) {
-    avisoBonusNaturais.textContent =
-      "Pontos normais completos. Agora distribua os 5 pontos bônus somente entre suas Perícias Naturais.";
-
-  } else {
-    avisoBonusNaturais.textContent =
-      "Todos os pontos de Perícia foram distribuídos.";
-  }
 }
 
 /* Renderização das Perícias */
@@ -1811,11 +1756,86 @@ function criarLinhaPericia(pericia) {
     linha.classList.add("pericia-natural");
   }
 
-  const nome = document.createElement("span");
-  nome.className = "nome-pericia-criacao";
-  nome.textContent = pericia.nome;
+  const nome =
+    document.createElement("span");
+
+  nome.className =
+    "nome-pericia-criacao";
+
+  nome.textContent =
+    pericia.nome;
+
+  /* Grupo dos valores à direita */
+
+  const grupoValores =
+    document.createElement("div");
+
+  grupoValores.className =
+    "grupo-valores-pericia";
+
+  /* Bônus da Perícia Natural */
+
+  if (natural) {
+    const controleBonus =
+      document.createElement("label");
+
+    controleBonus.className =
+      "controle-bonus-natural";
+
+    controleBonus.title =
+      "Pontos bônus desta Perícia Natural";
+
+    const sinal =
+      document.createElement("span");
+
+    sinal.textContent = "+";
+
+    const inputBonus =
+      document.createElement("input");
+
+    inputBonus.type = "number";
+    inputBonus.min = "0";
+    inputBonus.max = "3";
+    inputBonus.step = "1";
+    inputBonus.value =
+      dados.bonusNatural;
+
+    inputBonus.setAttribute(
+      "aria-label",
+      `Bônus Natural de ${pericia.nome}`
+    );
+
+    inputBonus.addEventListener("change", () => {
+      const novoBonus =
+        Number(inputBonus.value);
+
+      const alterou =
+        alterarBonusNatural(
+          pericia.id,
+          novoBonus
+        );
+
+      if (!alterou) {
+        inputBonus.value =
+          valoresPericias[pericia.id]
+            .bonusNatural;
+      }
+
+      renderizarEtapaAtributosPericias();
+    });
+
+    controleBonus.append(
+      sinal,
+      inputBonus
+    );
+
+    grupoValores.appendChild(
+      controleBonus
+    );
+  }
 
   const valores = document.createElement("div");
+
   valores.className = "valores-pericia";
 
   /* Normal */
@@ -1827,10 +1847,9 @@ function criarLinhaPericia(pericia) {
 
   inputNormal.type = "number";
   inputNormal.step = "1";
-  inputNormal.min = "1";
+  inputNormal.min = natural ? String(1 + dados.bonusNatural) : "1";
   inputNormal.max = natural ? "14" : "12";
   inputNormal.value = valorNormal;
-
   inputNormal.className = "input-normal-pericia";
   inputNormal.title = "Sucesso Normal";
 
@@ -1895,9 +1914,11 @@ function criarLinhaPericia(pericia) {
     caixaExtremo
   );
 
+  grupoValores.appendChild(valores);
+
   linha.append(
     nome,
-    valores
+    grupoValores
   );
 
   return linha;

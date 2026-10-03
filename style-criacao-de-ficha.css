@@ -743,14 +743,6 @@
   text-shadow: 0 0 8px rgb(150,0,225);
   font-size: 13px;
 }
-.aviso-bonus-naturais{
-  max-width: 480px;
-  color: rgb(180,180,180);
-  font-size: 11px;
-}
-.aviso-bonus-naturais.liberado{
-  color: rgb(190,160,225);
-}
 
 /* Lista de Perícias */
 
@@ -760,7 +752,6 @@
   column-gap: 18px;
   row-gap: 3px;
 }
-
 .linha-pericia-criacao{
   display: flex;
   align-items: center;
@@ -776,6 +767,48 @@
   font-size: 12px;
   font-weight: bold;
   overflow-wrap: anywhere;
+}
+.grupo-valores-pericia{
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.controle-bonus-natural{
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  width: 34px;
+  height: 26px;
+  box-sizing: border-box;
+  background: rgba(150,0,225,0.10);
+  color: rgb(190,100,235);
+  border: 1px solid rgb(150,0,225);
+  border-radius: 5px;
+  box-shadow: 0 0 6px rgba(150,0,225,0.45);
+  font-size: 11px;
+  font-weight: bold;
+}
+.controle-bonus-natural input{
+  width: 14px;
+  padding: 0;
+  appearance: textfield;
+  -moz-appearance: textfield;
+  background: transparent;
+  color: rgb(190,100,235);
+  border: none;
+  outline: none;
+  text-align: center;
+  font-size: 11px;
+  font-weight: bold;
+}
+.controle-bonus-natural input::-webkit-inner-spin-button,
+.controle-bonus-natural input::-webkit-outer-spin-button{
+  margin: 0;
+  appearance: none;
+  -webkit-appearance: none;
 }
 
 /* Perícia Natural */
