@@ -428,18 +428,12 @@
 
       </div>
 
-      <p
-        id="mensagem-atributos-pericias"
-        class="mensagem-criacao"
-        aria-live="polite"
-      ></p>
+      <p id="mensagem-atributos-pericias" class="mensagem-criacao" aria-live="polite"></p>
 
       <div class="rodape-criacao">
         <span>Distribua todos os pontos para continuar.</span>
 
-        <button id="continuar-atributos-pericias" type="submit" disabled>
-          Continuar →
-        </button>
+        <button id="continuar-atributos-pericias" type="submit" disabled>Continuar →</button>
       </div>
 
     </form>
@@ -449,10 +443,73 @@
 
   <section id="tela-itens-iniciais" class="tela-site etapa-criacao">
     <button class="botao-etapa-anterior" data-destino="tela-atributos-pericias" type="button">← Voltar</button>
-    <div class="etapa-em-construcao">
+
+    <form id="form-itens-iniciais" class="form-criacao form-itens-iniciais">
+      <div class="cabecalho-criacao">
         <span>ETAPA 5 DE 5</span>
         <h1>ITENS INICIAIS DO PERSONAGEM</h1>
-    </div>
+      </div>
+
+      <section class="resumo-itens-iniciais">
+        <div class="linha-ocupacoes-itens">
+          <strong>OCUPAÇÃO:</strong>
+          <span id="ocupacoes-itens-iniciais">—</span>
+        </div>
+
+        <div class="linha-financeira-itens">
+          <div>
+            <span>PC RESTANTE</span>
+            <strong id="pc-restante-itens">—</strong>
+          </div>
+
+          <div>
+            <span>CRÉDITO</span>
+            <strong id="credito-itens">—</strong>
+          </div>
+        </div>
+      </section>
+
+      <div class="grade-itens-iniciais">
+        <section class="painel-itens-disponiveis">
+          <h2>ITENS DISPONÍVEIS</h2>
+
+          <input id="pesquisa-itens" class="pesquisa-itens" type="search" placeholder="Pesquisar por nome, descrição, custo, Peso, Compatibilidade...">
+
+          <div class="grupo-lista-itens">
+            <h3>ITENS COMUNS</h3>
+            <div id="lista-itens-comuns" class="lista-itens-disponiveis">
+              <p class="aviso-itens">Carregando...</p>
+            </div>
+          </div>
+
+          <div class="grupo-lista-itens">
+            <h3>ITENS ESPECIAIS</h3>
+            <div id="lista-itens-especiais" class="lista-itens-disponiveis">
+              <p class="aviso-itens">Carregando...</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="painel-inventario-inicial">
+          <h2>INVENTÁRIO</h2>
+          <strong id="contador-carga-inventario">0 / 0</strong>
+          <p id="aviso-carga-inventario" class="aviso-carga-inventario"></p>
+
+          <div id="lista-inventario-inicial" class="lista-inventario-inicial">
+            <p class="inventario-vazio">Nenhum Item selecionado.</p>
+          </div>
+
+          <p class="aviso-item-personalizado">Itens personalizados poderão ser adicionados posteriormente na ficha pronta.</p>
+        </section>
+      </div>
+
+      <p id="mensagem-itens-iniciais" class="mensagem-criacao" aria-live="polite"></p>
+
+      <div class="rodape-criacao">
+        <span>Você pode finalizar a ficha mesmo deixando PC sem gastar.</span>
+        <button id="finalizar-ficha" type="submit" disabled>Finalizar Ficha →</button>
+      </div>
+    </form>
   </section>
 
   <!-- Scripts -->

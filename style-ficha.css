@@ -1,0 +1,5 @@
+/* Tela da ficha */
+
+.tela-ficha-vazia{
+  min-height: calc(100vh - 12px);
+}

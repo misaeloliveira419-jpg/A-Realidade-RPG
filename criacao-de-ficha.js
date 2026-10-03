@@ -405,6 +405,11 @@ async function carregarRascunho(id, usuario, versao) {
 
     const ficha = documento.data();
 
+    if (ficha.estado === "pronta") {
+      window.location.replace(`index-ficha.html?ficha=${encodeURIComponent(id)}`);
+      return;
+    }
+
     referenciaFichaAtual = referencia;
     fichaJaCriada = true;
     etapaSalva = ficha.etapaAtual || 1;
@@ -533,6 +538,12 @@ async function carregarRascunho(id, usuario, versao) {
     renderizarEtapaAtributosPericias();
 
     if (etapaSalva >= 5) {
+      await promessaItensIniciaisSistema;
+
+      if (versao !== versaoAutenticacao || auth.currentUser?.uid !== usuario.uid) return;
+
+      restaurarInventarioInicial(ficha.inventario);
+      renderizarEtapaItensIniciais();
       abrirEtapaCriacao("tela-itens-iniciais");
 
     } else if (etapaSalva >= 4) {
@@ -595,6 +606,15 @@ auth.onAuthStateChanged(usuario => {
 
     inicializarValoresPericias();
 
+    /* Limpar Itens Iniciais */
+
+    inventarioInicial = [];
+    sequenciaInstanciaItem = 0;
+    finalizandoFicha = false;
+    campoPesquisaItens.value = "";
+    mensagemItensIniciais.textContent = "";
+    renderizarEtapaItensIniciais();
+
     /* Limpar mensagens */
 
     mensagemPerfil.textContent = "";
@@ -619,6 +639,7 @@ auth.onAuthStateChanged(usuario => {
     botaoContinuarPerfil.disabled = true;
     botaoContinuarOcupacao.disabled = true;
     botaoContinuarAtributosPericias.disabled = true;
+    botaoFinalizarFicha.disabled = true;
     return;
   }
 
@@ -2079,9 +2100,12 @@ formAtributosPericias.addEventListener("submit", async evento => {
 
     mensagemAtributosPericias.textContent = "";
 
-    abrirEtapaCriacao(
-      "tela-itens-iniciais"
-    );
+    await promessaItensIniciaisSistema;
+
+    if (auth.currentUser?.uid !== usuario.uid) return;
+
+    renderizarEtapaItensIniciais();
+    abrirEtapaCriacao("tela-itens-iniciais");
 
   } catch (erro) {
     console.error(
@@ -2099,5 +2123,588 @@ formAtributosPericias.addEventListener("submit", async evento => {
 
   } finally {
     atualizarEstadoAtributosPericias();
+  }
+});
+
+/* Etapa 5: Itens Iniciais */
+
+const formItensIniciais = document.getElementById("form-itens-iniciais");
+const ocupacoesItensIniciais = document.getElementById("ocupacoes-itens-iniciais");
+const pcRestanteItens = document.getElementById("pc-restante-itens");
+const creditoItens = document.getElementById("credito-itens");
+const campoPesquisaItens = document.getElementById("pesquisa-itens");
+const listaItensComuns = document.getElementById("lista-itens-comuns");
+const listaItensEspeciais = document.getElementById("lista-itens-especiais");
+const listaInventarioInicial = document.getElementById("lista-inventario-inicial");
+const contadorCargaInventario = document.getElementById("contador-carga-inventario");
+const avisoCargaInventario = document.getElementById("aviso-carga-inventario");
+const mensagemItensIniciais = document.getElementById("mensagem-itens-iniciais");
+const botaoFinalizarFicha = document.getElementById("finalizar-ficha");
+
+let itensIniciaisSistema = [];
+let inventarioInicial = [];
+let sequenciaInstanciaItem = 0;
+let finalizandoFicha = false;
+let filaSalvamentoInventario = Promise.resolve();
+
+function criarIdItem(nome, categoria) {
+  return `${categoria}-${normalizarBuscaOcupacao(nome).replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"")}`;
+}
+
+function extrairNumeroItem(texto) {
+  const resultado = String(texto || "").match(/-?\d+(?:[.,]\d+)?/);
+  return resultado ? Number(resultado[0].replace(",",".")) : NaN;
+}
+
+function formatarNumeroItem(valor) {
+  return new Intl.NumberFormat("pt-BR",{minimumFractionDigits:0,maximumFractionDigits:2}).format(valor);
+}
+
+function formatarCredito(valor) {
+  return new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL",minimumFractionDigits:2,maximumFractionDigits:2}).format(valor);
+}
+
+function encontrarTabelaItens(documento, titulo) {
+  const alvo = normalizarBuscaOcupacao(titulo).replace(/:$/,"");
+  const cabecalho = [...documento.querySelectorAll("h3")].find(elemento => normalizarBuscaOcupacao(elemento.textContent).replace(/:$/,"") === alvo);
+  if (!cabecalho) return null;
+
+  let elemento = cabecalho.nextElementSibling;
+
+  while (elemento && elemento.tagName !== "TABLE") {
+    elemento = elemento.nextElementSibling;
+  }
+
+  return elemento?.tagName === "TABLE" ? elemento : null;
+}
+
+function extrairItensTabela(tabela, categoria) {
+  if (!tabela) return [];
+
+  return [...tabela.querySelectorAll("tbody tr")].map(linha => {
+    const celulas = [...linha.querySelectorAll("td")];
+    if (celulas.length < 5) return null;
+
+    const nome = celulas[0].textContent.trim();
+    const descricao = textoElementoComQuebras(celulas[1]);
+    const peso = extrairNumeroItem(celulas[2].textContent);
+    const custo = extrairNumeroItem(celulas[3].textContent);
+    const textoCompatibilidade = celulas[4].textContent.trim();
+
+    if (!nome || !Number.isFinite(peso) || !Number.isFinite(custo)) return null;
+
+    const compatibilidades = textoCompatibilidade === "-"
+      ? []
+      : textoCompatibilidade.split(",").map(valor => valor.trim()).filter(Boolean);
+
+    return {
+      id: criarIdItem(nome,categoria),
+      nome: nome,
+      descricao: descricao,
+      peso: peso,
+      custo: custo,
+      compatibilidades: compatibilidades,
+      categoria: categoria
+    };
+  }).filter(Boolean);
+}
+
+async function carregarItensIniciaisDoSistema() {
+  try {
+    const resposta = await fetch("index-sistema.html");
+    if (!resposta.ok) throw new Error("Não foi possível abrir index-sistema.html.");
+
+    const html = await resposta.text();
+    const documento = new DOMParser().parseFromString(html,"text/html");
+
+    const tabelaComuns = encontrarTabelaItens(documento,"Itens Comuns");
+    const tabelaEspeciais = encontrarTabelaItens(documento,"Itens Especiais");
+
+    itensIniciaisSistema = [
+      ...extrairItensTabela(tabelaComuns,"comum"),
+      ...extrairItensTabela(tabelaEspeciais,"especial")
+    ];
+
+    if (itensIniciaisSistema.length === 0) throw new Error("Nenhum Item Inicial foi encontrado.");
+
+    renderizarEtapaItensIniciais();
+    return true;
+
+  } catch (erro) {
+    console.error("Erro ao carregar Itens Iniciais:",erro);
+    listaItensComuns.innerHTML = `<p class="aviso-itens">Não foi possível carregar os Itens.</p>`;
+    listaItensEspeciais.innerHTML = `<p class="aviso-itens">Não foi possível carregar os Itens.</p>`;
+    botaoFinalizarFicha.disabled = true;
+    return false;
+  }
+}
+
+const promessaItensIniciaisSistema = carregarItensIniciaisDoSistema();
+
+/* Cálculos */
+
+function obterPcInicial() {
+  return Number(calcularMediaOcupacoes("pc") || 0);
+}
+
+function obterCoPersonagem() {
+  return Number(calcularMediaOcupacoes("co") || 0);
+}
+
+function itemCompativelComOcupacao(item) {
+  const ocupacoes = new Set(obterOcupacoesSelecionadas().map(ocupacao => normalizarBuscaOcupacao(ocupacao.nome)));
+
+  return item.compatibilidades.some(compatibilidade => {
+    return ocupacoes.has(normalizarBuscaOcupacao(compatibilidade));
+  });
+}
+
+function calcularInventario(inventario = inventarioInicial) {
+  let descontosRestantes = 2;
+  let gasto = 0;
+  let peso = 0;
+
+  const itens = inventario.map(item => {
+    const compativel = itemCompativelComOcupacao(item);
+    let descontoOcupacao = 0;
+
+    if (compativel && descontosRestantes > 0 && item.custo > 0) {
+      descontoOcupacao = 1;
+      descontosRestantes--;
+    }
+
+    const custoFinal = Math.max(0,item.custo - descontoOcupacao);
+
+    gasto += custoFinal;
+    peso += item.peso;
+
+    return {
+      ...item,
+      compativel: compativel,
+      descontoOcupacao: descontoOcupacao,
+      custoFinal: custoFinal
+    };
+  });
+
+  return {
+    itens: itens,
+    gasto: Math.round(gasto * 100) / 100,
+    peso: Math.round(peso * 100) / 100,
+    descontosUsados: 2 - descontosRestantes
+  };
+}
+
+function obterCapacidadeCarga() {
+  const atletismo = obterValorFinalPericia(criarIdPericia("Atletismo"));
+  return 5 + atributosPersonagem.fisico + Math.floor(atletismo / 4);
+}
+
+function obterResumoFinanceiroItens() {
+  const calculo = calcularInventario();
+  const pcInicial = obterPcInicial();
+  const pcRestante = Math.round((pcInicial - calculo.gasto) * 100) / 100;
+  const co = obterCoPersonagem();
+  const credito = co * (0.25 + pcRestante);
+
+  return {
+    calculo: calculo,
+    pcInicial: pcInicial,
+    pcRestante: pcRestante,
+    co: co,
+    credito: credito,
+    capacidade: obterCapacidadeCarga()
+  };
+}
+
+function quantidadeItemInventario(id) {
+  return inventarioInicial.filter(item => item.id === id).length;
+}
+
+/* Resumo superior */
+
+function renderizarResumoItensIniciais() {
+  const ocupacoes = obterOcupacoesSelecionadas();
+  const resumo = obterResumoFinanceiroItens();
+
+  ocupacoesItensIniciais.textContent = ocupacoes.length
+    ? ocupacoes.map(ocupacao => ocupacao.nome).join(" • ")
+    : "—";
+
+  pcRestanteItens.textContent = `${formatarNumeroItem(resumo.pcRestante)} / ${formatarNumeroItem(resumo.pcInicial)} PC`;
+  creditoItens.textContent = formatarCredito(resumo.credito);
+  contadorCargaInventario.textContent = `${formatarNumeroItem(resumo.calculo.peso)} / ${formatarNumeroItem(resumo.capacidade)}`;
+
+  avisoCargaInventario.classList.remove("excesso-grave");
+
+  if (resumo.calculo.peso > resumo.capacidade * 2) {
+    avisoCargaInventario.textContent = "Carga acima do dobro da capacidade: -1/3 e -1/2 do Deslocamento.";
+    avisoCargaInventario.classList.add("excesso-grave");
+  } else if (resumo.calculo.peso > resumo.capacidade) {
+    avisoCargaInventario.textContent = "Capacidade de Carga ultrapassada: -1/3 do Deslocamento.";
+  } else {
+    avisoCargaInventario.textContent = "";
+  }
+}
+
+/* Cards dos Itens disponíveis */
+
+function obterCustoAoAdicionarItem(item) {
+  const atual = calcularInventario();
+  const candidato = calcularInventario([...inventarioInicial,item]);
+  return Math.round((candidato.gasto - atual.gasto) * 100) / 100;
+}
+
+function criarCardItemDisponivel(item) {
+  const card = document.createElement("article");
+  card.className = "card-item-disponivel";
+
+  const compativel = itemCompativelComOcupacao(item);
+  if (compativel) card.classList.add("compativel");
+
+  const conteudo = document.createElement("div");
+  conteudo.className = "conteudo-item-disponivel";
+
+  const nome = document.createElement("strong");
+  nome.className = "nome-item-disponivel";
+  nome.textContent = item.nome;
+
+  const descricao = document.createElement("p");
+  descricao.className = "descricao-item-disponivel";
+  descricao.textContent = item.descricao;
+  descricao.title = item.descricao;
+
+  const dados = document.createElement("div");
+  dados.className = "dados-item-disponivel";
+
+  const peso = document.createElement("span");
+  peso.textContent = `Peso: ${formatarNumeroItem(item.peso)}`;
+
+  const custoAoAdicionar = obterCustoAoAdicionarItem(item);
+  const custo = document.createElement("span");
+
+  if (custoAoAdicionar < item.custo) {
+    custo.className = "custo-item-com-desconto";
+    custo.textContent = `Custo: ${formatarNumeroItem(item.custo)} → ${formatarNumeroItem(custoAoAdicionar)} PC`;
+  } else {
+    custo.textContent = `Custo: ${formatarNumeroItem(item.custo)} PC`;
+  }
+
+  dados.append(peso,custo);
+  conteudo.append(nome,descricao,dados);
+
+  if (item.compatibilidades.length > 0) {
+    const compatibilidade = document.createElement("span");
+    compatibilidade.className = "compatibilidade-item";
+    compatibilidade.textContent = `Compat.: ${item.compatibilidades.join(", ")}`;
+    compatibilidade.title = item.compatibilidades.join(", ");
+    conteudo.appendChild(compatibilidade);
+  }
+
+  const botao = document.createElement("button");
+  botao.type = "button";
+  botao.className = "botao-adicionar-item";
+  botao.textContent = "+";
+
+  const candidato = calcularInventario([...inventarioInicial,item]);
+  const limiteQuantidade = quantidadeItemInventario(item.id) >= 2;
+  const semPc = candidato.gasto > obterPcInicial() + 0.000001;
+
+  botao.disabled = finalizandoFicha || limiteQuantidade || semPc;
+  botao.title = limiteQuantidade
+    ? "Você já possui 2 unidades deste Item."
+    : semPc
+      ? "PC insuficiente."
+      : "Adicionar ao Inventário";
+
+  botao.addEventListener("click",() => adicionarItemInicial(item));
+  card.append(conteudo,botao);
+
+  return card;
+}
+
+function itemCorrespondePesquisa(item,pesquisa) {
+  if (!pesquisa) return true;
+
+  const texto = normalizarBuscaOcupacao([
+    item.nome,
+    item.descricao,
+    item.categoria === "comum" ? "Item Comum" : "Item Especial",
+    `Peso ${formatarNumeroItem(item.peso)}`,
+    `${formatarNumeroItem(item.custo)} PC`,
+    ...item.compatibilidades
+  ].join(" "));
+
+  return texto.includes(pesquisa);
+}
+
+function renderizarListaCategoriaItens(categoria,destino) {
+  const pesquisa = normalizarBuscaOcupacao(campoPesquisaItens.value);
+  const itens = itensIniciaisSistema.filter(item => item.categoria === categoria && itemCorrespondePesquisa(item,pesquisa));
+
+  if (itens.length === 0) {
+    destino.innerHTML = `<p class="aviso-itens">Nenhum Item encontrado.</p>`;
+    return;
+  }
+
+  const fragmento = document.createDocumentFragment();
+  itens.forEach(item => fragmento.appendChild(criarCardItemDisponivel(item)));
+  destino.replaceChildren(fragmento);
+}
+
+function renderizarListasItensDisponiveis() {
+  if (itensIniciaisSistema.length === 0) return;
+  renderizarListaCategoriaItens("comum",listaItensComuns);
+  renderizarListaCategoriaItens("especial",listaItensEspeciais);
+}
+
+/* Inventário */
+
+function criarCardItemInventario(item) {
+  const card = document.createElement("article");
+  card.className = "card-item-inventario";
+  if (item.descontoOcupacao > 0) card.classList.add("com-desconto");
+
+  const conteudo = document.createElement("div");
+
+  const nome = document.createElement("strong");
+  nome.className = "nome-item-inventario";
+  nome.textContent = item.nome;
+
+  const dados = document.createElement("div");
+  dados.className = "dados-item-inventario";
+
+  const peso = document.createElement("span");
+  peso.textContent = `Peso: ${formatarNumeroItem(item.peso)}`;
+
+  const custo = document.createElement("span");
+  custo.textContent = `Custo: ${formatarNumeroItem(item.custoFinal)} PC`;
+
+  dados.append(peso,custo);
+  conteudo.append(nome,dados);
+
+  if (item.descontoOcupacao > 0) {
+    const desconto = document.createElement("span");
+    desconto.className = "desconto-item-inventario";
+    desconto.textContent = "Compatibilidade de Ocupação: -1 PC";
+    conteudo.appendChild(desconto);
+  }
+
+  const remover = document.createElement("button");
+  remover.type = "button";
+  remover.className = "botao-remover-item";
+  remover.textContent = "×";
+  remover.title = "Remover Item";
+  remover.disabled = finalizandoFicha;
+  remover.addEventListener("click",() => removerItemInicial(item.instanciaId));
+
+  card.append(conteudo,remover);
+  return card;
+}
+
+function renderizarInventarioInicial() {
+  const calculo = calcularInventario();
+
+  if (calculo.itens.length === 0) {
+    listaInventarioInicial.innerHTML = `<p class="inventario-vazio">Nenhum Item selecionado.</p>`;
+    return;
+  }
+
+  const fragmento = document.createDocumentFragment();
+  calculo.itens.forEach(item => fragmento.appendChild(criarCardItemInventario(item)));
+  listaInventarioInicial.replaceChildren(fragmento);
+}
+
+function adicionarItemInicial(item) {
+  if (finalizandoFicha || quantidadeItemInventario(item.id) >= 2) return;
+
+  const candidato = calcularInventario([...inventarioInicial,item]);
+
+  if (candidato.gasto > obterPcInicial() + 0.000001) {
+    mensagemItensIniciais.textContent = "Você não possui PC suficiente para comprar este Item.";
+    return;
+  }
+
+  inventarioInicial.push({
+    ...item,
+    compatibilidades: [...item.compatibilidades],
+    instanciaId: ++sequenciaInstanciaItem
+  });
+
+  mensagemItensIniciais.textContent = "";
+  renderizarEtapaItensIniciais();
+  salvarRascunhoItensIniciais();
+}
+
+function removerItemInicial(instanciaId) {
+  if (finalizandoFicha) return;
+
+  inventarioInicial = inventarioInicial.filter(item => item.instanciaId !== instanciaId);
+  mensagemItensIniciais.textContent = "";
+  renderizarEtapaItensIniciais();
+  salvarRascunhoItensIniciais();
+}
+
+/* Salvamento automático da etapa */
+
+function serializarInventarioBase() {
+  return inventarioInicial.map(item => ({
+    id: item.id,
+    nome: item.nome,
+    descricao: item.descricao,
+    peso: item.peso,
+    custo: item.custo,
+    compatibilidades: [...item.compatibilidades],
+    categoria: item.categoria,
+    personalizado: false
+  }));
+}
+
+function salvarRascunhoItensIniciais() {
+  const usuario = auth.currentUser;
+  const referencia = referenciaFichaAtual;
+
+  if (!usuario || !referencia || !fichaJaCriada) return;
+
+  const resumo = obterResumoFinanceiroItens();
+  const inventario = serializarInventarioBase();
+
+  filaSalvamentoInventario = filaSalvamentoInventario.catch(() => {}).then(async () => {
+    if (auth.currentUser?.uid !== usuario.uid || referenciaFichaAtual?.id !== referencia.id) return;
+
+    await referencia.update({
+      inventario: inventario,
+      pcInicial: resumo.pcInicial,
+      pcRestante: resumo.pcRestante,
+      coeficienteCredito: resumo.co,
+      credito: resumo.credito,
+      capacidadeCarga: resumo.capacidade,
+      pesoInventario: resumo.calculo.peso,
+      etapaAtual: Math.max(etapaSalva,5),
+      atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+    });
+  }).catch(erro => {
+    console.error("Erro ao salvar Inventário:",erro);
+    mensagemItensIniciais.textContent = "Não foi possível salvar automaticamente o Inventário.";
+  });
+}
+
+function restaurarInventarioInicial(itensSalvos) {
+  inventarioInicial = [];
+  sequenciaInstanciaItem = 0;
+
+  if (!Array.isArray(itensSalvos)) return;
+
+  itensSalvos.forEach(item => {
+    const custo = Number(item.custoBase ?? item.custo);
+    const peso = Number(item.peso);
+
+    if (!item.nome || !Number.isFinite(custo) || !Number.isFinite(peso)) return;
+    if (inventarioInicial.filter(atual => atual.id === item.id).length >= 2) return;
+
+    inventarioInicial.push({
+      id: item.id || criarIdItem(item.nome,item.categoria || "comum"),
+      nome: item.nome,
+      descricao: item.descricao || "",
+      peso: peso,
+      custo: custo,
+      compatibilidades: Array.isArray(item.compatibilidades) ? [...item.compatibilidades] : [],
+      categoria: item.categoria === "especial" ? "especial" : "comum",
+      instanciaId: ++sequenciaInstanciaItem
+    });
+  });
+}
+
+/* Estado geral */
+
+function atualizarEstadoItensIniciais() {
+  const resumo = obterResumoFinanceiroItens();
+
+  botaoFinalizarFicha.disabled = !(
+    auth.currentUser &&
+    referenciaFichaAtual &&
+    fichaJaCriada &&
+    itensIniciaisSistema.length > 0 &&
+    resumo.pcRestante >= -0.000001 &&
+    !finalizandoFicha
+  );
+}
+
+function renderizarEtapaItensIniciais() {
+  renderizarResumoItensIniciais();
+  renderizarListasItensDisponiveis();
+  renderizarInventarioInicial();
+  atualizarEstadoItensIniciais();
+}
+
+campoPesquisaItens.addEventListener("input",renderizarListasItensDisponiveis);
+
+/* Finalização */
+
+formItensIniciais.addEventListener("submit",async evento => {
+  evento.preventDefault();
+
+  const usuario = auth.currentUser;
+  if (!usuario) {
+    mensagemItensIniciais.textContent = "Entre em uma conta para finalizar a ficha.";
+    return;
+  }
+
+  if (!referenciaFichaAtual || !fichaJaCriada) {
+    mensagemItensIniciais.textContent = "A ficha ainda não foi salva corretamente.";
+    return;
+  }
+
+  const resumo = obterResumoFinanceiroItens();
+
+  if (resumo.pcRestante < -0.000001) {
+    mensagemItensIniciais.textContent = "Remova Itens até que o PC restante seja pelo menos 0.";
+    return;
+  }
+
+  finalizandoFicha = true;
+  mensagemItensIniciais.textContent = "Finalizando ficha...";
+  renderizarEtapaItensIniciais();
+
+  try {
+    await filaSalvamentoInventario.catch(() => {});
+
+    const resumoFinal = obterResumoFinanceiroItens();
+
+    const inventarioFinal = resumoFinal.calculo.itens.map(item => ({
+      id: item.id,
+      nome: item.nome,
+      descricao: item.descricao,
+      peso: item.peso,
+      custoBase: item.custo,
+      custoFinal: item.custoFinal,
+      descontoOcupacao: item.descontoOcupacao,
+      compatibilidades: [...item.compatibilidades],
+      categoria: item.categoria,
+      personalizado: false
+    }));
+
+    await referenciaFichaAtual.update({
+      estado: "pronta",
+      etapaAtual: 5,
+      inventario: inventarioFinal,
+      pcInicial: resumoFinal.pcInicial,
+      pcRestante: resumoFinal.pcRestante,
+      coeficienteCredito: resumoFinal.co,
+      credito: resumoFinal.credito,
+      capacidadeCarga: resumoFinal.capacidade,
+      pesoInventario: resumoFinal.calculo.peso,
+      finalizadoEm: firebase.firestore.FieldValue.serverTimestamp(),
+      atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    if (auth.currentUser?.uid !== usuario.uid) return;
+
+    window.location.href = `index-ficha.html?ficha=${encodeURIComponent(referenciaFichaAtual.id)}`;
+
+  } catch (erro) {
+    console.error("Erro ao finalizar ficha:",erro);
+    mensagemItensIniciais.textContent = "Não foi possível finalizar a ficha. Tente novamente.";
+    finalizandoFicha = false;
+    renderizarEtapaItensIniciais();
   }
 });

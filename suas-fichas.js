@@ -180,14 +180,15 @@ function criarCardFicha(ficha) {
   base.append(nome, seta);
   card.append(topo, base);
 
-  card.addEventListener("click", () => {
+  card.addEventListener("click",() => {
     if (ficha.estado === "rascunho") {
-        window.location.href = "index-criacao-de-ficha.html?ficha=" +
-        encodeURIComponent(ficha.id);
-        return;
+      window.location.href = "index-criacao-de-ficha.html?ficha=" + encodeURIComponent(ficha.id);
+      return;
     }
 
-    alert("A tela de visualização de fichas concluídas será desenvolvida posteriormente.");
+    if (ficha.estado === "pronta") {
+      window.location.href = "index-ficha.html?ficha=" + encodeURIComponent(ficha.id);
+    }
   });
 
   return card;

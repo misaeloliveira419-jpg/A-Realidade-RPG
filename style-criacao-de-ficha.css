@@ -938,6 +938,315 @@ no centro vertical da caixa Normal: 28px de 56px.
   cursor: default;
 }
 
+/* Etapa 5: Itens Iniciais */
+
+.form-itens-iniciais{
+  max-width: 1180px;
+  gap: 12px;
+}
+.form-itens-iniciais .cabecalho-criacao h1{
+  margin: 8px 0 4px;
+  font-size: 22px;
+}
+
+/* Resumo superior */
+
+.resumo-itens-iniciais{
+  padding: 10px 14px;
+  background: black;
+  border: 2px solid white;
+  border-radius: 5px;
+}
+.linha-ocupacoes-itens{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid rgb(80,80,80);
+  font-size: 12px;
+}
+#ocupacoes-itens-iniciais{
+  color: rgb(200,170,235);
+  font-weight: bold;
+}
+.linha-financeira-itens{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.linha-financeira-itens > div{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+.linha-financeira-itens span{
+  color: rgb(180,180,180);
+  font-size: 10px;
+  font-weight: bold;
+}
+.linha-financeira-itens strong{
+  font-size: 15px;
+}
+
+/* Grade principal */
+
+.grade-itens-iniciais{
+  display: grid;
+  grid-template-columns: minmax(0,1.2fr) minmax(300px,0.8fr);
+  gap: 12px;
+  min-height: 0;
+}
+.painel-itens-disponiveis,
+.painel-inventario-inicial{
+  min-width: 0;
+  padding: 10px;
+  background: black;
+  border: 2px solid white;
+  border-radius: 5px;
+}
+.painel-itens-disponiveis h2,
+.painel-inventario-inicial h2{
+  margin: 0 0 8px;
+  text-align: center;
+  font-size: 16px;
+}
+.painel-inventario-inicial{
+  display: flex;
+  flex-direction: column;
+}
+
+/* Pesquisa */
+
+.pesquisa-itens{
+  width: 100%;
+  padding: 7px 9px;
+  margin-bottom: 8px;
+  box-sizing: border-box;
+  background: black;
+  color: white;
+  border: 1px solid rgb(150,150,150);
+  border-radius: 5px;
+  outline: none;
+  font-size: 11px;
+}
+.pesquisa-itens:focus{
+  border-color: white;
+  box-shadow: 0 0 8px rgb(150,0,225);
+}
+
+/* Listas disponíveis */
+
+.grupo-lista-itens h3{
+  margin: 7px 0 5px;
+  text-align: center;
+  font-size: 12px;
+}
+.lista-itens-disponiveis{
+  height: 175px;
+  padding-right: 4px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+.card-item-disponivel{
+  display: grid;
+  grid-template-columns: minmax(0,1fr) 28px;
+  gap: 6px;
+  padding: 6px;
+  margin-bottom: 4px;
+  background: rgb(8,8,8);
+  border: 1px solid rgb(65,65,65);
+  border-radius: 4px;
+}
+.card-item-disponivel.compativel{
+  border-color: rgb(115,40,150);
+}
+.conteudo-item-disponivel{
+  min-width: 0;
+}
+.nome-item-disponivel{
+  display: block;
+  margin-bottom: 2px;
+  font-size: 12px;
+}
+.descricao-item-disponivel{
+  max-width: none;
+  max-height: 29px;
+  margin: 0 0 3px;
+  overflow: hidden;
+  color: rgb(190,190,190);
+  text-align: left;
+  font-size: 9px;
+  line-height: 1.35;
+}
+.dados-item-disponivel{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px 8px;
+  color: rgb(220,220,220);
+  font-size: 10px;
+}
+.compatibilidade-item{
+  display: block;
+  margin-top: 2px;
+  color: rgb(175,120,210);
+  font-size: 9px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.custo-item-com-desconto{
+  color: rgb(190,100,235);
+  font-weight: bold;
+}
+.botao-adicionar-item{
+  align-self: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  background: black;
+  color: white;
+  border: 1px solid white;
+  border-radius: 4px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.botao-adicionar-item:hover:not(:disabled){
+  transform: scale(1.08);
+  box-shadow: 0 0 8px rgb(150,0,225);
+}
+.botao-adicionar-item:disabled{
+  opacity: 0.35;
+  cursor: default;
+}
+.aviso-itens{
+  max-width: none;
+  padding: 12px;
+  color: rgb(160,160,160);
+  font-size: 10px;
+}
+
+/* Inventário */
+
+#contador-carga-inventario{
+  display: block;
+  margin-bottom: 3px;
+  text-align: center;
+  font-size: 13px;
+}
+.aviso-carga-inventario{
+  min-height: 16px;
+  max-width: none;
+  margin: 0 0 5px;
+  color: rgb(235,180,70);
+  font-size: 9px;
+}
+.aviso-carga-inventario.excesso-grave{
+  color: rgb(240,90,90);
+}
+.lista-inventario-inicial{
+  height: 397px;
+  padding-right: 4px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+.card-item-inventario{
+  display: grid;
+  grid-template-columns: minmax(0,1fr) 26px;
+  gap: 6px;
+  padding: 6px;
+  margin-bottom: 4px;
+  background: rgb(8,8,8);
+  border: 1px solid rgb(70,70,70);
+  border-radius: 4px;
+}
+.card-item-inventario.com-desconto{
+  border-color: rgb(115,40,150);
+}
+.nome-item-inventario{
+  display: block;
+  margin-bottom: 2px;
+  font-size: 11px;
+}
+.dados-item-inventario{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px 8px;
+  color: rgb(190,190,190);
+  font-size: 9px;
+}
+.desconto-item-inventario{
+  display: block;
+  margin-top: 2px;
+  color: rgb(190,100,235);
+  font-size: 9px;
+  font-weight: bold;
+}
+.botao-remover-item{
+  align-self: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  background: black;
+  color: rgb(255,130,130);
+  border: 1px solid rgb(180,80,80);
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.botao-remover-item:hover{
+  box-shadow: 0 0 7px rgb(180,50,50);
+}
+.inventario-vazio{
+  max-width: none;
+  padding: 20px 5px;
+  color: rgb(150,150,150);
+  font-size: 10px;
+}
+.aviso-item-personalizado{
+  max-width: none;
+  margin-top: 7px;
+  color: rgb(145,145,145);
+  font-size: 9px;
+}
+#finalizar-ficha{
+  padding: 10px 18px;
+  background: black;
+  color: white;
+  border: 2px solid white;
+  border-radius: 5px;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+#finalizar-ficha:hover:not(:disabled){
+  transform: scale(1.05);
+  box-shadow: 0 0 12px rgb(150,0,225);
+}
+#finalizar-ficha:disabled{
+  opacity: 0.5;
+  cursor: default;
+}
+
+@media (max-width: 900px){
+  .grade-itens-iniciais{
+    grid-template-columns: 1fr;
+  }
+  .lista-inventario-inicial{
+    height: 260px;
+  }
+}
+
+@media (max-width: 550px){
+  .linha-financeira-itens{
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Adaptação para celular */
 
 @media (max-width: 700px){
