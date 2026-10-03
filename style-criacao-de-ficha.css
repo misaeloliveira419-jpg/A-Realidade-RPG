@@ -717,11 +717,13 @@
 .input-normal-pericia::-webkit-inner-spin-button,
 .input-normal-pericia::-webkit-outer-spin-button{
   margin: 0;
+  appearance: none;
   -webkit-appearance: none;
 }
 .input-atributo-principal,
 .valor-deslocamento input,
 .input-normal-pericia{
+  appearance: textfield;
   -moz-appearance: textfield;
 }
 
