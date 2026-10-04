@@ -9,9 +9,19 @@
 </head>
 <body>
   <button class="botao-voltar" onclick="window.location.href='index-suas-fichas.html'" type="button">← Voltar</button>
+  <br><br><br>
 
   <main id="tela-ficha" class="tela-ficha">
     <section class="painel-ficha">
+      <header class="cabecalho-ficha">
+        <label class="controle-foto-ficha" for="input-foto-ficha" title="Alterar foto do personagem">
+          <input id="input-foto-ficha" type="file" accept="image/*" hidden>
+          <img id="imagem-foto-ficha" class="imagem-foto-ficha" alt="Foto do personagem" hidden>
+          <span id="sem-foto-ficha" class="sem-foto-ficha">+</span>
+        </label>
+        <input id="nome-personagem-ficha" class="nome-personagem-ficha" type="text" maxlength="80" value="Nome do Personagem" aria-label="Nome do personagem">
+      </header>
+
       <nav class="menu-ficha" role="tablist" aria-label="Áreas da ficha">
         <button class="aba-ficha ativa" type="button" role="tab" aria-selected="true" data-aba="informacoes">INFORMAÇÕES</button>
         <button class="aba-ficha" type="button" role="tab" aria-selected="false" data-aba="pontos-ficha">PONTOS DE FICHA</button>
