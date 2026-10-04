@@ -34,10 +34,65 @@
       </nav>
 
       <div class="conteudo-ficha">
-        <section id="aba-informacoes" class="conteudo-aba-ficha ativo" role="tabpanel"></section>
+        <section id="aba-informacoes" class="conteudo-aba-ficha ativo" role="tabpanel">
+          <div class="grade-informacoes-ficha">
+
+            <div class="grupo-ocupacoes-ficha">
+              <label class="campo-informacao-ficha">
+                <span>OCUPAÇÃO 1</span>
+
+                <select id="ocupacao-1-ficha">
+                  <option value="">Ocupação atual</option>
+                </select>
+              </label>
+
+              <label class="campo-informacao-ficha">
+                <span>OCUPAÇÃO 2</span>
+
+                <select id="ocupacao-2-ficha">
+                  <option value="">Nenhuma</option>
+                </select>
+              </label>
+            </div>
+
+            <label class="campo-informacao-ficha campo-perfil-ficha">
+              <span>PERFIL</span>
+              <select id="perfil-ficha">
+                <option value="proativo">PROATIVO</option>
+                <option value="reflexivo">REFLEXIVO</option>
+                <option value="adaptativo">ADAPTATIVO</option>
+              </select>
+            </label>
+
+            <label class="campo-informacao-ficha campo-idade-ficha">
+              <span>IDADE</span>
+              <input id="idade-ficha" type="number" min="0" inputmode="numeric">
+            </label>
+
+            <label class="campo-informacao-ficha campo-texto-ficha">
+              <span>APARÊNCIA</span>
+              <textarea id="aparencia-ficha" placeholder="Descreva a aparência do personagem..."></textarea>
+            </label>
+
+            <label class="campo-informacao-ficha campo-texto-ficha">
+              <span>PASSADO</span>
+              <textarea id="passado-ficha" placeholder="Escreva o passado do personagem..."></textarea>
+            </label>
+
+            <label class="campo-informacao-ficha campo-texto-ficha">
+              <span>ANOTAÇÕES</span>
+              <textarea id="anotacoes-ficha" placeholder="Adicione suas anotações..."></textarea>
+            </label>
+
+          </div>
+        </section>
+        
         <section id="aba-pontos-ficha" class="conteudo-aba-ficha" role="tabpanel"></section>
+
         <section id="aba-habilidades" class="conteudo-aba-ficha" role="tabpanel"></section>
+
         <section id="aba-inventario" class="conteudo-aba-ficha" role="tabpanel"></section>
+        
       </div>
     </section>
   </main>

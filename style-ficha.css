@@ -9,7 +9,7 @@
 
 .painel-ficha{
   width: 100%;
-  height: 100%;
+  height: 90%;
   display: flex;
   flex-direction: column;
   background: black;
@@ -196,6 +196,90 @@
   display: block;
 }
 
+/* Informações da ficha */
+
+.grade-informacoes-ficha{
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 14px 18px;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.campo-informacao-ficha{
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 0;
+}
+
+.campo-informacao-ficha > span{
+  font-size: 13px;
+  font-weight: bold;
+  color: rgb(210,210,210);
+}
+
+.campo-informacao-ficha input,
+.campo-informacao-ficha select,
+.campo-informacao-ficha textarea{
+  width: 100%;
+  box-sizing: border-box;
+  background: rgb(8,8,8);
+  color: white;
+  border: 1px solid rgb(90,90,90);
+  border-radius: 5px;
+  outline: none;
+  font-family: inherit;
+  font-size: 15px;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+.campo-informacao-ficha input,
+.campo-informacao-ficha select{
+  height: 42px;
+  padding: 0 12px;
+}
+
+.campo-informacao-ficha textarea{
+  min-height: 95px;
+  padding: 11px 12px;
+  resize: vertical;
+  line-height: 1.45;
+}
+
+.campo-informacao-ficha input:hover,
+.campo-informacao-ficha select:hover,
+.campo-informacao-ficha textarea:hover{
+  border-color: rgb(140,140,140);
+}
+
+.campo-informacao-ficha input:focus,
+.campo-informacao-ficha select:focus,
+.campo-informacao-ficha textarea:focus{
+  border-color: rgb(150,0,225);
+  box-shadow: 0 0 8px rgba(150,0,225,0.35);
+}
+
+.grupo-ocupacoes-ficha{
+  grid-column: 1;
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 12px;
+}
+
+.campo-perfil-ficha{
+  grid-column: 2;
+}
+
+.campo-idade-ficha{
+  grid-column: 1;
+}
+
+.campo-texto-ficha{
+  grid-column: 1 / -1;
+}
+
 /* Responsivo */
 
 @media (max-width: 800px){
@@ -231,5 +315,21 @@
     min-width: 135px;
     padding: 15px 12px;
     font-size: 12px;
+  }
+
+  .grade-informacoes-ficha{
+    grid-template-columns: 1fr;
+  }
+
+  .grupo-ocupacoes-ficha{
+    grid-column: 1;
+    grid-template-columns: 1fr;
+  }
+
+  .campo-ocupacao-ficha,
+  .campo-perfil-ficha,
+  .campo-idade-ficha,
+  .campo-texto-ficha{
+    grid-column: 1;
   }
 }

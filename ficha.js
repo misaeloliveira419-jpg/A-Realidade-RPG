@@ -11,6 +11,18 @@ const botaoRemoverFotoFicha = document.getElementById("remover-foto-ficha");
 let dadosFichaAtual = null;
 let nomeFichaSalvo = "";
 
+/* Elementos da aba Informações */
+
+const campoOcupacao1Ficha = document.getElementById("ocupacao-1-ficha");
+const campoOcupacao2Ficha = document.getElementById("ocupacao-2-ficha");
+const campoPerfilFicha = document.getElementById("perfil-ficha");
+const campoIdadeFicha = document.getElementById("idade-ficha");
+const campoAparenciaFicha = document.getElementById("aparencia-ficha");
+const campoPassadoFicha = document.getElementById("passado-ficha");
+const campoAnotacoesFicha = document.getElementById("anotacoes-ficha");
+
+let ocupacoesFichaDisponiveis = [];
+
 /* Cabeçalho da ficha */
 
 function mostrarFotoFicha(foto) {
@@ -200,10 +212,19 @@ botaoRemoverFotoFicha.addEventListener("click", async evento => {
 });
 
 if (previewLocal) {
-  preencherCabecalhoFicha({
+  const fichaPreview = {
     nome: "Nome do Personagem",
-    foto: ""
-  });
+    foto: "",
+    perfil: "proativo",
+    ocupacoes: [],
+    idade: 24,
+    aparencia: "Descrição da aparência do personagem.",
+    passado: "História e passado do personagem.",
+    anotacoes: ""
+  };
+
+  preencherCabecalhoFicha(fichaPreview);
+  preencherInformacoesFicha(fichaPreview);
 }
 
 if (!previewLocal) {
@@ -234,6 +255,8 @@ if (!previewLocal) {
       }
 
       preencherCabecalhoFicha(ficha);
+
+      await preencherInformacoesFicha(ficha);
 
       document.title = `${ficha.nome || "Ficha"}: A Realidade RPG`;
 
@@ -297,3 +320,129 @@ window.addEventListener("resize", () => {
 requestAnimationFrame(() => {
   posicionarIndicadorFicha(document.querySelector(".aba-ficha.ativa"), false);
 });
+
+/* Ocupações da ficha */
+
+function normalizarOcupacaoFicha(texto) {
+  return String(texto || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
+}
+
+function criarIdOcupacaoFicha(nome) {
+  return normalizarOcupacaoFicha(nome)
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+function renderizarOpcoesOcupacoesFicha() {
+  campoOcupacao1Ficha.replaceChildren();
+  campoOcupacao2Ficha.replaceChildren();
+
+  const opcaoInicial = document.createElement("option");
+  opcaoInicial.value = "";
+  opcaoInicial.textContent = "Selecione uma Ocupação";
+  opcaoInicial.disabled = true;
+
+  campoOcupacao1Ficha.appendChild(opcaoInicial);
+
+  const opcaoNenhuma = document.createElement("option");
+  opcaoNenhuma.value = "";
+  opcaoNenhuma.textContent = "Nenhuma";
+
+  campoOcupacao2Ficha.appendChild(opcaoNenhuma);
+
+  ocupacoesFichaDisponiveis.forEach(ocupacao => {
+    const opcao1 = document.createElement("option");
+    opcao1.value = ocupacao.id;
+    opcao1.textContent = ocupacao.nome;
+
+    const opcao2 = opcao1.cloneNode(true);
+
+    campoOcupacao1Ficha.appendChild(opcao1);
+    campoOcupacao2Ficha.appendChild(opcao2);
+  });
+}
+
+async function carregarOcupacoesFichaDoSistema() {
+  try {
+    const resposta = await fetch("index-sistema.html");
+
+    if (!resposta.ok) {
+      throw new Error("Não foi possível abrir index-sistema.html.");
+    }
+
+    const html = await resposta.text();
+    const documento = new DOMParser().parseFromString(html, "text/html");
+
+    const itens = [
+      ...documento.querySelectorAll("#lista-ocupacoes-personagem > li")
+    ];
+
+    ocupacoesFichaDisponiveis = itens
+      .map(item => {
+        const nome = item.querySelector("b")?.textContent
+          .trim()
+          .replace(/:$/, "");
+
+        if (!nome) return null;
+
+        return {
+          id: criarIdOcupacaoFicha(nome),
+          nome: nome
+        };
+      })
+      .filter(Boolean);
+
+    renderizarOpcoesOcupacoesFicha();
+
+    return true;
+
+  } catch (erro) {
+    console.error("Erro ao carregar Ocupações da ficha:", erro);
+
+    campoOcupacao1Ficha.innerHTML =
+      `<option value="">Não foi possível carregar</option>`;
+
+    campoOcupacao2Ficha.innerHTML =
+      `<option value="">Não foi possível carregar</option>`;
+
+    return false;
+  }
+}
+
+const promessaOcupacoesFicha = carregarOcupacoesFichaDoSistema();
+
+/* Preencher a aba Informações */
+
+async function preencherInformacoesFicha(ficha) {
+  await promessaOcupacoesFicha;
+
+  const ocupacoes =
+    Array.isArray(ficha.ocupacoes)
+      ? ficha.ocupacoes.slice(0, 2)
+      : [];
+
+  campoOcupacao1Ficha.value =
+    ocupacoes[0] || "";
+
+  campoOcupacao2Ficha.value =
+    ocupacoes[1] || "";
+
+  campoPerfilFicha.value =
+    ficha.perfil || "";
+
+  campoIdadeFicha.value =
+    ficha.idade ?? "";
+
+  campoAparenciaFicha.value =
+    ficha.aparencia || "";
+
+  campoPassadoFicha.value =
+    ficha.passado || "";
+
+  campoAnotacoesFicha.value =
+    ficha.anotacoes || "";
+}
