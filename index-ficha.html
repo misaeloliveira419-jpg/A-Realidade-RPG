@@ -10,7 +10,24 @@
 <body>
   <button class="botao-voltar" onclick="window.location.href='index-suas-fichas.html'" type="button">← Voltar</button>
 
-  <main id="tela-ficha" class="tela-ficha-vazia"></main>
+  <main id="tela-ficha" class="tela-ficha">
+    <section class="painel-ficha">
+      <nav class="menu-ficha" role="tablist" aria-label="Áreas da ficha">
+        <button class="aba-ficha ativa" type="button" role="tab" aria-selected="true" data-aba="informacoes">INFORMAÇÕES</button>
+        <button class="aba-ficha" type="button" role="tab" aria-selected="false" data-aba="pontos-ficha">PONTOS DE FICHA</button>
+        <button class="aba-ficha" type="button" role="tab" aria-selected="false" data-aba="habilidades">HABILIDADES</button>
+        <button class="aba-ficha" type="button" role="tab" aria-selected="false" data-aba="inventario">INVENTÁRIO</button>
+        <span id="indicador-menu-ficha" class="indicador-menu-ficha"></span>
+      </nav>
+
+      <div class="conteudo-ficha">
+        <section id="aba-informacoes" class="conteudo-aba-ficha ativo" role="tabpanel"></section>
+        <section id="aba-pontos-ficha" class="conteudo-aba-ficha" role="tabpanel"></section>
+        <section id="aba-habilidades" class="conteudo-aba-ficha" role="tabpanel"></section>
+        <section id="aba-inventario" class="conteudo-aba-ficha" role="tabpanel"></section>
+      </div>
+    </section>
+  </main>
 
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>

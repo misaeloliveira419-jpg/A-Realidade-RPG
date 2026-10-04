@@ -1,5 +1,107 @@
 /* Tela da ficha */
 
-.tela-ficha-vazia{
-  min-height: calc(100vh - 12px);
+.tela-ficha{
+  width: calc(100% - 50px);
+  height: calc(100vh - 50px);
+  margin: 25px auto;
+  box-sizing: border-box;
+}
+
+.painel-ficha{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: black;
+  border: 3px solid white;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+/* Menu da ficha */
+
+.menu-ficha{
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  border-bottom: 1px solid rgb(75,75,75);
+  background: black;
+}
+
+.aba-ficha{
+  min-width: 150px;
+  padding: 17px 22px;
+  background: transparent;
+  color: rgb(155,155,155);
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  transition: color 0.25s, text-shadow 0.25s;
+}
+
+.aba-ficha:hover{
+  color: rgb(225,250,255);
+}
+
+.aba-ficha.ativa{
+  color: white;
+  text-shadow: 0 0 10px rgb(0,210,225);
+}
+
+/* Barra ciano */
+
+.indicador-menu-ficha{
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  height: 3px;
+  background: rgb(0,225,240);
+  border-radius: 3px 3px 0 0;
+  box-shadow: 0 0 8px rgb(0,225,240), 0 0 15px rgba(0,225,240,0.6);
+  transition: left 0.35s ease, width 0.35s ease;
+  pointer-events: none;
+}
+
+/* Conteúdo */
+
+.conteudo-ficha{
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.conteudo-aba-ficha{
+  position: absolute;
+  inset: 0;
+  display: none;
+  padding: 20px;
+  overflow: auto;
+}
+
+.conteudo-aba-ficha.ativo{
+  display: block;
+}
+
+/* Responsivo */
+
+@media (max-width: 800px){
+  .tela-ficha{
+    width: calc(100% - 20px);
+    height: calc(100vh - 20px);
+    margin: 10px auto;
+  }
+
+  .menu-ficha{
+    justify-content: flex-start;
+    overflow-x: auto;
+  }
+
+  .aba-ficha{
+    min-width: 135px;
+    padding: 15px 12px;
+    font-size: 12px;
+  }
 }
