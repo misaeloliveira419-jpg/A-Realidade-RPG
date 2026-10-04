@@ -57,7 +57,9 @@ campoNomeFicha.addEventListener("change", async () => {
     });
 
     nomeFichaSalvo = novoNome;
-    dadosFichaAtual.nome = novoNome;
+    if (dadosFichaAtual) {
+      dadosFichaAtual.nome = novoNome;
+    }
     document.title = `${novoNome}: A Realidade RPG`;
 
   } catch (erro) {
