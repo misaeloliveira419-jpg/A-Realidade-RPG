@@ -31,13 +31,19 @@
   background: black;
 }
 
-.controle-foto-ficha{
+.area-foto-ficha{
   position: absolute;
   left: 170px;
   top: 70%;
   width: 150px;
   height: 150px;
   transform: translateY(-50%);
+  z-index: 700;
+}
+
+.controle-foto-ficha{
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -45,14 +51,42 @@
   background: rgb(8,8,8);
   border: 2px solid white;
   border-radius: 6px;
+  box-sizing: border-box;
   cursor: pointer;
   transition: transform 0.25s, box-shadow 0.25s;
-  z-index: 700;
 }
 
 .controle-foto-ficha:hover{
-  transform: translateY(-50%) scale(1.05);
+  transform: scale(1.05);
   box-shadow: 0 0 10px rgb(150,0,225);
+}
+
+.botao-remover-foto-ficha{
+  position: absolute;
+  top: -9px;
+  right: -9px;
+  z-index: 2;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: black;
+  color: white;
+  border: 2px solid white;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1;
+  transition: transform 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.botao-remover-foto-ficha:hover{
+  transform: scale(1.1);
+  color: rgb(255,80,80);
+  border-color: rgb(255,80,80);
+  box-shadow: 0 0 8px rgba(255,80,80,0.6);
 }
 
 .imagem-foto-ficha{
@@ -176,7 +210,7 @@
     padding: 10px 80px;
   }
 
-  .controle-foto-ficha{
+  .area-foto-ficha{
     left: 10px;
     top: 50%;
     width: 80px;

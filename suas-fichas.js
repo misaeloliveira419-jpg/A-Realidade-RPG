@@ -75,6 +75,62 @@ function converterParaData(valor) {
   return Number.isNaN(data.getTime()) ? null : data;
 }
 
+function carregarImagemFotoCard(arquivo) {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(arquivo);
+    const imagem = new Image();
+
+    imagem.onload = () => {
+      URL.revokeObjectURL(url);
+      resolve(imagem);
+    };
+
+    imagem.onerror = () => {
+      URL.revokeObjectURL(url);
+      reject(new Error("Não foi possível abrir a imagem."));
+    };
+
+    imagem.src = url;
+  });
+}
+
+async function prepararFotoCardFicha(arquivo) {
+  const imagem = await carregarImagemFotoCard(arquivo);
+
+  let largura = imagem.width;
+  let altura = imagem.height;
+
+  const tamanhoMaximo = 500;
+
+  if (largura > tamanhoMaximo || altura > tamanhoMaximo) {
+    const escala = Math.min(tamanhoMaximo / largura, tamanhoMaximo / altura);
+
+    largura = Math.round(largura * escala);
+    altura = Math.round(altura * escala);
+  }
+
+  const canvas = document.createElement("canvas");
+
+  canvas.width = largura;
+  canvas.height = altura;
+
+  canvas.getContext("2d").drawImage(imagem, 0, 0, largura, altura);
+
+  let qualidade = 0.82;
+  let foto = canvas.toDataURL("image/jpeg", qualidade);
+
+  while (foto.length > 600000 && qualidade > 0.45) {
+    qualidade -= 0.07;
+    foto = canvas.toDataURL("image/jpeg", qualidade);
+  }
+
+  if (foto.length > 650000) {
+    throw new Error("A imagem continua grande demais.");
+  }
+
+  return foto;
+}
+
 function criarCardCriarFicha() {
   const card = document.createElement("button");
   card.type = "button";
@@ -106,16 +162,114 @@ function criarCardFicha(ficha) {
 
   const foto = document.createElement("div");
   foto.className = "foto-card-ficha";
+  foto.title = ficha.foto ? "Alterar foto" : "Adicionar foto";
+  foto.setAttribute("role", "button");
+  foto.setAttribute("aria-label", ficha.foto ? "Alterar foto da ficha" : "Adicionar foto à ficha");
+  foto.tabIndex = 0;
+
+  const inputFoto = document.createElement("input");
+  inputFoto.type = "file";
+  inputFoto.accept = "image/*";
+  inputFoto.hidden = true;
+
+  inputFoto.addEventListener("click", evento => {
+    evento.stopPropagation();
+  });
 
   if (ficha.foto) {
     const imagem = document.createElement("img");
-    imagem.src = ficha.foto;
-    imagem.alt = `Foto de ${ficha.nome || "personagem"}`;
-    foto.appendChild(imagem);
-  } else {
-    foto.classList.add("sem-foto");
-    foto.textContent = "+";
-  }
+      imagem.src = ficha.foto;
+      imagem.alt = `Foto de ${ficha.nome || "personagem"}`;
+
+      const botaoRemoverFoto = document.createElement("button");
+      botaoRemoverFoto.type = "button";
+      botaoRemoverFoto.className = "botao-remover-foto-card";
+      botaoRemoverFoto.title = "Remover foto";
+      botaoRemoverFoto.setAttribute("aria-label", `Remover foto de ${ficha.nome || "personagem"}`);
+      botaoRemoverFoto.textContent = "×";
+
+      botaoRemoverFoto.addEventListener("click", async evento => {
+        evento.preventDefault();
+        evento.stopPropagation();
+
+        if (!auth.currentUser || ficha.donoUid !== auth.currentUser.uid) return;
+
+        if (!confirm(`Remover a foto da ficha "${ficha.nome}"?`)) return;
+
+        botaoRemoverFoto.disabled = true;
+
+        try {
+          await db.collection("fichas").doc(ficha.id).update({
+            foto: "",
+            atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+          });
+
+        } catch (erro) {
+          console.error("Erro ao remover foto:", erro);
+          alert("Não foi possível remover a foto.");
+          botaoRemoverFoto.disabled = false;
+        }
+      });
+
+      foto.append(inputFoto, imagem, botaoRemoverFoto);
+
+    } else {
+      foto.classList.add("sem-foto");
+
+      const adicionar = document.createElement("span");
+      adicionar.textContent = "+";
+
+      foto.append(inputFoto, adicionar);
+    }
+
+    foto.addEventListener("click", evento => {
+      evento.stopPropagation();
+
+      if (evento.target.closest(".botao-remover-foto-card")) return;
+
+      inputFoto.click();
+    });
+
+    foto.addEventListener("keydown", evento => {
+      if (evento.key !== "Enter" && evento.key !== " ") return;
+
+      evento.preventDefault();
+      evento.stopPropagation();
+
+      inputFoto.click();
+    });
+
+    inputFoto.addEventListener("change", async evento => {
+      evento.stopPropagation();
+
+      const arquivo = inputFoto.files?.[0];
+
+      if (!arquivo) return;
+
+      if (!auth.currentUser || ficha.donoUid !== auth.currentUser.uid) {
+        inputFoto.value = "";
+        return;
+      }
+
+      foto.classList.add("alterando-foto");
+
+      try {
+        const novaFoto = await prepararFotoCardFicha(arquivo);
+
+        await db.collection("fichas").doc(ficha.id).update({
+          foto: novaFoto,
+          atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+      } catch (erro) {
+        console.error("Erro ao alterar foto:", erro);
+        alert("Não foi possível alterar a foto.");
+
+      } finally {
+        inputFoto.value = "";
+        foto.classList.remove("alterando-foto");
+      }
+    });
 
   const infos = document.createElement("div");
   infos.className = "infos-card-ficha";

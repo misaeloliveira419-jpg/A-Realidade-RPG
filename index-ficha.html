@@ -14,11 +14,14 @@
   <main id="tela-ficha" class="tela-ficha">
     <section class="painel-ficha">
       <header class="cabecalho-ficha">
-        <label class="controle-foto-ficha" for="input-foto-ficha" title="Alterar foto do personagem">
-          <input id="input-foto-ficha" type="file" accept="image/*" hidden>
-          <img id="imagem-foto-ficha" class="imagem-foto-ficha" alt="Foto do personagem" hidden>
-          <span id="sem-foto-ficha" class="sem-foto-ficha">+</span>
-        </label>
+        <div class="area-foto-ficha">
+          <label class="controle-foto-ficha" for="input-foto-ficha" title="Adicionar ou alterar foto">
+            <input id="input-foto-ficha" type="file" accept="image/*" hidden>
+            <img id="imagem-foto-ficha" class="imagem-foto-ficha" alt="Foto do personagem" hidden>
+            <span id="sem-foto-ficha" class="sem-foto-ficha">+</span>
+          </label>
+          <button id="remover-foto-ficha" class="botao-remover-foto-ficha" type="button" title="Remover foto" aria-label="Remover foto" hidden>×</button>
+        </div>
         <input id="nome-personagem-ficha" class="nome-personagem-ficha" type="text" maxlength="80" value="Nome do Personagem" aria-label="Nome do personagem">
       </header>
 

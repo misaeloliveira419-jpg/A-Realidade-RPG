@@ -6,6 +6,7 @@ const campoNomeFicha = document.getElementById("nome-personagem-ficha");
 const campoFotoFicha = document.getElementById("input-foto-ficha");
 const imagemFotoFicha = document.getElementById("imagem-foto-ficha");
 const semFotoFicha = document.getElementById("sem-foto-ficha");
+const botaoRemoverFotoFicha = document.getElementById("remover-foto-ficha");
 
 let dadosFichaAtual = null;
 let nomeFichaSalvo = "";
@@ -17,6 +18,7 @@ function mostrarFotoFicha(foto) {
 
   imagemFotoFicha.hidden = !possuiFoto;
   semFotoFicha.hidden = possuiFoto;
+  botaoRemoverFotoFicha.hidden = !possuiFoto;
 
   if (possuiFoto) {
     imagemFotoFicha.src = foto;
@@ -153,6 +155,47 @@ campoFotoFicha.addEventListener("change", async () => {
     mostrarFotoFicha(dadosFichaAtual?.foto || "");
   } finally {
     campoFotoFicha.value = "";
+  }
+});
+
+botaoRemoverFotoFicha.addEventListener("click", async evento => {
+  evento.preventDefault();
+  evento.stopPropagation();
+
+  if (previewLocal) {
+    mostrarFotoFicha("");
+
+    if (dadosFichaAtual) {
+      dadosFichaAtual.foto = "";
+    }
+
+    return;
+  }
+
+  if (!auth.currentUser || !idFicha) return;
+
+  const fotoAnterior = dadosFichaAtual?.foto || "";
+
+  botaoRemoverFotoFicha.disabled = true;
+
+  try {
+    await db.collection("fichas").doc(idFicha).update({
+      foto: "",
+      atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    if (dadosFichaAtual) {
+      dadosFichaAtual.foto = "";
+    }
+
+    mostrarFotoFicha("");
+
+  } catch (erro) {
+    console.error("Erro ao remover foto da ficha:", erro);
+    mostrarFotoFicha(fotoAnterior);
+
+  } finally {
+    botaoRemoverFotoFicha.disabled = false;
   }
 });
 
