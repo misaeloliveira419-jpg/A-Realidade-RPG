@@ -52,7 +52,7 @@
 
 .controle-foto-ficha:hover{
   transform: translateY(-50%) scale(1.05);
-  box-shadow: 0 0 10px rgb(0,210,225);
+  box-shadow: 0 0 10px rgb(150,0,225);
 }
 
 .imagem-foto-ficha{
@@ -69,7 +69,7 @@
 }
 
 .controle-foto-ficha:hover .sem-foto-ficha{
-  color: rgb(0,225,240);
+  color: rgb(225,175,255);
 }
 
 .nome-personagem-ficha{
@@ -87,12 +87,12 @@
 }
 
 .nome-personagem-ficha:hover{
-  border-bottom-color: rgb(80,80,80);
+  border-bottom-color: rgb(80,0,120);
 }
 
 .nome-personagem-ficha:focus{
-  border-bottom-color: rgb(0,225,240);
-  text-shadow: 0 0 8px rgba(0,225,240,0.45);
+  border-bottom-color: rgb(150,0,225);
+  text-shadow: 0 0 8px rgba(150,0,225,0.45);
 }
 
 /* Menu da ficha */
