@@ -211,22 +211,6 @@ botaoRemoverFotoFicha.addEventListener("click", async evento => {
   }
 });
 
-if (previewLocal) {
-  const fichaPreview = {
-    nome: "Nome do Personagem",
-    foto: "",
-    perfil: "proativo",
-    ocupacoes: [],
-    idade: 24,
-    aparencia: "Descrição da aparência do personagem.",
-    passado: "História e passado do personagem.",
-    anotacoes: ""
-  };
-
-  preencherCabecalhoFicha(fichaPreview);
-  preencherInformacoesFicha(fichaPreview);
-}
-
 if (!previewLocal) {
   auth.onAuthStateChanged(async usuario => {
     if (!usuario || !idFicha) {
@@ -445,4 +429,164 @@ async function preencherInformacoesFicha(ficha) {
 
   campoAnotacoesFicha.value =
     ficha.anotacoes || "";
+}
+
+/* Salvamento da aba Informações */
+
+let filaSalvamentoInformacoes = Promise.resolve();
+let versaoSalvamentoInformacoes = 0;
+
+function obterDadosInformacoesFicha() {
+  const ocupacao1 = campoOcupacao1Ficha.value;
+  let ocupacao2 = campoOcupacao2Ficha.value;
+
+  if (!ocupacao1) {
+    return {
+      valido: false,
+      mensagem: "A primeira Ocupação não pode ficar vazia."
+    };
+  }
+
+  if (ocupacao2 === ocupacao1) {
+    ocupacao2 = "";
+    campoOcupacao2Ficha.value = "";
+  }
+
+  const idade = Number(campoIdadeFicha.value);
+
+  if (!Number.isInteger(idade) || idade < 0) {
+    return {
+      valido: false,
+      mensagem: "A idade precisa ser um número inteiro igual ou maior que 0."
+    };
+  }
+
+  return {
+    valido: true,
+    dados: {
+      perfil: campoPerfilFicha.value,
+      ocupacoes: ocupacao2
+        ? [ocupacao1, ocupacao2]
+        : [ocupacao1],
+      idade: idade,
+      aparencia: campoAparenciaFicha.value,
+      passado: campoPassadoFicha.value,
+      anotacoes: campoAnotacoesFicha.value
+    }
+  };
+}
+
+function atualizarDadosLocaisInformacoes(dados) {
+  if (!dadosFichaAtual) return;
+
+  dadosFichaAtual.perfil = dados.perfil;
+  dadosFichaAtual.ocupacoes = [...dados.ocupacoes];
+  dadosFichaAtual.idade = dados.idade;
+  dadosFichaAtual.aparencia = dados.aparencia;
+  dadosFichaAtual.passado = dados.passado;
+  dadosFichaAtual.anotacoes = dados.anotacoes;
+}
+
+function salvarInformacoesFicha() {
+  const resultado = obterDadosInformacoesFicha();
+
+  if (!resultado.valido) {
+    console.warn(resultado.mensagem);
+
+    if (dadosFichaAtual) {
+      preencherInformacoesFicha(dadosFichaAtual);
+    }
+
+    return;
+  }
+
+  const dados = resultado.dados;
+  const versao = ++versaoSalvamentoInformacoes;
+
+  if (previewLocal) {
+    atualizarDadosLocaisInformacoes(dados);
+    return;
+  }
+
+  if (!auth.currentUser || !idFicha || !dadosFichaAtual) return;
+
+  const uidUsuario = auth.currentUser.uid;
+
+  filaSalvamentoInformacoes = filaSalvamentoInformacoes
+    .catch(() => {})
+    .then(async () => {
+      try {
+        if (auth.currentUser?.uid !== uidUsuario) return;
+
+        await db.collection("fichas").doc(idFicha).update({
+          perfil: dados.perfil,
+          ocupacoes: [...dados.ocupacoes],
+          idade: dados.idade,
+          aparencia: dados.aparencia,
+          passado: dados.passado,
+          anotacoes: dados.anotacoes,
+          atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        atualizarDadosLocaisInformacoes(dados);
+
+      } catch (erro) {
+        console.error("Erro ao salvar Informações da ficha:", erro);
+
+        if (
+          versao === versaoSalvamentoInformacoes &&
+          dadosFichaAtual
+        ) {
+          await preencherInformacoesFicha(dadosFichaAtual);
+        }
+      }
+    });
+}
+
+/* Alterações dos campos de Informações */
+
+campoOcupacao1Ficha.addEventListener("change", () => {
+  if (
+    campoOcupacao2Ficha.value &&
+    campoOcupacao2Ficha.value === campoOcupacao1Ficha.value
+  ) {
+    campoOcupacao2Ficha.value = "";
+  }
+
+  salvarInformacoesFicha();
+});
+
+campoOcupacao2Ficha.addEventListener("change", () => {
+  if (
+    campoOcupacao2Ficha.value &&
+    campoOcupacao2Ficha.value === campoOcupacao1Ficha.value
+  ) {
+    campoOcupacao2Ficha.value = "";
+  }
+
+  salvarInformacoesFicha();
+});
+
+campoPerfilFicha.addEventListener("change", salvarInformacoesFicha);
+campoIdadeFicha.addEventListener("change", salvarInformacoesFicha);
+campoAparenciaFicha.addEventListener("change", salvarInformacoesFicha);
+campoPassadoFicha.addEventListener("change", salvarInformacoesFicha);
+campoAnotacoesFicha.addEventListener("change", salvarInformacoesFicha);
+
+/* Dados para o Live Preview */
+
+if (previewLocal) {
+  const fichaPreview = {
+    nome: "Nome do Personagem",
+    foto: "",
+    perfil: "proativo",
+    ocupacoes: [],
+    idade: 24,
+    aparencia: "Descrição da aparência do personagem.",
+    passado: "História e passado do personagem.",
+    anotacoes: ""
+  };
+
+  preencherCabecalhoFicha(fichaPreview);
+  preencherInformacoesFicha(fichaPreview);
 }
