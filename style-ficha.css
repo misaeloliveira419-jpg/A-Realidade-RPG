@@ -258,7 +258,7 @@
 .campo-informacao-ficha select:focus,
 .campo-informacao-ficha textarea:focus{
   border-color: rgb(150,0,225);
-  box-shadow: 0 0 8px rgba(150,0,225,0.35);
+  box-shadow: 0 0 10px rgba(200,0,225);
 }
 
 .grupo-ocupacoes-ficha{
@@ -282,7 +282,7 @@
 
 /* Responsivo */
 
-@media (max-width: 800px){
+@media (max-width: 1000px){
   .tela-ficha{
     width: calc(100% - 20px);
     height: calc(100vh - 20px);
@@ -311,7 +311,6 @@
   }
 
   .menu-ficha{
-    justify-content: flex-start;
     overflow-x: auto;
   }
 
