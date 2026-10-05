@@ -316,9 +316,9 @@
   }
 
   .aba-ficha{
-    min-width: 135px;
+    min-width: 100px;
     padding: 15px 12px;
-    font-size: 12px;
+    font-size: 11px;
   }
 
   .grade-informacoes-ficha{
