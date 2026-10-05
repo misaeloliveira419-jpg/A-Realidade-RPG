@@ -352,8 +352,7 @@
 }
 
 #ncp-ficha:focus,
-#neo-ficha:focus,
-.entrada-credito-ficha:focus{
+#neo-ficha:focus{
   border-color: rgb(150,0,225);
   box-shadow: 0 0 10px rgb(200,0,225);
 }
