@@ -87,7 +87,377 @@
           </div>
         </section>
         
-        <section id="aba-pontos-ficha" class="conteudo-aba-ficha ativo" role="tabpanel"></section>
+        <section id="aba-pontos-ficha" class="conteudo-aba-ficha ativo" role="tabpanel">
+
+          <div class="cabecalho-pontos-ficha">
+
+            <label class="campo-nivel-ficha">
+              <span>NCP -</span>
+              <select id="ncp-ficha">
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select>
+            </label>
+
+            <label class="campo-nivel-ficha">
+              <span>NEO -</span>
+              <select id="neo-ficha">
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+              </select>
+            </label>
+
+            <label class="campo-credito-ficha">
+              <span>CRÉDITO</span>
+
+              <div class="entrada-credito-ficha">
+                <span>R$</span>
+                <input id="credito-ficha" type="number" step="0.01" value="250">
+              </div>
+            </label>
+
+          </div>
+
+          <nav class="menu-areas-pontos-ficha" aria-label="Áreas dos Pontos de Ficha">
+            <button class="botao-area-pontos ativa" type="button" data-area-pontos="atributos">
+              ATRIBUTOS
+            </button>
+
+            <button class="botao-area-pontos" type="button" data-area-pontos="pericias">
+              PERÍCIAS
+            </button>
+
+            <button class="botao-area-pontos" type="button" data-area-pontos="rolagens">
+              ROLAGENS
+            </button>
+          </nav>
+
+          <div class="grade-pontos-ficha">
+
+            <!-- Atributos -->
+
+            <section class="painel-pontos-ficha painel-atributos-ficha area-pontos-ativa" data-painel-pontos="atributos">
+              <h2>ATRIBUTOS</h2>
+
+              <strong id="contador-atributos-ficha" class="contador-atributos-ficha">
+                4/4
+              </strong>
+
+              <div class="lista-atributos-ficha">
+
+                <label class="linha-atributo-ficha atributo-fisico-ficha">
+                  <span>FÍSICO</span>
+                  <span class="borda-atributo-ficha">
+                    <input id="fisico-ficha" type="number" min="0" max="9" value="1">
+                  </span>
+                </label>
+
+                <label class="linha-atributo-ficha atributo-cognicao-ficha">
+                  <span>COGNIÇÃO</span>
+                  <span class="borda-atributo-ficha">
+                    <input id="cognicao-ficha" type="number" min="0" max="9" value="1">
+                  </span>
+                </label>
+
+                <label class="linha-atributo-ficha atributo-presenca-ficha">
+                  <span>PRESENÇA</span>
+                  <span class="borda-atributo-ficha">
+                    <input id="presenca-ficha" type="number" min="0" max="9" value="2">
+                  </span>
+                </label>
+
+                <div class="linha-atributo-ficha atributo-deslocamento-ficha">
+                  <span>DESLOCAMENTO</span>
+
+                  <div class="borda-deslocamento-ficha">
+                    <div class="valor-deslocamento-ficha">
+                      <label>
+                        <input id="deslocamento-metros-ficha" type="number" value="9">
+                        <span>m</span>
+                      </label>
+
+                      <span>/</span>
+
+                      <label>
+                        <input id="deslocamento-quadrados-ficha" type="number" value="6">
+                        <span>q</span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- PV -->
+
+              <div class="area-pontos-recurso">
+                <div class="cabecalho-recurso">
+                  <strong>PV</strong>
+
+                  <div class="valores-recurso">
+                    <input id="pv-atual-ficha" type="number" value="18">
+                    <span>/</span>
+                    <input id="pv-maximo-ficha" type="number" value="24">
+                  </div>
+                </div>
+
+                <div class="barra-recurso barra-pv">
+                  <div class="preenchimento-recurso"></div>
+                </div>
+              </div>
+
+              <!-- PD -->
+
+              <div class="area-pontos-recurso">
+                <div class="cabecalho-recurso">
+                  <strong>PD</strong>
+
+                  <div class="valores-recurso">
+                    <input id="pd-atual-ficha" type="number" value="7">
+                    <span>/</span>
+                    <input id="pd-maximo-ficha" type="number" value="12">
+                  </div>
+                </div>
+
+                <div class="barra-recurso barra-pd">
+                  <div class="preenchimento-recurso"></div>
+                </div>
+              </div>
+
+            </section>
+
+            <!-- Perícias -->
+
+            <section class="painel-pontos-ficha painel-pericias-ficha" data-painel-pontos="pericias">
+              <div class="cabecalho-painel-pericias">
+                <h2>PERÍCIAS</h2>
+
+                <div class="legenda-valores-pericia">
+                  <span>Normal</span>
+                  <span>Bom</span>
+                  <span>Extremo</span>
+                </div>
+              </div>
+
+              <div id="lista-pericias-ficha" class="lista-pericias-ficha">
+
+                <div class="linha-pericia-ficha">
+                  <div class="nome-e-atributo-pericia">
+                    <strong>Acrobacia</strong>
+                    <button class="sigla-atributo-pericia atributo-fisico-sigla" type="button">(FIS)</button>
+                  </div>
+
+                  <div class="valores-pericia-ficha">
+                    <input type="number" value="4">
+                    <span class="valor-bom-ficha">2</span>
+                    <span class="valor-extremo-ficha">0</span>
+                  </div>
+                </div>
+
+                <div class="linha-pericia-ficha pericia-natural-ficha">
+                  <div class="nome-e-atributo-pericia">
+                    <strong>Atletismo</strong>
+                    <button class="sigla-atributo-pericia atributo-fisico-sigla" type="button">(FIS)</button>
+                  </div>
+
+                  <div class="valores-pericia-ficha">
+                    <span class="bonus-natural-ficha">+2</span>
+                    <input type="number" value="6">
+                    <span class="valor-bom-ficha">3</span>
+                    <span class="valor-extremo-ficha">1</span>
+                  </div>
+                </div>
+
+                <div class="linha-pericia-ficha">
+                  <div class="nome-e-atributo-pericia">
+                    <strong>Atualidades</strong>
+                    <button class="sigla-atributo-pericia atributo-cognicao-sigla" type="button">(COG)</button>
+                  </div>
+
+                  <div class="valores-pericia-ficha">
+                    <input type="number" value="4">
+                    <span class="valor-bom-ficha">2</span>
+                    <span class="valor-extremo-ficha">0</span>
+                  </div>
+                </div>
+
+                <div class="linha-pericia-ficha">
+                  <div class="nome-e-atributo-pericia">
+                    <strong>Computação</strong>
+                    <button class="sigla-atributo-pericia atributo-cognicao-sigla" type="button">(COG)</button>
+                  </div>
+
+                  <div class="valores-pericia-ficha">
+                    <input type="number" value="8">
+                    <span class="valor-bom-ficha">4</span>
+                    <span class="valor-extremo-ficha">1</span>
+                  </div>
+                </div>
+
+                <div class="linha-pericia-ficha">
+                  <div class="nome-e-atributo-pericia">
+                    <strong>Diplomacia</strong>
+                    <button class="sigla-atributo-pericia atributo-presenca-sigla" type="button">(PRE)</button>
+                  </div>
+
+                  <div class="valores-pericia-ficha">
+                    <input type="number" value="7">
+                    <span class="valor-bom-ficha">3</span>
+                    <span class="valor-extremo-ficha">1</span>
+                  </div>
+                </div>
+
+                <div class="linha-pericia-ficha">
+                  <div class="nome-e-atributo-pericia">
+                    <strong>Fortitude</strong>
+                    <button class="sigla-atributo-pericia atributo-fisico-sigla" type="button">(FIS)</button>
+                  </div>
+
+                  <div class="valores-pericia-ficha">
+                    <input type="number" value="5">
+                    <span class="valor-bom-ficha">2</span>
+                    <span class="valor-extremo-ficha">1</span>
+                  </div>
+                </div>
+
+                <div class="linha-pericia-ficha">
+                  <div class="nome-e-atributo-pericia">
+                    <strong>Intuição</strong>
+                    <button class="sigla-atributo-pericia atributo-presenca-sigla" type="button">(PRE)</button>
+                  </div>
+
+                  <div class="valores-pericia-ficha">
+                    <input type="number" value="4">
+                    <span class="valor-bom-ficha">2</span>
+                    <span class="valor-extremo-ficha">0</span>
+                  </div>
+                </div>
+
+                <div class="linha-pericia-ficha">
+                  <div class="nome-e-atributo-pericia">
+                    <strong>Medicina</strong>
+                    <button class="sigla-atributo-pericia atributo-cognicao-sigla" type="button">(COG)</button>
+                  </div>
+
+                  <div class="valores-pericia-ficha">
+                    <input type="number" value="4">
+                    <span class="valor-bom-ficha">2</span>
+                    <span class="valor-extremo-ficha">0</span>
+                  </div>
+                </div>
+
+              </div>
+            </section>
+
+            <!-- Rolagens -->
+
+            <section class="painel-pontos-ficha painel-rolagens-ficha" data-painel-pontos="rolagens">
+              <h2>ROLAGENS</h2>
+
+              <select id="tipo-rolagem-ficha" class="tipo-rolagem-ficha">
+                <option value="pericia">Teste de Perícia</option>
+                <option value="outro">Outro Teste</option>
+              </select>
+
+              <div class="grade-area-rolagem">
+
+                <div class="montador-rolagem">
+
+                  <!-- Teste de Perícia -->
+
+                  <div id="rolagem-pericia-ficha" class="tipo-teste-ficha">
+                    <input id="pesquisa-pericia-rolagem" class="pesquisa-pericia-rolagem" type="search" placeholder="Pesquisar Perícia...">
+
+                    <div class="dados-teste-pericia">
+                      <label>
+                        <span>Dados:</span>
+
+                        <div>
+                          <input id="quantidade-d20-ficha" type="number" min="0" max="99" value="3">
+                          <strong>d20</strong>
+                        </div>
+                      </label>
+
+                      <label>
+                        <span>Valor:</span>
+                        <input id="valor-teste-pericia" type="number" min="0" max="99" value="7">
+                      </label>
+                    </div>
+                  </div>
+
+                  <!-- Outro Teste -->
+
+                  <div id="rolagem-outro-ficha" class="tipo-teste-ficha" hidden>
+                    <div class="linha-dado-personalizado">
+                      <input type="number" min="0" max="99" value="1">
+
+                      <select>
+                        <option>d4</option>
+                        <option>d6</option>
+                        <option>d8</option>
+                        <option>d10</option>
+                        <option>d12</option>
+                        <option selected>d20</option>
+                        <option>d100</option>
+                      </select>
+
+                      <button class="adicionar-dado-rolagem" type="button">+</button>
+                    </div>
+                  </div>
+
+                  <!-- Resultado -->
+
+                  <div class="resultado-rolagem-ficha">
+                    <div class="dados-resultado-ficha"></div>
+                    <strong class="resultado-sucesso-ficha" hidden></strong>
+                  </div>
+
+                  <div class="acoes-rolagem-ficha">
+                    <button id="rolar-ficha" class="botao-rolar-ficha" type="button">ROLAR</button>
+                    <button id="salvar-rolagem-ficha" class="botao-salvar-rolagem-ficha" type="button" hidden>SALVAR</button>
+                  </div>
+
+                </div>
+
+                <!-- Histórico -->
+
+                <aside class="historico-rolagens-ficha">
+                  <h3>HISTÓRICO</h3>
+
+                  <div class="resultado-rolagem-ficha">
+                    <div class="dados-resultado-ficha"></div>
+                    <strong class="resultado-sucesso-ficha" hidden></strong>
+                  </div>
+                </aside>
+
+              </div>
+
+              <!-- Rolagens salvas -->
+
+              <div class="rolagens-salvas-ficha">
+                <div class="cabecalho-rolagens-salvas">
+                  <h3>ROLAGENS SALVAS</h3>
+                </div>
+                <div id="lista-rolagens-salvas-ficha" class="lista-rolagens-salvas-ficha"></div>
+              </div>
+
+            </section>
+
+          </div>
+        </section>
 
         <section id="aba-habilidades" class="conteudo-aba-ficha" role="tabpanel"></section>
 

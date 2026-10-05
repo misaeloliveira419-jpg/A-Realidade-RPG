@@ -280,6 +280,699 @@
   grid-column: 1 / -1;
 }
 
+/* Pontos de Ficha */
+
+.cabecalho-pontos-ficha{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 38px;
+  margin-bottom: 18px;
+  padding: 12px;
+  background: rgb(7,7,7);
+  border: 1px solid rgb(70,70,70);
+  border-radius: 5px;
+}
+
+.campo-nivel-ficha,
+.campo-credito-ficha{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: bold;
+}
+
+.campo-nivel-ficha select,
+.entrada-credito-ficha{
+  height: 36px;
+  background: black;
+  color: white;
+  border: 1px solid rgb(110,110,110);
+  border-radius: 5px;
+}
+
+.campo-nivel-ficha select{
+  min-width: 58px;
+  padding: 0 8px;
+  font-weight: bold;
+}
+
+.entrada-credito-ficha{
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.entrada-credito-ficha span{
+  padding-left: 10px;
+  color: rgb(180,180,180);
+}
+
+.entrada-credito-ficha input{
+  width: 110px;
+  padding: 0 10px 0 5px;
+  background: transparent;
+  color: white;
+  border: none;
+  outline: none;
+  font-weight: bold;
+}
+
+#ncp-ficha,
+#neo-ficha,
+.entrada-credito-ficha{
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+#ncp-ficha:hover,
+#neo-ficha:hover,
+.entrada-credito-ficha:hover{
+  border-color: rgb(140,140,140);
+}
+
+#ncp-ficha:focus,
+#neo-ficha:focus,
+.entrada-credito-ficha:focus{
+  border-color: rgb(150,0,225);
+  box-shadow: 0 0 10px rgb(200,0,225);
+}
+
+
+/* Grade principal */
+
+.grade-pontos-ficha{
+  display: grid;
+  grid-template-columns: minmax(190px,1fr) minmax(400px,2fr) minmax(300px,1fr);
+  gap: 10px;
+  align-items: start;
+}
+
+.painel-pontos-ficha{
+  min-width: 0;
+  padding: 11px;
+  background: rgb(5,5,5);
+  border: 1px solid rgb(80,80,80);
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.painel-pontos-ficha h2{
+  margin: 0 0 12px;
+  text-align: center;
+  font-size: 17px;
+}
+
+/* Atributos */
+
+.contador-atributos-ficha{
+  display: block;
+  margin-bottom: 12px;
+  color: rgb(190,190,190);
+  text-align: center;
+  font-size: 12px;
+}
+
+.lista-atributos-ficha{
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.linha-atributo-ficha{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 39px;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.atributo-fisico-ficha{
+  --gradiente-atributo-ficha: linear-gradient(
+    rgb(150,50,0),
+    rgb(210,70,50),
+    rgb(100,150,175)
+  );
+  --cor-atributo-ficha: rgb(210,70,50);
+}
+
+.atributo-cognicao-ficha{
+  --gradiente-atributo-ficha: linear-gradient(
+    rgb(180,180,210),
+    rgb(100,100,100),
+    rgb(220,200,220)
+  );
+  --cor-atributo-ficha: rgb(180,180,210);
+}
+
+.atributo-presenca-ficha{
+  --gradiente-atributo-ficha: linear-gradient(
+    rgb(225,225,25),
+    rgb(150,175,100),
+    rgb(75,100,125)
+  );
+  --cor-atributo-ficha: rgb(200,200,60);
+}
+
+.atributo-deslocamento-ficha{
+  --gradiente-atributo-ficha: linear-gradient(
+    rgb(100,60,135),
+    rgb(230,130,60),
+    rgb(90,75,50)
+  );
+  --cor-atributo-ficha: rgb(230,130,60);
+}
+
+.linha-atributo-ficha > span:first-child{
+  background: var(--gradiente-atributo-ficha);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.borda-atributo-ficha,
+.borda-deslocamento-ficha{
+  flex-shrink: 0;
+  padding: 2px;
+  background: var(--gradiente-atributo-ficha);
+  border-radius: 7px;
+}
+
+.borda-atributo-ficha input{
+  display: block;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  background: black;
+  color: var(--cor-atributo-ficha);
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  text-align: center;
+  font-size: 19px;
+  font-weight: bold;
+}
+
+.valor-deslocamento-ficha{
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 7px;
+  background: black;
+  border-radius: 5px;
+}
+
+.valor-deslocamento-ficha label{
+  display: flex;
+  align-items: center;
+  color: var(--cor-atributo-ficha);
+}
+
+.valor-deslocamento-ficha input{
+  width: 32px;
+  padding: 0;
+  background: transparent;
+  color: var(--cor-atributo-ficha);
+  border: none;
+  outline: none;
+  text-align: right;
+  font-weight: bold;
+}
+
+/* PV e PD */
+
+.area-pontos-recurso{
+  margin-top: 20px;
+}
+
+.cabecalho-recurso{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 7px;
+}
+
+.cabecalho-recurso strong{
+  position: relative;
+  right: 20px;
+}
+
+.valores-recurso{
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.valores-recurso input{
+  width: 42px;
+  padding: 3px;
+  background: black;
+  color: white;
+  border: 1px solid rgb(90,90,90);
+  border-radius: 4px;
+  text-align: center;
+}
+
+.barra-recurso{
+  height: 14px;
+  padding: 2px;
+  background: rgb(15,15,15);
+  border: 1px solid rgb(100,100,100);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.preenchimento-recurso{
+  height: 100%;
+  border-radius: 5px;
+  transition: width 0.4s;
+}
+
+.barra-pv .preenchimento-recurso{
+  background: linear-gradient(90deg,rgb(10,80,40),rgb(25,190,70));
+  box-shadow: 0 0 8px rgba(25,190,70,0.55);
+}
+
+.barra-pd .preenchimento-recurso{
+  background: linear-gradient(90deg,rgb(70,25,110),rgb(100,120,245));
+  box-shadow: 0 0 8px rgba(100,120,245,0.55);
+}
+
+/* Perícias */
+
+.cabecalho-painel-pericias{
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.cabecalho-painel-pericias h2{
+  margin: 0;
+}
+
+.legenda-valores-pericia{
+  display: grid;
+  grid-template-columns: repeat(3,38px);
+  gap: 4px;
+  color: rgb(145,145,145);
+  font-size: 8px;
+  text-align: center;
+}
+
+.lista-pericias-ficha{
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 3px 16px;
+}
+
+.linha-pericia-ficha{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 7px;
+  min-width: 0;
+  min-height: 30px;
+  border-bottom: 1px solid rgb(45,45,45);
+}
+
+.nome-e-atributo-pericia{
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 6px;
+}
+
+.nome-e-atributo-pericia strong{
+  min-width: 0;
+  font-size: 10px;
+  overflow-wrap: anywhere;
+}
+
+.sigla-atributo-pericia{
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: bold;
+  transition: transform 0.4s;
+}
+
+.sigla-atributo-pericia:hover{
+  transform: scale(1.2);
+}
+
+.atributo-fisico-sigla{
+  background: linear-gradient(
+    rgb(150,50,0),
+    rgb(210,70,50),
+    rgb(100,150,175)
+  );
+}
+
+.atributo-cognicao-sigla{
+  background: linear-gradient(
+    rgb(180,180,210),
+    rgb(100,100,100),
+    rgb(220,200,220)
+  );
+}
+
+.atributo-presenca-sigla{
+  background: linear-gradient(
+    rgb(225,225,25),
+    rgb(150,175,100),
+    rgb(75,100,125)
+  );
+}
+
+.atributo-fisico-sigla,
+.atributo-cognicao-sigla,
+.atributo-presenca-sigla{
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.valores-pericia-ficha{
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.valores-pericia-ficha input,
+.valores-pericia-ficha > span:not(.bonus-natural-ficha){
+  width: 31px;
+  min-height: 25px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.valores-pericia-ficha input{
+  background: rgba(5,160,30,0.12);
+  color: rgb(70,210,90);
+  border: 1px solid rgb(5,160,30);
+}
+
+.valor-bom-ficha{
+  color: rgb(80,145,240);
+  border: 1px solid rgb(0,75,175);
+}
+
+.valor-extremo-ficha{
+  color: rgb(235,115,40);
+  border: 1px solid rgb(210,85,0);
+}
+
+.bonus-natural-ficha{
+  color: rgb(200,110,240);
+  font-size: 10px;
+  font-weight: bold;
+}
+
+/* Rolagens */
+
+.tipo-rolagem-ficha,
+.pesquisa-pericia-rolagem{
+  width: 100%;
+  height: 36px;
+  padding: 0 9px;
+  background: black;
+  color: white;
+  border: 1px solid rgb(100,100,100);
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.grade-area-rolagem{
+  display: grid;
+  grid-template-columns: minmax(190px,1fr) minmax(125px,0.75fr);
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.montador-rolagem,
+.historico-rolagens-ficha{
+  min-width: 0;
+}
+
+.dados-teste-pericia{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px;
+  margin-top: 10px;
+}
+
+.dados-teste-pericia label{
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.dados-teste-pericia label > div{
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.dados-teste-pericia input,
+.linha-dado-personalizado input,
+.linha-dado-personalizado select{
+  min-width: 0;
+  height: 32px;
+  background: black;
+  color: white;
+  border: 1px solid rgb(90,90,90);
+  border-radius: 4px;
+  text-align: center;
+}
+
+.dados-teste-pericia input{
+  width: 50px;
+}
+
+.linha-dado-personalizado{
+  display: grid;
+  grid-template-columns: 55px 1fr 32px;
+  gap: 5px;
+}
+
+.adicionar-dado-rolagem{
+  background: black;
+  color: white;
+  border: 1px solid white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.resultado-rolagem-ficha{
+  min-height: 90px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 8px;
+  background: rgb(3,3,3);
+  border: 1px dashed rgb(70,70,70);
+  border-radius: 5px;
+}
+
+.dados-resultado-ficha{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+}
+
+.dado-resultado{
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: black;
+  border: 2px solid currentColor;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.resultado-sucesso-ficha{
+  text-align: center;
+  font-size: 12px;
+}
+
+.resultado-normal{
+  color: rgb(5,160,30);
+}
+
+.resultado-bom{
+  color: rgb(0,110,225);
+}
+
+.resultado-extremo{
+  color: rgb(225,90,0);
+}
+
+.resultado-fracasso{
+  color: rgb(210,210,210);
+}
+
+.resultado-desastre{
+  color: rgb(210,20,20);
+}
+
+.acoes-rolagem-ficha{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px;
+  margin-top: 10px;
+}
+
+.botao-rolar-ficha,
+.botao-salvar-rolagem-ficha{
+  min-height: 36px;
+  background: black;
+  color: white;
+  border: 1px solid white;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.botao-rolar-ficha:hover,
+.botao-salvar-rolagem-ficha:hover{
+  transform: scale(1.03);
+  box-shadow: 0 0 8px rgb(150,0,225);
+}
+
+/* Histórico */
+
+.historico-rolagens-ficha{
+  padding-left: 10px;
+  border-left: 1px solid rgb(65,65,65);
+}
+
+.historico-rolagens-ficha h3,
+.rolagens-salvas-ficha h3{
+  margin: 0 0 8px;
+  font-size: 11px;
+  text-align: center;
+}
+
+.lista-historico-rolagens-ficha{
+  height: 190px;
+  overflow-y: auto;
+}
+
+.item-historico-rolagem{
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 7px 0;
+  border-bottom: 1px solid rgb(50,50,50);
+  font-size: 9px;
+}
+
+.item-historico-rolagem > span{
+  color: rgb(150,150,150);
+}
+
+.numero-historico{
+  margin-right: 4px;
+  font-weight: bold;
+}
+
+/* Rolagens salvas */
+
+.rolagens-salvas-ficha{
+  margin-top: 14px;
+  padding-top: 10px;
+  border-top: 1px solid rgb(70,70,70);
+}
+
+.lista-rolagens-salvas-ficha{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.rolagem-salva-exemplo{
+  min-width: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  padding: 7px 10px;
+  background: rgb(10,10,10);
+  color: white;
+  border: 1px solid rgb(100,100,100);
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: left;
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.rolagem-salva-exemplo strong{
+  font-size: 11px;
+}
+
+.rolagem-salva-exemplo span{
+  color: rgb(165,165,165);
+  font-size: 9px;
+}
+
+.rolagem-salva-exemplo:hover{
+  transform: scale(1.03);
+  border-color: rgb(150,0,225);
+  box-shadow: 0 0 7px rgba(150,0,225,0.45);
+}
+
+.menu-areas-pontos-ficha{
+  display: none;
+}
+
+.remover-dado-rolagem{
+  background: black;
+  color: white;
+  border: 1px solid white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.remover-dado-rolagem:hover{
+  color: rgb(255,80,80);
+  border-color: rgb(255,80,80);
+}
+
+.resultado-desastre-maximo{
+  color: rgb(170,60,0);
+}
+
+.resultado-extremo-maximo{
+  color: rgb(200,175,0);
+}
+
+.resultado-soma{
+  color: white;
+}
+
 /* Responsivo */
 
 @media (max-width: 1000px){
@@ -334,5 +1027,69 @@
   .campo-idade-ficha,
   .campo-texto-ficha{
     grid-column: 1;
+  }
+}
+
+@media (max-width: 950px){
+  .menu-areas-pontos-ficha{
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    margin-bottom: 10px;
+    border-bottom: 1px solid rgb(70,70,70);
+  }
+
+  .botao-area-pontos{
+    padding: 10px 6px;
+    background: black;
+    color: rgb(150,150,150);
+    border: none;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: bold;
+  }
+
+  .botao-area-pontos.ativa{
+    color: white;
+    border-bottom-color: rgb(0,225,240);
+    text-shadow: 0 0 8px rgb(0,210,225);
+  }
+
+  .grade-pontos-ficha{
+    display: block;
+  }
+
+  .grade-pontos-ficha .painel-pontos-ficha{
+    display: none;
+  }
+
+  .grade-pontos-ficha .painel-pontos-ficha.area-pontos-ativa{
+    display: block;
+  }
+
+  .lista-pericias-ficha{
+    grid-template-columns: repeat(2,minmax(0,1fr));
+  }
+}
+
+@media (max-width: 650px){
+  .cabecalho-pontos-ficha{
+    gap: 15px;
+  }
+
+  .lista-pericias-ficha{
+    grid-template-columns: 1fr;
+  }
+
+  .grade-area-rolagem{
+    grid-template-columns: 1fr;
+  }
+
+  .historico-rolagens-ficha{
+    padding-left: 0;
+    padding-top: 10px;
+    border-left: none;
+    border-top: 1px solid rgb(65,65,65);
   }
 }
