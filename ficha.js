@@ -211,6 +211,72 @@ botaoRemoverFotoFicha.addEventListener("click", async evento => {
   }
 });
 
+async function carregarFichaAutenticada(usuario) {
+  if (!usuario || !idFicha) {
+    window.location.replace("index-suas-fichas.html");
+    return;
+  }
+
+  let documento;
+
+  /* Ler a ficha no Firestore */
+
+  try {
+    documento = await db.collection("fichas").doc(idFicha).get();
+
+  } catch (erro) {
+    console.error("Erro ao ler a ficha no Firestore:", erro);
+
+    if (
+      erro?.code === "permission-denied" ||
+      erro?.code === "not-found"
+    ) {
+      window.location.replace("index-suas-fichas.html");
+    }
+
+    return;
+  }
+
+  if (!documento.exists) {
+    window.location.replace("index-suas-fichas.html");
+    return;
+  }
+
+  const ficha = documento.data();
+
+  if (ficha.donoUid !== usuario.uid) {
+    window.location.replace("index-suas-fichas.html");
+    return;
+  }
+
+  if (ficha.estado !== "pronta") {
+    window.location.replace(
+      `index-criacao-de-ficha.html?ficha=${encodeURIComponent(idFicha)}`
+    );
+    return;
+  }
+
+  /* Montar a interface */
+
+  try {
+    preencherCabecalhoFicha(ficha);
+
+    await preencherInformacoesFicha(ficha);
+    await preencherPontosFicha(ficha);
+
+    iniciarEscutasRolagensFicha();
+
+    document.title =
+      `${ficha.nome || "Ficha"}: A Realidade RPG`;
+
+  } catch (erro) {
+    console.error(
+      "Erro ao montar a interface da ficha:",
+      erro
+    );
+  }
+}
+
 /* Navegação das abas da ficha */
 
 const botoesAbasFicha = [...document.querySelectorAll(".aba-ficha")];
@@ -2891,45 +2957,10 @@ if (previewLocal) {
     });
 }
 
+/* Inicialização da ficha real */
+
 if (!previewLocal) {
-  auth.onAuthStateChanged(async usuario => {
-    if (!usuario || !idFicha) {
-      window.location.replace("index-suas-fichas.html");
-      return;
-    }
-
-    try {
-      const documento = await db.collection("fichas").doc(idFicha).get();
-
-      if (!documento.exists) {
-        window.location.replace("index-suas-fichas.html");
-        return;
-      }
-
-      const ficha = documento.data();
-
-      if (ficha.donoUid !== usuario.uid) {
-        window.location.replace("index-suas-fichas.html");
-        return;
-      }
-
-      if (ficha.estado !== "pronta") {
-        window.location.replace(`index-criacao-de-ficha.html?ficha=${encodeURIComponent(idFicha)}`);
-        return;
-      }
-
-      preencherCabecalhoFicha(ficha);
-
-      await preencherInformacoesFicha(ficha);
-      await preencherPontosFicha(ficha);
-      
-      iniciarEscutasRolagensFicha();
-
-      document.title = `${ficha.nome || "Ficha"}: A Realidade RPG`;
-
-    } catch (erro) {
-      console.error("Erro ao carregar ficha:", erro);
-      window.location.replace("index-suas-fichas.html");
-    }
+  auth.onAuthStateChanged(usuario => {
+    carregarFichaAutenticada(usuario);
   });
 }
