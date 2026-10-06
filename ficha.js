@@ -2841,6 +2841,14 @@ function renderizarRolagensSalvasFicha(
       const rolagem =
         documento.data();
 
+      const container =
+        document.createElement(
+          "div"
+        );
+
+      container.className =
+        "container-rolagem-salva";
+
       const botao =
         document.createElement(
           "button"
@@ -2964,7 +2972,7 @@ function renderizarRolagensSalvasFicha(
       );
 
       fragmento.appendChild(
-        botao
+        container
       );
     }
   );
