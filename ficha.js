@@ -2324,6 +2324,73 @@ function renderizarResultadoOutroFicha(
 
 /* Histórico */
 
+async function limitarHistoricoRolagensFicha() {
+  if (
+    previewLocal ||
+    !auth.currentUser ||
+    !idFicha
+  ) return;
+
+  try {
+    const referenciaHistorico =
+      db
+        .collection("fichas")
+        .doc(idFicha)
+        .collection("historicoRolagens");
+
+    const resultado =
+      await referenciaHistorico
+        .orderBy(
+          "criadoEm",
+          "desc"
+        )
+        .get();
+
+    const excedentes =
+      resultado.docs.slice(15);
+
+    if (
+      excedentes.length === 0
+    ) return;
+
+    /*
+      O Firestore limita batches a 500 operações.
+      Usamos 450 para ficar com margem.
+    */
+
+    for (
+      let inicio = 0;
+      inicio < excedentes.length;
+      inicio += 450
+    ) {
+      const lote =
+        db.batch();
+
+      const grupo =
+        excedentes.slice(
+          inicio,
+          inicio + 450
+        );
+
+      grupo.forEach(
+        documento => {
+          lote.delete(
+            documento.ref
+          );
+        }
+      );
+
+      await lote.commit();
+    }
+
+  } catch (erro) {
+    console.error(
+      "Erro ao limitar histórico de rolagens:",
+      erro
+    );
+  }
+}
+
 async function registrarRolagemHistoricoFicha(
   dados
 ) {
@@ -2351,6 +2418,8 @@ async function registrarRolagemHistoricoFicha(
             .FieldValue
             .serverTimestamp()
       });
+
+      await limitarHistoricoRolagensFicha();
 
   } catch (erro) {
     console.error(
@@ -2993,6 +3062,8 @@ function iniciarEscutasRolagensFicha() {
     !idFicha
   ) return;
 
+  limitarHistoricoRolagensFicha();
+
   if (
     cancelarEscutaHistoricoRolagens
   ) {
@@ -3016,7 +3087,7 @@ function iniciarEscutasRolagensFicha() {
         "criadoEm",
         "desc"
       )
-      .limit(50)
+      .limit(15)
       .onSnapshot(
         resultado => {
           renderizarHistoricoRolagensFicha(
