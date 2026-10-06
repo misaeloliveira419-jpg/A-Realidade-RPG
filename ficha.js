@@ -23,6 +23,54 @@ const campoAnotacoesFicha = document.getElementById("anotacoes-ficha");
 
 let ocupacoesFichaDisponiveis = [];
 
+function verificarElementosPontosFicha() {
+  const elementos = {
+    "ncp-ficha": campoNcpFicha,
+    "neo-ficha": campoNeoFicha,
+    "credito-ficha": campoCreditoFicha,
+    "contador-atributos-ficha": contadorAtributosFicha,
+
+    "fisico-ficha": campoFisicoFicha,
+    "cognicao-ficha": campoCognicaoFicha,
+    "presenca-ficha": campoPresencaFicha,
+    "deslocamento-metros-ficha": campoDeslocamentoMetrosFicha,
+    "deslocamento-quadrados-ficha": campoDeslocamentoQuadradosFicha,
+
+    "pv-atual-ficha": campoPvAtualFicha,
+    "pv-maximo-ficha": campoPvMaximoFicha,
+    "pd-atual-ficha": campoPdAtualFicha,
+    "pd-maximo-ficha": campoPdMaximoFicha,
+
+    "lista-pericias-ficha": listaPericiasFicha,
+
+    "tipo-rolagem-ficha": tipoRolagemFicha,
+    "rolagem-pericia-ficha": areaRolagemPericiaFicha,
+    "rolagem-outro-ficha": areaRolagemOutroFicha,
+    "pesquisa-pericia-rolagem": pesquisaPericiaRolagem,
+    "quantidade-d20-ficha": quantidadeD20Ficha,
+    "valor-teste-pericia": valorTestePericia,
+
+    "rolar-ficha": botaoRolarFicha,
+    "salvar-rolagem-ficha": botaoSalvarRolagemFicha,
+
+    ".dados-resultado-ficha": dadosResultadoFicha,
+    ".resultado-sucesso-ficha": resultadoSucessoFicha,
+
+    "lista-historico-rolagens-ficha": listaHistoricoRolagensFicha,
+    "lista-rolagens-salvas-ficha": listaRolagensSalvasFicha
+  };
+
+  const faltando = Object.entries(elementos)
+    .filter(([, elemento]) => !elemento)
+    .map(([nome]) => nome);
+
+  if (faltando.length > 0) {
+    throw new Error(
+      `Elementos ausentes na tela de Pontos de Ficha: ${faltando.join(", ")}`
+    );
+  }
+}
+
 /* Cabeçalho da ficha */
 
 function mostrarFotoFicha(foto) {
@@ -1240,6 +1288,7 @@ function renderizarPericiasPontosFicha() {
 /* Preencher Pontos de Ficha */
 
 async function preencherPontosFicha(ficha) {
+  verificarElementosPontosFicha();
   await promessaPericiasPontosFicha;
 
   campoNcpFicha.value =
