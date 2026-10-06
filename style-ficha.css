@@ -490,7 +490,7 @@
 }
 
 .valor-deslocamento-ficha input{
-  width: 32px;
+  width: 46px;
   padding: 0;
   background: transparent;
   color: var(--cor-atributo-ficha);
