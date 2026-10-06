@@ -1937,7 +1937,6 @@ pesquisaPericiaRolagem.addEventListener(
   }
 );
 
-
 /* Dados personalizados */
 
 function criarLinhaDadoOutroFicha(
@@ -1945,7 +1944,7 @@ function criarLinhaDadoOutroFicha(
     quantidade: 1,
     lados: 20
   },
-  principal = false
+  removivel = true
 ) {
   const linha =
     document.createElement("div");
@@ -1960,6 +1959,7 @@ function criarLinhaDadoOutroFicha(
   quantidade.min = "1";
   quantidade.max = "99";
   quantidade.step = "1";
+
   quantidade.value =
     configuracao.quantidade;
 
@@ -1992,51 +1992,42 @@ function criarLinhaDadoOutroFicha(
         configuracao.lados
       );
 
-    dado.appendChild(opcao);
+    dado.appendChild(
+      opcao
+    );
   });
-
-  const botao =
-    document.createElement("button");
-
-  botao.type = "button";
-
-  botao.className =
-    principal
-      ? "adicionar-dado-rolagem"
-      : "remover-dado-rolagem";
-
-  botao.textContent =
-    principal ? "+" : "×";
-
-  if (principal) {
-    botao.addEventListener(
-      "click",
-      () => {
-        areaRolagemOutroFicha
-          .appendChild(
-            criarLinhaDadoOutroFicha(
-              {
-                quantidade: 1,
-                lados: 20
-              },
-              false
-            )
-          );
-      }
-    );
-
-  } else {
-    botao.addEventListener(
-      "click",
-      () => linha.remove()
-    );
-  }
 
   linha.append(
     quantidade,
-    dado,
-    botao
+    dado
   );
+
+  if (removivel) {
+    const botaoRemover =
+      document.createElement(
+        "button"
+      );
+
+    botaoRemover.type =
+      "button";
+
+    botaoRemover.className =
+      "remover-dado-rolagem";
+
+    botaoRemover.textContent =
+      "×";
+
+    botaoRemover.addEventListener(
+      "click",
+      () => {
+        linha.remove();
+      }
+    );
+
+    linha.appendChild(
+      botaoRemover
+    );
+  }
 
   return linha;
 }
@@ -2058,11 +2049,53 @@ function renderizarConfiguracaoOutroFicha(
         .appendChild(
           criarLinhaDadoOutroFicha(
             configuracao,
-            indice === 0
+            indice !== 0
           )
         );
     }
   );
+
+  const botaoAdicionar =
+    document.createElement(
+      "button"
+    );
+
+  botaoAdicionar.type =
+    "button";
+
+  botaoAdicionar.className =
+    "adicionar-dado-rolagem";
+
+  botaoAdicionar.textContent =
+    "+";
+
+  botaoAdicionar.title =
+    "Adicionar outro dado";
+
+  botaoAdicionar.addEventListener(
+    "click",
+    () => {
+      const novaLinha =
+        criarLinhaDadoOutroFicha(
+          {
+            quantidade: 1,
+            lados: 20
+          },
+          true
+        );
+
+      areaRolagemOutroFicha
+        .insertBefore(
+          novaLinha,
+          botaoAdicionar
+        );
+    }
+  );
+
+  areaRolagemOutroFicha
+    .appendChild(
+      botaoAdicionar
+    );
 }
 
 function obterConfiguracaoOutroFicha() {
@@ -2347,16 +2380,39 @@ function renderizarResultadoOutroFicha(
 
   resultados.forEach(
     resultado => {
+      const grupo =
+        document.createElement(
+          "div"
+        );
+
+      grupo.className =
+        "resultado-dado-outro-ficha";
+
       const dado =
         criarResultadoDadoFicha(
           resultado.valor
         );
 
-      dado.title =
+      const tipo =
+        document.createElement(
+          "span"
+        );
+
+      tipo.className =
+        "tipo-dado-resultado";
+
+      tipo.textContent =
         `d${resultado.lados}`;
 
+      grupo.append(
+        dado,
+        tipo
+      );
+
       dadosResultadoFicha
-        .appendChild(dado);
+        .appendChild(
+          grupo
+        );
     }
   );
 

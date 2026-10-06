@@ -490,14 +490,27 @@
 }
 
 .valor-deslocamento-ficha input{
-  width: 46px;
-  padding: 0;
+  flex: 0 0 58px;
+  width: 58px;
+  min-width: 58px;
+  padding: 0 2px;
+  box-sizing: border-box;
+  appearance: textfield;
+  -moz-appearance: textfield;
   background: transparent;
   color: var(--cor-atributo-ficha);
   border: none;
   outline: none;
   text-align: right;
+  font-size: 13px;
   font-weight: bold;
+}
+
+.valor-deslocamento-ficha input::-webkit-inner-spin-button,
+.valor-deslocamento-ficha input::-webkit-outer-spin-button{
+  margin: 0;
+  appearance: none;
+  -webkit-appearance: none;
 }
 
 /* PV e PD */
@@ -770,12 +783,33 @@
 }
 
 .adicionar-dado-rolagem{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin-top: 5px;
+  padding: 0;
   background: black;
   color: white;
   border: 1px solid white;
   border-radius: 4px;
   cursor: pointer;
   font-size: 18px;
+  font-weight: bold;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+
+.adicionar-dado-rolagem:hover{
+  transform: scale(1.08);
+  box-shadow: 0 0 7px rgb(150,0,225);
+}
+
+.linha-dado-personalizado
++ .linha-dado-personalizado{
+  margin-top: 5px;
 }
 
 .resultado-rolagem-ficha{
@@ -808,6 +842,20 @@
   border: 2px solid currentColor;
   border-radius: 5px;
   font-weight: bold;
+}
+
+.resultado-dado-outro-ficha{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.tipo-dado-resultado{
+  color: rgb(145,145,145);
+  font-size: 7px;
+  font-weight: bold;
+  line-height: 1;
 }
 
 .resultado-sucesso-ficha{
