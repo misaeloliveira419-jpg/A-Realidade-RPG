@@ -1631,58 +1631,106 @@ configurarCampoAtributoFicha(
 
 /* Deslocamento */
 
-function configurarDeslocamentoFicha(
-  campo,
-  chave
+function arredondarDeslocamentoFicha(
+  valor
 ) {
-  campo.addEventListener(
+  return (
+    Math.floor(
+      (valor + 0.0000001) * 10
+    ) / 10
+  );
+}
+
+function atualizarDeslocamentoFicha(
+  metros,
+  quadrados
+) {
+  estadoAtributosFicha
+    .deslocamentoMetros =
+      metros;
+
+  estadoAtributosFicha
+    .deslocamentoQuadrados =
+      quadrados;
+
+  campoDeslocamentoMetrosFicha.value =
+    metros;
+
+  campoDeslocamentoQuadradosFicha.value =
+    quadrados;
+
+  if (dadosFichaAtual) {
+    dadosFichaAtual.atributos ||= {};
+
+    dadosFichaAtual
+      .atributos
+      .deslocamentoMetros =
+        metros;
+
+    dadosFichaAtual
+      .atributos
+      .deslocamentoQuadrados =
+        quadrados;
+  }
+
+  salvarAtualizacaoPontosFicha({
+    "atributos.deslocamentoMetros":
+      metros,
+
+    "atributos.deslocamentoQuadrados":
+      quadrados
+  });
+}
+
+campoDeslocamentoMetrosFicha.addEventListener("change", () => {
+  const metros = Number(campoDeslocamentoMetrosFicha.value);
+
+  if (!Number.isFinite(metros) || metros < 0) {
+    campoDeslocamentoMetrosFicha.value = estadoAtributosFicha.deslocamentoMetros;
+    return;
+  }
+
+  const metrosFinal = arredondarDeslocamentoFicha(metros);
+
+  const quadradosFinal = arredondarDeslocamentoFicha(metrosFinal / 1.5);
+
+  atualizarDeslocamentoFicha(metrosFinal, quadradosFinal);
+});
+
+campoDeslocamentoQuadradosFicha
+  .addEventListener(
     "change",
     () => {
-      const valor =
-        Number(campo.value);
+      const quadrados =
+        Number(
+          campoDeslocamentoQuadradosFicha
+            .value
+        );
 
       if (
-        !Number.isFinite(valor) ||
-        valor < 0
+        !Number.isFinite(quadrados) ||
+        quadrados < 0
       ) {
-        campo.value =
-          estadoAtributosFicha[
-            chave
-          ];
+        campoDeslocamentoQuadradosFicha
+          .value =
+            estadoAtributosFicha
+              .deslocamentoQuadrados;
 
         return;
       }
 
-      estadoAtributosFicha[
-        chave
-      ] = valor;
+      const quadradosFinal =
+        arredondarDeslocamentoFicha(
+          quadrados
+        );
 
-      if (
-        dadosFichaAtual
-          ?.atributos
-      ) {
-        dadosFichaAtual
-          .atributos[chave] =
-            valor;
-      }
+      const metrosFinal =
+        arredondarDeslocamentoFicha(
+          quadradosFinal * 1.5
+        );
 
-      salvarAtualizacaoPontosFicha({
-        [`atributos.${chave}`]:
-          valor
-      });
-    }
-  );
-}
-
-configurarDeslocamentoFicha(
-  campoDeslocamentoMetrosFicha,
-  "deslocamentoMetros"
-);
-
-configurarDeslocamentoFicha(
-  campoDeslocamentoQuadradosFicha,
-  "deslocamentoQuadrados"
-);
+      atualizarDeslocamentoFicha(metrosFinal, quadradosFinal);
+    });
 
 
 /* PV e PD manuais */
