@@ -2884,6 +2884,85 @@ function renderizarRolagensSalvasFicha(
         }
       );
 
+      const botaoExcluir =
+        document.createElement(
+          "button"
+        );
+
+      botaoExcluir.type =
+        "button";
+
+      botaoExcluir.className =
+        "botao-excluir-rolagem-salva";
+
+      botaoExcluir.textContent =
+        "×";
+
+      botaoExcluir.title =
+        "Excluir rolagem salva";
+
+      botaoExcluir.setAttribute(
+        "aria-label",
+        "Excluir rolagem salva"
+      );
+
+      botaoExcluir.addEventListener(
+        "click",
+        async evento => {
+          evento.preventDefault();
+          evento.stopPropagation();
+
+          const nomeRolagem =
+            rolagem.nome ||
+            "Rolagem salva";
+
+          const confirmar =
+            window.confirm(
+              `Excluir "${nomeRolagem}"?`
+            );
+
+          if (!confirmar) return;
+
+          if (
+            previewLocal ||
+            !auth.currentUser ||
+            !idFicha
+          ) return;
+
+          botaoExcluir.disabled =
+            true;
+
+          try {
+            await db
+              .collection("fichas")
+              .doc(idFicha)
+              .collection(
+                "rolagensSalvas"
+              )
+              .doc(documento.id)
+              .delete();
+
+          } catch (erro) {
+            console.error(
+              "Erro ao excluir rolagem salva:",
+              erro
+            );
+
+            botaoExcluir.disabled =
+              false;
+
+            alert(
+              "Não foi possível excluir essa rolagem."
+            );
+          }
+        }
+      );
+
+      container.append(
+        botao,
+        botaoExcluir
+      );
+
       fragmento.appendChild(
         botao
       );
