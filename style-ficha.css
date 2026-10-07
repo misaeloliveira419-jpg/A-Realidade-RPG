@@ -280,9 +280,9 @@
   grid-column: 1 / -1;
 }
 
-/* Pontos de Ficha */
+/* Painel Principal */
 
-.cabecalho-pontos-ficha{
+.cabecalho-painel-principal{
   display: flex;
   align-items: center;
   justify-content: center;
@@ -360,14 +360,14 @@
 
 /* Grade principal */
 
-.grade-pontos-ficha{
+.grade-painel-principal{
   display: grid;
   grid-template-columns: minmax(190px,1fr) minmax(400px,2fr) minmax(300px,1fr);
   gap: 10px;
   align-items: start;
 }
 
-.painel-pontos-ficha{
+.painel-painel-principal{
   min-width: 0;
   padding: 11px;
   background: rgb(5,5,5);
@@ -376,7 +376,7 @@
   box-sizing: border-box;
 }
 
-.painel-pontos-ficha h2{
+.painel-painel-principal h2{
   margin: 0 0 12px;
   text-align: center;
   font-size: 17px;
@@ -1031,7 +1031,7 @@
   cursor: default;
 }
 
-.menu-areas-pontos-ficha{
+.menu-areas-painel-principal{
   display: none;
 }
 
@@ -1119,7 +1119,7 @@
 }
 
 @media (max-width: 950px){
-  .menu-areas-pontos-ficha{
+  .menu-areas-painel-principal{
     position: relative;
     display: grid;
     grid-template-columns: repeat(3,1fr);
@@ -1144,15 +1144,15 @@
     text-shadow: 0 0 8px rgb(0,210,225);
   }
 
-  .grade-pontos-ficha{
+  .grade-painel-principal{
     display: block;
   }
 
-  .grade-pontos-ficha .painel-pontos-ficha{
+  .grade-painel-principal .painel-painel-principal{
     display: none;
   }
 
-  .grade-pontos-ficha .painel-pontos-ficha.area-pontos-ativa{
+  .grade-painel-principal .painel-painel-principal.area-pontos-ativa{
     display: block;
   }
 
@@ -1162,7 +1162,7 @@
 }
 
 @media (max-width: 650px){
-  .cabecalho-pontos-ficha{
+  .cabecalho-painel-principal{
     gap: 15px;
   }
 

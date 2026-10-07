@@ -313,6 +313,7 @@ async function carregarFichaAutenticada(usuario) {
     await preencherPontosFicha(ficha);
 
     iniciarEscutasRolagensFicha();
+    iniciarEscutaRecursosFicha();
 
     document.title =
       `${ficha.nome || "Ficha"}: A Realidade RPG`;
@@ -768,6 +769,7 @@ let filaSalvamentoPontos = Promise.resolve();
 
 let cancelarEscutaHistoricoRolagens = null;
 let cancelarEscutaRolagensSalvas = null;
+let cancelarEscutaRecursosFicha = null;
 
 
 /* Utilidades */
@@ -3156,6 +3158,152 @@ function renderizarRolagensSalvasFicha(
     );
 }
 
+/* PV e PD em tempo real */
+
+function recursoFichaMudou(
+  atual,
+  novo
+) {
+  return (
+    atual.atual !== novo.atual ||
+    atual.maximo !== novo.maximo ||
+    atual.manual !== novo.manual
+  );
+}
+
+function obterRecursoTempoRealFicha(
+  recurso
+) {
+  if (
+    !recurso ||
+    typeof recurso !== "object"
+  ) {
+    return null;
+  }
+
+  const atual =
+    Number(recurso.atual);
+
+  const maximo =
+    Number(recurso.maximo);
+
+  if (
+    !Number.isInteger(atual) ||
+    atual < 0 ||
+    !Number.isInteger(maximo) ||
+    maximo < 0
+  ) {
+    return null;
+  }
+
+  return {
+    atual: atual,
+    maximo: maximo,
+    manual:
+      recurso.manual === true
+  };
+}
+
+function aplicarRecursosTempoRealFicha(
+  ficha
+) {
+  const novoPv =
+    obterRecursoTempoRealFicha(
+      ficha.pv
+    );
+
+  const novoPd =
+    obterRecursoTempoRealFicha(
+      ficha.pd
+    );
+
+  let precisaRenderizar =
+    false;
+
+  if (
+    novoPv &&
+    recursoFichaMudou(
+      estadoPvFicha,
+      novoPv
+    )
+  ) {
+    estadoPvFicha = {
+      ...novoPv
+    };
+
+    if (dadosFichaAtual) {
+      dadosFichaAtual.pv = {
+        ...novoPv
+      };
+    }
+
+    precisaRenderizar =
+      true;
+  }
+
+  if (
+    novoPd &&
+    recursoFichaMudou(
+      estadoPdFicha,
+      novoPd
+    )
+  ) {
+    estadoPdFicha = {
+      ...novoPd
+    };
+
+    if (dadosFichaAtual) {
+      dadosFichaAtual.pd = {
+        ...novoPd
+      };
+    }
+
+    precisaRenderizar =
+      true;
+  }
+
+  if (precisaRenderizar) {
+    renderizarPvPdFicha();
+  }
+}
+
+function iniciarEscutaRecursosFicha() {
+  if (
+    previewLocal ||
+    !auth.currentUser ||
+    !idFicha
+  ) {
+    return;
+  }
+
+  if (
+    cancelarEscutaRecursosFicha
+  ) {
+    cancelarEscutaRecursosFicha();
+  }
+
+  cancelarEscutaRecursosFicha =
+    db
+      .collection("fichas")
+      .doc(idFicha)
+      .onSnapshot(
+        documento => {
+          if (!documento.exists) {
+            return;
+          }
+
+          aplicarRecursosTempoRealFicha(
+            documento.data()
+          );
+        },
+        erro => {
+          console.error(
+            "Erro ao acompanhar PV e PD em tempo real:",
+            erro
+          );
+        }
+      );
+}
 
 /* Escutas em tempo real */
 
