@@ -708,6 +708,7 @@ const paineisAreasHabilidades = [...document.querySelectorAll("[data-painel-habi
 
 const campoPerfilHabilidadesFicha = document.getElementById("perfil-habilidades-ficha");
 const campoOcupacaoHabilidadesFicha = document.getElementById("ocupacao-habilidades-ficha");
+const campoOcupacao2HabilidadesFicha = document.getElementById("ocupacao-2-habilidades-ficha");
 const campoNivelPerfilHabilidadesFicha = document.getElementById("nivel-perfil-habilidades-ficha");
 const campoNivelOcupacaoHabilidadesFicha = document.getElementById("nivel-ocupacao-habilidades-ficha");
 
@@ -1526,10 +1527,12 @@ function salvarHabilidadesFichaImediatamente() {
 /* Cabeçalho */
 
 function preencherOpcoesOcupacaoHabilidadesFicha(
-  ocupacaoAtual
+  ocupacao1Atual,
+  ocupacao2Atual = ""
 ) {
   if (
-    !campoOcupacaoHabilidadesFicha
+    !campoOcupacaoHabilidadesFicha ||
+    !campoOcupacao2HabilidadesFicha
   ) {
     return;
   }
@@ -1537,92 +1540,185 @@ function preencherOpcoesOcupacaoHabilidadesFicha(
   campoOcupacaoHabilidadesFicha
     .replaceChildren();
 
+  campoOcupacao2HabilidadesFicha
+    .replaceChildren();
+
+
+  /* Opção inicial da Ocupação 1 */
+
+  const opcaoInicial =
+    document.createElement(
+      "option"
+    );
+
+  opcaoInicial.value = "";
+
+  opcaoInicial.textContent =
+    "Selecione uma Ocupação";
+
+  opcaoInicial.disabled = true;
+
+  campoOcupacaoHabilidadesFicha
+    .appendChild(
+      opcaoInicial
+    );
+
+
+  /* Opção Nenhuma da Ocupação 2 */
+
+  const opcaoNenhuma =
+    document.createElement(
+      "option"
+    );
+
+  opcaoNenhuma.value = "";
+
+  opcaoNenhuma.textContent =
+    "Nenhuma";
+
+  campoOcupacao2HabilidadesFicha
+    .appendChild(
+      opcaoNenhuma
+    );
+
+
+  /* Todas as Ocupações */
+
   ocupacoesFichaDisponiveis.forEach(
     ocupacao => {
-      const opcao =
+      const opcao1 =
         document.createElement(
           "option"
         );
 
-      opcao.value =
+      opcao1.value =
         ocupacao.id;
 
-      opcao.textContent =
+      opcao1.textContent =
         ocupacao.nome;
+
+      const opcao2 =
+        opcao1.cloneNode(
+          true
+        );
 
       campoOcupacaoHabilidadesFicha
         .appendChild(
-          opcao
+          opcao1
+        );
+
+      campoOcupacao2HabilidadesFicha
+        .appendChild(
+          opcao2
         );
     }
   );
 
-  if (
-    ocupacaoAtual &&
-    ![
-      ...campoOcupacaoHabilidadesFicha
-        .options
+
+  /* Garante Ocupações antigas que não estejam mais na lista */
+
+  function adicionarOcupacaoAusente(
+    campo,
+    valor
+  ) {
+    if (!valor) return;
+
+    const existe = [
+      ...campo.options
     ].some(
       opcao =>
         opcao.value ===
-          ocupacaoAtual
-    )
-  ) {
+          valor
+    );
+
+    if (existe) return;
+
     const opcao =
       document.createElement(
         "option"
       );
 
     opcao.value =
-      ocupacaoAtual;
+      valor;
 
     opcao.textContent =
       nomeOcupacaoHabilidadeFicha(
-        ocupacaoAtual
+        valor
       );
 
-    campoOcupacaoHabilidadesFicha
-      .appendChild(
-        opcao
-      );
+    campo.appendChild(
+      opcao
+    );
   }
 
+  adicionarOcupacaoAusente(
+    campoOcupacaoHabilidadesFicha,
+    ocupacao1Atual
+  );
+
+  adicionarOcupacaoAusente(
+    campoOcupacao2HabilidadesFicha,
+    ocupacao2Atual
+  );
+
+
+  /* Valores atuais */
+
   campoOcupacaoHabilidadesFicha.value =
-    ocupacaoAtual || "";
+    ocupacao1Atual || "";
+
+  campoOcupacao2HabilidadesFicha.value =
+    ocupacao2Atual || "";
 }
+
 
 async function preencherCabecalhoHabilidadesFicha(
   ficha
 ) {
   await promessaOcupacoesFicha;
 
-  const ocupacaoAtual =
-    Array.isArray(ficha.ocupacoes)
-      ? ficha.ocupacoes[0] || ""
-      : "";
+  const ocupacoes =
+    Array.isArray(
+      ficha.ocupacoes
+    )
+      ? ficha.ocupacoes
+          .slice(0, 2)
+      : [];
+
+  const ocupacao1Atual =
+    ocupacoes[0] || "";
+
+  const ocupacao2Atual =
+    ocupacoes[1] || "";
 
   campoPerfilHabilidadesFicha.value =
     ficha.perfil ||
     "adaptativo";
 
   preencherOpcoesOcupacaoHabilidadesFicha(
-    ocupacaoAtual
+    ocupacao1Atual,
+    ocupacao2Atual
   );
 
   campoNivelPerfilHabilidadesFicha.value =
     String(
-      Number.isInteger(ficha.ncp)
+      Number.isInteger(
+        ficha.ncp
+      )
         ? ficha.ncp
         : 0
     );
 
   campoNivelOcupacaoHabilidadesFicha.value =
     String(
-      Number.isInteger(ficha.neo)
+      Number.isInteger(
+        ficha.neo
+      )
         ? ficha.neo
         : 0
     );
 }
+
 
 function sincronizarCabecalhoHabilidadesComFicha() {
   campoPerfilHabilidadesFicha.value =
@@ -1630,10 +1726,21 @@ function sincronizarCabecalhoHabilidadesComFicha() {
     dadosFichaAtual?.perfil ||
     "adaptativo";
 
-  preencherOpcoesOcupacaoHabilidadesFicha(
+  const ocupacao1 =
     campoOcupacao1Ficha.value ||
-    dadosFichaAtual?.ocupacoes?.[0] ||
-    ""
+    dadosFichaAtual
+      ?.ocupacoes?.[0] ||
+    "";
+
+  const ocupacao2 =
+    campoOcupacao2Ficha.value ||
+    dadosFichaAtual
+      ?.ocupacoes?.[1] ||
+    "";
+
+  preencherOpcoesOcupacaoHabilidadesFicha(
+    ocupacao1,
+    ocupacao2
   );
 
   campoNivelPerfilHabilidadesFicha.value =
@@ -2338,11 +2445,44 @@ campoOcupacaoHabilidadesFicha
         novaOcupacao;
 
       if (
+        novaOcupacao &&
         campoOcupacao2Ficha.value ===
           novaOcupacao
       ) {
         campoOcupacao2Ficha.value =
           "";
+
+        campoOcupacao2HabilidadesFicha.value =
+          "";
+      }
+
+      salvarInformacoesFicha();
+    }
+  );
+
+
+campoOcupacao2HabilidadesFicha
+  ?.addEventListener(
+    "change",
+    () => {
+      const novaOcupacao =
+        campoOcupacao2HabilidadesFicha
+          .value;
+
+      if (
+        novaOcupacao &&
+        novaOcupacao ===
+          campoOcupacao1Ficha.value
+      ) {
+        campoOcupacao2HabilidadesFicha.value =
+          "";
+
+        campoOcupacao2Ficha.value =
+          "";
+
+      } else {
+        campoOcupacao2Ficha.value =
+          novaOcupacao;
       }
 
       salvarInformacoesFicha();
@@ -2401,18 +2541,13 @@ campoPerfilFicha.addEventListener(
 
 campoOcupacao1Ficha.addEventListener(
   "change",
-  () => {
-    preencherOpcoesOcupacaoHabilidadesFicha(
-      campoOcupacao1Ficha.value
-    );
-  }
+  sincronizarCabecalhoHabilidadesComFicha
 );
 
 campoOcupacao2Ficha.addEventListener(
   "change",
   sincronizarCabecalhoHabilidadesComFicha
 );
-
 document
   .getElementById(
     "ncp-ficha"

@@ -1099,7 +1099,8 @@
 }
 
 #perfil-habilidades-ficha,
-#ocupacao-habilidades-ficha{
+#ocupacao-habilidades-ficha,
+#ocupacao-2-habilidades-ficha{
   flex: 1;
   max-width: 190px;
 }
@@ -1115,6 +1116,58 @@
   box-shadow: 0 0 8px rgb(200,100,225);
 }
 
+.identidade-ocupacoes-habilidades-ficha{
+  display: grid;
+  grid-template-columns:
+    minmax(0,1fr)
+    minmax(0,1fr);
+  grid-template-areas:
+    "ocupacao1 ocupacao2"
+    "nivel nivel";
+  align-items: start;
+  gap: 8px 12px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.ocupacao-1-habilidades{
+  grid-area: ocupacao1;
+}
+
+.ocupacao-2-habilidades{
+  grid-area: ocupacao2;
+}
+
+.campo-ocupacao-habilidades{
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+  min-width: 0;
+  width: 100%;
+}
+
+.campo-ocupacao-habilidades strong{
+  text-align: left;
+  font-size: 9px;
+}
+
+.campo-ocupacao-habilidades select{
+  display: block;
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+  box-sizing: border-box;
+}
+
+.campo-nivel-ocupacao-habilidades{
+  grid-area: nivel;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-width: 0;
+}
 
 /* Grade das Habilidades */
 
@@ -1486,6 +1539,14 @@
     border-bottom: 1px solid rgb(70,70,70);
   }
 
+  .cabecalho-habilidades-ficha{
+    grid-template-columns: 1fr;
+  }
+
+  .cabecalho-habilidades-ficha{
+    grid-template-columns: 1fr;
+  }
+
   .botao-area-habilidade{
     padding: 10px 6px;
     background: black;
@@ -1538,7 +1599,27 @@
     border-top: 1px solid rgb(65,65,65);
   }
 
-  .cabecalho-habilidades-ficha{
-    grid-template-columns: 1fr;
+  .identidade-ocupacoes-habilidades-ficha{
+    grid-template-columns:
+      minmax(0,1fr)
+      minmax(0,1fr);
+    gap: 6px;
+    padding: 8px;
+  }
+
+  .campo-ocupacao-habilidades strong{
+    font-size: 8px;
+  }
+
+  .campo-ocupacao-habilidades select{
+    width: 100%;
+    min-width: 0;
+    padding-left: 5px;
+    padding-right: 5px;
+    font-size: 9px;
+  }
+
+  .campo-nivel-ocupacao-habilidades{
+    grid-column: 1 / -1;
   }
 }
