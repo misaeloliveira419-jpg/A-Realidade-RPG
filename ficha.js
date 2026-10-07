@@ -311,6 +311,7 @@ async function carregarFichaAutenticada(usuario) {
 
     await preencherInformacoesFicha(ficha);
     await preencherPontosFicha(ficha);
+    await preencherHabilidadesFicha(ficha);
 
     iniciarEscutasRolagensFicha();
     iniciarEscutaRecursosFicha();
@@ -700,69 +701,951 @@ botoesAreasPontos.forEach(botao => {
   });
 });
 
-/* Layout das Habilidades */
+/* Habilidades */
 
-const botoesAreasHabilidades = [
-  ...document.querySelectorAll(
-    ".botao-area-habilidade"
-  )
-];
+const botoesAreasHabilidades = [...document.querySelectorAll(".botao-area-habilidade")];
+const paineisAreasHabilidades = [...document.querySelectorAll("[data-painel-habilidade]")];
 
-const paineisAreasHabilidades = [
-  ...document.querySelectorAll(
-    "[data-painel-habilidade]"
-  )
-];
+const campoPerfilHabilidadesFicha = document.getElementById("perfil-habilidades-ficha");
+const campoOcupacaoHabilidadesFicha = document.getElementById("ocupacao-habilidades-ficha");
+const campoNivelPerfilHabilidadesFicha = document.getElementById("nivel-perfil-habilidades-ficha");
+const campoNivelOcupacaoHabilidadesFicha = document.getElementById("nivel-ocupacao-habilidades-ficha");
 
-const listaHabilidadesPessoais =
-  document.getElementById(
-    "lista-habilidades-pessoais-ficha"
-  );
+const listaHabilidadesPerfil = document.getElementById("lista-habilidades-perfil-ficha");
+const listaHabilidadesPessoais = document.getElementById("lista-habilidades-pessoais-ficha");
+const listaHabilidadesOcupacao = document.getElementById("lista-habilidades-ocupacao-ficha");
+const botaoAdicionarHabilidadePessoal = document.getElementById("adicionar-habilidade-pessoal-ficha");
 
-const botaoAdicionarHabilidadePessoal =
-  document.getElementById(
-    "adicionar-habilidade-pessoal-ficha"
-  );
+let catalogoHabilidadesSistema = {
+  perfis: {},
+  ocupacoes: {}
+};
+
+let estadoHabilidadesFicha = {
+  inicializadas: false,
+  perfil: [],
+  pessoais: [],
+  ocupacao: [],
+  escolhaOcupacaoPendente: false
+};
+
+let filaSalvamentoHabilidades = Promise.resolve();
+let timerSalvamentoHabilidades = null;
+let sequenciaHabilidadePessoal = 0;
 
 
 /* Menu responsivo */
 
-function abrirAreaHabilidadesFicha(
-  area
-) {
-  botoesAreasHabilidades.forEach(
-    botao => {
-      botao.classList.toggle(
-        "ativa",
-        botao.dataset.areaHabilidade ===
-          area
-      );
-    }
-  );
+function abrirAreaHabilidadesFicha(area) {
+  botoesAreasHabilidades.forEach(botao => {
+    botao.classList.toggle(
+      "ativa",
+      botao.dataset.areaHabilidade === area
+    );
+  });
 
-  paineisAreasHabilidades.forEach(
-    painel => {
-      painel.classList.toggle(
-        "area-habilidade-ativa",
-        painel.dataset.painelHabilidade ===
-          area
-      );
-    }
+  paineisAreasHabilidades.forEach(painel => {
+    painel.classList.toggle(
+      "area-habilidade-ativa",
+      painel.dataset.painelHabilidade === area
+    );
+  });
+}
+
+botoesAreasHabilidades.forEach(botao => {
+  botao.addEventListener("click", () => {
+    abrirAreaHabilidadesFicha(
+      botao.dataset.areaHabilidade
+    );
+  });
+});
+
+
+/* Utilidades */
+
+function normalizarTextoHabilidade(texto) {
+  return String(texto || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
+}
+
+function criarIdHabilidadeFicha(
+  tipo,
+  categoria,
+  origem = ""
+) {
+  const origemNormalizada =
+    normalizarTextoHabilidade(origem)
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+
+  return [
+    tipo,
+    `categoria-${categoria}`,
+    origemNormalizada || "geral"
+  ].join("-");
+}
+
+function criarIdHabilidadePessoalFicha() {
+  sequenciaHabilidadePessoal += 1;
+
+  return (
+    `pessoal-${Date.now()}-` +
+    `${sequenciaHabilidadePessoal}`
   );
 }
 
-botoesAreasHabilidades.forEach(
-  botao => {
-    botao.addEventListener(
-      "click",
-      () => {
-        abrirAreaHabilidadesFicha(
-          botao.dataset.areaHabilidade
+function nomeOcupacaoHabilidadeFicha(
+  ocupacaoId
+) {
+  const ocupacao =
+    ocupacoesFichaDisponiveis.find(
+      item =>
+        item.id === ocupacaoId
+    );
+
+  return (
+    ocupacao?.nome ||
+    ocupacaoId ||
+    ""
+  );
+}
+
+function textoHabilidadeSeguro(valor) {
+  return typeof valor === "string"
+    ? valor
+    : "";
+}
+
+function habilidadeVaziaCategoriaZero() {
+  return {
+    categoria: 0,
+    nome: "",
+    custo: "",
+    alvo: "",
+    alcance: "",
+    resistencia: "",
+    descricao: ""
+  };
+}
+
+function normalizarHabilidadeSalva(
+  habilidade,
+  tipo,
+  indice
+) {
+  const dados =
+    habilidade &&
+    typeof habilidade === "object"
+      ? habilidade
+      : {};
+
+  const categoriaNumero =
+    Number(dados.categoria);
+
+  const categoria =
+    Number.isInteger(categoriaNumero)
+      ? categoriaNumero
+      : (
+          tipo === "pessoais"
+            ? indice + 1
+            : 0
+        );
+
+  const origem =
+    textoHabilidadeSeguro(
+      dados.origem
+    );
+
+  return {
+    id:
+      textoHabilidadeSeguro(
+        dados.id
+      ) ||
+      criarIdHabilidadeFicha(
+        tipo,
+        categoria,
+        origem || String(indice)
+      ),
+
+    categoria: categoria,
+
+    nome:
+      textoHabilidadeSeguro(
+        dados.nome
+      ),
+
+    custo:
+      textoHabilidadeSeguro(
+        dados.custo
+      ),
+
+    alvo:
+      textoHabilidadeSeguro(
+        dados.alvo
+      ),
+
+    alcance:
+      textoHabilidadeSeguro(
+        dados.alcance
+      ),
+
+    resistencia:
+      textoHabilidadeSeguro(
+        dados.resistencia
+      ),
+
+    descricao:
+      textoHabilidadeSeguro(
+        dados.descricao
+      ),
+
+    origem: origem
+  };
+}
+
+function normalizarEstadoHabilidadesFicha(
+  habilidades
+) {
+  const dados =
+    habilidades &&
+    typeof habilidades === "object"
+      ? habilidades
+      : {};
+
+  return {
+    inicializadas:
+      dados.inicializadas === true,
+
+    perfil:
+      Array.isArray(dados.perfil)
+        ? dados.perfil.map(
+            (item, indice) =>
+              normalizarHabilidadeSalva(
+                item,
+                "perfil",
+                indice
+              )
+          )
+        : [],
+
+    pessoais:
+      Array.isArray(dados.pessoais)
+        ? dados.pessoais.map(
+            (item, indice) =>
+              normalizarHabilidadeSalva(
+                item,
+                "pessoais",
+                indice
+              )
+          )
+        : [],
+
+    ocupacao:
+      Array.isArray(dados.ocupacao)
+        ? dados.ocupacao.map(
+            (item, indice) =>
+              normalizarHabilidadeSalva(
+                item,
+                "ocupacao",
+                indice
+              )
+          )
+        : [],
+
+    escolhaOcupacaoPendente:
+      dados.escolhaOcupacaoPendente ===
+        true
+  };
+}
+
+function copiarEstadoHabilidadesFicha() {
+  const copiarLista =
+    lista =>
+      lista.map(
+        habilidade => ({
+          id:
+            habilidade.id,
+
+          categoria:
+            habilidade.categoria,
+
+          nome:
+            habilidade.nome,
+
+          custo:
+            habilidade.custo,
+
+          alvo:
+            habilidade.alvo,
+
+          alcance:
+            habilidade.alcance,
+
+          resistencia:
+            habilidade.resistencia,
+
+          descricao:
+            habilidade.descricao,
+
+          origem:
+            habilidade.origem
+        })
+      );
+
+  return {
+    inicializadas: true,
+
+    perfil:
+      copiarLista(
+        estadoHabilidadesFicha.perfil
+      ),
+
+    pessoais:
+      copiarLista(
+        estadoHabilidadesFicha.pessoais
+      ),
+
+    ocupacao:
+      copiarLista(
+        estadoHabilidadesFicha.ocupacao
+      ),
+
+    escolhaOcupacaoPendente:
+      estadoHabilidadesFicha
+        .escolhaOcupacaoPendente ===
+          true
+  };
+}
+
+
+/* Ler Habilidades do Sistema */
+
+function encontrarTabelaDepoisDoTitulo(
+  titulo
+) {
+  let elemento =
+    titulo.nextElementSibling;
+
+  while (
+    elemento &&
+    !elemento.matches(
+      "h2, h3, table"
+    )
+  ) {
+    elemento =
+      elemento.nextElementSibling;
+  }
+
+  return elemento?.matches(
+    "table.tabela-habilidades"
+  )
+    ? elemento
+    : null;
+}
+
+function extrairHabilidadeCategoriaZero(
+  tabela
+) {
+  if (!tabela) {
+    return habilidadeVaziaCategoriaZero();
+  }
+
+  const cabecalhos = [
+    ...tabela.querySelectorAll(
+      "thead th"
+    )
+  ].map(
+    th =>
+      normalizarTextoHabilidade(
+        th.textContent
+      )
+  );
+
+  const linhas = [
+    ...tabela.querySelectorAll(
+      "tbody tr"
+    )
+  ];
+
+  const indiceCategoria =
+    cabecalhos.indexOf(
+      "categoria"
+    ) >= 0
+      ? cabecalhos.indexOf(
+          "categoria"
+        )
+      : 0;
+
+  const linhaCategoriaZero =
+    linhas.find(
+      linha => {
+        const celulas = [
+          ...linha.querySelectorAll(
+            "td"
+          )
+        ];
+
+        return (
+          Number(
+            celulas[
+              indiceCategoria
+            ]?.textContent
+              ?.trim()
+          ) === 0
         );
       }
     );
+
+  if (!linhaCategoriaZero) {
+    return habilidadeVaziaCategoriaZero();
   }
-);
+
+  const celulas = [
+    ...linhaCategoriaZero
+      .querySelectorAll("td")
+  ];
+
+  function valorCampo(
+    nomes,
+    indicePadrao = -1
+  ) {
+    let indice = -1;
+
+    for (const nome of nomes) {
+      const encontrado =
+        cabecalhos.indexOf(
+          normalizarTextoHabilidade(
+            nome
+          )
+        );
+
+      if (encontrado >= 0) {
+        indice =
+          encontrado;
+
+        break;
+      }
+    }
+
+    if (
+      indice < 0 &&
+      indicePadrao >= 0
+    ) {
+      indice =
+        indicePadrao;
+    }
+
+    return (
+      celulas[indice]
+        ?.textContent
+        ?.trim() ||
+      ""
+    );
+  }
+
+  return {
+    categoria: 0,
+
+    nome:
+      valorCampo(
+        ["habilidade", "nome"],
+        1
+      ),
+
+    custo:
+      valorCampo(
+        ["custo"]
+      ),
+
+    alvo:
+      valorCampo(
+        ["alvo"]
+      ),
+
+    alcance:
+      valorCampo(
+        ["alcance"]
+      ),
+
+    resistencia:
+      valorCampo(
+        ["resistencia"]
+      ),
+
+    descricao:
+      valorCampo(
+        ["descricao"],
+        2
+      )
+  };
+}
+
+async function carregarCatalogoHabilidadesSistema() {
+  try {
+    const resposta =
+      await fetch(
+        "index-sistema.html"
+      );
+
+    if (!resposta.ok) {
+      throw new Error(
+        "Não foi possível abrir index-sistema.html."
+      );
+    }
+
+    const html =
+      await resposta.text();
+
+    const documento =
+      new DOMParser()
+        .parseFromString(
+          html,
+          "text/html"
+        );
+
+    const tela =
+      documento.querySelector(
+        "#tela-niveis-habilidades"
+      );
+
+    if (!tela) {
+      throw new Error(
+        "A área de Níveis e Habilidades não foi encontrada."
+      );
+    }
+
+    const catalogo = {
+      perfis: {},
+      ocupacoes: {}
+    };
+
+    [
+      ...tela.querySelectorAll(
+        "h3"
+      )
+    ].forEach(
+      titulo => {
+        const texto =
+          titulo.textContent
+            .trim();
+
+        const textoNormalizado =
+          normalizarTextoHabilidade(
+            texto
+          );
+
+        const tabela =
+          encontrarTabelaDepoisDoTitulo(
+            titulo
+          );
+
+        if (
+          textoNormalizado.startsWith(
+            "perfil -"
+          )
+        ) {
+          const nome =
+            texto
+              .replace(
+                /^Perfil\s*-\s*/i,
+                ""
+              )
+              .trim();
+
+          const id =
+            normalizarTextoHabilidade(
+              nome
+            )
+              .replace(
+                /[^a-z0-9]+/g,
+                "-"
+              )
+              .replace(
+                /^-+|-+$/g,
+                ""
+              );
+
+          catalogo.perfis[id] =
+            extrairHabilidadeCategoriaZero(
+              tabela
+            );
+
+          return;
+        }
+
+        if (
+          textoNormalizado.startsWith(
+            "ocupacao -"
+          )
+        ) {
+          const nome =
+            texto
+              .replace(
+                /^Ocupação\s*-\s*/i,
+                ""
+              )
+              .trim();
+
+          const id =
+            criarIdOcupacaoFicha(
+              nome
+            );
+
+          catalogo.ocupacoes[id] =
+            extrairHabilidadeCategoriaZero(
+              tabela
+            );
+        }
+      }
+    );
+
+    catalogoHabilidadesSistema =
+      catalogo;
+
+    return catalogo;
+
+  } catch (erro) {
+    console.error(
+      "Erro ao carregar Habilidades do Sistema:",
+      erro
+    );
+
+    catalogoHabilidadesSistema = {
+      perfis: {},
+      ocupacoes: {}
+    };
+
+    return catalogoHabilidadesSistema;
+  }
+}
+
+const promessaCatalogoHabilidadesSistema =
+  carregarCatalogoHabilidadesSistema();
+
+
+/* Estado inicial */
+
+function criarHabilidadeDoSistema(
+  tipo,
+  origem,
+  dadosSistema
+) {
+  const dados =
+    dadosSistema &&
+    typeof dadosSistema === "object"
+      ? dadosSistema
+      : habilidadeVaziaCategoriaZero();
+
+  return {
+    id:
+      criarIdHabilidadeFicha(
+        tipo,
+        0,
+        origem
+      ),
+
+    categoria: 0,
+
+    nome:
+      textoHabilidadeSeguro(
+        dados.nome
+      ),
+
+    custo:
+      textoHabilidadeSeguro(
+        dados.custo
+      ),
+
+    alvo:
+      textoHabilidadeSeguro(
+        dados.alvo
+      ),
+
+    alcance:
+      textoHabilidadeSeguro(
+        dados.alcance
+      ),
+
+    resistencia:
+      textoHabilidadeSeguro(
+        dados.resistencia
+      ),
+
+    descricao:
+      textoHabilidadeSeguro(
+        dados.descricao
+      ),
+
+    origem:
+      origem
+  };
+}
+
+async function criarEstadoInicialHabilidadesFicha(
+  ficha
+) {
+  await promessaCatalogoHabilidadesSistema;
+
+  const perfil =
+    [
+      "proativo",
+      "reflexivo",
+      "adaptativo"
+    ].includes(ficha.perfil)
+      ? ficha.perfil
+      : "adaptativo";
+
+  const ocupacoes =
+    Array.isArray(ficha.ocupacoes)
+      ? ficha.ocupacoes
+          .filter(
+            ocupacao =>
+              typeof ocupacao ===
+                "string" &&
+              ocupacao
+          )
+          .slice(0, 2)
+      : [];
+
+  const habilidadePerfil =
+    criarHabilidadeDoSistema(
+      "perfil",
+      perfil,
+      catalogoHabilidadesSistema
+        .perfis[perfil]
+    );
+
+  const habilidadesOcupacao =
+    ocupacoes.map(
+      ocupacao =>
+        criarHabilidadeDoSistema(
+          "ocupacao",
+          ocupacao,
+          catalogoHabilidadesSistema
+            .ocupacoes[ocupacao]
+        )
+    );
+
+  return {
+    inicializadas: true,
+
+    perfil: [
+      habilidadePerfil
+    ],
+
+    pessoais: [],
+
+    ocupacao:
+      habilidadesOcupacao,
+
+    escolhaOcupacaoPendente:
+      habilidadesOcupacao.length > 1
+  };
+}
+
+
+/* Salvamento */
+
+function salvarEstadoHabilidadesFichaAgora() {
+  const copia =
+    copiarEstadoHabilidadesFicha();
+
+  if (dadosFichaAtual) {
+    dadosFichaAtual.habilidades =
+      copia;
+  }
+
+  if (
+    previewLocal ||
+    !auth.currentUser ||
+    !idFicha
+  ) {
+    return Promise.resolve();
+  }
+
+  filaSalvamentoHabilidades =
+    filaSalvamentoHabilidades
+      .catch(() => {})
+      .then(
+        async () => {
+          await db
+            .collection("fichas")
+            .doc(idFicha)
+            .update({
+              habilidades:
+                copia,
+
+              atualizadoEm:
+                firebase.firestore
+                  .FieldValue
+                  .serverTimestamp()
+            });
+        }
+      );
+
+  return filaSalvamentoHabilidades
+    .catch(
+      erro => {
+        console.error(
+          "Erro ao salvar Habilidades:",
+          erro
+        );
+
+        throw erro;
+      }
+    );
+}
+
+function agendarSalvamentoHabilidadesFicha() {
+  clearTimeout(
+    timerSalvamentoHabilidades
+  );
+
+  timerSalvamentoHabilidades =
+    setTimeout(
+      () => {
+        salvarEstadoHabilidadesFichaAgora()
+          .catch(() => {});
+      },
+      400
+    );
+}
+
+function salvarHabilidadesFichaImediatamente() {
+  clearTimeout(
+    timerSalvamentoHabilidades
+  );
+
+  return salvarEstadoHabilidadesFichaAgora();
+}
+
+
+/* Cabeçalho */
+
+function preencherOpcoesOcupacaoHabilidadesFicha(
+  ocupacaoAtual
+) {
+  if (
+    !campoOcupacaoHabilidadesFicha
+  ) {
+    return;
+  }
+
+  campoOcupacaoHabilidadesFicha
+    .replaceChildren();
+
+  ocupacoesFichaDisponiveis.forEach(
+    ocupacao => {
+      const opcao =
+        document.createElement(
+          "option"
+        );
+
+      opcao.value =
+        ocupacao.id;
+
+      opcao.textContent =
+        ocupacao.nome;
+
+      campoOcupacaoHabilidadesFicha
+        .appendChild(
+          opcao
+        );
+    }
+  );
+
+  if (
+    ocupacaoAtual &&
+    ![
+      ...campoOcupacaoHabilidadesFicha
+        .options
+    ].some(
+      opcao =>
+        opcao.value ===
+          ocupacaoAtual
+    )
+  ) {
+    const opcao =
+      document.createElement(
+        "option"
+      );
+
+    opcao.value =
+      ocupacaoAtual;
+
+    opcao.textContent =
+      nomeOcupacaoHabilidadeFicha(
+        ocupacaoAtual
+      );
+
+    campoOcupacaoHabilidadesFicha
+      .appendChild(
+        opcao
+      );
+  }
+
+  campoOcupacaoHabilidadesFicha.value =
+    ocupacaoAtual || "";
+}
+
+async function preencherCabecalhoHabilidadesFicha(
+  ficha
+) {
+  await promessaOcupacoesFicha;
+
+  const ocupacaoAtual =
+    Array.isArray(ficha.ocupacoes)
+      ? ficha.ocupacoes[0] || ""
+      : "";
+
+  campoPerfilHabilidadesFicha.value =
+    ficha.perfil ||
+    "adaptativo";
+
+  preencherOpcoesOcupacaoHabilidadesFicha(
+    ocupacaoAtual
+  );
+
+  campoNivelPerfilHabilidadesFicha.value =
+    String(
+      Number.isInteger(ficha.ncp)
+        ? ficha.ncp
+        : 0
+    );
+
+  campoNivelOcupacaoHabilidadesFicha.value =
+    String(
+      Number.isInteger(ficha.neo)
+        ? ficha.neo
+        : 0
+    );
+}
+
+function sincronizarCabecalhoHabilidadesComFicha() {
+  campoPerfilHabilidadesFicha.value =
+    campoPerfilFicha.value ||
+    dadosFichaAtual?.perfil ||
+    "adaptativo";
+
+  preencherOpcoesOcupacaoHabilidadesFicha(
+    campoOcupacao1Ficha.value ||
+    dadosFichaAtual?.ocupacoes?.[0] ||
+    ""
+  );
+
+  campoNivelPerfilHabilidadesFicha.value =
+    document.getElementById(
+      "ncp-ficha"
+    )?.value || "0";
+
+  campoNivelOcupacaoHabilidadesFicha.value =
+    document.getElementById(
+      "neo-ficha"
+    )?.value || "0";
+}
 
 
 /* Crescimento automático dos campos */
@@ -777,133 +1660,46 @@ function ajustarAlturaCampoHabilidade(
     `${campo.scrollHeight}px`;
 }
 
-document.addEventListener(
-  "input",
-  evento => {
-    if (
-      evento.target.matches(
-        ".conteudo-card-habilidade textarea"
-      )
-    ) {
-      ajustarAlturaCampoHabilidade(
-        evento.target
-      );
-    }
-  }
-);
 
+/* Cards */
 
-/* Abrir e fechar cards */
-
-document.addEventListener(
-  "click",
-  evento => {
-    const botaoExpandir =
-      evento.target.closest(
-        ".expandir-habilidade-ficha"
-      );
-
-    if (botaoExpandir) {
-      const card =
-        botaoExpandir.closest(
-          ".card-habilidade-ficha"
-        );
-
-      const conteudo =
-        card.querySelector(
-          ".conteudo-card-habilidade"
-        );
-
-      const abrir =
-        conteudo.hidden;
-
-      conteudo.hidden =
-        !abrir;
-
-      card.classList.toggle(
-        "aberta",
-        abrir
-      );
-
-      if (abrir) {
-        conteudo
-          .querySelectorAll(
-            "textarea"
-          )
-          .forEach(
-            ajustarAlturaCampoHabilidade
-          );
-      }
-
-      return;
-    }
-
-    const botaoExcluir =
-      evento.target.closest(
-        ".excluir-habilidade-ficha"
-      );
-
-    if (botaoExcluir) {
-      const card =
-        botaoExcluir.closest(
-          ".card-habilidade-ficha"
-        );
-
-      card?.remove();
-    }
-  }
-);
-
-
-/* Criar Habilidade Pessoal */
-
-function obterProximaCategoriaPessoal() {
-  const categorias = [
-    ...listaHabilidadesPessoais
-      .querySelectorAll(
-        "[data-categoria-habilidade]"
-      )
-  ]
-    .map(
-      card =>
-        Number(
-          card.dataset
-            .categoriaHabilidade
-        )
-    )
-    .filter(Number.isFinite);
-
-  return categorias.length
-    ? Math.max(...categorias) + 1
-    : 1;
-}
-
-function criarHabilidadePessoalFicha() {
-  const categoria =
-    obterProximaCategoriaPessoal();
-
+function criarCardHabilidadeFicha(
+  habilidade,
+  tipo,
+  opcoes = {}
+) {
   const card =
     document.createElement(
       "article"
     );
 
+  const abertoInicial =
+    opcoes.aberto === true;
+
   card.className =
-    "card-habilidade-ficha aberta";
+    "card-habilidade-ficha";
+
+  if (abertoInicial) {
+    card.classList.add(
+      "aberta"
+    );
+  }
 
   card.dataset.categoriaHabilidade =
-    String(categoria);
+    String(
+      habilidade.categoria
+    );
+
+  card.dataset.idHabilidade =
+    habilidade.id;
 
   card.innerHTML = `
     <div class="cabecalho-card-habilidade">
-
-      <span class="categoria-habilidade">
-        ${categoria}
-      </span>
+      <span class="categoria-habilidade"></span>
 
       <input
         class="nome-habilidade-ficha"
         type="text"
-        placeholder="Nome da Habilidade"
         aria-label="Nome da Habilidade"
       >
 
@@ -922,7 +1718,6 @@ function criarHabilidadePessoalFicha() {
       >
         🗑
       </button>
-
     </div>
 
     <div class="conteudo-card-habilidade">
@@ -931,49 +1726,716 @@ function criarHabilidadePessoalFicha() {
 
         <label>
           <span>CUSTO</span>
-          <textarea rows="1"></textarea>
+          <textarea
+            rows="1"
+            data-campo-habilidade="custo"
+          ></textarea>
         </label>
 
         <label>
           <span>ALVO</span>
-          <textarea rows="1"></textarea>
+          <textarea
+            rows="1"
+            data-campo-habilidade="alvo"
+          ></textarea>
         </label>
 
         <label>
           <span>ALCANCE</span>
-          <textarea rows="1"></textarea>
+          <textarea
+            rows="1"
+            data-campo-habilidade="alcance"
+          ></textarea>
         </label>
 
       </div>
 
       <label class="campo-largo-habilidade">
         <span>RESISTÊNCIA</span>
-        <textarea rows="1"></textarea>
+
+        <textarea
+          rows="1"
+          data-campo-habilidade="resistencia"
+        ></textarea>
       </label>
 
       <label class="campo-largo-habilidade">
         <span>DESCRIÇÃO</span>
+
         <textarea
           class="descricao-habilidade-ficha"
           rows="3"
+          data-campo-habilidade="descricao"
         ></textarea>
       </label>
 
     </div>
   `;
 
-  listaHabilidadesPessoais
-    .appendChild(card);
+  card.querySelector(
+    ".categoria-habilidade"
+  ).textContent =
+    String(
+      habilidade.categoria
+    );
 
   const nome =
     card.querySelector(
       ".nome-habilidade-ficha"
     );
 
-  nome?.focus();
+  const conteudo =
+    card.querySelector(
+      ".conteudo-card-habilidade"
+    );
+
+  const botaoExpandir =
+    card.querySelector(
+      ".expandir-habilidade-ficha"
+    );
+
+  const botaoExcluir =
+    card.querySelector(
+      ".excluir-habilidade-ficha"
+    );
+
+  nome.value =
+    habilidade.nome;
+
+  if (tipo === "pessoais") {
+    nome.placeholder =
+      "Nome da Habilidade";
+  }
+
+  conteudo.hidden =
+    !abertoInicial;
+
+  botaoExpandir.addEventListener(
+    "click",
+    () => {
+      const abrir =
+        conteudo.hidden;
+
+      conteudo.hidden =
+        !abrir;
+
+      card.classList.toggle(
+        "aberta",
+        abrir
+      );
+
+      if (abrir) {
+        requestAnimationFrame(
+          () => {
+            conteudo
+              .querySelectorAll(
+                "textarea"
+              )
+              .forEach(
+                ajustarAlturaCampoHabilidade
+              );
+          }
+        );
+      }
+    }
+  );
+
+  botaoExcluir.addEventListener(
+    "click",
+    () => {
+      excluirHabilidadeFicha(
+        tipo,
+        habilidade.id
+      );
+    }
+  );
+
+  nome.addEventListener(
+    "input",
+    () => {
+      habilidade.nome =
+        nome.value;
+
+      agendarSalvamentoHabilidadesFicha();
+    }
+  );
+
+  conteudo
+    .querySelectorAll(
+      "[data-campo-habilidade]"
+    )
+    .forEach(
+      campo => {
+        const chave =
+          campo.dataset
+            .campoHabilidade;
+
+        campo.value =
+          habilidade[chave] ||
+          "";
+
+        campo.addEventListener(
+          "input",
+          () => {
+            habilidade[chave] =
+              campo.value;
+
+            ajustarAlturaCampoHabilidade(
+              campo
+            );
+
+            agendarSalvamentoHabilidadesFicha();
+          }
+        );
+      }
+    );
+
+  if (
+    opcoes.mostrarEscolha ===
+      true
+  ) {
+    const escolha =
+      document.createElement(
+        "div"
+      );
+
+    escolha.className =
+      "escolha-habilidade-ocupacao";
+
+    const origem =
+      document.createElement(
+        "span"
+      );
+
+    origem.className =
+      "origem-habilidade-ocupacao";
+
+    origem.textContent =
+      nomeOcupacaoHabilidadeFicha(
+        habilidade.origem
+      );
+
+    const botaoEscolher =
+      document.createElement(
+        "button"
+      );
+
+    botaoEscolher.type =
+      "button";
+
+    botaoEscolher.className =
+      "botao-escolher-habilidade-ocupacao";
+
+    botaoEscolher.textContent =
+      "ESCOLHER";
+
+    botaoEscolher.addEventListener(
+      "click",
+      () => {
+        escolherHabilidadeOcupacaoFicha(
+          habilidade.id
+        );
+      }
+    );
+
+    escolha.append(
+      origem,
+      botaoEscolher
+    );
+
+    card.appendChild(
+      escolha
+    );
+  }
+
+  if (abertoInicial) {
+    requestAnimationFrame(
+      () => {
+        conteudo
+          .querySelectorAll(
+            "textarea"
+          )
+          .forEach(
+            ajustarAlturaCampoHabilidade
+          );
+      }
+    );
+  }
+
+  return card;
 }
 
-botaoAdicionarHabilidadePessoal?.addEventListener("click", criarHabilidadePessoalFicha);
+function renderizarListaHabilidadesFicha(
+  tipo,
+  lista,
+  destino,
+  idAbrir = null
+) {
+  destino.replaceChildren();
+
+  const escolhaOcupacao =
+    tipo === "ocupacao" &&
+    estadoHabilidadesFicha
+      .escolhaOcupacaoPendente &&
+    lista.length > 1;
+
+  if (escolhaOcupacao) {
+    const aviso =
+      document.createElement(
+        "p"
+      );
+
+    aviso.className =
+      "aviso-escolha-habilidade-ocupacao";
+
+    aviso.textContent =
+      "Escolha uma das Habilidades de Categoria 0. Você pode abrir os cards antes de confirmar.";
+
+    destino.appendChild(
+      aviso
+    );
+  }
+
+  lista.forEach(
+    habilidade => {
+      destino.appendChild(
+        criarCardHabilidadeFicha(
+          habilidade,
+          tipo,
+          {
+            aberto:
+              habilidade.id ===
+                idAbrir,
+
+            mostrarEscolha:
+              escolhaOcupacao
+          }
+        )
+      );
+    }
+  );
+}
+
+function renderizarHabilidadesFicha(
+  idAbrir = null
+) {
+  renderizarListaHabilidadesFicha(
+    "perfil",
+    estadoHabilidadesFicha.perfil,
+    listaHabilidadesPerfil,
+    idAbrir
+  );
+
+  renderizarListaHabilidadesFicha(
+    "pessoais",
+    estadoHabilidadesFicha.pessoais,
+    listaHabilidadesPessoais,
+    idAbrir
+  );
+
+  renderizarListaHabilidadesFicha(
+    "ocupacao",
+    estadoHabilidadesFicha.ocupacao,
+    listaHabilidadesOcupacao,
+    idAbrir
+  );
+}
+
+
+/* Excluir */
+
+function excluirHabilidadeFicha(
+  tipo,
+  id
+) {
+  const listas = {
+    perfil:
+      estadoHabilidadesFicha.perfil,
+
+    pessoais:
+      estadoHabilidadesFicha.pessoais,
+
+    ocupacao:
+      estadoHabilidadesFicha.ocupacao
+  };
+
+  const lista =
+    listas[tipo];
+
+  if (!lista) return;
+
+  const habilidade =
+    lista.find(
+      item =>
+        item.id === id
+    );
+
+  if (!habilidade) return;
+
+  const nome =
+    habilidade.nome.trim() ||
+    "esta Habilidade";
+
+  const confirmar =
+    window.confirm(
+      `Excluir "${nome}"?`
+    );
+
+  if (!confirmar) return;
+
+  const novaLista =
+    lista.filter(
+      item =>
+        item.id !== id
+    );
+
+  if (tipo === "perfil") {
+    estadoHabilidadesFicha.perfil =
+      novaLista;
+  }
+
+  if (tipo === "pessoais") {
+    estadoHabilidadesFicha.pessoais =
+      novaLista;
+  }
+
+  if (tipo === "ocupacao") {
+    estadoHabilidadesFicha.ocupacao =
+      novaLista;
+
+    if (
+      novaLista.length <= 1
+    ) {
+      estadoHabilidadesFicha
+        .escolhaOcupacaoPendente =
+          false;
+    }
+  }
+
+  renderizarHabilidadesFicha();
+
+  salvarHabilidadesFichaImediatamente()
+    .catch(
+      () => {
+        alert(
+          "Não foi possível salvar a exclusão da Habilidade."
+        );
+      }
+    );
+}
+
+
+/* Escolha entre duas Ocupações */
+
+function escolherHabilidadeOcupacaoFicha(
+  id
+) {
+  const habilidade =
+    estadoHabilidadesFicha
+      .ocupacao
+      .find(
+        item =>
+          item.id === id
+      );
+
+  if (!habilidade) return;
+
+  const nomeOcupacao =
+    nomeOcupacaoHabilidadeFicha(
+      habilidade.origem
+    );
+
+  const confirmar =
+    window.confirm(
+      `Escolher a Habilidade de ${nomeOcupacao}? A outra opção será removida.`
+    );
+
+  if (!confirmar) return;
+
+  const estadoAnterior = {
+    ocupacao: [
+      ...estadoHabilidadesFicha
+        .ocupacao
+    ],
+
+    escolhaOcupacaoPendente:
+      estadoHabilidadesFicha
+        .escolhaOcupacaoPendente
+  };
+
+  estadoHabilidadesFicha.ocupacao = [
+    habilidade
+  ];
+
+  estadoHabilidadesFicha
+    .escolhaOcupacaoPendente =
+      false;
+
+  renderizarHabilidadesFicha();
+
+  salvarHabilidadesFichaImediatamente()
+    .catch(
+      () => {
+        estadoHabilidadesFicha
+          .ocupacao =
+            estadoAnterior.ocupacao;
+
+        estadoHabilidadesFicha
+          .escolhaOcupacaoPendente =
+            estadoAnterior
+              .escolhaOcupacaoPendente;
+
+        renderizarHabilidadesFicha();
+
+        alert(
+          "Não foi possível confirmar a escolha da Habilidade."
+        );
+      }
+    );
+}
+
+
+/* Criar Habilidade Pessoal */
+
+function obterProximaCategoriaPessoal() {
+  const categorias =
+    estadoHabilidadesFicha
+      .pessoais
+      .map(
+        habilidade =>
+          Number(
+            habilidade.categoria
+          )
+      )
+      .filter(
+        Number.isInteger
+      );
+
+  return categorias.length
+    ? Math.max(...categorias) + 1
+    : 1;
+}
+
+function criarHabilidadePessoalFicha() {
+  const categoria =
+    obterProximaCategoriaPessoal();
+
+  const habilidade = {
+    id:
+      criarIdHabilidadePessoalFicha(),
+
+    categoria:
+      categoria,
+
+    nome: "",
+    custo: "",
+    alvo: "",
+    alcance: "",
+    resistencia: "",
+    descricao: "",
+    origem: ""
+  };
+
+  estadoHabilidadesFicha
+    .pessoais
+    .push(
+      habilidade
+    );
+
+  renderizarHabilidadesFicha(
+    habilidade.id
+  );
+
+  salvarHabilidadesFichaImediatamente()
+    .catch(() => {});
+
+  requestAnimationFrame(
+    () => {
+      listaHabilidadesPessoais
+        .querySelector(
+          `[data-id-habilidade="${habilidade.id}"]`
+        )
+        ?.querySelector(
+          ".nome-habilidade-ficha"
+        )
+        ?.focus();
+    }
+  );
+}
+
+botaoAdicionarHabilidadePessoal
+  ?.addEventListener(
+    "click",
+    criarHabilidadePessoalFicha
+  );
+
+
+/* Preencher a aba */
+
+async function preencherHabilidadesFicha(
+  ficha
+) {
+  await promessaOcupacoesFicha;
+  await promessaCatalogoHabilidadesSistema;
+
+  await preencherCabecalhoHabilidadesFicha(
+    ficha
+  );
+
+  const salvo =
+    normalizarEstadoHabilidadesFicha(
+      ficha.habilidades
+    );
+
+  if (salvo.inicializadas) {
+    estadoHabilidadesFicha =
+      salvo;
+
+  } else {
+    estadoHabilidadesFicha =
+      await criarEstadoInicialHabilidadesFicha(
+        ficha
+      );
+
+    try {
+      await salvarHabilidadesFichaImediatamente();
+
+    } catch (erro) {
+      console.error(
+        "Não foi possível salvar a inicialização das Habilidades:",
+        erro
+      );
+    }
+  }
+
+  renderizarHabilidadesFicha();
+}
+
+
+/* Sincronização com Informações e Painel Principal */
+
+campoPerfilHabilidadesFicha
+  ?.addEventListener(
+    "change",
+    () => {
+      campoPerfilFicha.value =
+        campoPerfilHabilidadesFicha
+          .value;
+
+      salvarInformacoesFicha();
+    }
+  );
+
+campoOcupacaoHabilidadesFicha
+  ?.addEventListener(
+    "change",
+    () => {
+      const novaOcupacao =
+        campoOcupacaoHabilidadesFicha
+          .value;
+
+      campoOcupacao1Ficha.value =
+        novaOcupacao;
+
+      if (
+        campoOcupacao2Ficha.value ===
+          novaOcupacao
+      ) {
+        campoOcupacao2Ficha.value =
+          "";
+      }
+
+      salvarInformacoesFicha();
+    }
+  );
+
+campoNivelPerfilHabilidadesFicha
+  ?.addEventListener(
+    "change",
+    () => {
+      const campoNcp =
+        document.getElementById(
+          "ncp-ficha"
+        );
+
+      if (!campoNcp) return;
+
+      campoNcp.value =
+        campoNivelPerfilHabilidadesFicha
+          .value;
+
+      campoNcp.dispatchEvent(
+        new Event("change")
+      );
+    }
+  );
+
+campoNivelOcupacaoHabilidadesFicha
+  ?.addEventListener(
+    "change",
+    () => {
+      const campoNeo =
+        document.getElementById(
+          "neo-ficha"
+        );
+
+      if (!campoNeo) return;
+
+      campoNeo.value =
+        campoNivelOcupacaoHabilidadesFicha
+          .value;
+
+      campoNeo.dispatchEvent(
+        new Event("change")
+      );
+    }
+  );
+
+campoPerfilFicha.addEventListener(
+  "change",
+  () => {
+    campoPerfilHabilidadesFicha.value =
+      campoPerfilFicha.value;
+  }
+);
+
+campoOcupacao1Ficha.addEventListener(
+  "change",
+  () => {
+    preencherOpcoesOcupacaoHabilidadesFicha(
+      campoOcupacao1Ficha.value
+    );
+  }
+);
+
+campoOcupacao2Ficha.addEventListener(
+  "change",
+  sincronizarCabecalhoHabilidadesComFicha
+);
+
+document
+  .getElementById(
+    "ncp-ficha"
+  )
+  ?.addEventListener(
+    "change",
+    evento => {
+      campoNivelPerfilHabilidadesFicha.value =
+        evento.target.value;
+    }
+  );
+
+document
+  .getElementById(
+    "neo-ficha"
+  )
+  ?.addEventListener(
+    "change",
+    evento => {
+      campoNivelOcupacaoHabilidadesFicha.value =
+        evento.target.value;
+    }
+  );
 
 /* Pontos de Ficha */
 
@@ -3657,9 +5119,15 @@ function iniciarEscutasRolagensFicha() {
 
 if (previewLocal) {
   promessaPericiasPontosFicha
-    .then(() => {
-      preencherPontosFicha(
+    .then(async () => {
+      const fichaPreview =
         dadosFichaAtual || {
+          perfil: "adaptativo",
+
+          ocupacoes: [
+            "estudante"
+          ],
+
           atributos: {
             fisico: 1,
             cognicao: 1,
@@ -3671,8 +5139,15 @@ if (previewLocal) {
           pericias: {},
           credito: 250,
           ncp: 0,
-          neo: 0
-        }
+          neo: 1
+        };
+
+      await preencherPontosFicha(
+        fichaPreview
+      );
+
+      await preencherHabilidadesFicha(
+        fichaPreview
       );
     });
 }

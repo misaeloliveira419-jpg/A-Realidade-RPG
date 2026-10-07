@@ -1324,6 +1324,62 @@
   display: none;
 }
 
+/* Escolha entre duas Habilidades de Ocupação */
+
+.aviso-escolha-habilidade-ocupacao{
+  margin: 0 0 7px;
+  padding: 7px 8px;
+  background: rgba(150,0,225,0.08);
+  color: rgb(210,180,225);
+  border: 1px solid rgb(90,45,110);
+  border-radius: 4px;
+  font-size: 8px;
+  line-height: 1.35;
+}
+
+.escolha-habilidade-ocupacao{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 7px;
+  padding: 6px 7px;
+  border-top: 1px solid rgb(55,55,55);
+}
+
+.origem-habilidade-ocupacao{
+  min-width: 0;
+  overflow: hidden;
+  color: rgb(175,175,175);
+  font-size: 8px;
+  font-weight: bold;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.botao-escolher-habilidade-ocupacao{
+  flex-shrink: 0;
+  padding: 4px 7px;
+  background: black;
+  color: rgb(0,225,240);
+  border: 1px solid rgb(0,150,165);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 8px;
+  font-weight: bold;
+  transition:
+    color 0.2s,
+    border-color 0.2s,
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+
+.botao-escolher-habilidade-ocupacao:hover{
+  color: white;
+  border-color: rgb(0,225,240);
+  transform: scale(1.05);
+  box-shadow: 0 0 6px rgba(0,225,240,0.4);
+}
+
 /* Responsivo */
 
 @media (max-width: 1000px){
