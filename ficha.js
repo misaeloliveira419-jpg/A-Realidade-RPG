@@ -700,6 +700,281 @@ botoesAreasPontos.forEach(botao => {
   });
 });
 
+/* Layout das Habilidades */
+
+const botoesAreasHabilidades = [
+  ...document.querySelectorAll(
+    ".botao-area-habilidade"
+  )
+];
+
+const paineisAreasHabilidades = [
+  ...document.querySelectorAll(
+    "[data-painel-habilidade]"
+  )
+];
+
+const listaHabilidadesPessoais =
+  document.getElementById(
+    "lista-habilidades-pessoais-ficha"
+  );
+
+const botaoAdicionarHabilidadePessoal =
+  document.getElementById(
+    "adicionar-habilidade-pessoal-ficha"
+  );
+
+
+/* Menu responsivo */
+
+function abrirAreaHabilidadesFicha(
+  area
+) {
+  botoesAreasHabilidades.forEach(
+    botao => {
+      botao.classList.toggle(
+        "ativa",
+        botao.dataset.areaHabilidade ===
+          area
+      );
+    }
+  );
+
+  paineisAreasHabilidades.forEach(
+    painel => {
+      painel.classList.toggle(
+        "area-habilidade-ativa",
+        painel.dataset.painelHabilidade ===
+          area
+      );
+    }
+  );
+}
+
+botoesAreasHabilidades.forEach(
+  botao => {
+    botao.addEventListener(
+      "click",
+      () => {
+        abrirAreaHabilidadesFicha(
+          botao.dataset.areaHabilidade
+        );
+      }
+    );
+  }
+);
+
+
+/* Crescimento automático dos campos */
+
+function ajustarAlturaCampoHabilidade(
+  campo
+) {
+  campo.style.height =
+    "auto";
+
+  campo.style.height =
+    `${campo.scrollHeight}px`;
+}
+
+document.addEventListener(
+  "input",
+  evento => {
+    if (
+      evento.target.matches(
+        ".conteudo-card-habilidade textarea"
+      )
+    ) {
+      ajustarAlturaCampoHabilidade(
+        evento.target
+      );
+    }
+  }
+);
+
+
+/* Abrir e fechar cards */
+
+document.addEventListener(
+  "click",
+  evento => {
+    const botaoExpandir =
+      evento.target.closest(
+        ".expandir-habilidade-ficha"
+      );
+
+    if (botaoExpandir) {
+      const card =
+        botaoExpandir.closest(
+          ".card-habilidade-ficha"
+        );
+
+      const conteudo =
+        card.querySelector(
+          ".conteudo-card-habilidade"
+        );
+
+      const abrir =
+        conteudo.hidden;
+
+      conteudo.hidden =
+        !abrir;
+
+      card.classList.toggle(
+        "aberta",
+        abrir
+      );
+
+      if (abrir) {
+        conteudo
+          .querySelectorAll(
+            "textarea"
+          )
+          .forEach(
+            ajustarAlturaCampoHabilidade
+          );
+      }
+
+      return;
+    }
+
+    const botaoExcluir =
+      evento.target.closest(
+        ".excluir-habilidade-ficha"
+      );
+
+    if (botaoExcluir) {
+      const card =
+        botaoExcluir.closest(
+          ".card-habilidade-ficha"
+        );
+
+      card?.remove();
+    }
+  }
+);
+
+
+/* Criar Habilidade Pessoal */
+
+function obterProximaCategoriaPessoal() {
+  const categorias = [
+    ...listaHabilidadesPessoais
+      .querySelectorAll(
+        "[data-categoria-habilidade]"
+      )
+  ]
+    .map(
+      card =>
+        Number(
+          card.dataset
+            .categoriaHabilidade
+        )
+    )
+    .filter(Number.isFinite);
+
+  return categorias.length
+    ? Math.max(...categorias) + 1
+    : 1;
+}
+
+function criarHabilidadePessoalFicha() {
+  const categoria =
+    obterProximaCategoriaPessoal();
+
+  const card =
+    document.createElement(
+      "article"
+    );
+
+  card.className =
+    "card-habilidade-ficha aberta";
+
+  card.dataset.categoriaHabilidade =
+    String(categoria);
+
+  card.innerHTML = `
+    <div class="cabecalho-card-habilidade">
+
+      <span class="categoria-habilidade">
+        ${categoria}
+      </span>
+
+      <input
+        class="nome-habilidade-ficha"
+        type="text"
+        placeholder="Nome da Habilidade"
+        aria-label="Nome da Habilidade"
+      >
+
+      <button
+        class="expandir-habilidade-ficha"
+        type="button"
+        aria-label="Expandir Habilidade"
+      >
+        ▶
+      </button>
+
+      <button
+        class="excluir-habilidade-ficha"
+        type="button"
+        aria-label="Excluir Habilidade"
+      >
+        🗑
+      </button>
+
+    </div>
+
+    <div class="conteudo-card-habilidade">
+
+      <div class="linha-tripla-habilidade">
+
+        <label>
+          <span>CUSTO</span>
+          <textarea rows="1"></textarea>
+        </label>
+
+        <label>
+          <span>ALVO</span>
+          <textarea rows="1"></textarea>
+        </label>
+
+        <label>
+          <span>ALCANCE</span>
+          <textarea rows="1"></textarea>
+        </label>
+
+      </div>
+
+      <label class="campo-largo-habilidade">
+        <span>RESISTÊNCIA</span>
+        <textarea rows="1"></textarea>
+      </label>
+
+      <label class="campo-largo-habilidade">
+        <span>DESCRIÇÃO</span>
+        <textarea
+          class="descricao-habilidade-ficha"
+          rows="3"
+        ></textarea>
+      </label>
+
+    </div>
+  `;
+
+  listaHabilidadesPessoais
+    .appendChild(card);
+
+  const nome =
+    card.querySelector(
+      ".nome-habilidade-ficha"
+    );
+
+  nome?.focus();
+}
+
+botaoAdicionarHabilidadePessoal?.addEventListener("click", criarHabilidadePessoalFicha);
+
 /* Pontos de Ficha */
 
 const campoNcpFicha = document.getElementById("ncp-ficha");

@@ -456,7 +456,318 @@
         </section>
 
         <section id="aba-habilidades" class="conteudo-aba-ficha" role="tabpanel">
-          
+
+          <!-- Cabeçalho -->
+
+          <div class="cabecalho-habilidades-ficha">
+
+            <div class="identidade-habilidade-ficha">
+              <strong>PERFIL:</strong>
+
+              <select id="perfil-habilidades-ficha">
+                <option value="proativo">Proativo</option>
+                <option value="reflexivo">Reflexivo</option>
+                <option value="adaptativo" selected>Adaptativo</option>
+              </select>
+
+              <span>-</span>
+
+              <strong>NÍVEL</strong>
+
+              <select id="nivel-perfil-habilidades-ficha">
+                <option>0</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+              </select>
+            </div>
+
+            <div class="identidade-habilidade-ficha">
+              <strong>OCUPAÇÃO:</strong>
+
+              <select id="ocupacao-habilidades-ficha">
+                <option>Estudante</option>
+              </select>
+
+              <span>-</span>
+
+              <strong>NÍVEL</strong>
+
+              <select id="nivel-ocupacao-habilidades-ficha">
+                <option>0</option>
+                <option selected>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+                <option>7</option>
+                <option>8</option>
+                <option>9</option>
+                <option>10</option>
+              </select>
+            </div>
+
+          </div>
+
+          <!-- Menu responsivo -->
+
+          <nav class="menu-areas-habilidades-ficha">
+            <button
+              class="botao-area-habilidade ativa"
+              type="button"
+              data-area-habilidade="perfil"
+            >
+              PERFIL
+            </button>
+
+            <button
+              class="botao-area-habilidade"
+              type="button"
+              data-area-habilidade="pessoal"
+            >
+              PESSOAL
+            </button>
+
+            <button
+              class="botao-area-habilidade"
+              type="button"
+              data-area-habilidade="ocupacao"
+            >
+              OCUPAÇÃO
+            </button>
+          </nav>
+
+          <!-- 3 colunas -->
+
+          <div class="grade-habilidades-ficha">
+
+            <!-- Perfil -->
+
+            <section
+              class="coluna-habilidades-ficha area-habilidade-ativa"
+              data-painel-habilidade="perfil"
+            >
+              <h2>HABILIDADES DE PERFIL</h2>
+
+              <div class="lista-habilidades-ficha">
+
+                <article
+                  class="card-habilidade-ficha"
+                  data-categoria-habilidade="0"
+                >
+
+                  <div class="cabecalho-card-habilidade">
+
+                    <span class="categoria-habilidade">
+                      0
+                    </span>
+
+                    <input
+                      class="nome-habilidade-ficha"
+                      type="text"
+                      value="Auto-Preparo"
+                      aria-label="Nome da Habilidade"
+                    >
+
+                    <button
+                      class="expandir-habilidade-ficha"
+                      type="button"
+                      aria-label="Expandir Habilidade"
+                    >
+                      ▶
+                    </button>
+
+                    <button
+                      class="excluir-habilidade-ficha"
+                      type="button"
+                      aria-label="Excluir Habilidade"
+                    >
+                      🗑
+                    </button>
+
+                  </div>
+
+                  <div
+                    class="conteudo-card-habilidade"
+                    hidden
+                  >
+
+                    <div class="linha-tripla-habilidade">
+
+                      <label>
+                        <span>CUSTO</span>
+                        <textarea rows="1"></textarea>
+                      </label>
+
+                      <label>
+                        <span>ALVO</span>
+                        <textarea rows="1"></textarea>
+                      </label>
+
+                      <label>
+                        <span>ALCANCE</span>
+                        <textarea rows="1"></textarea>
+                      </label>
+
+                    </div>
+
+                    <label class="campo-largo-habilidade">
+                      <span>RESISTÊNCIA</span>
+                      <textarea rows="1"></textarea>
+                    </label>
+
+                    <label class="campo-largo-habilidade">
+                      <span>DESCRIÇÃO</span>
+                      <textarea
+                        class="descricao-habilidade-ficha"
+                        rows="3"
+                      ></textarea>
+                    </label>
+
+                  </div>
+
+                </article>
+
+              </div>
+
+              <button
+                class="adicionar-habilidade-ficha"
+                type="button"
+              >
+                <span>+</span>
+                Adicionar Habilidade
+              </button>
+
+            </section>
+
+            <!-- Pessoais -->
+
+            <section
+              class="coluna-habilidades-ficha"
+              data-painel-habilidade="pessoal"
+            >
+              <h2>HABILIDADES PESSOAIS</h2>
+
+              <div
+                id="lista-habilidades-pessoais-ficha"
+                class="lista-habilidades-ficha"
+              ></div>
+
+              <button
+                id="adicionar-habilidade-pessoal-ficha"
+                class="adicionar-habilidade-ficha"
+                type="button"
+              >
+                <span>+</span>
+                Adicionar Habilidade
+              </button>
+
+            </section>
+
+            <!-- Ocupação -->
+
+            <section
+              class="coluna-habilidades-ficha"
+              data-painel-habilidade="ocupacao"
+            >
+              <h2>HABILIDADES DE OCUPAÇÃO</h2>
+
+              <div class="lista-habilidades-ficha">
+
+                <article
+                  class="card-habilidade-ficha"
+                  data-categoria-habilidade="0"
+                >
+
+                  <div class="cabecalho-card-habilidade">
+
+                    <span class="categoria-habilidade">
+                      0
+                    </span>
+
+                    <input
+                      class="nome-habilidade-ficha"
+                      type="text"
+                      value="Habilidade da Ocupação"
+                      aria-label="Nome da Habilidade"
+                    >
+
+                    <button
+                      class="expandir-habilidade-ficha"
+                      type="button"
+                      aria-label="Expandir Habilidade"
+                    >
+                      ▶
+                    </button>
+
+                    <button
+                      class="excluir-habilidade-ficha"
+                      type="button"
+                      aria-label="Excluir Habilidade"
+                    >
+                      🗑
+                    </button>
+
+                  </div>
+
+                  <div
+                    class="conteudo-card-habilidade"
+                    hidden
+                  >
+
+                    <div class="linha-tripla-habilidade">
+
+                      <label>
+                        <span>CUSTO</span>
+                        <textarea rows="1"></textarea>
+                      </label>
+
+                      <label>
+                        <span>ALVO</span>
+                        <textarea rows="1"></textarea>
+                      </label>
+
+                      <label>
+                        <span>ALCANCE</span>
+                        <textarea rows="1"></textarea>
+                      </label>
+
+                    </div>
+
+                    <label class="campo-largo-habilidade">
+                      <span>RESISTÊNCIA</span>
+                      <textarea rows="1"></textarea>
+                    </label>
+
+                    <label class="campo-largo-habilidade">
+                      <span>DESCRIÇÃO</span>
+                      <textarea
+                        class="descricao-habilidade-ficha"
+                        rows="3"
+                      ></textarea>
+                    </label>
+
+                  </div>
+
+                </article>
+
+              </div>
+
+              <button
+                class="adicionar-habilidade-ficha"
+                type="button"
+              >
+                <span>+</span>
+                Adicionar Habilidade
+              </button>
+
+            </section>
+
+          </div>
+
         </section>
 
         <section id="aba-inventario" class="conteudo-aba-ficha" role="tabpanel">
