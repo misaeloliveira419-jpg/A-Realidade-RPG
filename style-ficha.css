@@ -583,16 +583,56 @@
   margin-bottom: 10px;
 }
 
+.titulo-contadores-pericias-ficha{
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-width: 0;
+}
+
 .cabecalho-painel-pericias h2{
   margin: 0;
 }
 
+.contadores-pericias-ficha{
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.contador-pontos-pericias-ficha,
+.contador-naturais-pericias-ficha{
+  padding: 3px 6px;
+  background: rgb(8,8,8);
+  border: 1px solid rgb(80,80,80);
+  border-radius: 4px;
+  font-size: 9px;
+  white-space: nowrap;
+}
+
+.contador-pontos-pericias-ficha{
+  color: rgb(210,210,210);
+}
+
+.contador-naturais-pericias-ficha{
+  color: rgb(200,110,240);
+  border-color: rgb(105,55,130);
+  text-shadow: 0 0 5px rgba(200,110,240,0.4);
+}
+
 .legenda-valores-pericia{
   display: grid;
-  grid-template-columns: repeat(3,38px);
+  grid-template-columns:
+    20px
+    31px
+    31px
+    31px
+    58px;
   gap: 4px;
+  align-items: end;
   color: rgb(145,145,145);
-  font-size: 8px;
+  font-size: 7px;
   text-align: center;
 }
 
@@ -672,14 +712,34 @@
 }
 
 .valores-pericia-ficha{
-  display: flex;
+  display: grid;
+  grid-template-columns:
+    20px
+    31px
+    31px
+    31px
+    58px;
   align-items: center;
   gap: 4px;
   flex-shrink: 0;
 }
 
-.valores-pericia-ficha input,
-.valores-pericia-ficha > span:not(.bonus-natural-ficha){
+.bonus-natural-ficha,
+.espaco-bonus-natural-ficha{
+  width: 20px;
+  text-align: center;
+}
+
+.bonus-natural-ficha{
+  color: rgb(200,110,240);
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.valores-pericia-ficha
+input[type="number"],
+.valor-bom-ficha,
+.valor-extremo-ficha{
   width: 31px;
   min-height: 25px;
   box-sizing: border-box;
@@ -692,7 +752,8 @@
   font-weight: bold;
 }
 
-.valores-pericia-ficha input{
+.valores-pericia-ficha
+input[type="number"]{
   background: rgba(5,160,30,0.12);
   color: rgb(70,210,90);
   border: 1px solid rgb(5,160,30);
@@ -708,10 +769,35 @@
   border: 1px solid rgb(210,85,0);
 }
 
-.bonus-natural-ficha{
-  color: rgb(200,110,240);
-  font-size: 10px;
-  font-weight: bold;
+.modificador-pericia-ficha{
+  display: block;
+  width: 58px;
+  height: 25px;
+  min-height: 25px;
+  padding: 5px;
+  box-sizing: border-box;
+  overflow: hidden;
+  resize: none;
+  background: rgb(7,7,7);
+  color: rgb(220,220,220);
+  border: 1px solid rgb(110,110,110);
+  border-radius: 4px;
+  outline: none;
+  font-family: inherit;
+  font-size: 8px;
+  line-height: 13px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.modificador-pericia-ficha::placeholder{
+  color: rgb(90,90,90);
+  font-size: 7px;
+}
+
+.modificador-pericia-ficha:focus{
+  border-color: rgb(150,0,225);
+  box-shadow: 0 0 5px rgba(200,100,225,0.45);
 }
 
 /* Rolagens */

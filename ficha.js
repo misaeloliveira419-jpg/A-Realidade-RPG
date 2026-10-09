@@ -2594,6 +2594,8 @@ const preenchimentoPvFicha = document.querySelector(".barra-pv .preenchimento-re
 const preenchimentoPdFicha = document.querySelector(".barra-pd .preenchimento-recurso");
 
 const listaPericiasFicha = document.getElementById("lista-pericias-ficha");
+const contadorPontosPericiasFicha = document.getElementById("contador-pontos-pericias-ficha");
+const contadorNaturaisPericiasFicha = document.getElementById("contador-naturais-pericias-ficha");
 
 const tipoRolagemFicha = document.getElementById("tipo-rolagem-ficha");
 const areaRolagemPericiaFicha = document.getElementById("rolagem-pericia-ficha");
@@ -2613,6 +2615,7 @@ const listaRolagensSalvasFicha = document.getElementById("lista-rolagens-salvas-
 
 let periciasPontosFicha = [];
 let estadoPericiasFicha = {};
+let modificadoresPericiasLayout = {};
 
 let estadoAtributosFicha = {
   fisico: 1,
@@ -2932,6 +2935,56 @@ function salvarAtualizacaoPontosFicha(
   return filaSalvamentoPontos;
 }
 
+function renderizarContadoresPericiasFicha() {
+  let pontosPericias = 0;
+  let bonusNaturais = 0;
+
+  Object.values(
+    estadoPericiasFicha
+  ).forEach(
+    dados => {
+      const valor =
+        Number(dados.valor) || 0;
+
+      const bonusNatural =
+        Number(
+          dados.bonusNatural
+        ) || 0;
+
+      /*
+        Remove o bônus Natural para
+        descobrir o valor normal
+        distribuído na Perícia.
+      */
+
+      const valorDistribuido =
+        valor - bonusNatural;
+
+      /*
+        A base de toda Perícia é 4.
+
+        Só contamos como pontos gastos
+        aquilo que estiver acima de 4.
+      */
+
+      if (valorDistribuido > 4) {
+        pontosPericias +=
+          valorDistribuido - 4;
+      }
+
+      bonusNaturais +=
+        bonusNatural;
+    }
+  );
+
+  contadorPontosPericiasFicha
+    .textContent =
+      `${pontosPericias} / 25`;
+
+  contadorNaturaisPericiasFicha
+    .textContent =
+      `NATURAIS: ${bonusNaturais} / 5`;
+}
 
 /* Renderizar Perícias */
 
@@ -3040,7 +3093,9 @@ function renderizarPericiasPontosFicha() {
 
     if (dados.bonusNatural > 0) {
       const bonus =
-        document.createElement("span");
+        document.createElement(
+          "span"
+        );
 
       bonus.className =
         "bonus-natural-ficha";
@@ -3050,6 +3105,19 @@ function renderizarPericiasPontosFicha() {
 
       grupoValores.appendChild(
         bonus
+      );
+
+    } else {
+      const espacoBonus =
+        document.createElement(
+          "span"
+        );
+
+      espacoBonus.className =
+        "espaco-bonus-natural-ficha";
+
+      grupoValores.appendChild(
+        espacoBonus
       );
     }
 
@@ -3071,14 +3139,37 @@ function renderizarPericiasPontosFicha() {
     bom.textContent =
       Math.floor(dados.valor / 2);
 
-    const extremo =
-      document.createElement("span");
+    const extremo = document.createElement("span");
 
-    extremo.className =
-      "valor-extremo-ficha";
+    extremo.className = "valor-extremo-ficha";
 
-    extremo.textContent =
-      Math.floor(dados.valor / 5);
+    extremo.textContent = Math.floor(dados.valor / 5);
+
+    const modificador = document.createElement("textarea");
+
+    modificador.className =
+      "modificador-pericia-ficha";
+
+    modificador.rows = 1;
+    modificador.wrap = "off";
+
+    modificador.placeholder =
+      "Ex.: +1d20";
+
+    modificador.value =
+      modificadoresPericiasLayout[
+        pericia.id
+      ] || "";
+
+    modificador.addEventListener(
+      "input",
+      () => {
+        modificadoresPericiasLayout[
+          pericia.id
+        ] =
+          modificador.value;
+      }
+    );
 
     inputNormal.addEventListener(
       "change",
@@ -3140,7 +3231,8 @@ function renderizarPericiasPontosFicha() {
     grupoValores.append(
       inputNormal,
       bom,
-      extremo
+      extremo,
+      modificador
     );
 
     linha.append(
@@ -3156,6 +3248,8 @@ function renderizarPericiasPontosFicha() {
   listaPericiasFicha.replaceChildren(
     fragmento
   );
+
+  renderizarContadoresPericiasFicha();
 }
 
 
