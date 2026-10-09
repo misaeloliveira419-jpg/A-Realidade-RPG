@@ -717,10 +717,74 @@ const listaHabilidadesPessoais = document.getElementById("lista-habilidades-pess
 const listaHabilidadesOcupacao = document.getElementById("lista-habilidades-ocupacao-ficha");
 const botaoAdicionarHabilidadePessoal = document.getElementById("adicionar-habilidade-pessoal-ficha");
 
+const botaoAdicionarHabilidadePerfil =
+  document.getElementById(
+    "adicionar-habilidade-perfil-ficha"
+  );
+
+const botaoAdicionarHabilidadeOcupacao =
+  document.getElementById(
+    "adicionar-habilidade-ocupacao-ficha"
+  );
+
+const fundoCatalogoHabilidades =
+  document.getElementById(
+    "fundo-catalogo-habilidades"
+  );
+
+const catalogoHabilidadesFicha =
+  document.getElementById(
+    "catalogo-habilidades-ficha"
+  );
+
+const fecharCatalogoHabilidades =
+  document.getElementById(
+    "fechar-catalogo-habilidades"
+  );
+
+const pesquisaCatalogoHabilidades =
+  document.getElementById(
+    "pesquisa-catalogo-habilidades"
+  );
+
+const menuPerfisCatalogoHabilidades =
+  document.getElementById(
+    "menu-perfis-catalogo-habilidades"
+  );
+
+const menuOcupacoesCatalogoHabilidades =
+  document.getElementById(
+    "menu-ocupacoes-catalogo-habilidades"
+  );
+
+const ocupacaoCatalogoHabilidades =
+  document.getElementById(
+    "ocupacao-catalogo-habilidades"
+  );
+
+const listaCatalogoHabilidades =
+  document.getElementById(
+    "lista-catalogo-habilidades"
+  );
+
+const botoesPerfisCatalogoHabilidades = [
+  ...document.querySelectorAll(
+    ".botao-perfil-catalogo-habilidades"
+  )
+];
+
 let catalogoHabilidadesSistema = {
   perfis: {},
   ocupacoes: {}
 };
+
+let catalogoCompletoHabilidadesSistema = {
+  perfis: {},
+  ocupacoes: {}
+};
+
+let tipoCatalogoHabilidadesAberto = null;
+let perfilCatalogoHabilidadesAtivo = "adaptativo";
 
 let estadoHabilidadesFicha = {
   inicializadas: false,
@@ -861,15 +925,8 @@ function normalizarHabilidadeSalva(
     );
 
   return {
-    id:
-      textoHabilidadeSeguro(
-        dados.id
-      ) ||
-      criarIdHabilidadeFicha(
-        tipo,
-        categoria,
-        origem || String(indice)
-      ),
+    catalogoId: textoHabilidadeSeguro(dados.catalogoId),
+    id: textoHabilidadeSeguro(dados.id) || criarIdHabilidadeFicha(tipo, categoria, origem || String(indice)),
 
     categoria: categoria,
 
@@ -967,6 +1024,9 @@ function copiarEstadoHabilidadesFicha() {
     lista =>
       lista.map(
         habilidade => ({
+          catalogoId:
+            habilidade.catalogoId || "",
+
           id:
             habilidade.id,
 
@@ -1184,6 +1244,187 @@ function extrairHabilidadeCategoriaZero(
   };
 }
 
+function extrairTodasHabilidadesTabela(
+  tabela,
+  tipo,
+  origem
+) {
+  if (!tabela) {
+    return [];
+  }
+
+  const cabecalhos = [
+    ...tabela.querySelectorAll(
+      "thead th"
+    )
+  ].map(
+    th =>
+      normalizarTextoHabilidade(
+        th.textContent
+      )
+  );
+
+  const linhas = [
+    ...tabela.querySelectorAll(
+      "tbody tr"
+    )
+  ];
+
+  function indiceCampo(
+    nomes,
+    indicePadrao = -1
+  ) {
+    for (const nome of nomes) {
+      const indice =
+        cabecalhos.indexOf(
+          normalizarTextoHabilidade(
+            nome
+          )
+        );
+
+      if (indice >= 0) {
+        return indice;
+      }
+    }
+
+    return indicePadrao;
+  }
+
+  const indiceCategoria =
+    indiceCampo(
+      ["categoria"],
+      0
+    );
+
+  const indiceNome =
+    indiceCampo(
+      ["habilidade", "nome"],
+      1
+    );
+
+  const indiceCusto =
+    indiceCampo(
+      ["custo"]
+    );
+
+  const indiceAlvo =
+    indiceCampo(
+      ["alvo"]
+    );
+
+  const indiceAlcance =
+    indiceCampo(
+      ["alcance"]
+    );
+
+  const indiceResistencia =
+    indiceCampo(
+      ["resistencia"]
+    );
+
+  const indiceDescricao =
+    indiceCampo(
+      ["descricao"],
+      2
+    );
+
+  function textoCelula(
+    celulas,
+    indice
+  ) {
+    if (indice < 0) {
+      return "";
+    }
+
+    return (
+      celulas[indice]
+        ?.textContent
+        ?.trim() ||
+      ""
+    );
+  }
+
+  return linhas.map(
+    (linha, indiceLinha) => {
+      const celulas = [
+        ...linha.querySelectorAll(
+          "td"
+        )
+      ];
+
+      const categoriaNumero =
+        Number(
+          textoCelula(
+            celulas,
+            indiceCategoria
+          )
+        );
+
+      const categoria =
+        Number.isInteger(
+          categoriaNumero
+        )
+          ? categoriaNumero
+          : 0;
+
+      const nome =
+        textoCelula(
+          celulas,
+          indiceNome
+        );
+
+      return {
+        catalogoId:
+          [
+            tipo,
+            origem,
+            categoria,
+            indiceLinha
+          ].join("|"),
+
+        categoria:
+          categoria,
+
+        nome:
+          nome,
+
+        custo:
+          textoCelula(
+            celulas,
+            indiceCusto
+          ),
+
+        alvo:
+          textoCelula(
+            celulas,
+            indiceAlvo
+          ),
+
+        alcance:
+          textoCelula(
+            celulas,
+            indiceAlcance
+          ),
+
+        resistencia:
+          textoCelula(
+            celulas,
+            indiceResistencia
+          ),
+
+        descricao:
+          textoCelula(
+            celulas,
+            indiceDescricao
+          ),
+
+        origem:
+          origem
+      };
+    }
+  );
+}
+
 async function carregarCatalogoHabilidadesSistema() {
   try {
     const resposta =
@@ -1219,6 +1460,11 @@ async function carregarCatalogoHabilidadesSistema() {
     }
 
     const catalogo = {
+      perfis: {},
+      ocupacoes: {}
+    };
+
+    const catalogoCompleto = {
       perfis: {},
       ocupacoes: {}
     };
@@ -1269,10 +1515,22 @@ async function carregarCatalogoHabilidadesSistema() {
                 ""
               );
 
-          catalogo.perfis[id] =
-            extrairHabilidadeCategoriaZero(
-              tabela
+          const habilidades =
+            extrairTodasHabilidadesTabela(
+              tabela,
+              "perfil",
+              id
             );
+
+          catalogoCompleto.perfis[id] =
+            habilidades;
+
+          catalogo.perfis[id] =
+            habilidades.find(
+              habilidade =>
+                habilidade.categoria === 0
+            ) ||
+            habilidadeVaziaCategoriaZero();
 
           return;
         }
@@ -1295,16 +1553,31 @@ async function carregarCatalogoHabilidadesSistema() {
               nome
             );
 
-          catalogo.ocupacoes[id] =
-            extrairHabilidadeCategoriaZero(
-              tabela
+          const habilidades =
+            extrairTodasHabilidadesTabela(
+              tabela,
+              "ocupacao",
+              id
             );
+
+          catalogoCompleto.ocupacoes[id] =
+            habilidades;
+
+          catalogo.ocupacoes[id] =
+            habilidades.find(
+              habilidade =>
+                habilidade.categoria === 0
+            ) ||
+            habilidadeVaziaCategoriaZero();
         }
       }
     );
 
     catalogoHabilidadesSistema =
       catalogo;
+
+    catalogoCompletoHabilidadesSistema =
+      catalogoCompleto;
 
     return catalogo;
 
@@ -1315,6 +1588,11 @@ async function carregarCatalogoHabilidadesSistema() {
     );
 
     catalogoHabilidadesSistema = {
+      perfis: {},
+      ocupacoes: {}
+    };
+
+    catalogoCompletoHabilidadesSistema = {
       perfis: {},
       ocupacoes: {}
     };
@@ -1341,6 +1619,11 @@ function criarHabilidadeDoSistema(
       : habilidadeVaziaCategoriaZero();
 
   return {
+    catalogoId:
+      textoHabilidadeSeguro(
+        dados.catalogoId
+      ),
+
     id:
       criarIdHabilidadeFicha(
         tipo,
@@ -2376,6 +2659,913 @@ botaoAdicionarHabilidadePessoal
     criarHabilidadePessoalFicha
   );
 
+/* Catálogo de Habilidades */
+
+function obterHabilidadesAdquiridasPorTipo(
+  tipo
+) {
+  if (tipo === "perfil") {
+    return estadoHabilidadesFicha.perfil;
+  }
+
+  if (tipo === "ocupacao") {
+    return estadoHabilidadesFicha.ocupacao;
+  }
+
+  return [];
+}
+
+
+function habilidadeCatalogoJaAdquirida(
+  tipo,
+  habilidade
+) {
+  const adquiridas =
+    obterHabilidadesAdquiridasPorTipo(
+      tipo
+    );
+
+  return adquiridas.some(
+    adquirida => {
+      if (
+        adquirida.catalogoId &&
+        habilidade.catalogoId &&
+        adquirida.catalogoId ===
+          habilidade.catalogoId
+      ) {
+        return true;
+      }
+
+      const mesmaOrigem =
+        adquirida.origem ===
+          habilidade.origem;
+
+      const mesmaCategoria =
+        Number(
+          adquirida.categoria
+        ) ===
+          Number(
+            habilidade.categoria
+          );
+
+      if (
+        !mesmaOrigem ||
+        !mesmaCategoria
+      ) {
+        return false;
+      }
+
+      /*
+        Compatibilidade com fichas antigas,
+        cuja Categoria 0 ainda não possuía
+        catalogoId.
+      */
+
+      if (
+        Number(
+          habilidade.categoria
+        ) === 0 &&
+        !adquirida.catalogoId
+      ) {
+        return true;
+      }
+
+      const nomeAdquirida =
+        normalizarTextoHabilidade(
+          adquirida.nome
+        );
+
+      const nomeCatalogo =
+        normalizarTextoHabilidade(
+          habilidade.nome
+        );
+
+      return (
+        nomeAdquirida &&
+        nomeAdquirida ===
+          nomeCatalogo
+      );
+    }
+  );
+}
+
+
+function habilidadeCatalogoCompativel(
+  tipo,
+  habilidade
+) {
+  if (tipo === "perfil") {
+    return (
+      habilidade.origem ===
+        campoPerfilHabilidadesFicha
+          .value
+    );
+  }
+
+  if (tipo === "ocupacao") {
+    const ocupacoesPersonagem = [
+      campoOcupacaoHabilidadesFicha
+        .value,
+
+      campoOcupacao2HabilidadesFicha
+        .value
+    ].filter(Boolean);
+
+    return ocupacoesPersonagem.includes(
+      habilidade.origem
+    );
+  }
+
+  return false;
+}
+
+
+function textoIncompatibilidadeHabilidade(
+  tipo,
+  habilidade
+) {
+  if (tipo === "perfil") {
+    const perfil =
+      habilidade.origem
+        ? habilidade.origem
+            .charAt(0)
+            .toUpperCase() +
+          habilidade.origem.slice(1)
+        : "desconhecido";
+
+    return (
+      `Esta Habilidade pertence ao Perfil ${perfil} ` +
+      "e não é compatível com o Perfil atual do personagem."
+    );
+  }
+
+  const ocupacao =
+    nomeOcupacaoHabilidadeFicha(
+      habilidade.origem
+    ) ||
+    "esta Ocupação";
+
+  return (
+    `Esta Habilidade pertence à Ocupação ${ocupacao} ` +
+    "e não é compatível com as Ocupações atuais do personagem."
+  );
+}
+
+
+function habilidadeCombinaComPesquisa(
+  habilidade,
+  pesquisa
+) {
+  const termo =
+    normalizarTextoHabilidade(
+      pesquisa
+    );
+
+  if (!termo) {
+    return true;
+  }
+
+  const textoCompleto =
+    [
+      habilidade.nome,
+      habilidade.custo,
+      habilidade.alvo,
+      habilidade.alcance,
+      habilidade.resistencia,
+      habilidade.descricao
+    ]
+      .map(
+        normalizarTextoHabilidade
+      )
+      .join(" ");
+
+  return textoCompleto.includes(
+    termo
+  );
+}
+
+
+function copiarHabilidadeDoCatalogo(
+  tipo,
+  habilidade
+) {
+  return {
+    catalogoId:
+      habilidade.catalogoId,
+
+    id:
+      [
+        "adquirida",
+        tipo,
+        Date.now(),
+        Math.random()
+          .toString(36)
+          .slice(2, 8)
+      ].join("-"),
+
+    categoria:
+      habilidade.categoria,
+
+    nome:
+      habilidade.nome,
+
+    custo:
+      habilidade.custo,
+
+    alvo:
+      habilidade.alvo,
+
+    alcance:
+      habilidade.alcance,
+
+    resistencia:
+      habilidade.resistencia,
+
+    descricao:
+      habilidade.descricao,
+
+    origem:
+      habilidade.origem
+  };
+}
+
+
+async function adicionarHabilidadeDoCatalogo(
+  tipo,
+  habilidade
+) {
+  if (
+    habilidadeCatalogoJaAdquirida(
+      tipo,
+      habilidade
+    )
+  ) {
+    alert(
+      "Esta Habilidade já foi adicionada ao personagem."
+    );
+
+    return;
+  }
+
+  if (
+    !habilidadeCatalogoCompativel(
+      tipo,
+      habilidade
+    )
+  ) {
+    alert(
+      textoIncompatibilidadeHabilidade(
+        tipo,
+        habilidade
+      )
+    );
+
+    return;
+  }
+
+  const novaHabilidade =
+    copiarHabilidadeDoCatalogo(
+      tipo,
+      habilidade
+    );
+
+  if (tipo === "perfil") {
+    estadoHabilidadesFicha
+      .perfil
+      .push(
+        novaHabilidade
+      );
+  }
+
+  if (tipo === "ocupacao") {
+    estadoHabilidadesFicha
+      .ocupacao
+      .push(
+        novaHabilidade
+      );
+  }
+
+  renderizarHabilidadesFicha(
+    novaHabilidade.id
+  );
+
+  renderizarCatalogoHabilidades();
+
+  try {
+    await salvarHabilidadesFichaImediatamente();
+
+  } catch (erro) {
+    console.error(
+      "Erro ao adicionar Habilidade:",
+      erro
+    );
+
+    alert(
+      "Não foi possível salvar a Habilidade."
+    );
+  }
+}
+
+
+function criarCardCatalogoHabilidade(
+  habilidade
+) {
+  const tipo =
+    tipoCatalogoHabilidadesAberto;
+
+  const adquirida =
+    habilidadeCatalogoJaAdquirida(
+      tipo,
+      habilidade
+    );
+
+  const compativel =
+    habilidadeCatalogoCompativel(
+      tipo,
+      habilidade
+    );
+
+  const card =
+    document.createElement(
+      "article"
+    );
+
+  card.className =
+    "card-catalogo-habilidade";
+
+  const cabecalho =
+    document.createElement(
+      "div"
+    );
+
+  cabecalho.className =
+    "cabecalho-card-catalogo-habilidade";
+
+  const categoria =
+    document.createElement(
+      "span"
+    );
+
+  categoria.className =
+    "categoria-habilidade-catalogo";
+
+  categoria.textContent =
+    String(
+      habilidade.categoria
+    );
+
+  const nome =
+    document.createElement(
+      "strong"
+    );
+
+  nome.className =
+    "nome-habilidade-catalogo";
+
+  nome.textContent =
+    habilidade.nome;
+
+  const botaoExpandir =
+    document.createElement(
+      "button"
+    );
+
+  botaoExpandir.type =
+    "button";
+
+  botaoExpandir.className =
+    "expandir-habilidade-catalogo";
+
+  botaoExpandir.textContent =
+    "▶";
+
+  botaoExpandir.setAttribute(
+    "aria-label",
+    "Abrir Habilidade"
+  );
+
+  const botaoAdicionar =
+    document.createElement(
+      "button"
+    );
+
+  botaoAdicionar.type =
+    "button";
+
+  botaoAdicionar.className =
+    "adicionar-habilidade-catalogo";
+
+  if (adquirida) {
+    botaoAdicionar.classList.add(
+      "ja-adicionada"
+    );
+
+    botaoAdicionar.textContent =
+      "✓";
+
+    botaoAdicionar.title =
+      "Habilidade já adicionada";
+
+  } else {
+    botaoAdicionar.textContent =
+      "+";
+
+    if (!compativel) {
+      botaoAdicionar.classList.add(
+        "incompativel"
+      );
+
+      botaoAdicionar.setAttribute(
+        "aria-disabled",
+        "true"
+      );
+
+      botaoAdicionar.title =
+        "Habilidade incompatível";
+    }
+  }
+
+  cabecalho.append(
+    categoria,
+    nome,
+    botaoExpandir,
+    botaoAdicionar
+  );
+
+
+  /* Conteúdo expandido */
+
+  const conteudo =
+    document.createElement(
+      "div"
+    );
+
+  conteudo.className =
+    "conteudo-card-catalogo-habilidade";
+
+  conteudo.hidden = true;
+
+  conteudo.innerHTML = `
+    <div class="linha-tripla-habilidade">
+
+      <label>
+        <span>CUSTO</span>
+        <textarea
+          rows="1"
+          readonly
+          data-campo-catalogo="custo"
+        ></textarea>
+      </label>
+
+      <label>
+        <span>ALVO</span>
+        <textarea
+          rows="1"
+          readonly
+          data-campo-catalogo="alvo"
+        ></textarea>
+      </label>
+
+      <label>
+        <span>ALCANCE</span>
+        <textarea
+          rows="1"
+          readonly
+          data-campo-catalogo="alcance"
+        ></textarea>
+      </label>
+
+    </div>
+
+    <label class="campo-largo-habilidade">
+      <span>RESISTÊNCIA</span>
+
+      <textarea
+        rows="1"
+        readonly
+        data-campo-catalogo="resistencia"
+      ></textarea>
+    </label>
+
+    <label class="campo-largo-habilidade">
+      <span>DESCRIÇÃO</span>
+
+      <textarea
+        class="descricao-habilidade-catalogo"
+        rows="3"
+        readonly
+        data-campo-catalogo="descricao"
+      ></textarea>
+    </label>
+  `;
+
+  conteudo
+    .querySelectorAll(
+      "[data-campo-catalogo]"
+    )
+    .forEach(
+      campo => {
+        const chave =
+          campo.dataset
+            .campoCatalogo;
+
+        campo.value =
+          habilidade[chave] || "";
+      }
+    );
+
+
+  /* Abrir e fechar */
+
+  botaoExpandir.addEventListener(
+    "click",
+    () => {
+      const abrir =
+        conteudo.hidden;
+
+      conteudo.hidden =
+        !abrir;
+
+      card.classList.toggle(
+        "aberta",
+        abrir
+      );
+
+      if (abrir) {
+        requestAnimationFrame(
+          () => {
+            conteudo
+              .querySelectorAll(
+                "textarea"
+              )
+              .forEach(
+                ajustarAlturaCampoHabilidade
+              );
+          }
+        );
+      }
+    }
+  );
+
+
+  /* Adicionar */
+
+  botaoAdicionar.addEventListener(
+    "click",
+    () => {
+      if (adquirida) {
+        alert(
+          "Esta Habilidade já foi adicionada ao personagem."
+        );
+
+        return;
+      }
+
+      if (!compativel) {
+        alert(
+          textoIncompatibilidadeHabilidade(
+            tipo,
+            habilidade
+          )
+        );
+
+        return;
+      }
+
+      adicionarHabilidadeDoCatalogo(
+        tipo,
+        habilidade
+      );
+    }
+  );
+
+  card.append(
+    cabecalho,
+    conteudo
+  );
+
+  return card;
+}
+
+
+function obterHabilidadesCatalogoAtual() {
+  if (
+    tipoCatalogoHabilidadesAberto ===
+      "perfil"
+  ) {
+    return (
+      catalogoCompletoHabilidadesSistema
+        .perfis[
+          perfilCatalogoHabilidadesAtivo
+        ] ||
+      []
+    );
+  }
+
+  if (
+    tipoCatalogoHabilidadesAberto ===
+      "ocupacao"
+  ) {
+    return (
+      catalogoCompletoHabilidadesSistema
+        .ocupacoes[
+          ocupacaoCatalogoHabilidades
+            .value
+        ] ||
+      []
+    );
+  }
+
+  return [];
+}
+
+
+function renderizarCatalogoHabilidades() {
+  if (
+    !tipoCatalogoHabilidadesAberto
+  ) {
+    return;
+  }
+
+  const pesquisa =
+    pesquisaCatalogoHabilidades
+      .value;
+
+  const habilidades =
+    obterHabilidadesCatalogoAtual()
+      .filter(
+        habilidade =>
+          habilidadeCombinaComPesquisa(
+            habilidade,
+            pesquisa
+          )
+      );
+
+  listaCatalogoHabilidades
+    .replaceChildren();
+
+  if (!habilidades.length) {
+    const aviso =
+      document.createElement(
+        "p"
+      );
+
+    aviso.className =
+      "catalogo-habilidades-vazio";
+
+    aviso.textContent =
+      pesquisa
+        ? "Nenhuma Habilidade encontrada."
+        : "Nenhuma Habilidade disponível.";
+
+    listaCatalogoHabilidades
+      .appendChild(
+        aviso
+      );
+
+    return;
+  }
+
+  const fragmento =
+    document.createDocumentFragment();
+
+  habilidades.forEach(
+    habilidade => {
+      fragmento.appendChild(
+        criarCardCatalogoHabilidade(
+          habilidade
+        )
+      );
+    }
+  );
+
+  listaCatalogoHabilidades
+    .appendChild(
+      fragmento
+    );
+}
+
+
+function preencherSelectOcupacoesCatalogo() {
+  ocupacaoCatalogoHabilidades
+    .replaceChildren();
+
+  const ocupacoesCatalogo =
+    Object.keys(
+      catalogoCompletoHabilidadesSistema
+        .ocupacoes
+    );
+
+  ocupacoesCatalogo.forEach(
+    id => {
+      const opcao =
+        document.createElement(
+          "option"
+        );
+
+      opcao.value =
+        id;
+
+      opcao.textContent =
+        nomeOcupacaoHabilidadeFicha(
+          id
+        );
+
+      ocupacaoCatalogoHabilidades
+        .appendChild(
+          opcao
+        );
+    }
+  );
+
+  const ocupacoesPersonagem = [
+    campoOcupacaoHabilidadesFicha
+      .value,
+
+    campoOcupacao2HabilidadesFicha
+      .value
+  ].filter(Boolean);
+
+  const primeiraCompativel =
+    ocupacoesPersonagem.find(
+      id =>
+        ocupacoesCatalogo.includes(
+          id
+        )
+    );
+
+  ocupacaoCatalogoHabilidades.value =
+    primeiraCompativel ||
+    ocupacoesCatalogo[0] ||
+    "";
+}
+
+
+function atualizarMenuPerfisCatalogo() {
+  botoesPerfisCatalogoHabilidades
+    .forEach(
+      botao => {
+        botao.classList.toggle(
+          "ativa",
+          botao.dataset
+            .perfilCatalogo ===
+              perfilCatalogoHabilidadesAtivo
+        );
+      }
+    );
+}
+
+
+function abrirCatalogoHabilidades(
+  tipo
+) {
+  tipoCatalogoHabilidadesAberto =
+    tipo;
+
+  pesquisaCatalogoHabilidades.value =
+    "";
+
+  fundoCatalogoHabilidades.hidden =
+    false;
+
+  document.body.classList.add(
+    "catalogo-habilidades-aberto"
+  );
+
+  if (tipo === "perfil") {
+    menuPerfisCatalogoHabilidades.hidden =
+      false;
+
+    menuOcupacoesCatalogoHabilidades.hidden =
+      true;
+
+    perfilCatalogoHabilidadesAtivo =
+      campoPerfilHabilidadesFicha
+        .value ||
+      "adaptativo";
+
+    atualizarMenuPerfisCatalogo();
+
+  } else {
+    menuPerfisCatalogoHabilidades.hidden =
+      true;
+
+    menuOcupacoesCatalogoHabilidades.hidden =
+      false;
+
+    preencherSelectOcupacoesCatalogo();
+  }
+
+  renderizarCatalogoHabilidades();
+
+  requestAnimationFrame(
+    () => {
+      pesquisaCatalogoHabilidades
+        .focus();
+    }
+  );
+}
+
+
+function fecharCatalogoHabilidadesFicha() {
+  fundoCatalogoHabilidades.hidden =
+    true;
+
+  tipoCatalogoHabilidadesAberto =
+    null;
+
+  document.body.classList.remove(
+    "catalogo-habilidades-aberto"
+  );
+}
+
+
+botaoAdicionarHabilidadePerfil
+  ?.addEventListener(
+    "click",
+    () => {
+      abrirCatalogoHabilidades(
+        "perfil"
+      );
+    }
+  );
+
+
+botaoAdicionarHabilidadeOcupacao
+  ?.addEventListener(
+    "click",
+    () => {
+      abrirCatalogoHabilidades(
+        "ocupacao"
+      );
+    }
+  );
+
+
+fecharCatalogoHabilidades
+  ?.addEventListener(
+    "click",
+    fecharCatalogoHabilidadesFicha
+  );
+
+
+fundoCatalogoHabilidades
+  ?.addEventListener(
+    "click",
+    evento => {
+      if (
+        evento.target ===
+          fundoCatalogoHabilidades
+      ) {
+        fecharCatalogoHabilidadesFicha();
+      }
+    }
+  );
+
+
+document.addEventListener(
+  "keydown",
+  evento => {
+    if (
+      evento.key === "Escape" &&
+      !fundoCatalogoHabilidades.hidden
+    ) {
+      fecharCatalogoHabilidadesFicha();
+    }
+  }
+);
+
+
+pesquisaCatalogoHabilidades
+  ?.addEventListener(
+    "input",
+    renderizarCatalogoHabilidades
+  );
+
+
+botoesPerfisCatalogoHabilidades
+  .forEach(
+    botao => {
+      botao.addEventListener(
+        "click",
+        () => {
+          perfilCatalogoHabilidadesAtivo =
+            botao.dataset
+              .perfilCatalogo;
+
+          atualizarMenuPerfisCatalogo();
+          renderizarCatalogoHabilidades();
+        }
+      );
+    }
+  );
+
+
+ocupacaoCatalogoHabilidades
+  ?.addEventListener(
+    "change",
+    renderizarCatalogoHabilidades
+  );
 
 /* Preencher a aba */
 

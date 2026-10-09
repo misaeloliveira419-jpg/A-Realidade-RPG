@@ -1307,7 +1307,7 @@ input[type="number"]{
   align-items: center;
   justify-content: center;
   align-self: stretch;
-  color: rgb(0,225,240);
+  color: rgb(105,115,210);
   border-right: 1px solid rgb(70,70,70);
   font-size: 11px;
   font-weight: bold;
@@ -1519,6 +1519,371 @@ input[type="number"]{
   box-shadow: 0 0 6px rgba(0,225,240,0.4);
 }
 
+/* Catálogo de Habilidades */
+
+body.catalogo-habilidades-aberto{
+  overflow: hidden;
+}
+
+.fundo-catalogo-habilidades{
+  position: fixed;
+  inset: 0;
+  z-index: 5000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+  background: rgba(0,0,0,0.72);
+  backdrop-filter: blur(2px);
+}
+
+.fundo-catalogo-habilidades[hidden]{
+  display: none;
+}
+
+.catalogo-habilidades-ficha{
+  width: min(760px,90vw);
+  max-height: min(680px,82vh);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: rgb(5,5,5);
+  border: 1px solid rgb(110,110,110);
+  border-radius: 7px;
+  box-shadow:
+    0 0 20px rgba(0,0,0,0.8),
+    0 0 12px rgba(120,60,180,0.2);
+}
+
+.cabecalho-catalogo-habilidades{
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 14px;
+  border-bottom: 1px solid rgb(65,65,65);
+}
+
+.cabecalho-catalogo-habilidades h2{
+  margin: 0;
+  font-size: 14px;
+}
+
+.fechar-catalogo-habilidades{
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  background: transparent;
+  color: rgb(180,180,180);
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+  line-height: 1;
+  transition:
+    color 0.2s,
+    transform 0.2s;
+}
+
+.fechar-catalogo-habilidades:hover{
+  color: rgb(225,90,0);
+  transform: scale(1.15);
+}
+
+
+/* Pesquisa */
+
+.pesquisa-catalogo-habilidades{
+  flex-shrink: 0;
+  width: calc(100% - 28px);
+  height: 36px;
+  margin: 12px 14px 8px;
+  padding: 0 10px;
+  box-sizing: border-box;
+  background: black;
+  color: white;
+  border: 1px solid rgb(90,90,90);
+  border-radius: 5px;
+  outline: none;
+  font-family: inherit;
+}
+
+.pesquisa-catalogo-habilidades:focus{
+  border-color: rgb(140,75,210);
+  box-shadow: 0 0 7px rgba(150,75,220,0.35);
+}
+
+
+/* Menu de Perfil */
+
+.menu-perfis-catalogo-habilidades{
+  position: relative;
+  flex-shrink: 0;
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  margin: 0 14px 10px;
+  border-bottom: 1px solid rgb(65,65,65);
+}
+
+.menu-perfis-catalogo-habilidades[hidden]{
+  display: none;
+}
+
+.botao-perfil-catalogo-habilidades{
+  padding: 9px 6px;
+  background: transparent;
+  color: rgb(140,140,140);
+  border: none;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: bold;
+  transition:
+    color 0.2s,
+    border-color 0.2s,
+    text-shadow 0.2s;
+}
+
+.botao-perfil-catalogo-habilidades:hover{
+  color: white;
+}
+
+.botao-perfil-catalogo-habilidades.ativa{
+  color: white;
+  border-bottom-color: rgb(135,80,210);
+  text-shadow: 0 0 7px rgba(160,90,225,0.6);
+}
+
+
+/* Select de Ocupação */
+
+.menu-ocupacoes-catalogo-habilidades{
+  flex-shrink: 0;
+  margin: 0 14px 10px;
+}
+
+.menu-ocupacoes-catalogo-habilidades[hidden]{
+  display: none;
+}
+
+.menu-ocupacoes-catalogo-habilidades label{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.menu-ocupacoes-catalogo-habilidades span{
+  flex-shrink: 0;
+  font-size: 9px;
+  font-weight: bold;
+}
+
+.menu-ocupacoes-catalogo-habilidades select{
+  flex: 1;
+  min-width: 0;
+  height: 34px;
+  padding: 0 8px;
+  background: black;
+  color: white;
+  border: 1px solid rgb(90,90,90);
+  border-radius: 5px;
+  outline: none;
+}
+
+
+/* Lista */
+
+.lista-catalogo-habilidades{
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 4px 14px 14px;
+  overflow-y: auto;
+}
+
+.catalogo-habilidades-vazio{
+  margin: 25px 0;
+  color: rgb(140,140,140);
+  text-align: center;
+  font-size: 10px;
+}
+
+
+/* Cards do catálogo */
+
+.card-catalogo-habilidade{
+  flex-shrink: 0;
+  overflow: hidden;
+  background: rgb(8,8,8);
+  border: 1px solid rgb(75,75,75);
+  border-radius: 5px;
+}
+
+.cabecalho-card-catalogo-habilidade{
+  display: grid;
+  grid-template-columns:
+    31px
+    minmax(0,1fr)
+    30px
+    34px;
+  align-items: center;
+  min-height: 38px;
+}
+
+.categoria-habilidade-catalogo{
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgb(105,115,210);
+  border-right: 1px solid rgb(65,65,65);
+  font-size: 11px;
+  font-weight: bold;
+  text-shadow: 0 0 5px rgba(95,90,200,0.35);
+}
+
+.nome-habilidade-catalogo{
+  min-width: 0;
+  padding: 6px 9px;
+  overflow-wrap: anywhere;
+  font-size: 11px;
+}
+
+.expandir-habilidade-catalogo{
+  height: 100%;
+  padding: 0;
+  background: transparent;
+  color: rgb(180,180,180);
+  border: none;
+  cursor: pointer;
+  font-size: 10px;
+  transition:
+    color 0.2s,
+    transform 0.2s;
+}
+
+.card-catalogo-habilidade.aberta
+.expandir-habilidade-catalogo{
+  transform: rotate(90deg);
+  color: rgb(145,100,220);
+}
+
+
+/* Botão + */
+
+.adicionar-habilidade-catalogo{
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  justify-self: center;
+  background: transparent;
+  color: white;
+  border: 1px solid rgb(115,115,115);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 1;
+  transition:
+    color 0.2s,
+    border-color 0.2s,
+    background 0.2s,
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+
+.adicionar-habilidade-catalogo:hover{
+  color: rgb(205,155,255);
+  border-color: rgb(150,75,225);
+  background: rgba(140,60,210,0.1);
+  transform: scale(1.08);
+  box-shadow: 0 0 7px rgba(155,75,225,0.45);
+}
+
+
+/* Incompatível */
+
+.adicionar-habilidade-catalogo.incompativel{
+  color: rgb(70,70,70);
+  border-color: rgb(55,55,55);
+  background: rgb(10,10,10);
+  box-shadow: none;
+}
+
+.adicionar-habilidade-catalogo.incompativel:hover{
+  color: rgb(95,95,95);
+  border-color: rgb(70,70,70);
+  background: rgb(12,12,12);
+  transform: none;
+  box-shadow: none;
+}
+
+
+/* Já adquirida */
+
+.adicionar-habilidade-catalogo.ja-adicionada{
+  color: rgb(160,125,210);
+  border-color: rgb(90,65,120);
+  background: rgba(100,60,140,0.08);
+}
+
+.adicionar-habilidade-catalogo.ja-adicionada:hover{
+  color: rgb(180,145,225);
+  border-color: rgb(110,75,145);
+  transform: none;
+  box-shadow: none;
+}
+
+
+/* Conteúdo aberto */
+
+.conteudo-card-catalogo-habilidade{
+  padding: 8px;
+  border-top: 1px solid rgb(55,55,55);
+}
+
+.conteudo-card-catalogo-habilidade[hidden]{
+  display: none;
+}
+
+.conteudo-card-catalogo-habilidade label{
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 3px;
+}
+
+.conteudo-card-catalogo-habilidade label > span{
+  font-size: 7px;
+  font-weight: bold;
+}
+
+.conteudo-card-catalogo-habilidade textarea{
+  width: 100%;
+  min-width: 0;
+  min-height: 27px;
+  padding: 5px;
+  box-sizing: border-box;
+  overflow: hidden;
+  resize: none;
+  background: black;
+  color: rgb(210,210,210);
+  border: 1px solid rgb(70,70,70);
+  border-radius: 4px;
+  outline: none;
+  font-family: inherit;
+  font-size: 9px;
+  line-height: 1.3;
+}
+
+.conteudo-card-catalogo-habilidade
+.descricao-habilidade-catalogo{
+  min-height: 58px;
+}
+
 /* Responsivo */
 
 @media (max-width: 1000px){
@@ -1707,5 +2072,39 @@ input[type="number"]{
 
   .campo-nivel-ocupacao-habilidades{
     grid-column: 1 / -1;
+  }
+
+  .fundo-catalogo-habilidades{
+    padding: 8px;
+  }
+
+  .catalogo-habilidades-ficha{
+    width: 96vw;
+    max-height: 88vh;
+  }
+
+  .cabecalho-catalogo-habilidades{
+    padding: 10px;
+  }
+
+  .pesquisa-catalogo-habilidades{
+    width: calc(100% - 20px);
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .menu-perfis-catalogo-habilidades,
+  .menu-ocupacoes-catalogo-habilidades{
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .lista-catalogo-habilidades{
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .linha-tripla-habilidade{
+    grid-template-columns: 1fr;
   }
 }
