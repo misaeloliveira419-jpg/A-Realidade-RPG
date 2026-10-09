@@ -2616,6 +2616,7 @@ const listaRolagensSalvasFicha = document.getElementById("lista-rolagens-salvas-
 let periciasPontosFicha = [];
 let estadoPericiasFicha = {};
 let modificadoresPericiasLayout = {};
+let limitePontosPericiasFicha = 25;
 
 let estadoAtributosFicha = {
   fisico: 1,
@@ -2979,7 +2980,7 @@ function renderizarContadoresPericiasFicha() {
 
   contadorPontosPericiasFicha
     .textContent =
-      `${pontosPericias} / 25`;
+      `${pontosPericias} / ${limitePontosPericiasFicha}`;
 
   contadorNaturaisPericiasFicha
     .textContent =
@@ -3341,6 +3342,25 @@ async function preencherPontosFicha(ficha) {
 
   const periciasSalvas =
     ficha.pericias || {};
+
+  let pontosRecuperadosCriacao = 0;
+
+  Object.values(
+    periciasSalvas
+  ).forEach(
+    salva => {
+      const valorDistribuido =
+        Number(
+          salva.valorDistribuido
+        );
+
+      if (Number.isFinite(valorDistribuido) &&valorDistribuido < 4) {
+        pontosRecuperadosCriacao += 4 - valorDistribuido;
+      }
+    }
+  );
+
+  limitePontosPericiasFicha = 25 + pontosRecuperadosCriacao;
 
   estadoPericiasFicha = {};
 
