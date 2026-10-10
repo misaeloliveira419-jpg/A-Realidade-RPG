@@ -181,6 +181,25 @@ a{
 .tabela-itens td{
   border: 2px solid white;
 }
+.tabela-credito-itens{
+  background-color: black;
+  border-collapse: collapse;
+  border: 2px solid white;
+  font-size: 16px;
+  min-width: 60%;
+  max-width: 1200px;
+  margin: 0 auto;
+  line-height: 1.5;
+  text-align: center;
+}
+.tabela-credito-itens th{
+  border: 2px solid white;
+  padding: 10px;
+}
+.tabela-credito-itens td{
+  border: 2px solid white;
+  padding: 10px;
+}
 #lista-consequencias-idade{
   font-size: 16px;
   max-width: 500px;
@@ -511,6 +530,15 @@ a{
     padding: 7px;
   }
   .tabela-itens td{
+    padding: 5px;
+  }
+  .tabela-credito-itens{
+    font-size: 13px;
+  }
+  .tabela-credito-itens th{
+    padding: 7px;
+  }
+  .tabela-credito-itens td{
     padding: 5px;
   }
   #lista-consequencias-idade li{
