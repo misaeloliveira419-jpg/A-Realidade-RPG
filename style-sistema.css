@@ -158,14 +158,19 @@ a{
 #lista-ocupacoes-personagem li{
   margin-top: 20px;
 }
+.area-tabela-itens{
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
 .tabela-itens{
   background-color: black;
   border-collapse: collapse;
   border: 2px solid white;
   width: 100%;
   font-size: 16px;
-  max-width: 1200px;
-  margin: 0 auto;
+  margin: 0;
   line-height: 1.5;
   text-align: center;
 }
@@ -490,8 +495,23 @@ a{
   #lista-ocupacoes-personagem li{
     max-width: 95%;
   }
-  .tabela-itens{
+  .area-tabela-itens{
+    width: 95%;
     max-width: 95%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+  .tabela-itens{
+    width: 760px;
+    min-width: 760px;
+    font-size: 13px;
+  }
+  .tabela-itens th{
+    padding: 7px;
+  }
+  .tabela-itens td{
+    padding: 5px;
   }
   #lista-consequencias-idade li{
     max-width: 95%;
