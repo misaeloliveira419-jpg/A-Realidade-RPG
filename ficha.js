@@ -312,7 +312,7 @@ async function carregarFichaAutenticada(usuario) {
     await preencherInformacoesFicha(ficha);
     await preencherPontosFicha(ficha);
     await preencherHabilidadesFicha(ficha);
-    preencherInventarioFicha(ficha);
+    await preencherInventarioFicha(ficha);
 
     iniciarEscutasRolagensFicha();
     iniciarEscutaRecursosFicha();
@@ -3727,6 +3727,40 @@ let inventarioFicha = [];
 let capacidadeCargaMaximaFicha = 0;
 let filaSalvamentoInventarioFicha = Promise.resolve();
 let timerSalvamentoInventarioFicha = null;
+let custosCreditoItensFicha = {};
+function normalizarNomeCreditoItemFicha(nome) {
+  return String(nome || "").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/\s*[—–-]\s*\d+\s+balas?\s*$/i,"").replace(/[^a-z0-9]+/g," ").trim();
+}
+function converterCustoCreditoItemFicha(texto) {
+  const valor = String(texto || "").replace(/[^\d,.-]/g,"").replace(/\./g,"").replace(",",".");
+  const numero = Number(valor);
+  return Number.isFinite(numero) ? numero : null;
+}
+async function carregarCustosCreditoItensFicha() {
+  try {
+    const resposta = await fetch("index-sistema.html");
+    if (!resposta.ok) throw new Error("Não foi possível abrir index-sistema.html.");
+    const html = await resposta.text();
+    const documento = new DOMParser().parseFromString(html,"text/html");
+    const tabela = documento.querySelector(".tabela-credito-itens");
+    if (!tabela) throw new Error("Tabela de Custo em Crédito não encontrada.");
+    const custos = {};
+    tabela.querySelectorAll("tbody tr").forEach(linha => {
+      const celulas = linha.querySelectorAll("td");
+      const nome = celulas[0]?.textContent.trim() || "";
+      const custo = converterCustoCreditoItemFicha(celulas[1]?.textContent);
+      if (!nome || custo === null) return;
+      custos[normalizarNomeCreditoItemFicha(nome)] = custo;
+    });
+    custosCreditoItensFicha = custos;
+    return custos;
+  } catch (erro) {
+    console.error("Erro ao carregar Custos em Crédito dos Itens:",erro);
+    custosCreditoItensFicha = {};
+    return custosCreditoItensFicha;
+  }
+}
+const promessaCustosCreditoItensFicha = carregarCustosCreditoItensFicha();
 function formatarNumeroInventarioFicha(valor) {
   const numero = Number(valor);
   if (!Number.isFinite(numero)) return "0";
@@ -3745,6 +3779,15 @@ function obterCustoFinalItemFicha(item) {
   if (Number.isFinite(custoBase)) return custoBase;
   const custo = Number(item.custo);
   return Number.isFinite(custo) ? custo : 0;
+}
+function obterCustoCreditoItemFicha(item) {
+  const nomeNormalizado = normalizarNomeCreditoItemFicha(item.nome);
+  const custo = custosCreditoItensFicha[nomeNormalizado];
+  return Number.isFinite(custo) ? custo : null;
+}
+function formatarCreditoItemFicha(valor) {
+  if (!Number.isFinite(valor)) return "—";
+  return new Intl.NumberFormat("pt-BR",{minimumFractionDigits: 0,maximumFractionDigits: 0}).format(valor);
 }
 function atualizarContadorCargaFicha() {
   if (!contadorCargaFicha) return;
@@ -3789,7 +3832,9 @@ function criarCardItemFicha(item) {
   peso.textContent = `Peso: ${formatarNumeroInventarioFicha(item.peso)}`;
   const custo = document.createElement("span");
   custo.className = "dado-item-ficha custo-item-ficha";
-  custo.textContent = `Custo: ${formatarNumeroInventarioFicha(obterCustoFinalItemFicha(item))} PC`;
+  const custoPc = obterCustoFinalItemFicha(item);
+  const custoCredito = obterCustoCreditoItemFicha(item);
+  custo.textContent = `Custo: ${formatarNumeroInventarioFicha(custoPc)} PC / R$ ${formatarCreditoItemFicha(custoCredito)}`;
   const botaoExpandir = document.createElement("button");
   botaoExpandir.type = "button";
   botaoExpandir.className = "expandir-item-ficha";
@@ -3839,7 +3884,8 @@ function renderizarInventarioFicha() {
   inventarioFicha.forEach(item => fragmento.appendChild(criarCardItemFicha(item)));
   listaInventarioFicha.appendChild(fragmento);
 }
-function preencherInventarioFicha(ficha) {
+async function preencherInventarioFicha(ficha) {
+  await promessaCustosCreditoItensFicha;
   inventarioFicha = Array.isArray(ficha.inventario) ? ficha.inventario.map(item => ({
     ...item,
     descricao: typeof item.descricao === "string" ? item.descricao : ""

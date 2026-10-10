@@ -2314,18 +2314,16 @@ body.catalogo-habilidades-aberto{
     grid-column: 1;
     grid-row: 1;
   }
-  .expandir-item-ficha{
-    grid-column: 2;
-    grid-row: 1 / 3;
-  }
-  .peso-item-ficha,
-  .custo-item-ficha{
-    grid-row: 2;
-  }
   .peso-item-ficha{
     grid-column: 1;
+    grid-row: 2;
   }
   .custo-item-ficha{
-    display: none;
+    grid-column: 1;
+    grid-row: 3;
+  }
+  .expandir-item-ficha{
+    grid-column: 2;
+    grid-row: 1 / 4;
   }
 }
