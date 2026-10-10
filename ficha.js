@@ -3569,39 +3569,25 @@ ocupacaoCatalogoHabilidades
 
 /* Preencher a aba */
 
-async function preencherHabilidadesFicha(
-  ficha
-) {
+async function preencherHabilidadesFicha(ficha) {
   await promessaOcupacoesFicha;
   await promessaCatalogoHabilidadesSistema;
 
-  await preencherCabecalhoHabilidadesFicha(
-    ficha
-  );
+  await preencherCabecalhoHabilidadesFicha(ficha);
 
-  const salvo =
-    normalizarEstadoHabilidadesFicha(
-      ficha.habilidades
-    );
+  const salvo = normalizarEstadoHabilidadesFicha(ficha.habilidades);
 
   if (salvo.inicializadas) {
-    estadoHabilidadesFicha =
-      salvo;
+    estadoHabilidadesFicha = salvo;
 
   } else {
-    estadoHabilidadesFicha =
-      await criarEstadoInicialHabilidadesFicha(
-        ficha
-      );
+    estadoHabilidadesFicha = await criarEstadoInicialHabilidadesFicha(ficha);
 
     try {
       await salvarHabilidadesFichaImediatamente();
 
     } catch (erro) {
-      console.error(
-        "Não foi possível salvar a inicialização das Habilidades:",
-        erro
-      );
+      console.error("Não foi possível salvar a inicialização das Habilidades:", erro);
     }
   }
 
@@ -3611,45 +3597,22 @@ async function preencherHabilidadesFicha(
 
 /* Sincronização com Informações e Painel Principal */
 
-campoPerfilHabilidadesFicha
-  ?.addEventListener(
-    "change",
-    () => {
-      campoPerfilFicha.value =
-        campoPerfilHabilidadesFicha
-          .value;
+campoPerfilHabilidadesFicha ?.addEventListener("change", () => {
+  campoPerfilFicha.value = campoPerfilHabilidadesFicha.value;
+  salvarInformacoesFicha();
+});
 
-      salvarInformacoesFicha();
-    }
-  );
+campoOcupacaoHabilidadesFicha ?.addEventListener("change", () => {
+  const novaOcupacao = campoOcupacaoHabilidadesFicha.value;
+  campoOcupacao1Ficha.value = novaOcupacao;
 
-campoOcupacaoHabilidadesFicha
-  ?.addEventListener(
-    "change",
-    () => {
-      const novaOcupacao =
-        campoOcupacaoHabilidadesFicha
-          .value;
-
-      campoOcupacao1Ficha.value =
-        novaOcupacao;
-
-      if (
-        novaOcupacao &&
-        campoOcupacao2Ficha.value ===
-          novaOcupacao
-      ) {
-        campoOcupacao2Ficha.value =
-          "";
-
-        campoOcupacao2HabilidadesFicha.value =
-          "";
-      }
-
-      salvarInformacoesFicha();
-    }
-  );
-
+  if (novaOcupacao && campoOcupacao2Ficha.value === novaOcupacao) {
+    campoOcupacao2Ficha.value = "";
+    campoOcupacao2HabilidadesFicha.value = "";
+  }
+  
+  salvarInformacoesFicha();
+});
 
 campoOcupacao2HabilidadesFicha
   ?.addEventListener(
