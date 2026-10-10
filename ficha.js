@@ -3814,6 +3814,7 @@ function atualizarContadorCargaFicha() {
   if (!contadorCargaFicha) return;
   const pesoAtual = obterPesoAtualInventarioFicha();
   contadorCargaFicha.textContent = `${formatarNumeroInventarioFicha(pesoAtual)} / ${formatarNumeroInventarioFicha(capacidadeCargaMaximaFicha)}`;
+  aplicarPenalidadeCargaDeslocamentoFicha();
 }
 function ajustarAlturaDescricaoItemFicha(campo) {
   campo.style.height = "auto";
@@ -5048,14 +5049,7 @@ async function preencherPontosFicha(ficha) {
   campoPresencaFicha.value =
     estadoAtributosFicha.presenca;
 
-  campoDeslocamentoMetrosFicha.value =
-    estadoAtributosFicha
-      .deslocamentoMetros;
-
-  campoDeslocamentoQuadradosFicha.value =
-    estadoAtributosFicha
-      .deslocamentoQuadrados;
-
+  aplicarPenalidadeCargaDeslocamentoFicha();
   atualizarContadorAtributosFicha();
 
   const periciasSalvas =
@@ -5339,107 +5333,60 @@ configurarCampoAtributoFicha(
 
 /* Deslocamento */
 
-function arredondarDeslocamentoFicha(
-  valor
-) {
-  return (
-    Math.floor(
-      (valor + 0.0000001) * 10
-    ) / 10
-  );
+function arredondarDeslocamentoFicha(valor) {
+  return Math.floor((valor + 0.0000001) * 10) / 10;
 }
-
-function atualizarDeslocamentoFicha(
-  metros,
-  quadrados
-) {
-  estadoAtributosFicha
-    .deslocamentoMetros =
-      metros;
-
-  estadoAtributosFicha
-    .deslocamentoQuadrados =
-      quadrados;
-
-  campoDeslocamentoMetrosFicha.value =
-    metros;
-
-  campoDeslocamentoQuadradosFicha.value =
-    quadrados;
-
+function obterPenalidadeCargaDeslocamentoFicha() {
+  const pesoAtual = obterPesoAtualInventarioFicha();
+  const capacidade = Number(capacidadeCargaMaximaFicha);
+  if (!Number.isFinite(capacidade) || capacidade <= 0) return 0;
+  if (pesoAtual > capacidade * 2) return 1;
+  if (pesoAtual > capacidade) return 0.5;
+  return 0;
+}
+function aplicarPenalidadeCargaDeslocamentoFicha() {
+  if (!campoDeslocamentoMetrosFicha || !campoDeslocamentoQuadradosFicha) return;
+  const penalidade = obterPenalidadeCargaDeslocamentoFicha();
+  const multiplicador = Math.max(0,1 - penalidade);
+  const metros = arredondarDeslocamentoFicha(estadoAtributosFicha.deslocamentoMetros * multiplicador);
+  const quadrados = arredondarDeslocamentoFicha(estadoAtributosFicha.deslocamentoQuadrados * multiplicador);
+  campoDeslocamentoMetrosFicha.value = metros;
+  campoDeslocamentoQuadradosFicha.value = quadrados;
+}
+function atualizarDeslocamentoFicha(metros,quadrados) {
+  estadoAtributosFicha.deslocamentoMetros = metros;
+  estadoAtributosFicha.deslocamentoQuadrados = quadrados;
   if (dadosFichaAtual) {
     dadosFichaAtual.atributos ||= {};
-
-    dadosFichaAtual
-      .atributos
-      .deslocamentoMetros =
-        metros;
-
-    dadosFichaAtual
-      .atributos
-      .deslocamentoQuadrados =
-        quadrados;
+    dadosFichaAtual.atributos.deslocamentoMetros = metros;
+    dadosFichaAtual.atributos.deslocamentoQuadrados = quadrados;
   }
-
+  aplicarPenalidadeCargaDeslocamentoFicha();
   salvarAtualizacaoPontosFicha({
-    "atributos.deslocamentoMetros":
-      metros,
-
-    "atributos.deslocamentoQuadrados":
-      quadrados
+    "atributos.deslocamentoMetros": metros,
+    "atributos.deslocamentoQuadrados": quadrados
   });
 }
-
-campoDeslocamentoMetrosFicha.addEventListener("change", () => {
+campoDeslocamentoMetrosFicha.addEventListener("change",() => {
   const metros = Number(campoDeslocamentoMetrosFicha.value);
-
   if (!Number.isFinite(metros) || metros < 0) {
-    campoDeslocamentoMetrosFicha.value = estadoAtributosFicha.deslocamentoMetros;
+    aplicarPenalidadeCargaDeslocamentoFicha();
     return;
   }
-
   const metrosFinal = arredondarDeslocamentoFicha(metros);
-
   const quadradosFinal = arredondarDeslocamentoFicha(metrosFinal / 1.5);
-
-  atualizarDeslocamentoFicha(metrosFinal, quadradosFinal);
+  atualizarDeslocamentoFicha(metrosFinal,quadradosFinal);
 });
-
-campoDeslocamentoQuadradosFicha
-  .addEventListener(
-    "change",
-    () => {
-      const quadrados =
-        Number(
-          campoDeslocamentoQuadradosFicha
-            .value
-        );
-
-      if (
-        !Number.isFinite(quadrados) ||
-        quadrados < 0
-      ) {
-        campoDeslocamentoQuadradosFicha
-          .value =
-            estadoAtributosFicha
-              .deslocamentoQuadrados;
-
-        return;
-      }
-
-      const quadradosFinal =
-        arredondarDeslocamentoFicha(
-          quadrados
-        );
-
-      const metrosFinal =
-        arredondarDeslocamentoFicha(
-          quadradosFinal * 1.5
-        );
-
-      atualizarDeslocamentoFicha(metrosFinal, quadradosFinal);
-    });
-
+campoDeslocamentoQuadradosFicha.addEventListener("change",() => {
+  const quadrados = Number(campoDeslocamentoQuadradosFicha.value);
+  if (!Number.isFinite(quadrados) || quadrados < 0) {
+    aplicarPenalidadeCargaDeslocamentoFicha();
+    return;
+  }
+  const quadradosFinal = arredondarDeslocamentoFicha(quadrados);
+  const metrosFinal = arredondarDeslocamentoFicha(quadradosFinal * 1.5);
+  atualizarDeslocamentoFicha(metrosFinal,quadradosFinal);
+});
 
 /* PV e PD manuais */
 
