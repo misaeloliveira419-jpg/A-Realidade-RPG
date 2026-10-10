@@ -3921,6 +3921,33 @@ function criarCardItemFicha(item) {
   botaoExpandir.className = "expandir-item-ficha";
   botaoExpandir.textContent = "▶";
   botaoExpandir.setAttribute("aria-label","Expandir Item");
+  const botaoExcluir = document.createElement("button");
+  botaoExcluir.type = "button";
+  botaoExcluir.className = "excluir-item-ficha";
+  botaoExcluir.textContent = "×";
+  botaoExcluir.setAttribute("aria-label","Excluir Item");
+  botaoExcluir.title = "Excluir Item";
+  botaoExcluir.addEventListener("click",async () => {
+    if (operacaoInventarioFichaEmAndamento) return;
+    const confirmarExclusao = confirm(`Excluir "${item.nome || "Item"}" do Inventário?`);
+    if (!confirmarExclusao) return;
+    const indice = inventarioFicha.indexOf(item);
+    if (indice < 0) return;
+    const inventarioAnterior = inventarioFicha.map(itemAnterior => ({...itemAnterior}));
+    operacaoInventarioFichaEmAndamento = true;
+    inventarioFicha.splice(indice,1);
+    renderizarInventarioFicha();
+    try {
+      await salvarInventarioFichaAgora();
+    } catch (erro) {
+      console.error("Erro ao excluir Item:",erro);
+      inventarioFicha = inventarioAnterior;
+      renderizarInventarioFicha();
+      alert("Não foi possível excluir o Item.");
+    } finally {
+      operacaoInventarioFichaEmAndamento = false;
+    }
+  });
   const conteudo = document.createElement("div");
   conteudo.className = "conteudo-card-item-ficha";
   conteudo.hidden = true;
@@ -3946,7 +3973,7 @@ function criarCardItemFicha(item) {
   });
   campoDescricao.append(tituloDescricao,descricao);
   conteudo.appendChild(campoDescricao);
-  cabecalho.append(nome,peso,custo,botaoExpandir);
+  cabecalho.append(nome,peso,custo,botaoExpandir,botaoExcluir);
   card.append(cabecalho,conteudo);
   return card;
 }
