@@ -3721,50 +3721,77 @@ document.getElementById("neo-ficha")?.addEventListener("change", evento => {
 /* Inventário */
 const listaInventarioFicha = document.getElementById("lista-inventario-ficha");
 const contadorCargaFicha = document.getElementById("contador-carga-ficha");
+const creditoInventarioFicha = document.getElementById("credito-inventario-ficha");
 const botaoAdicionarItemFicha = document.getElementById("adicionar-item-ficha");
 const botaoCriarItemFicha = document.getElementById("criar-item-ficha");
+const criadorItemFicha = document.getElementById("criador-item-ficha");
+const nomeCriarItemFicha = document.getElementById("nome-criar-item-ficha");
+const pesoCriarItemFicha = document.getElementById("peso-criar-item-ficha");
+const custoPcCriarItemFicha = document.getElementById("custo-pc-criar-item-ficha");
+const custoCreditoCriarItemFicha = document.getElementById("custo-credito-criar-item-ficha");
+const descricaoCriarItemFicha = document.getElementById("descricao-criar-item-ficha");
+const confirmarCriarItemFicha = document.getElementById("confirmar-criar-item-ficha");
+const fundoCatalogoItensFicha = document.getElementById("fundo-catalogo-itens");
+const fecharCatalogoItensFicha = document.getElementById("fechar-catalogo-itens");
+const pesquisaCatalogoItensFicha = document.getElementById("pesquisa-catalogo-itens");
+const creditoCatalogoItensFicha = document.getElementById("credito-catalogo-itens");
+const listaCatalogoItensFicha = document.getElementById("lista-catalogo-itens");
 let inventarioFicha = [];
+let catalogoItensFicha = [];
+let custosCreditoItensFicha = {};
 let capacidadeCargaMaximaFicha = 0;
 let filaSalvamentoInventarioFicha = Promise.resolve();
 let timerSalvamentoInventarioFicha = null;
-let custosCreditoItensFicha = {};
-function normalizarNomeCreditoItemFicha(nome) {
-  return String(nome || "").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/\s*[—–-]\s*\d+\s+balas?\s*$/i,"").replace(/[^a-z0-9]+/g," ").trim();
-}
-function converterCustoCreditoItemFicha(texto) {
-  const valor = String(texto || "").replace(/[^\d,.-]/g,"").replace(/\./g,"").replace(",",".");
-  const numero = Number(valor);
-  return Number.isFinite(numero) ? numero : null;
-}
-async function carregarCustosCreditoItensFicha() {
-  try {
-    const resposta = await fetch("index-sistema.html");
-    if (!resposta.ok) throw new Error("Não foi possível abrir index-sistema.html.");
-    const html = await resposta.text();
-    const documento = new DOMParser().parseFromString(html,"text/html");
-    const tabela = documento.querySelector(".tabela-credito-itens");
-    if (!tabela) throw new Error("Tabela de Custo em Crédito não encontrada.");
-    const custos = {};
-    tabela.querySelectorAll("tbody tr").forEach(linha => {
-      const celulas = linha.querySelectorAll("td");
-      const nome = celulas[0]?.textContent.trim() || "";
-      const custo = converterCustoCreditoItemFicha(celulas[1]?.textContent);
-      if (!nome || custo === null) return;
-      custos[normalizarNomeCreditoItemFicha(nome)] = custo;
-    });
-    custosCreditoItensFicha = custos;
-    return custos;
-  } catch (erro) {
-    console.error("Erro ao carregar Custos em Crédito dos Itens:",erro);
-    custosCreditoItensFicha = {};
-    return custosCreditoItensFicha;
-  }
-}
-const promessaCustosCreditoItensFicha = carregarCustosCreditoItensFicha();
+let operacaoInventarioFichaEmAndamento = false;
 function formatarNumeroInventarioFicha(valor) {
   const numero = Number(valor);
   if (!Number.isFinite(numero)) return "0";
   return new Intl.NumberFormat("pt-BR",{minimumFractionDigits: 0,maximumFractionDigits: 2}).format(numero);
+}
+function formatarCreditoInventarioFicha(valor) {
+  const numero = Number(valor);
+  if (!Number.isFinite(numero)) return "0";
+  return new Intl.NumberFormat("pt-BR",{minimumFractionDigits: 0,maximumFractionDigits: 2}).format(numero);
+}
+function normalizarNomeItemFicha(nome) {
+  return String(nome || "").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/\s*[—–-]\s*\d+\s+balas?\s*$/i,"").replace(/[^a-z0-9]+/g," ").trim();
+}
+function criarIdItemFicha(nome,categoria = "item") {
+  return `${categoria}-${normalizarNomeItemFicha(nome).replace(/\s+/g,"-")}`;
+}
+function extrairNumeroItemFicha(texto) {
+  const resultado = String(texto || "").match(/-?\d+(?:[.,]\d+)?/);
+  return resultado ? Number(resultado[0].replace(",",".")) : NaN;
+}
+function extrairCreditoItemFicha(texto) {
+  const valor = String(texto || "").replace(/[^\d,.-]/g,"").replace(/\./g,"").replace(",",".");
+  const numero = Number(valor);
+  return Number.isFinite(numero) ? numero : null;
+}
+function extrairTextoComQuebrasItemFicha(celula) {
+  if (!celula) return "";
+  const copia = celula.cloneNode(true);
+  copia.querySelectorAll("br").forEach(br => br.replaceWith("\n"));
+  return copia.textContent.replace(/[ \t]+\n/g,"\n").replace(/\n[ \t]+/g,"\n").replace(/\n{3,}/g,"\n\n").trim();
+}
+function obterCreditoAtualInventarioFicha() {
+  const campo = document.getElementById("credito-ficha");
+  const creditoCampo = Number(campo?.value);
+  if (Number.isFinite(creditoCampo)) return creditoCampo;
+  const creditoSalvo = Number(dadosFichaAtual?.credito);
+  return Number.isFinite(creditoSalvo) ? creditoSalvo : 0;
+}
+function definirCreditoAtualInventarioFicha(valor) {
+  const credito = Math.round(Number(valor) * 100) / 100;
+  const campo = document.getElementById("credito-ficha");
+  if (campo) campo.value = credito;
+  if (dadosFichaAtual) dadosFichaAtual.credito = credito;
+  atualizarCreditoInventarioFicha();
+}
+function atualizarCreditoInventarioFicha() {
+  const credito = obterCreditoAtualInventarioFicha();
+  if (creditoInventarioFicha) creditoInventarioFicha.textContent = `R$ ${formatarCreditoInventarioFicha(credito)}`;
+  if (creditoCatalogoItensFicha) creditoCatalogoItensFicha.textContent = `R$ ${formatarCreditoInventarioFicha(credito)}`;
 }
 function obterPesoAtualInventarioFicha() {
   return inventarioFicha.reduce((total,item) => {
@@ -3781,13 +3808,10 @@ function obterCustoFinalItemFicha(item) {
   return Number.isFinite(custo) ? custo : 0;
 }
 function obterCustoCreditoItemFicha(item) {
-  const nomeNormalizado = normalizarNomeCreditoItemFicha(item.nome);
-  const custo = custosCreditoItensFicha[nomeNormalizado];
-  return Number.isFinite(custo) ? custo : null;
-}
-function formatarCreditoItemFicha(valor) {
-  if (!Number.isFinite(valor)) return "—";
-  return new Intl.NumberFormat("pt-BR",{minimumFractionDigits: 0,maximumFractionDigits: 0}).format(valor);
+  const custoSalvo = Number(item.custoCredito);
+  if (Number.isFinite(custoSalvo)) return custoSalvo;
+  const custoSistema = custosCreditoItensFicha[normalizarNomeItemFicha(item.nome)];
+  return Number.isFinite(custoSistema) ? custoSistema : null;
 }
 function atualizarContadorCargaFicha() {
   if (!contadorCargaFicha) return;
@@ -3798,6 +3822,64 @@ function ajustarAlturaDescricaoItemFicha(campo) {
   campo.style.height = "auto";
   campo.style.height = `${Math.max(65,campo.scrollHeight)}px`;
 }
+async function carregarCatalogoItensFicha() {
+  try {
+    const resposta = await fetch("index-sistema.html");
+    if (!resposta.ok) throw new Error("Não foi possível abrir index-sistema.html.");
+    const html = await resposta.text();
+    const documento = new DOMParser().parseFromString(html,"text/html");
+    const tabelaCredito = documento.querySelector(".tabela-credito-itens");
+    const custosCredito = {};
+    tabelaCredito?.querySelectorAll("tbody tr").forEach(linha => {
+      const celulas = linha.querySelectorAll("td");
+      const nome = celulas[0]?.textContent.trim() || "";
+      const custo = extrairCreditoItemFicha(celulas[1]?.textContent);
+      if (!nome || custo === null) return;
+      custosCredito[normalizarNomeItemFicha(nome)] = custo;
+    });
+    custosCreditoItensFicha = custosCredito;
+    const itens = [];
+    documento.querySelectorAll(".tabela-itens").forEach(tabela => {
+      const areaTabela = tabela.closest(".area-tabela-itens");
+      let tituloAnterior = areaTabela?.previousElementSibling || null;
+      while (tituloAnterior && tituloAnterior.tagName !== "H3") tituloAnterior = tituloAnterior.previousElementSibling;
+      const titulo = normalizarNomeItemFicha(tituloAnterior?.textContent);
+      const categoria = titulo.includes("especiais") ? "especial" : "comum";
+      tabela.querySelectorAll("tbody tr").forEach(linha => {
+        const celulas = linha.querySelectorAll("td");
+        if (celulas.length < 4) return;
+        const nome = celulas[0]?.textContent.trim() || "";
+        const descricao = extrairTextoComQuebrasItemFicha(celulas[1]);
+        const peso = extrairNumeroItemFicha(celulas[2]?.textContent);
+        const custoPc = extrairNumeroItemFicha(celulas[3]?.textContent);
+        const compatibilidadeTexto = celulas[4]?.textContent.trim() || "";
+        if (!nome || !Number.isFinite(peso) || !Number.isFinite(custoPc)) return;
+        const compatibilidades = compatibilidadeTexto && compatibilidadeTexto !== "-" ? compatibilidadeTexto.split(",").map(valor => valor.trim()).filter(Boolean) : [];
+        itens.push({
+          id: criarIdItemFicha(nome,categoria),
+          nome: nome,
+          descricao: descricao,
+          peso: peso,
+          custo: custoPc,
+          custoBase: custoPc,
+          custoFinal: custoPc,
+          custoCredito: custosCredito[normalizarNomeItemFicha(nome)] ?? null,
+          compatibilidades: compatibilidades,
+          categoria: categoria,
+          personalizado: false
+        });
+      });
+    });
+    catalogoItensFicha = itens;
+    return true;
+  } catch (erro) {
+    console.error("Erro ao carregar catálogo de Itens:",erro);
+    catalogoItensFicha = [];
+    custosCreditoItensFicha = {};
+    return false;
+  }
+}
+const promessaCatalogoItensFicha = carregarCatalogoItensFicha();
 function salvarInventarioFichaAgora() {
   if (dadosFichaAtual) dadosFichaAtual.inventario = inventarioFicha.map(item => ({...item}));
   if (previewLocal || !auth.currentUser || !idFicha) return Promise.resolve();
@@ -3832,9 +3914,8 @@ function criarCardItemFicha(item) {
   peso.textContent = `Peso: ${formatarNumeroInventarioFicha(item.peso)}`;
   const custo = document.createElement("span");
   custo.className = "dado-item-ficha custo-item-ficha";
-  const custoPc = obterCustoFinalItemFicha(item);
   const custoCredito = obterCustoCreditoItemFicha(item);
-  custo.textContent = `Custo: ${formatarNumeroInventarioFicha(custoPc)} PC / R$ ${formatarCreditoItemFicha(custoCredito)}`;
+  custo.textContent = `Custo: ${formatarNumeroInventarioFicha(obterCustoFinalItemFicha(item))} PC / R$ ${custoCredito === null ? "—" : formatarCreditoInventarioFicha(custoCredito)}`;
   const botaoExpandir = document.createElement("button");
   botaoExpandir.type = "button";
   botaoExpandir.className = "expandir-item-ficha";
@@ -3873,6 +3954,7 @@ function renderizarInventarioFicha() {
   if (!listaInventarioFicha) return;
   listaInventarioFicha.replaceChildren();
   atualizarContadorCargaFicha();
+  atualizarCreditoInventarioFicha();
   if (inventarioFicha.length === 0) {
     const vazio = document.createElement("p");
     vazio.className = "inventario-ficha-vazio";
@@ -3884,8 +3966,208 @@ function renderizarInventarioFicha() {
   inventarioFicha.forEach(item => fragmento.appendChild(criarCardItemFicha(item)));
   listaInventarioFicha.appendChild(fragmento);
 }
+function itemCatalogoCorrespondePesquisaFicha(item,pesquisa) {
+  const termo = normalizarNomeItemFicha(pesquisa);
+  if (!termo) return true;
+  const texto = normalizarNomeItemFicha(`${item.nome} ${item.descricao} ${item.categoria}`);
+  return texto.includes(termo);
+}
+function criarCardCatalogoItemFicha(item) {
+  const card = document.createElement("article");
+  card.className = "card-catalogo-item-ficha";
+  const cabecalho = document.createElement("div");
+  cabecalho.className = "cabecalho-card-catalogo-item-ficha";
+  const informacoes = document.createElement("div");
+  informacoes.className = "informacoes-catalogo-item-ficha";
+  const nome = document.createElement("strong");
+  nome.className = "nome-catalogo-item-ficha";
+  nome.textContent = item.nome;
+  const dados = document.createElement("div");
+  dados.className = "dados-catalogo-item-ficha";
+  const peso = document.createElement("span");
+  peso.textContent = `Peso: ${formatarNumeroInventarioFicha(item.peso)}`;
+  const custo = document.createElement("span");
+  const custoCredito = obterCustoCreditoItemFicha(item);
+  custo.textContent = `Custo: ${formatarNumeroInventarioFicha(item.custoFinal)} PC / R$ ${custoCredito === null ? "—" : formatarCreditoInventarioFicha(custoCredito)}`;
+  dados.append(peso,custo);
+  informacoes.append(nome,dados);
+  const botaoExpandir = document.createElement("button");
+  botaoExpandir.type = "button";
+  botaoExpandir.className = "expandir-catalogo-item-ficha";
+  botaoExpandir.textContent = "▶";
+  botaoExpandir.setAttribute("aria-label","Abrir Item");
+  const botaoAdicionar = document.createElement("button");
+  botaoAdicionar.type = "button";
+  botaoAdicionar.className = "adicionar-catalogo-item-ficha";
+  botaoAdicionar.textContent = "+";
+  const creditoAtual = obterCreditoAtualInventarioFicha();
+  const possuiPreco = custoCredito !== null;
+  const possuiCredito = possuiPreco && creditoAtual >= custoCredito;
+  if (!possuiPreco || !possuiCredito) {
+    botaoAdicionar.classList.add("indisponivel");
+    botaoAdicionar.setAttribute("aria-disabled","true");
+  }
+  const conteudo = document.createElement("div");
+  conteudo.className = "conteudo-catalogo-item-ficha";
+  conteudo.hidden = true;
+  const tituloDescricao = document.createElement("span");
+  tituloDescricao.textContent = "DESCRIÇÃO";
+  const descricao = document.createElement("textarea");
+  descricao.rows = 3;
+  descricao.readOnly = true;
+  descricao.value = item.descricao || "";
+  conteudo.append(tituloDescricao,descricao);
+  botaoExpandir.addEventListener("click",() => {
+    const abrir = conteudo.hidden;
+    conteudo.hidden = !abrir;
+    card.classList.toggle("aberto",abrir);
+    if (abrir) requestAnimationFrame(() => ajustarAlturaDescricaoItemFicha(descricao));
+  });
+  botaoAdicionar.addEventListener("click",async () => {
+    if (!possuiPreco) {
+      alert("Este Item não possui Custo em Crédito definido no Sistema.");
+      return;
+    }
+    if (obterCreditoAtualInventarioFicha() < custoCredito) {
+      alert("Você não possui Crédito suficiente para adquirir este Item.");
+      return;
+    }
+    await adicionarItemAoInventarioFicha({
+      ...item,
+      custoCredito: custoCredito
+    },custoCredito);
+  });
+  cabecalho.append(informacoes,botaoExpandir,botaoAdicionar);
+  card.append(cabecalho,conteudo);
+  return card;
+}
+function renderizarCatalogoItensFicha() {
+  if (!listaCatalogoItensFicha) return;
+  atualizarCreditoInventarioFicha();
+  const pesquisa = pesquisaCatalogoItensFicha?.value || "";
+  const itens = catalogoItensFicha.filter(item => itemCatalogoCorrespondePesquisaFicha(item,pesquisa));
+  listaCatalogoItensFicha.replaceChildren();
+  if (itens.length === 0) {
+    const vazio = document.createElement("p");
+    vazio.className = "catalogo-itens-vazio";
+    vazio.textContent = pesquisa ? "Nenhum Item encontrado." : "Nenhum Item disponível.";
+    listaCatalogoItensFicha.appendChild(vazio);
+    return;
+  }
+  const fragmento = document.createDocumentFragment();
+  itens.forEach(item => fragmento.appendChild(criarCardCatalogoItemFicha(item)));
+  listaCatalogoItensFicha.appendChild(fragmento);
+}
+async function abrirCatalogoItensFicha() {
+  await promessaCatalogoItensFicha;
+  pesquisaCatalogoItensFicha.value = "";
+  fundoCatalogoItensFicha.hidden = false;
+  document.body.classList.add("catalogo-itens-aberto");
+  renderizarCatalogoItensFicha();
+  requestAnimationFrame(() => pesquisaCatalogoItensFicha.focus());
+}
+function fecharCatalogoItens() {
+  fundoCatalogoItensFicha.hidden = true;
+  document.body.classList.remove("catalogo-itens-aberto");
+}
+async function adicionarItemAoInventarioFicha(item,custoCredito) {
+  if (operacaoInventarioFichaEmAndamento) return false;
+  const creditoAnterior = obterCreditoAtualInventarioFicha();
+  const custo = Number(custoCredito);
+  if (!Number.isFinite(custo) || custo < 0) return false;
+  if (creditoAnterior < custo) {
+    alert("Você não possui Crédito suficiente para adquirir este Item.");
+    return false;
+  }
+  operacaoInventarioFichaEmAndamento = true;
+  const inventarioAnterior = inventarioFicha.map(itemAtual => ({...itemAtual}));
+  const novoCredito = Math.round((creditoAnterior - custo) * 100) / 100;
+  inventarioFicha.push({...item});
+  definirCreditoAtualInventarioFicha(novoCredito);
+  renderizarInventarioFicha();
+  renderizarCatalogoItensFicha();
+  if (previewLocal) {
+    operacaoInventarioFichaEmAndamento = false;
+    return true;
+  }
+  const inventarioParaSalvar = inventarioFicha.map(itemAtual => ({...itemAtual}));
+  const salvamento = filaSalvamentoInventarioFicha.catch(() => {}).then(async () => {
+    await db.collection("fichas").doc(idFicha).update({
+      inventario: inventarioParaSalvar,
+      credito: novoCredito,
+      atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+    });
+  });
+  filaSalvamentoInventarioFicha = salvamento;
+  try {
+    await salvamento;
+    if (dadosFichaAtual) {
+      dadosFichaAtual.inventario = inventarioFicha.map(itemAtual => ({...itemAtual}));
+      dadosFichaAtual.credito = novoCredito;
+    }
+    operacaoInventarioFichaEmAndamento = false;
+    renderizarCatalogoItensFicha();
+    return true;
+  } catch (erro) {
+    console.error("Erro ao adicionar Item:",erro);
+    inventarioFicha = inventarioAnterior;
+    definirCreditoAtualInventarioFicha(creditoAnterior);
+    renderizarInventarioFicha();
+    renderizarCatalogoItensFicha();
+    operacaoInventarioFichaEmAndamento = false;
+    alert("Não foi possível adicionar o Item.");
+    return false;
+  }
+}
+function limparCriadorItemFicha() {
+  nomeCriarItemFicha.value = "";
+  pesoCriarItemFicha.value = "";
+  custoPcCriarItemFicha.value = "";
+  custoCreditoCriarItemFicha.value = "";
+  descricaoCriarItemFicha.value = "";
+}
+async function criarItemPersonalizadoFicha() {
+  const nome = nomeCriarItemFicha.value.trim();
+  const pesoTexto = pesoCriarItemFicha.value.trim();
+  const custoPcTexto = custoPcCriarItemFicha.value.trim();
+  const custoCreditoTexto = custoCreditoCriarItemFicha.value.trim();
+  const descricao = descricaoCriarItemFicha.value.trim();
+  if (!nome || pesoTexto === "" || custoPcTexto === "" || custoCreditoTexto === "") {
+    alert("Preencha o Nome, Peso, Custo em PC e Custo em R$ do Item.");
+    return;
+  }
+  const peso = Number(pesoTexto);
+  const custoPc = Number(custoPcTexto);
+  const custoCredito = Number(custoCreditoTexto);
+  if (!Number.isFinite(peso) || !Number.isFinite(custoPc) || custoPc < 0 || !Number.isFinite(custoCredito) || custoCredito < 0) {
+    alert("Confira os valores de Peso e Custo do Item.");
+    return;
+  }
+  if (obterCreditoAtualInventarioFicha() < custoCredito) {
+    alert("Você não possui Crédito suficiente para criar este Item com esse custo.");
+    return;
+  }
+  const item = {
+    id: `${criarIdItemFicha(nome,"personalizado")}-${Date.now()}`,
+    nome: nome,
+    descricao: descricao,
+    peso: peso,
+    custo: custoPc,
+    custoBase: custoPc,
+    custoFinal: custoPc,
+    custoCredito: custoCredito,
+    compatibilidades: [],
+    categoria: "personalizado",
+    personalizado: true
+  };
+  const adicionado = await adicionarItemAoInventarioFicha(item,custoCredito);
+  if (!adicionado) return;
+  limparCriadorItemFicha();
+  criadorItemFicha.hidden = true;
+  botaoCriarItemFicha.classList.remove("ativo");
+}
 async function preencherInventarioFicha(ficha) {
-  await promessaCustosCreditoItensFicha;
+  await promessaCatalogoItensFicha;
   inventarioFicha = Array.isArray(ficha.inventario) ? ficha.inventario.map(item => ({
     ...item,
     descricao: typeof item.descricao === "string" ? item.descricao : ""
@@ -3894,6 +4176,22 @@ async function preencherInventarioFicha(ficha) {
   capacidadeCargaMaximaFicha = Number.isFinite(capacidade) ? capacidade : 0;
   renderizarInventarioFicha();
 }
+botaoAdicionarItemFicha?.addEventListener("click",abrirCatalogoItensFicha);
+botaoCriarItemFicha?.addEventListener("click",() => {
+  const abrir = criadorItemFicha.hidden;
+  criadorItemFicha.hidden = !abrir;
+  botaoCriarItemFicha.classList.toggle("ativo",abrir);
+  if (abrir) requestAnimationFrame(() => nomeCriarItemFicha.focus());
+});
+confirmarCriarItemFicha?.addEventListener("click",criarItemPersonalizadoFicha);
+fecharCatalogoItensFicha?.addEventListener("click",fecharCatalogoItens);
+pesquisaCatalogoItensFicha?.addEventListener("input",renderizarCatalogoItensFicha);
+fundoCatalogoItensFicha?.addEventListener("click",evento => {
+  if (evento.target === fundoCatalogoItensFicha) fecharCatalogoItens();
+});
+document.addEventListener("keydown",evento => {
+  if (evento.key === "Escape" && fundoCatalogoItensFicha && !fundoCatalogoItensFicha.hidden) fecharCatalogoItens();
+});
 
 /* Pontos de Ficha */
 
@@ -4849,9 +5147,11 @@ campoCreditoFicha.addEventListener(
     }
 
     if (dadosFichaAtual) {
-      dadosFichaAtual.credito =
-        credito;
+      dadosFichaAtual.credito = credito;
     }
+
+    atualizarCreditoInventarioFicha();
+    if (fundoCatalogoItensFicha && !fundoCatalogoItensFicha.hidden) renderizarCatalogoItensFicha();
 
     salvarAtualizacaoPontosFicha({
       credito: credito
