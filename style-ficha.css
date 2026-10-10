@@ -1181,7 +1181,8 @@ input[type="number"]{
   border-radius: 4px;
   outline: none;
   font-size: 11px;
-  transition: transform 0.2s, border-color 0.3s, box-shadow 0.3s;
+  color-scheme: dark;
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 #perfil-habilidades-ficha,
@@ -1197,9 +1198,13 @@ input[type="number"]{
 }
 
 .identidade-habilidade-ficha select:focus{
-  transform: scale(1.02);
   border-color: rgb(150,0,225);
   box-shadow: 0 0 8px rgb(200,100,225);
+}
+
+.identidade-habilidade-ficha select option{
+  background: rgb(10,10,10);
+  color: white;
 }
 
 .identidade-ocupacoes-habilidades-ficha{
