@@ -3948,6 +3948,38 @@ function criarCardItemFicha(item) {
   const conteudo = document.createElement("div");
   conteudo.className = "conteudo-card-item-ficha";
   conteudo.hidden = true;
+  const valoresEditaveis = document.createElement("div");
+  valoresEditaveis.className = "valores-editaveis-item-ficha";
+  const campoPeso = document.createElement("label");
+  campoPeso.className = "campo-valor-item-ficha";
+  const tituloPeso = document.createElement("span");
+  tituloPeso.textContent = "PESO";
+  const inputPeso = document.createElement("input");
+  inputPeso.type = "number";
+  inputPeso.step = "0.1";
+  inputPeso.value = Number.isFinite(Number(item.peso)) ? Number(item.peso) : "";
+  campoPeso.append(tituloPeso,inputPeso);
+  const campoCustoPc = document.createElement("label");
+  campoCustoPc.className = "campo-valor-item-ficha";
+  const tituloCustoPc = document.createElement("span");
+  tituloCustoPc.textContent = "CUSTO EM PC";
+  const inputCustoPc = document.createElement("input");
+  inputCustoPc.type = "number";
+  inputCustoPc.min = "0";
+  inputCustoPc.step = "1";
+  inputCustoPc.value = obterCustoFinalItemFicha(item);
+  campoCustoPc.append(tituloCustoPc,inputCustoPc);
+  const campoCustoCredito = document.createElement("label");
+  campoCustoCredito.className = "campo-valor-item-ficha";
+  const tituloCustoCredito = document.createElement("span");
+  tituloCustoCredito.textContent = "CUSTO EM R$";
+  const inputCustoCredito = document.createElement("input");
+  inputCustoCredito.type = "number";
+  inputCustoCredito.min = "0";
+  inputCustoCredito.step = "0.01";
+  inputCustoCredito.value = custoCredito === null ? "" : custoCredito;
+  campoCustoCredito.append(tituloCustoCredito,inputCustoCredito);
+  valoresEditaveis.append(campoPeso,campoCustoPc,campoCustoCredito);
   const campoDescricao = document.createElement("label");
   campoDescricao.className = "campo-descricao-item-ficha";
   const tituloDescricao = document.createElement("span");
@@ -3957,6 +3989,47 @@ function criarCardItemFicha(item) {
   descricao.rows = 3;
   descricao.placeholder = "Descrição do Item...";
   descricao.value = typeof item.descricao === "string" ? item.descricao : "";
+  inputPeso.addEventListener("change",() => {
+    const novoPeso = Number(inputPeso.value);
+    if (!Number.isFinite(novoPeso)) {
+      inputPeso.value = item.peso;
+      return;
+    }
+    item.peso = novoPeso;
+    peso.textContent = `Peso: ${formatarNumeroInventarioFicha(novoPeso)}`;
+    atualizarContadorCargaFicha();
+    agendarSalvamentoInventarioFicha();
+  });
+  inputCustoPc.addEventListener("change",() => {
+    const novoCustoPc = Number(inputCustoPc.value);
+    if (!Number.isFinite(novoCustoPc) || novoCustoPc < 0) {
+      inputCustoPc.value = obterCustoFinalItemFicha(item);
+      return;
+    }
+    item.custo = novoCustoPc;
+    item.custoBase = novoCustoPc;
+    item.custoFinal = novoCustoPc;
+    const creditoAtualItem = obterCustoCreditoItemFicha(item);
+    custo.textContent = `Custo: ${formatarNumeroInventarioFicha(novoCustoPc)} PC / R$ ${creditoAtualItem === null ? "—" : formatarCreditoInventarioFicha(creditoAtualItem)}`;
+    agendarSalvamentoInventarioFicha();
+  });
+  inputCustoCredito.addEventListener("change",() => {
+    if (inputCustoCredito.value.trim() === "") {
+      item.custoCredito = null;
+      custo.textContent = `Custo: ${formatarNumeroInventarioFicha(obterCustoFinalItemFicha(item))} PC / R$ —`;
+      agendarSalvamentoInventarioFicha();
+      return;
+    }
+    const novoCustoCredito = Number(inputCustoCredito.value);
+    if (!Number.isFinite(novoCustoCredito) || novoCustoCredito < 0) {
+      const creditoAnterior = obterCustoCreditoItemFicha(item);
+      inputCustoCredito.value = creditoAnterior === null ? "" : creditoAnterior;
+      return;
+    }
+    item.custoCredito = novoCustoCredito;
+    custo.textContent = `Custo: ${formatarNumeroInventarioFicha(obterCustoFinalItemFicha(item))} PC / R$ ${formatarCreditoInventarioFicha(novoCustoCredito)}`;
+    agendarSalvamentoInventarioFicha();
+  });
   descricao.addEventListener("input",() => {
     item.descricao = descricao.value;
     ajustarAlturaDescricaoItemFicha(descricao);
@@ -3969,7 +4042,7 @@ function criarCardItemFicha(item) {
     if (abrir) requestAnimationFrame(() => ajustarAlturaDescricaoItemFicha(descricao));
   });
   campoDescricao.append(tituloDescricao,descricao);
-  conteudo.appendChild(campoDescricao);
+  conteudo.append(valoresEditaveis,campoDescricao);
   cabecalho.append(nome,peso,custo,botaoExpandir,botaoExcluir);
   card.append(cabecalho,conteudo);
   return card;

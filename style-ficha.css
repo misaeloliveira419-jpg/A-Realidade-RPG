@@ -2031,6 +2031,41 @@ body.catalogo-habilidades-aberto{
 .conteudo-card-item-ficha[hidden]{
   display: none;
 }
+.valores-editaveis-item-ficha{
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  gap: 8px;
+  margin-bottom: 9px;
+}
+.campo-valor-item-ficha{
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.campo-valor-item-ficha span{
+  color: rgb(180,180,180);
+  font-size: 8px;
+  font-weight: bold;
+}
+.campo-valor-item-ficha input{
+  width: 100%;
+  height: 32px;
+  padding: 0 7px;
+  box-sizing: border-box;
+  background: black;
+  color: white;
+  border: 1px solid rgb(75,75,75);
+  border-radius: 4px;
+  outline: none;
+  font-family: inherit;
+  font-size: 10px;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+.campo-valor-item-ficha input:focus{
+  border-color: rgb(135,70,210);
+  box-shadow: 0 0 6px rgba(150,80,220,0.45);
+}
 .campo-descricao-item-ficha{
   display: flex;
   flex-direction: column;
@@ -2651,6 +2686,9 @@ body.catalogo-itens-aberto{
   .contador-carga-ficha,
   .credito-inventario-ficha{
     font-size: 13px;
+  }
+  .valores-editaveis-item-ficha{
+    grid-template-columns: 1fr;
   }
   .acoes-inventario-ficha{
     flex-direction: row;
