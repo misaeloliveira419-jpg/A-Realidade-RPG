@@ -2435,10 +2435,7 @@ function renderizarHabilidadesFicha(
 
 /* Excluir */
 
-function excluirHabilidadeFicha(
-  tipo,
-  id
-) {
+function excluirHabilidadeFicha(tipo, id) {
   const listas = {
     perfil:
       estadoHabilidadesFicha.perfil,
@@ -3924,7 +3921,7 @@ function criarCardItemFicha(item) {
   const botaoExcluir = document.createElement("button");
   botaoExcluir.type = "button";
   botaoExcluir.className = "excluir-item-ficha";
-  botaoExcluir.textContent = "×";
+  botaoExcluir.textContent = "🗑";
   botaoExcluir.setAttribute("aria-label","Excluir Item");
   botaoExcluir.title = "Excluir Item";
   botaoExcluir.addEventListener("click",async () => {

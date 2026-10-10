@@ -2329,6 +2329,9 @@ body.catalogo-itens-aberto{
   color: rgb(155,155,155);
   font-size: 8px;
 }
+.dados-catalogo-item-ficha span:first-child{
+  color: rgb(195,170,120);
+}
 .dados-catalogo-item-ficha span:last-child{
   color: rgb(120,190,150);
 }
