@@ -312,6 +312,7 @@ async function carregarFichaAutenticada(usuario) {
     await preencherInformacoesFicha(ficha);
     await preencherPontosFicha(ficha);
     await preencherHabilidadesFicha(ficha);
+    preencherInventarioFicha(ficha);
 
     iniciarEscutasRolagensFicha();
     iniciarEscutaRecursosFicha();
@@ -3713,17 +3714,140 @@ document
     }
   );
 
-document
-  .getElementById(
-    "neo-ficha"
-  )
-  ?.addEventListener(
-    "change",
-    evento => {
-      campoNivelOcupacaoHabilidadesFicha.value =
-        evento.target.value;
-    }
-  );
+document.getElementById("neo-ficha")?.addEventListener("change", evento => {
+  campoNivelOcupacaoHabilidadesFicha.value = evento.target.value;
+});
+
+/* Inventário */
+const listaInventarioFicha = document.getElementById("lista-inventario-ficha");
+const contadorCargaFicha = document.getElementById("contador-carga-ficha");
+const botaoAdicionarItemFicha = document.getElementById("adicionar-item-ficha");
+const botaoCriarItemFicha = document.getElementById("criar-item-ficha");
+let inventarioFicha = [];
+let capacidadeCargaMaximaFicha = 0;
+let filaSalvamentoInventarioFicha = Promise.resolve();
+let timerSalvamentoInventarioFicha = null;
+function formatarNumeroInventarioFicha(valor) {
+  const numero = Number(valor);
+  if (!Number.isFinite(numero)) return "0";
+  return new Intl.NumberFormat("pt-BR",{minimumFractionDigits: 0,maximumFractionDigits: 2}).format(numero);
+}
+function obterPesoAtualInventarioFicha() {
+  return inventarioFicha.reduce((total,item) => {
+    const peso = Number(item.peso);
+    return total + (Number.isFinite(peso) ? peso : 0);
+  },0);
+}
+function obterCustoFinalItemFicha(item) {
+  const custoFinal = Number(item.custoFinal);
+  if (Number.isFinite(custoFinal)) return custoFinal;
+  const custoBase = Number(item.custoBase);
+  if (Number.isFinite(custoBase)) return custoBase;
+  const custo = Number(item.custo);
+  return Number.isFinite(custo) ? custo : 0;
+}
+function atualizarContadorCargaFicha() {
+  if (!contadorCargaFicha) return;
+  const pesoAtual = obterPesoAtualInventarioFicha();
+  contadorCargaFicha.textContent = `${formatarNumeroInventarioFicha(pesoAtual)} / ${formatarNumeroInventarioFicha(capacidadeCargaMaximaFicha)}`;
+}
+function ajustarAlturaDescricaoItemFicha(campo) {
+  campo.style.height = "auto";
+  campo.style.height = `${Math.max(65,campo.scrollHeight)}px`;
+}
+function salvarInventarioFichaAgora() {
+  if (dadosFichaAtual) dadosFichaAtual.inventario = inventarioFicha.map(item => ({...item}));
+  if (previewLocal || !auth.currentUser || !idFicha) return Promise.resolve();
+  const inventarioParaSalvar = inventarioFicha.map(item => ({...item}));
+  filaSalvamentoInventarioFicha = filaSalvamentoInventarioFicha.catch(() => {}).then(async () => {
+    await db.collection("fichas").doc(idFicha).update({
+      inventario: inventarioParaSalvar,
+      atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+    });
+  });
+  return filaSalvamentoInventarioFicha.catch(erro => {
+    console.error("Erro ao salvar Inventário:",erro);
+    throw erro;
+  });
+}
+function agendarSalvamentoInventarioFicha() {
+  clearTimeout(timerSalvamentoInventarioFicha);
+  timerSalvamentoInventarioFicha = setTimeout(() => {
+    salvarInventarioFichaAgora().catch(() => {});
+  },400);
+}
+function criarCardItemFicha(item) {
+  const card = document.createElement("article");
+  card.className = "card-item-ficha";
+  const cabecalho = document.createElement("div");
+  cabecalho.className = "cabecalho-card-item-ficha";
+  const nome = document.createElement("strong");
+  nome.className = "nome-item-ficha";
+  nome.textContent = item.nome || "Item";
+  const peso = document.createElement("span");
+  peso.className = "dado-item-ficha peso-item-ficha";
+  peso.textContent = `Peso: ${formatarNumeroInventarioFicha(item.peso)}`;
+  const custo = document.createElement("span");
+  custo.className = "dado-item-ficha custo-item-ficha";
+  custo.textContent = `Custo: ${formatarNumeroInventarioFicha(obterCustoFinalItemFicha(item))} PC`;
+  const botaoExpandir = document.createElement("button");
+  botaoExpandir.type = "button";
+  botaoExpandir.className = "expandir-item-ficha";
+  botaoExpandir.textContent = "▶";
+  botaoExpandir.setAttribute("aria-label","Expandir Item");
+  const conteudo = document.createElement("div");
+  conteudo.className = "conteudo-card-item-ficha";
+  conteudo.hidden = true;
+  const campoDescricao = document.createElement("label");
+  campoDescricao.className = "campo-descricao-item-ficha";
+  const tituloDescricao = document.createElement("span");
+  tituloDescricao.textContent = "DESCRIÇÃO";
+  const descricao = document.createElement("textarea");
+  descricao.className = "descricao-item-ficha";
+  descricao.rows = 3;
+  descricao.placeholder = "Descrição do Item...";
+  descricao.value = typeof item.descricao === "string" ? item.descricao : "";
+  descricao.addEventListener("input",() => {
+    item.descricao = descricao.value;
+    ajustarAlturaDescricaoItemFicha(descricao);
+    agendarSalvamentoInventarioFicha();
+  });
+  botaoExpandir.addEventListener("click",() => {
+    const abrir = conteudo.hidden;
+    conteudo.hidden = !abrir;
+    card.classList.toggle("aberto",abrir);
+    if (abrir) requestAnimationFrame(() => ajustarAlturaDescricaoItemFicha(descricao));
+  });
+  campoDescricao.append(tituloDescricao,descricao);
+  conteudo.appendChild(campoDescricao);
+  cabecalho.append(nome,peso,custo,botaoExpandir);
+  card.append(cabecalho,conteudo);
+  return card;
+}
+function renderizarInventarioFicha() {
+  if (!listaInventarioFicha) return;
+  listaInventarioFicha.replaceChildren();
+  atualizarContadorCargaFicha();
+  if (inventarioFicha.length === 0) {
+    const vazio = document.createElement("p");
+    vazio.className = "inventario-ficha-vazio";
+    vazio.textContent = "Nenhum Item no Inventário.";
+    listaInventarioFicha.appendChild(vazio);
+    return;
+  }
+  const fragmento = document.createDocumentFragment();
+  inventarioFicha.forEach(item => fragmento.appendChild(criarCardItemFicha(item)));
+  listaInventarioFicha.appendChild(fragmento);
+}
+function preencherInventarioFicha(ficha) {
+  inventarioFicha = Array.isArray(ficha.inventario) ? ficha.inventario.map(item => ({
+    ...item,
+    descricao: typeof item.descricao === "string" ? item.descricao : ""
+  })) : [];
+  const capacidade = Number(ficha.capacidadeCarga);
+  capacidadeCargaMaximaFicha = Number.isFinite(capacidade) ? capacidade : 0;
+  renderizarInventarioFicha();
+}
 
 /* Pontos de Ficha */
 

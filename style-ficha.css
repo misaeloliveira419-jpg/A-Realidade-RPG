@@ -1894,6 +1894,183 @@ body.catalogo-habilidades-aberto{
   min-height: 58px;
 }
 
+/* Inventário */
+.grade-inventario-ficha{
+  display: grid;
+  grid-template-columns: minmax(0,3fr) minmax(220px,2fr);
+  gap: 14px;
+  align-items: start;
+}
+.painel-itens-inventario-ficha{
+  min-width: 0;
+  padding: 12px;
+  background: rgb(5,5,5);
+  border: 1px solid rgb(75,75,75);
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+.cabecalho-inventario-ficha{
+  text-align: center;
+}
+.cabecalho-inventario-ficha h2{
+  margin: 0;
+  font-size: 15px;
+}
+.contador-carga-ficha{
+  display: block;
+  margin-top: 7px;
+  color: rgb(220,220,220);
+  font-size: 17px;
+  letter-spacing: 0.08em;
+}
+.separador-inventario-ficha{
+  width: 100%;
+  height: 1px;
+  margin: 12px 0;
+  background: rgb(55,55,55);
+}
+.titulo-itens-inventario-ficha{
+  margin: 0 0 9px;
+  font-size: 12px;
+}
+.lista-inventario-ficha{
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.inventario-ficha-vazio{
+  margin: 18px 0;
+  color: rgb(135,135,135);
+  text-align: center;
+  font-size: 10px;
+}
+.card-item-ficha{
+  overflow: hidden;
+  background: rgb(8,8,8);
+  border: 1px solid rgb(80,80,80);
+  border-radius: 5px;
+}
+.cabecalho-card-item-ficha{
+  display: grid;
+  grid-template-columns: minmax(0,1fr) auto auto 30px;
+  align-items: center;
+  min-height: 39px;
+  gap: 8px;
+  padding-left: 10px;
+}
+.nome-item-ficha{
+  min-width: 0;
+  overflow: hidden;
+  color: white;
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.dado-item-ficha{
+  flex-shrink: 0;
+  color: rgb(165,165,165);
+  font-size: 9px;
+  white-space: nowrap;
+}
+.peso-item-ficha{
+  color: rgb(195,170,120);
+}
+.custo-item-ficha{
+  color: rgb(120,190,150);
+}
+.expandir-item-ficha{
+  align-self: stretch;
+  width: 30px;
+  padding: 0;
+  background: transparent;
+  color: rgb(180,180,180);
+  border: none;
+  cursor: pointer;
+  font-size: 10px;
+  transition: color 0.2s, transform 0.2s;
+}
+.card-item-ficha.aberto .expandir-item-ficha{
+  color: rgb(125,105,215);
+  transform: rotate(90deg);
+}
+.conteudo-card-item-ficha{
+  padding: 8px 10px 10px;
+  border-top: 1px solid rgb(55,55,55);
+}
+.conteudo-card-item-ficha[hidden]{
+  display: none;
+}
+.campo-descricao-item-ficha{
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.campo-descricao-item-ficha span{
+  color: rgb(180,180,180);
+  font-size: 8px;
+  font-weight: bold;
+}
+.descricao-item-ficha{
+  width: 100%;
+  min-height: 65px;
+  padding: 7px;
+  box-sizing: border-box;
+  overflow: hidden;
+  resize: none;
+  background: black;
+  color: white;
+  border: 1px solid rgb(75,75,75);
+  border-radius: 4px;
+  outline: none;
+  font-family: inherit;
+  font-size: 10px;
+  line-height: 1.4;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+.descricao-item-ficha:focus{
+  border-color: rgb(135,70,210);
+  box-shadow: 0 0 6px rgba(150,80,220,0.45);
+}
+.acoes-inventario-ficha{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  padding: 12px;
+  background: rgb(5,5,5);
+  border: 1px solid rgb(75,75,75);
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+.botao-acao-inventario-ficha{
+  width: 100%;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px;
+  background: black;
+  color: rgb(205,205,205);
+  border: 1px solid rgb(85,85,85);
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: bold;
+  transition: color 0.25s, border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+}
+.botao-acao-inventario-ficha span{
+  color: white;
+  font-size: 18px;
+  line-height: 1;
+}
+.botao-acao-inventario-ficha:hover{
+  color: white;
+  border-color: rgb(135,70,210);
+  transform: scale(1.02);
+  box-shadow: 0 0 7px rgba(150,80,220,0.4);
+}
+
 /* Responsivo */
 
 @media (max-width: 1000px){
@@ -2116,5 +2293,39 @@ body.catalogo-habilidades-aberto{
 
   .linha-tripla-habilidade{
     grid-template-columns: 1fr;
+  }
+  .grade-inventario-ficha{
+    grid-template-columns: 1fr;
+  }
+  .acoes-inventario-ficha{
+    flex-direction: row;
+  }
+  .botao-acao-inventario-ficha{
+    flex: 1;
+    min-width: 0;
+  }
+  .cabecalho-card-item-ficha{
+    grid-template-columns: minmax(0,1fr) 30px;
+    gap: 4px 8px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+  }
+  .nome-item-ficha{
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .expandir-item-ficha{
+    grid-column: 2;
+    grid-row: 1 / 3;
+  }
+  .peso-item-ficha,
+  .custo-item-ficha{
+    grid-row: 2;
+  }
+  .peso-item-ficha{
+    grid-column: 1;
+  }
+  .custo-item-ficha{
+    display: none;
   }
 }
