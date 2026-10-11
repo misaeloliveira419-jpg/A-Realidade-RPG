@@ -2919,3 +2919,21 @@ body.catalogo-itens-aberto{
   }
 }
 
+/* Ajuste da altura da ficha aberta pela campanha */
+
+body.ficha-em-campanha .tela-ficha{
+  height:auto;
+  min-height:calc(100vh - 50px);
+}
+body.ficha-em-campanha .painel-ficha{
+  height:calc(90vh - 45px);
+}
+@media (max-width:1000px){
+  body.ficha-em-campanha .tela-ficha{
+    height:auto;
+    min-height:calc(100vh - 20px);
+  }
+  body.ficha-em-campanha .painel-ficha{
+    height:calc(100vh - 20px);
+  }
+}

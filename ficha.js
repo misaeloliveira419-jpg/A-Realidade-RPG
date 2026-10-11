@@ -1,6 +1,9 @@
 const parametrosFicha = new URLSearchParams(window.location.search);
 const idFicha = parametrosFicha.get("ficha");
 const idCampanhaFicha = parametrosFicha.get("campanha");
+
+if (idCampanhaFicha) document.body.classList.add("ficha-em-campanha");
+
 const botaoVoltarFicha = document.querySelector(".botao-voltar");
 if (botaoVoltarFicha) {
   botaoVoltarFicha.onclick = () => {
