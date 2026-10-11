@@ -1068,7 +1068,14 @@ async function garantirAcessoFichaCampanha(fichaId,idCampanha) {
     return true;
 
   } catch (erro) {
-    console.error(`Erro ao liberar acesso à ficha ${fichaId}:`,erro);
+    console.error("ERRO ACESSO FICHA:",{
+      fichaId: fichaId,
+      campanhaId: idCampanha,
+      uid: usuario.uid,
+      codigo: erro.code,
+      mensagem: erro.message
+    });
+
     return false;
   }
 }
@@ -1131,14 +1138,23 @@ function iniciarEscutaFichasCampanha() {
           }
 
         },erro => {
-          console.error(`Erro ao acompanhar a ficha ${fichaId}:`,erro);
+          console.error("ERRO LEITURA FICHA:",{
+            fichaId: fichaId,
+            campanhaId: idCampanha,
+            codigo: erro.code,
+            mensagem: erro.message
+          });
         });
 
       cancelamentosDadosFichasCampanha.push(cancelar);
     });
 
   },erro => {
-    console.error("Erro ao acompanhar personagens da campanha:",erro);
+    console.error("ERRO FICHAS JOGADORES:",{
+      campanhaId: idCampanha,
+      codigo: erro.code,
+      mensagem: erro.message
+    });
   });
 }
 
