@@ -2792,8 +2792,8 @@ body.catalogo-itens-aberto{
 }
 .card-personagem-campanha-ficha:hover{
   transform:scale(1.015);
-  border-color:white;
-  box-shadow:0 0 12px rgba(0,210,225,0.35);
+  border-color: rgb(150,0,225);
+  box-shadow:0 0 12px rgb(200,100,225);
 }
 .foto-card-personagem-campanha-ficha{
   position:relative;
