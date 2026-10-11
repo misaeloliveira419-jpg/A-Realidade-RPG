@@ -1,4 +1,6 @@
-const idFicha = new URLSearchParams(window.location.search).get("ficha");
+const parametrosFicha = new URLSearchParams(window.location.search);
+const idFicha = parametrosFicha.get("ficha");
+const idCampanhaFicha = parametrosFicha.get("campanha");
 
 const previewLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
 
@@ -7,9 +9,18 @@ const campoFotoFicha = document.getElementById("input-foto-ficha");
 const imagemFotoFicha = document.getElementById("imagem-foto-ficha");
 const semFotoFicha = document.getElementById("sem-foto-ficha");
 const botaoRemoverFotoFicha = document.getElementById("remover-foto-ficha");
+const areaPersonagensCampanhaFicha = document.getElementById("personagens-campanha-ficha");
+const listaPersonagensCampanhaFicha = document.getElementById("lista-personagens-campanha-ficha");
 
 let dadosFichaAtual = null;
 let nomeFichaSalvo = "";
+let podeEditarFichaAtual = true;
+let papelCampanhaFichaAtual = null;
+let cancelarEscutaVinculosPersonagensFicha = null;
+let cancelamentosDadosPersonagensFicha = [];
+let ordemPersonagensCampanhaFicha = [];
+let dadosPersonagensCampanhaFicha = new Map();
+let versaoEscutaPersonagensCampanhaFicha = 0;
 
 /* Elementos da aba Informações */
 
@@ -71,6 +82,291 @@ function verificarElementosPontosFicha() {
   }
 }
 
+/* Acesso pela campanha */
+
+function redirecionarSemAcessoFicha() {
+  window.location.replace(idCampanhaFicha ? "index.html" : "index-suas-fichas.html");
+}
+async function prepararContextoCampanhaFicha(usuario) {
+  if (!idCampanhaFicha || !usuario || !idFicha) return null;
+
+  const referenciaCampanha = db.collection("campanhas").doc(idCampanhaFicha);
+  const referenciaMembro = referenciaCampanha.collection("membros").doc(usuario.uid);
+  const referenciaVinculo = referenciaCampanha.collection("fichasJogadores").doc(idFicha);
+
+  try {
+    const [membro,vinculo] = await Promise.all([
+      referenciaMembro.get(),
+      referenciaVinculo.get()
+    ]);
+
+    if (!membro.exists || !vinculo.exists) return null;
+
+    const dadosVinculo = vinculo.data();
+    if ((dadosVinculo.fichaId || vinculo.id) !== idFicha) return null;
+
+    await db.collection("acessosFichas").doc(idFicha).collection("usuarios").doc(usuario.uid).set({
+      campanhaId: idCampanhaFicha
+    });
+
+    return {
+      papel: membro.data().papel || "jogador"
+    };
+  } catch (erro) {
+    console.error("Erro ao preparar acesso da ficha pela campanha:",erro);
+    return null;
+  }
+}
+async function garantirAcessoPersonagemCampanhaFicha(fichaId) {
+  const usuario = auth.currentUser;
+  if (!usuario || !idCampanhaFicha || !fichaId) return false;
+
+  try {
+    await db.collection("acessosFichas").doc(fichaId).collection("usuarios").doc(usuario.uid).set({
+      campanhaId: idCampanhaFicha
+    });
+    return true;
+  } catch (erro) {
+    console.error(`Erro ao liberar acesso ao personagem ${fichaId}:`,erro);
+    return false;
+  }
+}
+
+/* Permissão de edição */
+
+function aplicarPermissaoEdicaoFicha() {
+  if (podeEditarFichaAtual) return;
+
+  document.body.classList.add("ficha-somente-leitura");
+
+  document.querySelectorAll(".painel-ficha input, .painel-ficha textarea").forEach(campo => {
+    if (campo.type === "file") campo.disabled = true;
+    else campo.readOnly = true;
+  });
+
+  document.querySelectorAll(".painel-ficha select").forEach(campo => {
+    campo.disabled = true;
+  });
+
+  document.querySelectorAll([
+    "#remover-foto-ficha",
+    ".sigla-atributo-pericia",
+    ".adicionar-dado-rolagem",
+    "#rolar-ficha",
+    "#salvar-rolagem-ficha",
+    ".botao-excluir-rolagem-salva",
+    ".adicionar-habilidade-ficha",
+    ".excluir-habilidade-ficha",
+    ".adicionar-habilidade-catalogo",
+    "#adicionar-item-ficha",
+    "#criar-item-ficha",
+    "#confirmar-criar-item-ficha",
+    ".excluir-item-ficha",
+    ".adicionar-catalogo-item-ficha"
+  ].join(",")).forEach(botao => {
+    botao.disabled = true;
+  });
+
+  botaoRemoverFotoFicha.hidden = true;
+}
+
+/* Personagens da campanha acima da ficha */
+
+function cancelarEscutasPersonagensCampanhaFicha() {
+  if (cancelarEscutaVinculosPersonagensFicha) cancelarEscutaVinculosPersonagensFicha();
+  cancelarEscutaVinculosPersonagensFicha = null;
+
+  cancelamentosDadosPersonagensFicha.forEach(cancelar => cancelar());
+  cancelamentosDadosPersonagensFicha = [];
+}
+function dividirLinhasPersonagensCampanhaFicha(total) {
+  const linhas = [];
+  let restante = total;
+
+  while (restante > 0) {
+    if (restante === 4) {
+      linhas.push(2,2);
+      break;
+    }
+
+    if (restante >= 3) {
+      linhas.push(3);
+      restante -= 3;
+      continue;
+    }
+
+    linhas.push(restante);
+    break;
+  }
+
+  return linhas;
+}
+function obterDadosRecursoCardFicha(recurso) {
+  const atual = Math.max(0,Number(recurso?.atual) || 0);
+  const maximo = Math.max(0,Number(recurso?.maximo) || 0);
+  const porcentagem = maximo > 0 ? Math.max(0,Math.min(100,(atual / maximo) * 100)) : 0;
+
+  return {atual,maximo,porcentagem};
+}
+function criarBarraPersonagemCampanhaFicha(rotulo,recurso,classe) {
+  const dados = obterDadosRecursoCardFicha(recurso);
+  const area = document.createElement("div");
+  area.className = "recurso-card-personagem-ficha";
+
+  const cabecalho = document.createElement("div");
+  cabecalho.className = "cabecalho-recurso-card-personagem-ficha";
+
+  const nome = document.createElement("strong");
+  nome.textContent = rotulo;
+
+  const valor = document.createElement("span");
+  valor.textContent = `${dados.atual} / ${dados.maximo}`;
+
+  const barra = document.createElement("div");
+  barra.className = `barra-card-personagem-ficha ${classe}`;
+
+  const preenchimento = document.createElement("div");
+  preenchimento.style.width = `${dados.porcentagem}%`;
+
+  cabecalho.append(nome,valor);
+  barra.appendChild(preenchimento);
+  area.append(cabecalho,barra);
+
+  return area;
+}
+function criarCardPersonagemCampanhaFicha(ficha) {
+  const card = document.createElement("button");
+  card.type = "button";
+  card.className = "card-personagem-campanha-ficha";
+
+  const foto = document.createElement("div");
+  foto.className = "foto-card-personagem-campanha-ficha";
+
+  if (ficha.foto) {
+    const imagem = document.createElement("img");
+    imagem.src = ficha.foto;
+    imagem.alt = `Foto de ${ficha.nome || "personagem"}`;
+    foto.appendChild(imagem);
+  } else {
+    const semFoto = document.createElement("span");
+    semFoto.textContent = "SEM FOTO";
+    foto.appendChild(semFoto);
+  }
+
+  const informacoes = document.createElement("div");
+  informacoes.className = "informacoes-card-personagem-campanha-ficha";
+
+  const nome = document.createElement("strong");
+  nome.className = "nome-card-personagem-campanha-ficha";
+  nome.textContent = ficha.nome || "SEM NOME";
+
+  const recursos = document.createElement("div");
+  recursos.className = "recursos-card-personagem-campanha-ficha";
+  recursos.append(
+    criarBarraPersonagemCampanhaFicha("PV",ficha.pv,"pv-card-personagem-ficha"),
+    criarBarraPersonagemCampanhaFicha("PD",ficha.pd,"pd-card-personagem-ficha")
+  );
+
+  informacoes.append(nome,recursos);
+  card.append(foto,informacoes);
+
+  card.addEventListener("click",() => {
+    const parametros = new URLSearchParams({
+      ficha: ficha.id,
+      campanha: idCampanhaFicha
+    });
+
+    window.location.href = `index-ficha.html?${parametros.toString()}`;
+  });
+
+  return card;
+}
+function renderizarPersonagensCampanhaFicha() {
+  if (!areaPersonagensCampanhaFicha || !listaPersonagensCampanhaFicha) return;
+
+  const personagens = ordemPersonagensCampanhaFicha
+    .filter(fichaId => fichaId !== idFicha)
+    .map(fichaId => dadosPersonagensCampanhaFicha.get(fichaId))
+    .filter(Boolean);
+
+  listaPersonagensCampanhaFicha.replaceChildren();
+  areaPersonagensCampanhaFicha.hidden = personagens.length === 0;
+
+  if (personagens.length === 0) return;
+
+  const distribuicao = dividirLinhasPersonagensCampanhaFicha(personagens.length);
+  let indice = 0;
+
+  distribuicao.forEach(quantidade => {
+    const linha = document.createElement("div");
+    linha.className = "linha-personagens-campanha-ficha";
+    linha.style.setProperty("--quantidade-personagens",quantidade);
+
+    personagens.slice(indice,indice + quantidade).forEach(ficha => {
+      linha.appendChild(criarCardPersonagemCampanhaFicha(ficha));
+    });
+
+    indice += quantidade;
+    listaPersonagensCampanhaFicha.appendChild(linha);
+  });
+}
+function iniciarEscutaPersonagensCampanhaFicha() {
+  cancelarEscutasPersonagensCampanhaFicha();
+
+  if (!idCampanhaFicha || !auth.currentUser) {
+    if (areaPersonagensCampanhaFicha) areaPersonagensCampanhaFicha.hidden = true;
+    return;
+  }
+
+  const campanhaEscuta = idCampanhaFicha;
+
+  cancelarEscutaVinculosPersonagensFicha = db.collection("campanhas")
+    .doc(campanhaEscuta)
+    .collection("fichasJogadores")
+    .orderBy("adicionadoEm","asc")
+    .onSnapshot(resultado => {
+      const versao = ++versaoEscutaPersonagensCampanhaFicha;
+
+      cancelamentosDadosPersonagensFicha.forEach(cancelar => cancelar());
+      cancelamentosDadosPersonagensFicha = [];
+      ordemPersonagensCampanhaFicha = resultado.docs.map(documento => documento.id);
+      dadosPersonagensCampanhaFicha.clear();
+      renderizarPersonagensCampanhaFicha();
+
+      resultado.docs.forEach(async documentoVinculo => {
+        const dadosVinculo = documentoVinculo.data();
+        const fichaId = dadosVinculo.fichaId || documentoVinculo.id;
+        const acessoLiberado = await garantirAcessoPersonagemCampanhaFicha(fichaId);
+
+        if (!acessoLiberado || versao !== versaoEscutaPersonagensCampanhaFicha) return;
+
+        const cancelar = db.collection("fichas").doc(fichaId).onSnapshot(documentoFicha => {
+          if (versao !== versaoEscutaPersonagensCampanhaFicha) return;
+
+          if (!documentoFicha.exists) {
+            dadosPersonagensCampanhaFicha.delete(fichaId);
+            renderizarPersonagensCampanhaFicha();
+            return;
+          }
+
+          dadosPersonagensCampanhaFicha.set(fichaId,{
+            id: documentoFicha.id,
+            ...documentoFicha.data()
+          });
+
+          renderizarPersonagensCampanhaFicha();
+          aplicarPermissaoEdicaoFicha();
+        },erro => {
+          console.error(`Erro ao acompanhar personagem ${fichaId}:`,erro);
+        });
+
+        cancelamentosDadosPersonagensFicha.push(cancelar);
+      });
+    },erro => {
+      console.error("Erro ao acompanhar personagens da campanha na ficha:",erro);
+    });
+}
+
 /* Cabeçalho da ficha */
 
 function mostrarFotoFicha(foto) {
@@ -78,7 +374,7 @@ function mostrarFotoFicha(foto) {
 
   imagemFotoFicha.hidden = !possuiFoto;
   semFotoFicha.hidden = possuiFoto;
-  botaoRemoverFotoFicha.hidden = !possuiFoto;
+  botaoRemoverFotoFicha.hidden = !possuiFoto || !podeEditarFichaAtual;
 
   if (possuiFoto) {
     imagemFotoFicha.src = foto;
@@ -97,6 +393,8 @@ function preencherCabecalhoFicha(ficha) {
 }
 
 campoNomeFicha.addEventListener("change", async () => {
+  if (!podeEditarFichaAtual) return;
+
   const novoNome = campoNomeFicha.value.trim();
 
   if (!novoNome) {
@@ -187,6 +485,8 @@ async function prepararFotoFicha(arquivo) {
 }
 
 campoFotoFicha.addEventListener("change", async () => {
+  if (!podeEditarFichaAtual) return;
+
   const arquivo = campoFotoFicha.files?.[0];
 
   if (!arquivo) return;
@@ -221,6 +521,8 @@ campoFotoFicha.addEventListener("change", async () => {
 botaoRemoverFotoFicha.addEventListener("click", async evento => {
   evento.preventDefault();
   evento.stopPropagation();
+
+  if (!podeEditarFichaAtual) return;
 
   if (previewLocal) {
     mostrarFotoFicha("");
@@ -261,8 +563,21 @@ botaoRemoverFotoFicha.addEventListener("click", async evento => {
 
 async function carregarFichaAutenticada(usuario) {
   if (!usuario || !idFicha) {
-    window.location.replace("index-suas-fichas.html");
+    redirecionarSemAcessoFicha();
     return;
+  }
+
+  let contextoCampanha = null;
+
+  if (idCampanhaFicha) {
+    contextoCampanha = await prepararContextoCampanhaFicha(usuario);
+
+    if (!contextoCampanha) {
+      redirecionarSemAcessoFicha();
+      return;
+    }
+
+    papelCampanhaFichaAtual = contextoCampanha.papel;
   }
 
   let documento;
@@ -273,34 +588,39 @@ async function carregarFichaAutenticada(usuario) {
     documento = await db.collection("fichas").doc(idFicha).get();
 
   } catch (erro) {
-    console.error("Erro ao ler a ficha no Firestore:", erro);
+    console.error("Erro ao ler a ficha no Firestore:",erro);
 
     if (
       erro?.code === "permission-denied" ||
       erro?.code === "not-found"
     ) {
-      window.location.replace("index-suas-fichas.html");
+      redirecionarSemAcessoFicha();
     }
 
     return;
   }
 
   if (!documento.exists) {
-    window.location.replace("index-suas-fichas.html");
+    redirecionarSemAcessoFicha();
     return;
   }
 
   const ficha = documento.data();
+  const donoDaFicha = ficha.donoUid === usuario.uid;
 
-  if (ficha.donoUid !== usuario.uid) {
-    window.location.replace("index-suas-fichas.html");
+  if (!idCampanhaFicha && !donoDaFicha) {
+    redirecionarSemAcessoFicha();
     return;
   }
 
+  podeEditarFichaAtual = donoDaFicha || papelCampanhaFichaAtual === "mestre";
+
   if (ficha.estado !== "pronta") {
-    window.location.replace(
-      `index-criacao-de-ficha.html?ficha=${encodeURIComponent(idFicha)}`
-    );
+    if (donoDaFicha) {
+      window.location.replace(`index-criacao-de-ficha.html?ficha=${encodeURIComponent(idFicha)}`);
+    } else {
+      redirecionarSemAcessoFicha();
+    }
     return;
   }
 
@@ -314,17 +634,16 @@ async function carregarFichaAutenticada(usuario) {
     await preencherHabilidadesFicha(ficha);
     await preencherInventarioFicha(ficha);
 
+    aplicarPermissaoEdicaoFicha();
     iniciarEscutasRolagensFicha();
     iniciarEscutaRecursosFicha();
 
-    document.title =
-      `${ficha.nome || "Ficha"}: A Realidade RPG`;
+    if (idCampanhaFicha) iniciarEscutaPersonagensCampanhaFicha();
+
+    document.title = `${ficha.nome || "Ficha"}: A Realidade RPG`;
 
   } catch (erro) {
-    console.error(
-      "Erro ao montar a interface da ficha:",
-      erro
-    );
+    console.error("Erro ao montar a interface da ficha:",erro);
   }
 }
 
@@ -565,6 +884,8 @@ function atualizarDadosLocaisInformacoes(dados) {
 }
 
 function salvarInformacoesFicha() {
+  if (!podeEditarFichaAtual) return;
+
   const resultado = obterDadosInformacoesFicha();
 
   if (!resultado.valido) {
@@ -1735,6 +2056,8 @@ async function criarEstadoInicialHabilidadesFicha(
 /* Salvamento */
 
 function salvarEstadoHabilidadesFichaAgora() {
+  if (!podeEditarFichaAtual) return Promise.resolve();
+
   const copia =
     copiarEstadoHabilidadesFicha();
 
@@ -3879,6 +4202,7 @@ async function carregarCatalogoItensFicha() {
 }
 const promessaCatalogoItensFicha = carregarCatalogoItensFicha();
 function salvarInventarioFichaAgora() {
+  if (!podeEditarFichaAtual) return Promise.resolve();
   if (dadosFichaAtual) dadosFichaAtual.inventario = inventarioFicha.map(item => ({...item}));
   if (previewLocal || !auth.currentUser || !idFicha) return Promise.resolve();
   const inventarioParaSalvar = inventarioFicha.map(item => ({...item}));
@@ -4608,9 +4932,8 @@ function atualizarContadorAtributosFicha() {
 
 /* Salvamento */
 
-function salvarAtualizacaoPontosFicha(
-  alteracoes
-) {
+function salvarAtualizacaoPontosFicha(alteracoes) {
+  if (!podeEditarFichaAtual) return Promise.resolve();
   if (previewLocal) {
     return Promise.resolve();
   }
@@ -6368,20 +6691,14 @@ async function executarRolagemOutroFicha() {
 }
 
 
-botaoRolarFicha.addEventListener(
-  "click",
-  () => {
-    if (
-      tipoRolagemFicha.value ===
-      "pericia"
-    ) {
-      executarRolagemPericiaFicha();
-
-    } else {
-      executarRolagemOutroFicha();
-    }
+botaoRolarFicha.addEventListener("click", () => {
+  if (!podeEditarFichaAtual) return;
+  if (tipoRolagemFicha.value === "pericia") {
+    executarRolagemPericiaFicha();
+  } else {
+    executarRolagemOutroFicha();
   }
-);
+});
 
 /* Rolagens salvas */
 
@@ -7067,6 +7384,8 @@ if (previewLocal) {
       );
     });
 }
+
+window.addEventListener("beforeunload",cancelarEscutasPersonagensCampanhaFicha);
 
 /* Inicialização da ficha real */
 

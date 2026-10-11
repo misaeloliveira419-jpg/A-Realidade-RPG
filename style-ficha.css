@@ -2751,3 +2751,171 @@ body.catalogo-itens-aberto{
     grid-row: 1 / 4;
   }
 }
+
+/* Personagens da campanha acima da ficha */
+
+.personagens-campanha-ficha{
+  width:100%;
+  margin:0 auto 18px;
+}
+.personagens-campanha-ficha h2{
+  margin:0 0 10px;
+  text-align:center;
+  font-size:14px;
+  letter-spacing:1px;
+  text-shadow:0 0 10px rgb(0,210,225);
+}
+.lista-personagens-campanha-ficha{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.linha-personagens-campanha-ficha{
+  display:grid;
+  grid-template-columns:repeat(var(--quantidade-personagens),minmax(0,1fr));
+  gap:10px;
+}
+.card-personagem-campanha-ficha{
+  min-width:0;
+  min-height:112px;
+  display:grid;
+  grid-template-columns:105px minmax(0,1fr);
+  padding:0;
+  overflow:hidden;
+  background:black;
+  color:white;
+  border:2px solid rgb(90,90,90);
+  border-radius:5px;
+  cursor:pointer;
+  text-align:left;
+  transition:transform 0.25s,border-color 0.25s,box-shadow 0.25s;
+}
+.card-personagem-campanha-ficha:hover{
+  transform:scale(1.015);
+  border-color:white;
+  box-shadow:0 0 12px rgba(0,210,225,0.35);
+}
+.foto-card-personagem-campanha-ficha{
+  position:relative;
+  min-height:112px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  background:rgb(6,6,6);
+  border-right:1px solid rgb(75,75,75);
+  color:rgb(115,115,115);
+  font-size:9px;
+  font-weight:bold;
+}
+.foto-card-personagem-campanha-ficha img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.informacoes-card-personagem-campanha-ficha{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:12px;
+  padding:12px 14px;
+  box-sizing:border-box;
+}
+.nome-card-personagem-campanha-ficha{
+  overflow:hidden;
+  font-size:15px;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.recursos-card-personagem-campanha-ficha{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.recurso-card-personagem-ficha{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+.cabecalho-recurso-card-personagem-ficha{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  color:rgb(205,205,205);
+  font-size:10px;
+}
+.barra-card-personagem-ficha{
+  height:8px;
+  overflow:hidden;
+  background:rgb(30,30,30);
+  border:1px solid rgb(70,70,70);
+  border-radius:8px;
+}
+.barra-card-personagem-ficha > div{
+  height:100%;
+  border-radius:8px;
+  transition:width 0.35s;
+}
+.pv-card-personagem-ficha > div{
+  background:linear-gradient(90deg,rgb(10,80,40),rgb(25,190,70));
+  box-shadow:0 0 8px rgba(25,190,70,0.55);
+}
+.pd-card-personagem-ficha > div{
+  background:linear-gradient(90deg,rgb(70,25,110),rgb(100,120,245));
+  box-shadow:0 0 8px rgba(100,120,245,0.55);
+}
+
+/* Ficha de outro jogador em modo somente leitura */
+
+.ficha-somente-leitura .controle-foto-ficha{
+  cursor:default;
+}
+.ficha-somente-leitura .controle-foto-ficha:hover{
+  transform:none;
+  box-shadow:none;
+}
+.ficha-somente-leitura input[readonly],
+.ficha-somente-leitura textarea[readonly],
+.ficha-somente-leitura select:disabled{
+  opacity:1;
+  color:white;
+  cursor:default;
+}
+.ficha-somente-leitura #remover-foto-ficha,
+.ficha-somente-leitura .sigla-atributo-pericia,
+.ficha-somente-leitura .adicionar-dado-rolagem,
+.ficha-somente-leitura #rolar-ficha,
+.ficha-somente-leitura #salvar-rolagem-ficha,
+.ficha-somente-leitura .botao-excluir-rolagem-salva,
+.ficha-somente-leitura .adicionar-habilidade-ficha,
+.ficha-somente-leitura .excluir-habilidade-ficha,
+.ficha-somente-leitura .adicionar-habilidade-catalogo,
+.ficha-somente-leitura #adicionar-item-ficha,
+.ficha-somente-leitura #criar-item-ficha,
+.ficha-somente-leitura #confirmar-criar-item-ficha,
+.ficha-somente-leitura .excluir-item-ficha,
+.ficha-somente-leitura .adicionar-catalogo-item-ficha{
+  display:none !important;
+}
+
+@media (max-width:900px){
+  .linha-personagens-campanha-ficha{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+@media (max-width:650px){
+  .linha-personagens-campanha-ficha{
+    grid-template-columns:1fr;
+  }
+  .card-personagem-campanha-ficha{
+    grid-template-columns:90px minmax(0,1fr);
+  }
+  .foto-card-personagem-campanha-ficha{
+    min-height:105px;
+  }
+}
+
