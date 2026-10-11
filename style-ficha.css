@@ -2937,3 +2937,142 @@ body.ficha-em-campanha .painel-ficha{
     height:calc(100vh - 20px);
   }
 }
+
+/* Histórico geral da campanha */
+
+.area-principal-ficha-campanha{
+  width:100%;
+}
+body.ficha-em-campanha .area-principal-ficha-campanha{
+  display:grid;
+  grid-template-columns:minmax(0,4fr) minmax(230px,1fr);
+  gap:12px;
+  align-items:stretch;
+}
+body.ficha-em-campanha .painel-ficha{
+  width:100%;
+  box-sizing:border-box;
+}
+.historico-campanha-ficha{
+  height:calc(90vh - 45px);
+  min-width:0;
+  display:grid;
+  grid-template-rows:minmax(0,1fr);
+  gap:10px;
+  box-sizing:border-box;
+  overflow:hidden;
+}
+.historico-campanha-ficha.historico-campanha-com-mestre{
+  grid-template-rows:repeat(2,minmax(0,1fr));
+}
+.bloco-historico-campanha-ficha{
+  min-height:0;
+  display:flex;
+  flex-direction:column;
+  padding:10px;
+  box-sizing:border-box;
+  overflow:hidden;
+  background:black;
+  border:2px solid white;
+  border-radius:6px;
+}
+.bloco-historico-campanha-ficha h2{
+  flex-shrink:0;
+  margin:0 0 10px;
+  text-align:center;
+  font-size:12px;
+  letter-spacing:0.5px;
+  text-shadow:0 0 8px rgb(0,210,225);
+}
+#historico-mestre-campanha-ficha h2{
+  text-shadow:0 0 8px rgb(200,0,225);
+}
+.lista-historico-campanha-ficha{
+  flex:1;
+  min-height:0;
+  overflow-y:auto;
+  padding-right:4px;
+}
+.item-historico-campanha-ficha{
+  display:grid;
+  grid-template-columns:42px minmax(0,1fr);
+  gap:8px;
+  padding:9px 3px;
+  border-bottom:1px solid rgb(50,50,50);
+}
+.foto-historico-campanha-ficha{
+  width:42px;
+  height:42px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  background:rgb(15,15,15);
+  border:1px solid rgb(80,80,80);
+  border-radius:5px;
+}
+.foto-historico-campanha-ficha img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.foto-historico-campanha-ficha span{
+  color:rgb(130,130,130);
+  font-size:14px;
+  font-weight:bold;
+}
+.conteudo-historico-campanha-ficha{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+}
+.nome-personagem-historico-campanha-ficha{
+  overflow:hidden;
+  color:white;
+  font-size:10px;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.teste-historico-campanha-ficha{
+  font-size:10px;
+}
+.detalhes-historico-campanha-ficha{
+  color:rgb(150,150,150);
+  font-size:8px;
+}
+.numeros-historico-campanha-ficha{
+  display:flex;
+  flex-wrap:wrap;
+  gap:4px;
+  font-size:10px;
+}
+.final-historico-campanha-ficha{
+  margin-top:2px;
+  font-size:10px;
+}
+.historico-campanha-vazio{
+  margin:15px 5px;
+  color:rgb(140,140,140);
+  text-align:center;
+  font-size:10px;
+}
+
+@media (max-width:1000px){
+  .historico-campanha-ficha{
+    height:calc(100vh - 20px);
+  }
+}
+@media (max-width:900px){
+  body.ficha-em-campanha .area-principal-ficha-campanha{
+    grid-template-columns:1fr;
+  }
+  .historico-campanha-ficha{
+    height:650px;
+  }
+}
+@media (max-width:650px){
+  .historico-campanha-ficha{
+    height:600px;
+  }
+}

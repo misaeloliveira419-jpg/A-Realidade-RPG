@@ -17,7 +17,8 @@
       <div id="lista-personagens-campanha-ficha" class="lista-personagens-campanha-ficha"></div>
     </section>
 
-    <section class="painel-ficha">
+    <div class="area-principal-ficha-campanha">
+      <section class="painel-ficha">
       <header class="cabecalho-ficha">
         <div class="area-foto-ficha">
           <label class="controle-foto-ficha" for="input-foto-ficha" title="Adicionar ou alterar foto">
@@ -801,8 +802,21 @@
           </div>
         </section>
         
-      </div>
+            </div>
     </section>
+
+    <aside id="historico-campanha-ficha" class="historico-campanha-ficha" hidden>
+      <section class="bloco-historico-campanha-ficha">
+        <h2>HISTÓRICO DOS JOGADORES</h2>
+        <div id="lista-historico-jogadores-campanha-ficha" class="lista-historico-campanha-ficha"></div>
+      </section>
+
+      <section id="historico-mestre-campanha-ficha" class="bloco-historico-campanha-ficha" hidden>
+        <h2>HISTÓRICO DO MESTRE</h2>
+        <div id="lista-historico-mestre-campanha-ficha" class="lista-historico-campanha-ficha"></div>
+      </section>
+    </aside>
+  </div>
   </main>
 
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>

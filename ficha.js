@@ -25,6 +25,10 @@ const semFotoFicha = document.getElementById("sem-foto-ficha");
 const botaoRemoverFotoFicha = document.getElementById("remover-foto-ficha");
 const areaPersonagensCampanhaFicha = document.getElementById("personagens-campanha-ficha");
 const listaPersonagensCampanhaFicha = document.getElementById("lista-personagens-campanha-ficha");
+const painelHistoricoCampanhaFicha = document.getElementById("historico-campanha-ficha");
+const secaoHistoricoMestreCampanhaFicha = document.getElementById("historico-mestre-campanha-ficha");
+const listaHistoricoJogadoresCampanhaFicha = document.getElementById("lista-historico-jogadores-campanha-ficha");
+const listaHistoricoMestreCampanhaFicha = document.getElementById("lista-historico-mestre-campanha-ficha");
 
 let dadosFichaAtual = null;
 let nomeFichaSalvo = "";
@@ -35,6 +39,10 @@ let cancelamentosDadosPersonagensFicha = [];
 let ordemPersonagensCampanhaFicha = [];
 let dadosPersonagensCampanhaFicha = new Map();
 let versaoEscutaPersonagensCampanhaFicha = 0;
+let cancelarEscutaHistoricoJogadoresCampanhaFicha = null;
+let cancelarEscutaHistoricoMestreCampanhaFicha = null;
+let rolagensJogadoresCampanhaFicha = [];
+let rolagensMestreCampanhaFicha = [];
 
 /* Elementos da aba Informações */
 
@@ -346,6 +354,7 @@ function iniciarEscutaPersonagensCampanhaFicha() {
       ordemPersonagensCampanhaFicha = resultado.docs.map(documento => documento.id);
       dadosPersonagensCampanhaFicha.clear();
       renderizarPersonagensCampanhaFicha();
+      renderizarHistoricosCampanhaFicha();
 
       resultado.docs.forEach(async documentoVinculo => {
         const dadosVinculo = documentoVinculo.data();
@@ -360,6 +369,7 @@ function iniciarEscutaPersonagensCampanhaFicha() {
           if (!documentoFicha.exists) {
             dadosPersonagensCampanhaFicha.delete(fichaId);
             renderizarPersonagensCampanhaFicha();
+            renderizarHistoricosCampanhaFicha();
             return;
           }
 
@@ -369,6 +379,7 @@ function iniciarEscutaPersonagensCampanhaFicha() {
           });
 
           renderizarPersonagensCampanhaFicha();
+          renderizarHistoricosCampanhaFicha();
           aplicarPermissaoEdicaoFicha();
         },erro => {
           console.error(`Erro ao acompanhar personagem ${fichaId}:`,erro);
@@ -378,6 +389,201 @@ function iniciarEscutaPersonagensCampanhaFicha() {
       });
     },erro => {
       console.error("Erro ao acompanhar personagens da campanha na ficha:",erro);
+    });
+}
+
+/* Histórico geral da campanha */
+
+function cancelarEscutasHistoricoCampanhaFicha() {
+  if (cancelarEscutaHistoricoJogadoresCampanhaFicha) cancelarEscutaHistoricoJogadoresCampanhaFicha();
+  if (cancelarEscutaHistoricoMestreCampanhaFicha) cancelarEscutaHistoricoMestreCampanhaFicha();
+
+  cancelarEscutaHistoricoJogadoresCampanhaFicha = null;
+  cancelarEscutaHistoricoMestreCampanhaFicha = null;
+}
+function obterFichaHistoricoCampanhaFicha(fichaIdHistorico) {
+  const fichaCampanha = dadosPersonagensCampanhaFicha.get(fichaIdHistorico);
+
+  if (fichaCampanha) return fichaCampanha;
+
+  if (fichaIdHistorico === idFicha && dadosFichaAtual) {
+    return {
+      id:idFicha,
+      ...dadosFichaAtual
+    };
+  }
+
+  return null;
+}
+function criarItemHistoricoCampanhaFicha(rolagem) {
+  const ficha = obterFichaHistoricoCampanhaFicha(rolagem.fichaId);
+
+  const item = document.createElement("article");
+  item.className = "item-historico-campanha-ficha";
+
+  const foto = document.createElement("div");
+  foto.className = "foto-historico-campanha-ficha";
+
+  if (ficha?.foto) {
+    const imagem = document.createElement("img");
+    imagem.src = ficha.foto;
+    imagem.alt = `Foto de ${ficha.nome || "personagem"}`;
+    foto.appendChild(imagem);
+  } else {
+    const semFoto = document.createElement("span");
+    semFoto.textContent = "?";
+    foto.appendChild(semFoto);
+  }
+
+  const conteudo = document.createElement("div");
+  conteudo.className = "conteudo-historico-campanha-ficha";
+
+  const personagem = document.createElement("strong");
+  personagem.className = "nome-personagem-historico-campanha-ficha";
+  personagem.textContent = ficha?.nome || "Personagem";
+
+  const teste = document.createElement("strong");
+  teste.className = "teste-historico-campanha-ficha";
+  teste.textContent = rolagem.nomeTeste || "Rolagem";
+
+  const detalhes = document.createElement("span");
+  detalhes.className = "detalhes-historico-campanha-ficha";
+
+  if (rolagem.tipo === "pericia") {
+    detalhes.textContent = `${rolagem.quantidadeDados}d20 • Valor ${rolagem.valor}`;
+  } else {
+    detalhes.textContent = (rolagem.dados || [])
+      .map(dado => `${dado.quantidade}d${dado.lados}`)
+      .join(" + ");
+  }
+
+  const numeros = document.createElement("div");
+  numeros.className = "numeros-historico-campanha-ficha";
+
+  if (rolagem.tipo === "pericia") {
+    (rolagem.resultados || []).forEach(valorDado => {
+      const numero = document.createElement("span");
+
+      numero.className = `numero-historico resultado-${categoriaIndividualPericiaFicha(valorDado,rolagem.valor)}`;
+      numero.textContent = valorDado;
+
+      numeros.appendChild(numero);
+    });
+  } else {
+    (rolagem.resultados || []).forEach(resultado => {
+      const numero = document.createElement("span");
+
+      numero.className = "numero-historico";
+      numero.textContent = resultado.valor;
+
+      numeros.appendChild(numero);
+    });
+  }
+
+  const final = document.createElement("strong");
+  final.className = "final-historico-campanha-ficha";
+
+  if (rolagem.tipo === "pericia") {
+    final.classList.add(`resultado-${rolagem.resultadoCategoria}`);
+    final.textContent = nomeCategoriaRolagemFicha(rolagem.resultadoCategoria);
+  } else {
+    final.classList.add("resultado-soma");
+    final.textContent = `Soma: ${rolagem.soma ?? 0}`;
+  }
+
+  conteudo.append(personagem,teste,detalhes,numeros,final);
+  item.append(foto,conteudo);
+
+  return item;
+}
+function renderizarListaHistoricoCampanhaFicha(rolagens,destino,textoVazio) {
+  if (!destino) return;
+
+  destino.replaceChildren();
+
+  if (rolagens.length === 0) {
+    const vazio = document.createElement("p");
+    vazio.className = "historico-campanha-vazio";
+    vazio.textContent = textoVazio;
+    destino.appendChild(vazio);
+    return;
+  }
+
+  const fragmento = document.createDocumentFragment();
+
+  rolagens.forEach(rolagem => {
+    fragmento.appendChild(criarItemHistoricoCampanhaFicha(rolagem));
+  });
+
+  destino.appendChild(fragmento);
+}
+function renderizarHistoricosCampanhaFicha() {
+  renderizarListaHistoricoCampanhaFicha(
+    rolagensJogadoresCampanhaFicha,
+    listaHistoricoJogadoresCampanhaFicha,
+    "Nenhuma rolagem dos jogadores."
+  );
+
+  if (papelCampanhaFichaAtual === "mestre") {
+    renderizarListaHistoricoCampanhaFicha(
+      rolagensMestreCampanhaFicha,
+      listaHistoricoMestreCampanhaFicha,
+      "Nenhuma rolagem do Mestre."
+    );
+  }
+}
+function iniciarEscutasHistoricoCampanhaFicha() {
+  cancelarEscutasHistoricoCampanhaFicha();
+
+  if (!idCampanhaFicha || !auth.currentUser || !painelHistoricoCampanhaFicha) {
+    if (painelHistoricoCampanhaFicha) painelHistoricoCampanhaFicha.hidden = true;
+    return;
+  }
+
+  const mestre = papelCampanhaFichaAtual === "mestre";
+
+  painelHistoricoCampanhaFicha.hidden = false;
+  painelHistoricoCampanhaFicha.classList.toggle("historico-campanha-com-mestre",mestre);
+
+  if (secaoHistoricoMestreCampanhaFicha) {
+    secaoHistoricoMestreCampanhaFicha.hidden = !mestre;
+  }
+
+  cancelarEscutaHistoricoJogadoresCampanhaFicha = db.collection("campanhas")
+    .doc(idCampanhaFicha)
+    .collection("historicoJogadores")
+    .orderBy("criadoEm","desc")
+    .limit(30)
+    .onSnapshot(resultado => {
+      rolagensJogadoresCampanhaFicha = resultado.docs.map(documento => ({
+        id:documento.id,
+        ...documento.data()
+      }));
+
+      renderizarHistoricosCampanhaFicha();
+    },erro => {
+      console.error("Erro ao acompanhar Histórico dos Jogadores:",erro);
+    });
+
+  if (!mestre) {
+    rolagensMestreCampanhaFicha = [];
+    return;
+  }
+
+  cancelarEscutaHistoricoMestreCampanhaFicha = db.collection("campanhas")
+    .doc(idCampanhaFicha)
+    .collection("historicoMestre")
+    .orderBy("criadoEm","desc")
+    .limit(30)
+    .onSnapshot(resultado => {
+      rolagensMestreCampanhaFicha = resultado.docs.map(documento => ({
+        id:documento.id,
+        ...documento.data()
+      }));
+
+      renderizarHistoricosCampanhaFicha();
+    },erro => {
+      console.error("Erro ao acompanhar Histórico do Mestre:",erro);
     });
 }
 
@@ -652,7 +858,10 @@ async function carregarFichaAutenticada(usuario) {
     iniciarEscutasRolagensFicha();
     iniciarEscutaRecursosFicha();
 
-    if (idCampanhaFicha) iniciarEscutaPersonagensCampanhaFicha();
+    if (idCampanhaFicha) {
+      iniciarEscutaPersonagensCampanhaFicha();
+      iniciarEscutasHistoricoCampanhaFicha();
+    }
 
     document.title = `${ficha.nome || "Ficha"}: A Realidade RPG`;
 
@@ -6487,41 +6696,85 @@ async function limitarHistoricoRolagensFicha() {
   }
 }
 
-async function registrarRolagemHistoricoFicha(
-  dados
-) {
+async function registrarRolagemHistoricoFicha(dados) {
   if (
     previewLocal ||
     !auth.currentUser ||
     !idFicha
   ) return;
 
+  const uid = auth.currentUser.uid;
+  const criadoEm = firebase.firestore.FieldValue.serverTimestamp();
+
   try {
-    await db
-      .collection("fichas")
-      .doc(idFicha)
-      .collection(
-        "historicoRolagens"
-      )
-      .add({
+    /* Rolagem privada do Mestre */
+
+    if (
+      idCampanhaFicha &&
+      papelCampanhaFichaAtual === "mestre"
+    ) {
+      await db.collection("campanhas")
+        .doc(idCampanhaFicha)
+        .collection("historicoMestre")
+        .add({
+          ...dados,
+          fichaId:idFicha,
+          criadoPorUid:uid,
+          criadoEm:criadoEm
+        });
+
+      return;
+    }
+
+    /* Rolagem de jogador feita dentro da Campanha */
+
+    if (idCampanhaFicha) {
+      const referenciaHistoricoFicha = db.collection("fichas")
+        .doc(idFicha)
+        .collection("historicoRolagens")
+        .doc();
+
+      const referenciaHistoricoCampanha = db.collection("campanhas")
+        .doc(idCampanhaFicha)
+        .collection("historicoJogadores")
+        .doc();
+
+      const lote = db.batch();
+
+      lote.set(referenciaHistoricoFicha,{
         ...dados,
-
-        criadoPorUid:
-          auth.currentUser.uid,
-
-        criadoEm:
-          firebase.firestore
-            .FieldValue
-            .serverTimestamp()
+        criadoPorUid:uid,
+        criadoEm:criadoEm
       });
 
+      lote.set(referenciaHistoricoCampanha,{
+        ...dados,
+        fichaId:idFicha,
+        criadoPorUid:uid,
+        criadoEm:criadoEm
+      });
+
+      await lote.commit();
       await limitarHistoricoRolagensFicha();
 
+      return;
+    }
+
+    /* Rolagem normal fora de uma Campanha */
+
+    await db.collection("fichas")
+      .doc(idFicha)
+      .collection("historicoRolagens")
+      .add({
+        ...dados,
+        criadoPorUid:uid,
+        criadoEm:criadoEm
+      });
+
+    await limitarHistoricoRolagensFicha();
+
   } catch (erro) {
-    console.error(
-      "Erro ao registrar rolagem:",
-      erro
-    );
+    console.error("Erro ao registrar rolagem:",erro);
   }
 }
 
@@ -7400,6 +7653,7 @@ if (previewLocal) {
 }
 
 window.addEventListener("beforeunload",cancelarEscutasPersonagensCampanhaFicha);
+window.addEventListener("beforeunload",cancelarEscutasHistoricoCampanhaFicha);
 
 /* Inicialização da ficha real */
 
