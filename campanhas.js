@@ -1051,6 +1051,27 @@ function cancelarEscutasDadosFichasCampanha() {
   cancelamentosDadosFichasCampanha.forEach(cancelar => cancelar());
   cancelamentosDadosFichasCampanha = [];
 }
+async function garantirAcessoFichaCampanha(fichaId,idCampanha) {
+  const usuario = auth.currentUser;
+
+  if (!usuario || !fichaId || !idCampanha) return false;
+
+  try {
+    await db.collection("acessosFichas")
+      .doc(fichaId)
+      .collection("usuarios")
+      .doc(usuario.uid)
+      .set({
+        campanhaId: idCampanha
+      });
+
+    return true;
+
+  } catch (erro) {
+    console.error(`Erro ao liberar acesso à ficha ${fichaId}:`,erro);
+    return false;
+  }
+}
 function iniciarEscutaFichasCampanha() {
   if (cancelarEscutaFichasCampanha) {
     cancelarEscutaFichasCampanha();
@@ -1082,42 +1103,43 @@ function iniciarEscutaFichasCampanha() {
 
       renderizarConteudoFichasCampanha();
 
-      resultado.docs.forEach(documentoVinculo => {
+      resultado.docs.forEach(async documentoVinculo => {
         const dadosVinculo = documentoVinculo.data();
         const fichaId = dadosVinculo.fichaId || documentoVinculo.id;
+        const acessoLiberado = await garantirAcessoFichaCampanha(fichaId,idCampanha);
 
-        const cancelar = db.collection("fichas")
-          .doc(fichaId)
-          .onSnapshot(documentoFicha => {
-            if (campanhaAtualId !== idCampanha) return;
+        if (!acessoLiberado || campanhaAtualId !== idCampanha) return;
 
-            if (!documentoFicha.exists) {
-              dadosFichasJogadoresCampanha.delete(fichaId);
-              renderizarConteudoFichasCampanha();
-              return;
-            }
+        const cancelar = db.collection("fichas").doc(fichaId).onSnapshot(documentoFicha => {
+          if (campanhaAtualId !== idCampanha) return;
 
-            dadosFichasJogadoresCampanha.set(fichaId,{
-              id: documentoFicha.id,
-              ...documentoFicha.data()
-            });
-
+          if (!documentoFicha.exists) {
+            dadosFichasJogadoresCampanha.delete(fichaId);
             renderizarConteudoFichasCampanha();
+            return;
+          }
 
-            if (!modalAdicionarPersonagemCampanha.hidden) {
-              renderizarSuasFichasCampanha();
-            }
-
-          },erro => {
-            console.error(`Erro ao acompanhar a ficha ${fichaId}:`,erro);
+          dadosFichasJogadoresCampanha.set(fichaId,{
+            id: documentoFicha.id,
+            ...documentoFicha.data()
           });
 
-        cancelamentosDadosFichasCampanha.push(cancelar);
-      });
+          renderizarConteudoFichasCampanha();
 
-    },erro => {
-      console.error("Erro ao acompanhar personagens da campanha:",erro);
+          if (!modalAdicionarPersonagemCampanha.hidden) {
+            renderizarSuasFichasCampanha();
+          }
+
+        },erro => {
+          console.error(`Erro ao acompanhar a ficha ${fichaId}:`,erro);
+        });
+
+      cancelamentosDadosFichasCampanha.push(cancelar);
     });
+
+  },erro => {
+    console.error("Erro ao acompanhar personagens da campanha:",erro);
+  });
 }
 
 /*Abrir campanha*/
