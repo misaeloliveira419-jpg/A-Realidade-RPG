@@ -3076,3 +3076,156 @@ body.ficha-em-campanha .painel-ficha{
     height:600px;
   }
 }
+
+/* Correções do layout da ficha dentro da campanha */
+
+/* Evita que o painel da ficha invada o histórico */
+
+body.ficha-em-campanha .area-principal-ficha-campanha{
+  grid-template-columns:minmax(0,78fr) minmax(280px,22fr);
+  gap:14px;
+}
+body.ficha-em-campanha .painel-ficha{
+  min-width:0;
+  width:100%;
+}
+
+/* Foto menor e totalmente contida no cabeçalho */
+
+body.ficha-em-campanha .cabecalho-ficha{
+  min-height:120px;
+  padding:12px 70px 12px 145px;
+}
+body.ficha-em-campanha .area-foto-ficha{
+  left:20px;
+  top:50%;
+  width:105px;
+  height:105px;
+}
+body.ficha-em-campanha .nome-personagem-ficha{
+  width:min(460px,72%);
+}
+
+/* Recupera as cores dos campos no modo somente leitura */
+
+.ficha-somente-leitura .borda-atributo-ficha input[readonly]{
+  color:var(--cor-atributo-ficha);
+}
+.ficha-somente-leitura .valores-pericia-ficha input[type="number"][readonly]{
+  color:rgb(70,210,90);
+}
+
+/* Histórico da campanha */
+
+body.ficha-em-campanha .historico-campanha-ficha{
+  width:100%;
+  min-width:0;
+  height:calc(90vh - 45px);
+  overflow:hidden;
+}
+body.ficha-em-campanha .bloco-historico-campanha-ficha{
+  width:100%;
+  min-width:0;
+  height:100%;
+  padding:10px;
+  overflow:hidden;
+}
+.lista-historico-campanha-ficha{
+  width:100%;
+  min-width:0;
+  padding-right:5px;
+  box-sizing:border-box;
+  overflow-x:hidden;
+  overflow-y:auto;
+}
+.item-historico-campanha-ficha{
+  width:100%;
+  min-width:0;
+  display:grid;
+  grid-template-columns:38px minmax(0,1fr);
+  align-items:start;
+  gap:7px;
+  margin-bottom:6px;
+  padding:8px;
+  box-sizing:border-box;
+  overflow:hidden;
+  background:rgb(5,5,5);
+  border:1px solid rgb(45,45,45);
+  border-radius:5px;
+}
+.foto-historico-campanha-ficha{
+  width:38px;
+  height:38px;
+  flex-shrink:0;
+}
+.conteudo-historico-campanha-ficha{
+  width:100%;
+  min-width:0;
+  overflow:hidden;
+}
+.nome-personagem-historico-campanha-ficha{
+  width:100%;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.teste-historico-campanha-ficha{
+  overflow-wrap:anywhere;
+}
+.detalhes-historico-campanha-ficha{
+  line-height:1.35;
+  overflow-wrap:anywhere;
+}
+.numeros-historico-campanha-ficha{
+  width:100%;
+  min-width:0;
+  display:flex;
+  flex-wrap:wrap;
+  gap:5px;
+}
+.numeros-historico-campanha-ficha .numero-historico{
+  margin-right:0;
+  font-size:11px;
+  font-weight:bold;
+}
+.final-historico-campanha-ficha{
+  display:block;
+  margin-top:2px;
+  overflow-wrap:anywhere;
+}
+
+/* O painel do Mestre continua dividido exatamente ao meio */
+
+.historico-campanha-ficha.historico-campanha-com-mestre{
+  grid-template-rows:minmax(0,1fr) minmax(0,1fr);
+}
+
+/* Em telas menores, ficha e histórico deixam de ficar espremidos lado a lado */
+
+@media (max-width:1180px){
+  body.ficha-em-campanha .area-principal-ficha-campanha{
+    grid-template-columns:1fr;
+  }
+  body.ficha-em-campanha .historico-campanha-ficha{
+    min-width:0;
+    height:650px;
+  }
+  body.ficha-em-campanha .cabecalho-ficha{
+    min-height:90px;
+    padding:10px 80px;
+  }
+  body.ficha-em-campanha .area-foto-ficha{
+    left:10px;
+    top:50%;
+    width:80px;
+    height:80px;
+  }
+  body.ficha-em-campanha .nome-personagem-ficha{
+    width:80%;
+  }
+}
+@media (max-width:650px){
+  body.ficha-em-campanha .historico-campanha-ficha{
+    height:600px;
+  }
+}
