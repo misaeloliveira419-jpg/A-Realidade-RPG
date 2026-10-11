@@ -21,17 +21,30 @@ const botaoRegenerarLink = document.getElementById("regenerar-link-campanha");
 
 const listaMembrosCampanha = document.getElementById("lista-membros-campanha");
 const abasFichasCampanha = document.getElementById("abas-fichas-campanha");
+const conteudoFichasCampanha = document.getElementById("conteudo-fichas-campanha");
+const botoesAbasFichasCampanha = [...document.querySelectorAll(".aba-ficha-campanha")];
+const modalAdicionarPersonagemCampanha = document.getElementById("modal-adicionar-personagem-campanha");
+const fecharModalFichasCampanha = document.getElementById("fechar-modal-fichas-campanha");
+const listaSuasFichasCampanha = document.getElementById("lista-suas-fichas-campanha");
 const botaoSairCampanha = document.getElementById("sair-campanha");
 
 let cancelarEscutaCampanhas = null;
 let cancelarEscutaCampanhaAtual = null;
 let cancelarEscutaMembroAtual = null;
 let cancelarEscutaMembros = null;
+let cancelarEscutaFichasCampanha = null;
+let cancelarEscutaSuasFichasCampanha = null;
+let cancelamentosDadosFichasCampanha = [];
 
 let campanhaAtualId = null;
 let campanhaAtualDados = null;
 let papelAtualCampanha = null;
 let conviteURLProcessado = false;
+let tipoFichasCampanhaAtual = "jogadores";
+let fichasUsuarioCampanha = [];
+let idsFichasJogadoresCampanha = new Set();
+let ordemFichasJogadoresCampanha = [];
+let dadosFichasJogadoresCampanha = new Map();
 
 window.campanhaAtualId = null;
 window.papelCampanhaAtual = null;
@@ -743,6 +756,369 @@ async function entrarCampanha() {
   }
 }
 
+/*Fichas da campanha*/
+
+function converterDataCampanha(valor) {
+  if (!valor) return null;
+  if (valor instanceof Date) return valor;
+  if (typeof valor?.toDate === "function") return valor.toDate();
+
+  const data = new Date(valor);
+  return Number.isNaN(data.getTime()) ? null : data;
+}
+function formatarDataCampanha(valor) {
+  const data = converterDataCampanha(valor);
+  if (!data) return "--/--/----";
+
+  return new Intl.DateTimeFormat("pt-BR",{
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric"
+  }).format(data);
+}
+function formatarTempoCampanha(valor) {
+  const data = converterDataCampanha(valor);
+  if (!data) return "agora";
+
+  const diferenca = Math.max(0,Date.now() - data.getTime());
+  const minutos = Math.floor(diferenca / 60000);
+  const horas = Math.floor(minutos / 60);
+  const dias = Math.floor(horas / 24);
+
+  if (dias > 0) return `${dias} dia${dias !== 1 ? "s" : ""}`;
+  if (horas > 0) return `${horas} hora${horas !== 1 ? "s" : ""}`;
+  return `${minutos} minuto${minutos !== 1 ? "s" : ""}`;
+}
+function criarFotoPersonagemCampanha(ficha,classe) {
+  const areaFoto = document.createElement("div");
+  areaFoto.className = classe;
+
+  if (ficha.foto) {
+    const imagem = document.createElement("img");
+    imagem.src = ficha.foto;
+    imagem.alt = `Foto de ${ficha.nome || "personagem"}`;
+    areaFoto.appendChild(imagem);
+  } else {
+    const semFoto = document.createElement("span");
+    semFoto.textContent = "SEM FOTO";
+    areaFoto.classList.add("sem-foto");
+    areaFoto.appendChild(semFoto);
+  }
+
+  return areaFoto;
+}
+function criarCardPersonagemCampanha(ficha) {
+  const card = document.createElement("button");
+  card.type = "button";
+  card.className = "card-personagem-campanha";
+
+  const foto = criarFotoPersonagemCampanha(ficha,"foto-personagem-campanha");
+
+  const informacoes = document.createElement("div");
+  informacoes.className = "informacoes-personagem-campanha";
+
+  const nome = document.createElement("strong");
+  nome.className = "nome-personagem-campanha";
+  nome.textContent = ficha.nome || "SEM NOME";
+
+  const atualizado = document.createElement("span");
+  atualizado.className = "data-personagem-campanha";
+  atualizado.innerHTML = `<b>Atualizado há:</b> ${formatarTempoCampanha(ficha.atualizadoEm)}`;
+
+  const criado = document.createElement("span");
+  criado.className = "data-personagem-campanha";
+  criado.innerHTML = `<b>Criado em:</b> ${formatarDataCampanha(ficha.criadoEm)}`;
+
+  informacoes.append(nome,atualizado,criado);
+  card.append(foto,informacoes);
+
+  card.addEventListener("click",() => {
+    if (!campanhaAtualId || !ficha.id) return;
+
+    const parametros = new URLSearchParams({
+      ficha: ficha.id,
+      campanha: campanhaAtualId
+    });
+
+    window.location.href = `index-ficha.html?${parametros.toString()}`;
+  });
+
+  return card;
+}
+function criarBotaoAdicionarPersonagemCampanha() {
+  const botao = document.createElement("button");
+  botao.type = "button";
+  botao.className = "botao-adicionar-personagem-campanha";
+  botao.innerHTML = `<span>+</span> ADICIONAR PERSONAGEM`;
+
+  botao.addEventListener("click",abrirModalAdicionarPersonagemCampanha);
+
+  return botao;
+}
+function renderizarJogadoresCampanha() {
+  conteudoFichasCampanha.replaceChildren();
+
+  const area = document.createElement("div");
+  area.className = "area-jogadores-campanha";
+
+  const cabecalho = document.createElement("div");
+  cabecalho.className = "cabecalho-jogadores-campanha";
+
+  const titulo = document.createElement("h3");
+  titulo.textContent = "JOGADORES";
+
+  cabecalho.appendChild(titulo);
+
+  const botaoAdicionar = criarBotaoAdicionarPersonagemCampanha();
+
+  const grade = document.createElement("div");
+  grade.className = "grade-personagens-campanha";
+
+  const fichas = ordemFichasJogadoresCampanha
+    .map(id => dadosFichasJogadoresCampanha.get(id))
+    .filter(Boolean);
+
+  if (fichas.length === 0) {
+    const vazio = document.createElement("p");
+    vazio.className = "fichas-campanha-vazio";
+    vazio.textContent = "Nenhum personagem foi adicionado à campanha.";
+
+    grade.appendChild(vazio);
+  } else {
+    fichas.forEach(ficha => {
+      grade.appendChild(criarCardPersonagemCampanha(ficha));
+    });
+  }
+
+  area.append(cabecalho,botaoAdicionar,grade);
+  conteudoFichasCampanha.appendChild(area);
+}
+function renderizarConteudoFichasCampanha() {
+  botoesAbasFichasCampanha.forEach(botao => {
+    botao.classList.toggle("ativa",botao.dataset.tipo === tipoFichasCampanhaAtual);
+  });
+
+  if (tipoFichasCampanhaAtual === "jogadores") {
+    renderizarJogadoresCampanha();
+    return;
+  }
+
+  conteudoFichasCampanha.replaceChildren();
+
+  const vazio = document.createElement("p");
+  vazio.className = "fichas-campanha-vazio";
+  vazio.textContent = "Nenhuma ficha adicionada nesta área.";
+
+  conteudoFichasCampanha.appendChild(vazio);
+}
+function criarCardSeletorFichaCampanha(ficha) {
+  const card = document.createElement("article");
+  card.className = "card-seletor-ficha-campanha";
+
+  const jaAdicionada = idsFichasJogadoresCampanha.has(ficha.id);
+
+  if (jaAdicionada) card.classList.add("ja-adicionada");
+
+  const foto = criarFotoPersonagemCampanha(ficha,"foto-seletor-ficha-campanha");
+
+  const nome = document.createElement("strong");
+  nome.className = "nome-seletor-ficha-campanha";
+  nome.textContent = ficha.nome || "SEM NOME";
+
+  const botaoAdicionar = document.createElement("button");
+  botaoAdicionar.type = "button";
+  botaoAdicionar.className = "adicionar-ficha-campanha";
+  botaoAdicionar.textContent = jaAdicionada ? "✓" : "+";
+  botaoAdicionar.title = jaAdicionada ? "Ficha já adicionada" : "Adicionar à campanha";
+  botaoAdicionar.setAttribute("aria-label",jaAdicionada ? "Ficha já adicionada" : `Adicionar ${ficha.nome || "personagem"} à campanha`);
+  botaoAdicionar.disabled = jaAdicionada;
+
+  botaoAdicionar.addEventListener("click",async evento => {
+    evento.stopPropagation();
+
+    if (jaAdicionada) return;
+
+    await adicionarFichaJogadorCampanha(ficha);
+  });
+
+  card.append(foto,nome,botaoAdicionar);
+
+  return card;
+}
+function renderizarSuasFichasCampanha() {
+  listaSuasFichasCampanha.replaceChildren();
+
+  const fichasProntas = fichasUsuarioCampanha.filter(ficha => ficha.estado === "pronta");
+
+  if (fichasProntas.length === 0) {
+    const vazio = document.createElement("p");
+    vazio.className = "suas-fichas-campanha-vazio";
+    vazio.textContent = "Você ainda não possui nenhuma ficha pronta.";
+
+    listaSuasFichasCampanha.appendChild(vazio);
+    return;
+  }
+
+  fichasProntas.forEach(ficha => {
+    listaSuasFichasCampanha.appendChild(criarCardSeletorFichaCampanha(ficha));
+  });
+}
+function iniciarEscutaSuasFichasCampanha() {
+  if (cancelarEscutaSuasFichasCampanha) {
+    cancelarEscutaSuasFichasCampanha();
+    cancelarEscutaSuasFichasCampanha = null;
+  }
+
+  const usuario = auth.currentUser;
+
+  if (!usuario) return;
+
+  cancelarEscutaSuasFichasCampanha = db.collection("fichas")
+    .where("donoUid","==",usuario.uid)
+    .onSnapshot(resultado => {
+      fichasUsuarioCampanha = resultado.docs.map(documento => ({
+        id: documento.id,
+        ...documento.data()
+      }));
+
+      fichasUsuarioCampanha.sort((a,b) => {
+        const dataA = a.atualizadoEm?.toMillis?.() || 0;
+        const dataB = b.atualizadoEm?.toMillis?.() || 0;
+        return dataB - dataA;
+      });
+
+      renderizarSuasFichasCampanha();
+
+    },erro => {
+      console.error("Erro ao carregar fichas do usuário:",erro);
+      listaSuasFichasCampanha.innerHTML = `<p class="suas-fichas-campanha-vazio">Não foi possível carregar suas fichas.</p>`;
+    });
+}
+function abrirModalAdicionarPersonagemCampanha() {
+  if (!campanhaAtualId || !auth.currentUser) return;
+
+  modalAdicionarPersonagemCampanha.hidden = false;
+  document.body.classList.add("modal-fichas-campanha-aberto");
+
+  iniciarEscutaSuasFichasCampanha();
+}
+function fecharModalAdicionarPersonagemCampanha() {
+  modalAdicionarPersonagemCampanha.hidden = true;
+  document.body.classList.remove("modal-fichas-campanha-aberto");
+
+  if (cancelarEscutaSuasFichasCampanha) {
+    cancelarEscutaSuasFichasCampanha();
+    cancelarEscutaSuasFichasCampanha = null;
+  }
+
+  fichasUsuarioCampanha = [];
+  listaSuasFichasCampanha.replaceChildren();
+}
+async function adicionarFichaJogadorCampanha(ficha) {
+  const usuario = auth.currentUser;
+
+  if (!usuario || !campanhaAtualId || !ficha?.id) return;
+  if (ficha.donoUid !== usuario.uid) return;
+  if (ficha.estado !== "pronta") return;
+  if (idsFichasJogadoresCampanha.has(ficha.id)) return;
+
+  try {
+    await db.collection("campanhas")
+      .doc(campanhaAtualId)
+      .collection("fichasJogadores")
+      .doc(ficha.id)
+      .set({
+        fichaId: ficha.id,
+        donoUid: usuario.uid,
+        adicionadoPor: usuario.uid,
+        adicionadoEm: firebase.firestore.FieldValue.serverTimestamp()
+      });
+
+    fecharModalAdicionarPersonagemCampanha();
+
+  } catch (erro) {
+    console.error("Erro ao adicionar personagem à campanha:",erro);
+
+    if (erro.code === "permission-denied") {
+      alert("O Firebase bloqueou a adição da ficha. Precisaremos liberar essa operação nas regras do Firestore.");
+      return;
+    }
+
+    alert("Não foi possível adicionar o personagem à campanha.");
+  }
+}
+function cancelarEscutasDadosFichasCampanha() {
+  cancelamentosDadosFichasCampanha.forEach(cancelar => cancelar());
+  cancelamentosDadosFichasCampanha = [];
+}
+function iniciarEscutaFichasCampanha() {
+  if (cancelarEscutaFichasCampanha) {
+    cancelarEscutaFichasCampanha();
+    cancelarEscutaFichasCampanha = null;
+  }
+
+  cancelarEscutasDadosFichasCampanha();
+  idsFichasJogadoresCampanha = new Set();
+  ordemFichasJogadoresCampanha = [];
+  dadosFichasJogadoresCampanha.clear();
+
+  if (!campanhaAtualId || !auth.currentUser) {
+    renderizarConteudoFichasCampanha();
+    return;
+  }
+
+  const idCampanha = campanhaAtualId;
+
+  cancelarEscutaFichasCampanha = db.collection("campanhas")
+    .doc(idCampanha)
+    .collection("fichasJogadores")
+    .orderBy("adicionadoEm","asc")
+    .onSnapshot(resultado => {
+      cancelarEscutasDadosFichasCampanha();
+
+      ordemFichasJogadoresCampanha = resultado.docs.map(documento => documento.id);
+      idsFichasJogadoresCampanha = new Set(ordemFichasJogadoresCampanha);
+      dadosFichasJogadoresCampanha.clear();
+
+      renderizarConteudoFichasCampanha();
+
+      resultado.docs.forEach(documentoVinculo => {
+        const dadosVinculo = documentoVinculo.data();
+        const fichaId = dadosVinculo.fichaId || documentoVinculo.id;
+
+        const cancelar = db.collection("fichas")
+          .doc(fichaId)
+          .onSnapshot(documentoFicha => {
+            if (campanhaAtualId !== idCampanha) return;
+
+            if (!documentoFicha.exists) {
+              dadosFichasJogadoresCampanha.delete(fichaId);
+              renderizarConteudoFichasCampanha();
+              return;
+            }
+
+            dadosFichasJogadoresCampanha.set(fichaId,{
+              id: documentoFicha.id,
+              ...documentoFicha.data()
+            });
+
+            renderizarConteudoFichasCampanha();
+
+            if (!modalAdicionarPersonagemCampanha.hidden) {
+              renderizarSuasFichasCampanha();
+            }
+
+          },erro => {
+            console.error(`Erro ao acompanhar a ficha ${fichaId}:`,erro);
+          });
+
+        cancelamentosDadosFichasCampanha.push(cancelar);
+      });
+
+    },erro => {
+      console.error("Erro ao acompanhar personagens da campanha:",erro);
+    });
+}
 
 /*Abrir campanha*/
 
@@ -806,6 +1182,9 @@ async function abrirCampanha(id) {
 
     window.campanhaAtualId = id;
 
+    tipoFichasCampanhaAtual = "jogadores";
+    renderizarConteudoFichasCampanha();
+
     atualizarDadosCampanha(campanha.data());
     aplicarPapelCampanha(membro.data());
 
@@ -826,10 +1205,14 @@ function cancelarEscutasCampanha() {
   if (cancelarEscutaCampanhaAtual) cancelarEscutaCampanhaAtual();
   if (cancelarEscutaMembroAtual) cancelarEscutaMembroAtual();
   if (cancelarEscutaMembros) cancelarEscutaMembros();
+  if (cancelarEscutaFichasCampanha) cancelarEscutaFichasCampanha();
+
+  cancelarEscutasDadosFichasCampanha();
 
   cancelarEscutaCampanhaAtual = null;
   cancelarEscutaMembroAtual = null;
   cancelarEscutaMembros = null;
+  cancelarEscutaFichasCampanha = null;
 }
 
 function iniciarEscutasCampanhaAtual() {
@@ -860,6 +1243,8 @@ function iniciarEscutasCampanhaAtual() {
     console.error("Acesso à campanha encerrado:", erro);
     abrirTelaSite("tela-selecionar-campanhas");
   });
+
+  iniciarEscutaFichasCampanha();
 }
 
 /*Membros*/
@@ -1111,6 +1496,25 @@ function verificarConviteNaURL(usuario) {
 }
 
 /*Eventos*/
+
+botoesAbasFichasCampanha.forEach(botao => {
+  botao.addEventListener("click",() => {
+    tipoFichasCampanhaAtual = botao.dataset.tipo || "jogadores";
+    renderizarConteudoFichasCampanha();
+  });
+});
+
+fecharModalFichasCampanha.addEventListener("click",fecharModalAdicionarPersonagemCampanha);
+
+modalAdicionarPersonagemCampanha.addEventListener("click",evento => {
+  if (evento.target === modalAdicionarPersonagemCampanha) fecharModalAdicionarPersonagemCampanha();
+});
+
+document.addEventListener("keydown",evento => {
+  if (evento.key === "Escape" && !modalAdicionarPersonagemCampanha.hidden) {
+    fecharModalAdicionarPersonagemCampanha();
+  }
+});
 
 botaoConfirmarCriarCampanha.addEventListener("click", criarCampanha);
 botaoConfirmarEntrarCampanha.addEventListener("click", entrarCampanha);

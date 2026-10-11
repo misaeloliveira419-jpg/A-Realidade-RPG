@@ -861,6 +861,304 @@ footer{
   margin-top: 20px;
   border-top: 2px solid white;
 }
+.aba-ficha-campanha.ativa{
+  border-color: rgb(0,225,175);
+  box-shadow: 0 0 10px rgba(0,225,175,0.45);
+}
+.area-jogadores-campanha{
+  padding-top: 18px;
+}
+.cabecalho-jogadores-campanha{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 12px;
+}
+.cabecalho-jogadores-campanha h3{
+  margin: 0;
+  font-size: 15px;
+}
+.botao-adicionar-personagem-campanha{
+  width: 100%;
+  min-height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 18px;
+  background: black;
+  color: white;
+  border: 2px solid rgb(100,100,100);
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+}
+.botao-adicionar-personagem-campanha span{
+  font-size: 22px;
+  line-height: 1;
+}
+.botao-adicionar-personagem-campanha:hover{
+  transform: scale(1.01);
+  border-color: rgb(0,225,175);
+  box-shadow: 0 0 10px rgba(0,225,175,0.4);
+}
+.grade-personagens-campanha{
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 12px;
+}
+.fichas-campanha-vazio{
+  grid-column: 1 / -1;
+  width: 100%;
+  max-width: none;
+  margin: 25px 0;
+  color: rgb(150,150,150);
+  text-align: center;
+}
+.card-personagem-campanha{
+  min-width: 0;
+  min-height: 135px;
+  display: grid;
+  grid-template-columns: 115px minmax(0,1fr);
+  padding: 0;
+  overflow: hidden;
+  background: rgb(5,5,5);
+  color: white;
+  border: 2px solid rgb(100,100,100);
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: left;
+  transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+}
+.card-personagem-campanha:hover{
+  transform: scale(1.02);
+  border-color: white;
+  box-shadow: 0 0 12px rgba(150,0,225,0.45);
+}
+.foto-personagem-campanha{
+  position: relative;
+  min-width: 0;
+  min-height: 135px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: black;
+  border-right: 1px solid rgb(90,90,90);
+}
+.foto-personagem-campanha img{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.foto-personagem-campanha.sem-foto{
+  color: rgb(120,120,120);
+  font-size: 9px;
+  font-weight: bold;
+}
+.informacoes-personagem-campanha{
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+  padding: 14px;
+  box-sizing: border-box;
+}
+.nome-personagem-campanha{
+  overflow: hidden;
+  color: white;
+  font-size: 16px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.data-personagem-campanha{
+  color: rgb(170,170,170);
+  font-size: 10px;
+}
+.data-personagem-campanha b{
+  color: rgb(210,210,210);
+}
+body.modal-fichas-campanha-aberto{
+  overflow: hidden;
+}
+.fundo-modal-fichas-campanha{
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+  background: rgba(0,0,0,0.82);
+  backdrop-filter: blur(3px);
+}
+.fundo-modal-fichas-campanha[hidden]{
+  display: none;
+}
+.modal-fichas-campanha{
+  width: min(1000px,94vw);
+  max-height: 86vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: black;
+  border: 3px solid white;
+  border-radius: 6px;
+  box-shadow: 0 0 25px rgba(150,0,225,0.45);
+}
+.cabecalho-modal-fichas-campanha{
+  flex-shrink: 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 70px;
+  padding: 10px 65px;
+  border-bottom: 2px solid white;
+}
+.cabecalho-modal-fichas-campanha h2{
+  margin: 0;
+  text-align: center;
+  text-shadow: 2px 1px 12px rgb(150,0,225);
+}
+#fechar-modal-fichas-campanha{
+  position: absolute;
+  top: 50%;
+  right: 18px;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  transform: translateY(-50%);
+  background: black;
+  color: white;
+  border: 2px solid white;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 24px;
+  line-height: 1;
+  transition: color 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+#fechar-modal-fichas-campanha:hover{
+  color: rgb(255,80,80);
+  border-color: rgb(255,80,80);
+  box-shadow: 0 0 9px rgba(255,80,80,0.55);
+}
+.texto-modal-fichas-campanha{
+  flex-shrink: 0;
+  width: auto;
+  max-width: none;
+  margin: 14px 20px 0;
+  color: rgb(180,180,180);
+  text-align: center;
+}
+.lista-suas-fichas-campanha{
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  gap: 18px;
+  padding: 20px;
+  overflow-y: auto;
+}
+.card-seletor-ficha-campanha{
+  position: relative;
+  min-width: 0;
+  min-height: 260px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: black;
+  border: 2px solid white;
+  border-radius: 5px;
+  transition: transform 0.25s, box-shadow 0.25s, opacity 0.25s;
+}
+.card-seletor-ficha-campanha:not(.ja-adicionada):hover{
+  transform: scale(1.02);
+  box-shadow: 0 0 14px rgba(150,0,225,0.5);
+}
+.card-seletor-ficha-campanha.ja-adicionada{
+  opacity: 0.45;
+}
+.foto-seletor-ficha-campanha{
+  position: relative;
+  flex: 1;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: rgb(5,5,5);
+  border-bottom: 2px solid white;
+}
+.foto-seletor-ficha-campanha img{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.foto-seletor-ficha-campanha.sem-foto{
+  color: rgb(120,120,120);
+  font-size: 11px;
+  font-weight: bold;
+}
+.nome-seletor-ficha-campanha{
+  min-height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 50px 10px 12px;
+  box-sizing: border-box;
+  overflow-wrap: anywhere;
+  text-align: center;
+  font-size: 15px;
+}
+.adicionar-ficha-campanha{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 4;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: black;
+  color: white;
+  border: 2px solid white;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 1;
+  transition: transform 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+.adicionar-ficha-campanha:not(:disabled):hover{
+  transform: scale(1.1);
+  color: rgb(0,225,175);
+  border-color: rgb(0,225,175);
+  box-shadow: 0 0 10px rgba(0,225,175,0.6);
+}
+.adicionar-ficha-campanha:disabled{
+  color: rgb(0,225,175);
+  border-color: rgb(0,150,120);
+  cursor: default;
+}
+.suas-fichas-campanha-vazio{
+  grid-column: 1 / -1;
+  width: 100%;
+  max-width: none;
+  margin: 30px 0;
+  color: rgb(150,150,150);
+  text-align: center;
+}
 #sair-campanha{
   display: block;
   margin: 30px auto;
@@ -871,5 +1169,23 @@ footer{
   }
   #lista-membros-campanha{
     grid-template-columns: 1fr;
+  }
+  .grade-personagens-campanha{
+    grid-template-columns: 1fr;
+  }
+  .card-personagem-campanha{
+    grid-template-columns: 100px minmax(0,1fr);
+  }
+  .foto-personagem-campanha{
+    min-height: 125px;
+  }
+  .lista-suas-fichas-campanha{
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding: 14px;
+  }
+  .modal-fichas-campanha{
+    width: 96vw;
+    max-height: 90vh;
   }
 }
