@@ -2919,313 +2919,419 @@ body.catalogo-itens-aberto{
   }
 }
 
-/* Ajuste da altura da ficha aberta pela campanha */
+/* Ficha aberta pela campanha */
 
 body.ficha-em-campanha .tela-ficha{
-  height:auto;
-  min-height:calc(100vh - 50px);
+  width: calc(100% - 24px);
+  height: auto;
+  min-height: calc(100vh - 24px);
+  margin: 12px auto 18px;
+  box-sizing: border-box;
 }
-body.ficha-em-campanha .painel-ficha{
-  height:calc(90vh - 45px);
-}
-@media (max-width:1000px){
-  body.ficha-em-campanha .tela-ficha{
-    height:auto;
-    min-height:calc(100vh - 20px);
-  }
-  body.ficha-em-campanha .painel-ficha{
-    height:calc(100vh - 20px);
-  }
-}
-
-/* Histórico geral da campanha */
-
-.area-principal-ficha-campanha{
-  width:100%;
-}
-body.ficha-em-campanha .area-principal-ficha-campanha{
-  display:grid;
-  grid-template-columns:minmax(0,4fr) minmax(230px,1fr);
-  gap:12px;
-  align-items:stretch;
-}
-body.ficha-em-campanha .painel-ficha{
-  width:100%;
-  box-sizing:border-box;
-}
-.historico-campanha-ficha{
-  height:calc(90vh - 45px);
-  min-width:0;
-  display:grid;
-  grid-template-rows:minmax(0,1fr);
-  gap:10px;
-  box-sizing:border-box;
-  overflow:hidden;
-}
-.historico-campanha-ficha.historico-campanha-com-mestre{
-  grid-template-rows:repeat(2,minmax(0,1fr));
-}
-.bloco-historico-campanha-ficha{
-  min-height:0;
-  display:flex;
-  flex-direction:column;
-  padding:10px;
-  box-sizing:border-box;
-  overflow:hidden;
-  background:black;
-  border:2px solid white;
-  border-radius:6px;
-}
-.bloco-historico-campanha-ficha h2{
-  flex-shrink:0;
-  margin:0 0 10px;
-  text-align:center;
-  font-size:12px;
-  letter-spacing:0.5px;
-  text-shadow:0 0 8px rgb(0,210,225);
-}
-#historico-mestre-campanha-ficha h2{
-  text-shadow:0 0 8px rgb(200,0,225);
-}
-.lista-historico-campanha-ficha{
-  flex:1;
-  min-height:0;
-  overflow-y:auto;
-  padding-right:4px;
-}
-.item-historico-campanha-ficha{
-  display:grid;
-  grid-template-columns:42px minmax(0,1fr);
-  gap:8px;
-  padding:9px 3px;
-  border-bottom:1px solid rgb(50,50,50);
-}
-.foto-historico-campanha-ficha{
-  width:42px;
-  height:42px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  overflow:hidden;
-  background:rgb(15,15,15);
-  border:1px solid rgb(80,80,80);
-  border-radius:5px;
-}
-.foto-historico-campanha-ficha img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-.foto-historico-campanha-ficha span{
-  color:rgb(130,130,130);
-  font-size:14px;
-  font-weight:bold;
-}
-.conteudo-historico-campanha-ficha{
-  min-width:0;
-  display:flex;
-  flex-direction:column;
-  gap:3px;
-}
-.nome-personagem-historico-campanha-ficha{
-  overflow:hidden;
-  color:white;
-  font-size:10px;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
-.teste-historico-campanha-ficha{
-  font-size:10px;
-}
-.detalhes-historico-campanha-ficha{
-  color:rgb(150,150,150);
-  font-size:8px;
-}
-.numeros-historico-campanha-ficha{
-  display:flex;
-  flex-wrap:wrap;
-  gap:4px;
-  font-size:10px;
-}
-.final-historico-campanha-ficha{
-  margin-top:2px;
-  font-size:10px;
-}
-.historico-campanha-vazio{
-  margin:15px 5px;
-  color:rgb(140,140,140);
-  text-align:center;
-  font-size:10px;
-}
-
-@media (max-width:1000px){
-  .historico-campanha-ficha{
-    height:calc(100vh - 20px);
-  }
-}
-@media (max-width:900px){
-  body.ficha-em-campanha .area-principal-ficha-campanha{
-    grid-template-columns:1fr;
-  }
-  .historico-campanha-ficha{
-    height:650px;
-  }
-}
-@media (max-width:650px){
-  .historico-campanha-ficha{
-    height:600px;
-  }
-}
-
-/* Correções do layout da ficha dentro da campanha */
-
-/* Evita que o painel da ficha invada o histórico */
 
 body.ficha-em-campanha .area-principal-ficha-campanha{
-  grid-template-columns:minmax(0,78fr) minmax(280px,22fr);
-  gap:14px;
-}
-body.ficha-em-campanha .painel-ficha{
-  min-width:0;
-  width:100%;
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0,1fr) 360px;
+  gap: 16px;
+  align-items: start;
 }
 
-/* Foto menor e totalmente contida no cabeçalho */
+body.ficha-em-campanha .painel-ficha{
+  width: 100%;
+  min-width: 0;
+  height: auto;
+  min-height: calc(100vh - 45px);
+  box-sizing: border-box;
+}
+
+body.ficha-em-campanha .conteudo-ficha{
+  overflow-x: hidden;
+}
 
 body.ficha-em-campanha .cabecalho-ficha{
-  min-height:120px;
-  padding:12px 70px 12px 145px;
-}
-body.ficha-em-campanha .area-foto-ficha{
-  left:20px;
-  top:50%;
-  width:105px;
-  height:105px;
-}
-body.ficha-em-campanha .nome-personagem-ficha{
-  width:min(460px,72%);
+  min-height: 110px;
+  padding: 12px 70px 12px 130px;
 }
 
-/* Recupera as cores dos campos no modo somente leitura */
+body.ficha-em-campanha .area-foto-ficha{
+  left: 16px;
+  top: 50%;
+  width: 92px;
+  height: 92px;
+  transform: translateY(-50%);
+}
+
+body.ficha-em-campanha .nome-personagem-ficha{
+  width: min(420px,70%);
+  font-size: 24px;
+}
+
+/* Painel principal dentro da campanha */
+
+body.ficha-em-campanha .cabecalho-painel-principal{
+  gap: 18px;
+  margin-bottom: 12px;
+  padding: 10px 12px;
+}
+
+body.ficha-em-campanha .grade-painel-principal{
+  grid-template-columns: 0.82fr 1.55fr 1.05fr;
+  gap: 10px;
+  align-items: start;
+}
+
+body.ficha-em-campanha .painel-painel-principal{
+  min-width: 0;
+  padding: 10px;
+}
+
+body.ficha-em-campanha .painel-painel-principal h2{
+  margin-bottom: 10px;
+  font-size: 15px;
+}
+
+body.ficha-em-campanha .contador-atributos-ficha{
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+body.ficha-em-campanha .lista-atributos-ficha{
+  gap: 4px;
+}
+
+body.ficha-em-campanha .linha-atributo-ficha{
+  min-height: 34px;
+  font-size: 12px;
+}
+
+body.ficha-em-campanha .borda-atributo-ficha input{
+  width: 40px;
+  height: 40px;
+  font-size: 17px;
+}
+
+body.ficha-em-campanha .valor-deslocamento-ficha{
+  padding: 6px;
+}
+
+body.ficha-em-campanha .valor-deslocamento-ficha input{
+  flex: 0 0 50px;
+  width: 50px;
+  min-width: 50px;
+  font-size: 12px;
+}
+
+body.ficha-em-campanha .area-pontos-recurso{
+  margin-top: 14px;
+}
+
+body.ficha-em-campanha .valores-recurso input{
+  width: 40px;
+}
+
+/* Cores no modo somente leitura */
 
 .ficha-somente-leitura .borda-atributo-ficha input[readonly]{
-  color:var(--cor-atributo-ficha);
+  color: var(--cor-atributo-ficha);
 }
+
 .ficha-somente-leitura .valores-pericia-ficha input[type="number"][readonly]{
-  color:rgb(70,210,90);
+  color: rgb(70,210,90);
+}
+
+/* Perícias dentro da campanha */
+
+body.ficha-em-campanha .cabecalho-painel-pericias{
+  margin-bottom: 8px;
+  gap: 8px;
+}
+
+body.ficha-em-campanha .titulo-contadores-pericias-ficha{
+  gap: 6px;
+}
+
+body.ficha-em-campanha .contadores-pericias-ficha{
+  gap: 4px;
+}
+
+body.ficha-em-campanha .contador-pontos-pericias-ficha,
+body.ficha-em-campanha .contador-naturais-pericias-ficha{
+  padding: 2px 5px;
+  font-size: 8px;
+}
+
+body.ficha-em-campanha .legenda-valores-pericia{
+  grid-template-columns: 18px 28px 28px 28px 52px;
+  gap: 3px;
+  font-size: 6px;
+}
+
+body.ficha-em-campanha .lista-pericias-ficha{
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 2px 10px;
+}
+
+body.ficha-em-campanha .linha-pericia-ficha{
+  display: grid;
+  grid-template-columns: minmax(0,1fr) auto;
+  align-items: center;
+  gap: 6px;
+  min-height: 28px;
+}
+
+body.ficha-em-campanha .nome-e-atributo-pericia{
+  min-width: 0;
+  gap: 4px;
+}
+
+body.ficha-em-campanha .nome-e-atributo-pericia strong{
+  min-width: 0;
+  font-size: 9px;
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+}
+
+body.ficha-em-campanha .sigla-atributo-pericia{
+  flex-shrink: 0;
+  white-space: nowrap;
+  font-size: 9px;
+}
+
+body.ficha-em-campanha .valores-pericia-ficha{
+  grid-template-columns: 18px 28px 28px 28px 52px;
+  gap: 3px;
+}
+
+body.ficha-em-campanha .bonus-natural-ficha,
+body.ficha-em-campanha .espaco-bonus-natural-ficha{
+  width: 18px;
+  font-size: 9px;
+}
+
+body.ficha-em-campanha .valores-pericia-ficha input[type="number"],
+body.ficha-em-campanha .valor-bom-ficha,
+body.ficha-em-campanha .valor-extremo-ficha{
+  width: 28px;
+  min-height: 24px;
+  font-size: 9px;
+}
+
+body.ficha-em-campanha .modificador-pericia-ficha{
+  width: 52px;
+  height: 24px;
+  min-height: 24px;
+  padding: 4px;
+  font-size: 7px;
+  line-height: 11px;
+}
+
+/* Rolagens dentro da campanha */
+
+body.ficha-em-campanha .grade-area-rolagem{
+  grid-template-columns: minmax(0,1fr) minmax(110px,0.72fr);
+  gap: 8px;
+}
+
+body.ficha-em-campanha .historico-rolagens-ficha{
+  min-width: 0;
+  padding-left: 8px;
+}
+
+body.ficha-em-campanha .lista-historico-rolagens-ficha{
+  height: 170px;
+}
+
+body.ficha-em-campanha .item-historico-rolagem{
+  font-size: 8px;
+  overflow-wrap: anywhere;
 }
 
 /* Histórico da campanha */
 
-body.ficha-em-campanha .historico-campanha-ficha{
-  width:100%;
-  min-width:0;
-  height:calc(90vh - 45px);
-  overflow:hidden;
+.historico-campanha-ficha{
+  min-width: 0;
+  height: calc(100vh - 45px);
+  display: grid;
+  grid-template-rows: minmax(0,1fr);
+  gap: 12px;
+  overflow: hidden;
 }
-body.ficha-em-campanha .bloco-historico-campanha-ficha{
-  width:100%;
-  min-width:0;
-  height:100%;
-  padding:10px;
-  overflow:hidden;
-}
-.lista-historico-campanha-ficha{
-  width:100%;
-  min-width:0;
-  padding-right:5px;
-  box-sizing:border-box;
-  overflow-x:hidden;
-  overflow-y:auto;
-}
-.item-historico-campanha-ficha{
-  width:100%;
-  min-width:0;
-  display:grid;
-  grid-template-columns:38px minmax(0,1fr);
-  align-items:start;
-  gap:7px;
-  margin-bottom:6px;
-  padding:8px;
-  box-sizing:border-box;
-  overflow:hidden;
-  background:rgb(5,5,5);
-  border:1px solid rgb(45,45,45);
-  border-radius:5px;
-}
-.foto-historico-campanha-ficha{
-  width:38px;
-  height:38px;
-  flex-shrink:0;
-}
-.conteudo-historico-campanha-ficha{
-  width:100%;
-  min-width:0;
-  overflow:hidden;
-}
-.nome-personagem-historico-campanha-ficha{
-  width:100%;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
-.teste-historico-campanha-ficha{
-  overflow-wrap:anywhere;
-}
-.detalhes-historico-campanha-ficha{
-  line-height:1.35;
-  overflow-wrap:anywhere;
-}
-.numeros-historico-campanha-ficha{
-  width:100%;
-  min-width:0;
-  display:flex;
-  flex-wrap:wrap;
-  gap:5px;
-}
-.numeros-historico-campanha-ficha .numero-historico{
-  margin-right:0;
-  font-size:11px;
-  font-weight:bold;
-}
-.final-historico-campanha-ficha{
-  display:block;
-  margin-top:2px;
-  overflow-wrap:anywhere;
-}
-
-/* O painel do Mestre continua dividido exatamente ao meio */
 
 .historico-campanha-ficha.historico-campanha-com-mestre{
-  grid-template-rows:minmax(0,1fr) minmax(0,1fr);
+  grid-template-rows: minmax(0,1fr) minmax(0,1fr);
 }
 
-/* Em telas menores, ficha e histórico deixam de ficar espremidos lado a lado */
+.bloco-historico-campanha-ficha{
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  background: black;
+  border: 2px solid white;
+  border-radius: 6px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
 
-@media (max-width:1180px){
+.bloco-historico-campanha-ficha h2{
+  flex-shrink: 0;
+  margin: 0 0 10px;
+  text-align: center;
+  font-size: 12px;
+  letter-spacing: 0.4px;
+  text-shadow: 0 0 8px rgb(0,210,225);
+}
+
+#historico-mestre-campanha-ficha h2{
+  text-shadow: 0 0 8px rgb(200,0,225);
+}
+
+.lista-historico-campanha-ficha{
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding-right: 4px;
+  box-sizing: border-box;
+}
+
+.item-historico-campanha-ficha{
+  width: 100%;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 44px minmax(0,1fr);
+  gap: 8px;
+  padding: 8px;
+  margin-bottom: 8px;
+  background: rgb(5,5,5);
+  border: 1px solid rgb(45,45,45);
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.foto-historico-campanha-ficha{
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: rgb(15,15,15);
+  border: 1px solid rgb(80,80,80);
+  border-radius: 5px;
+  flex-shrink: 0;
+}
+
+.foto-historico-campanha-ficha img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.foto-historico-campanha-ficha span{
+  color: rgb(130,130,130);
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.conteudo-historico-campanha-ficha{
+  min-width: 0;
+  overflow: hidden;
+}
+
+.nome-personagem-historico-campanha-ficha{
+  margin-bottom: 2px;
+  overflow: hidden;
+  color: white;
+  font-size: 11px;
+  font-weight: bold;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.teste-historico-campanha-ficha{
+  font-size: 10px;
+  overflow-wrap: anywhere;
+}
+
+.detalhes-historico-campanha-ficha{
+  color: rgb(150,150,150);
+  font-size: 8px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.numeros-historico-campanha-ficha{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 2px;
+}
+
+.numeros-historico-campanha-ficha .numero-historico{
+  margin-right: 0;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.final-historico-campanha-ficha{
+  display: block;
+  margin-top: 2px;
+  font-size: 11px;
+  font-weight: bold;
+  overflow-wrap: anywhere;
+}
+
+.historico-campanha-vazio{
+  margin: 15px 5px;
+  color: rgb(140,140,140);
+  text-align: center;
+  font-size: 10px;
+}
+
+/* Responsividade */
+
+@media (max-width: 1550px){
   body.ficha-em-campanha .area-principal-ficha-campanha{
-    grid-template-columns:1fr;
+    grid-template-columns: minmax(0,1fr) 320px;
   }
-  body.ficha-em-campanha .historico-campanha-ficha{
-    min-width:0;
-    height:650px;
-  }
-  body.ficha-em-campanha .cabecalho-ficha{
-    min-height:90px;
-    padding:10px 80px;
-  }
-  body.ficha-em-campanha .area-foto-ficha{
-    left:10px;
-    top:50%;
-    width:80px;
-    height:80px;
-  }
-  body.ficha-em-campanha .nome-personagem-ficha{
-    width:80%;
+
+  body.ficha-em-campanha .grade-painel-principal{
+    grid-template-columns: 0.8fr 1.45fr 1fr;
   }
 }
-@media (max-width:650px){
+
+@media (max-width: 1280px){
+  body.ficha-em-campanha .area-principal-ficha-campanha{
+    grid-template-columns: 1fr;
+  }
+
   body.ficha-em-campanha .historico-campanha-ficha{
-    height:600px;
+    height: 650px;
+  }
+
+  body.ficha-em-campanha .cabecalho-ficha{
+    min-height: 96px;
+    padding: 10px 80px;
+  }
+
+  body.ficha-em-campanha .area-foto-ficha{
+    left: 10px;
+    width: 78px;
+    height: 78px;
+  }
+
+  body.ficha-em-campanha .nome-personagem-ficha{
+    width: 80%;
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 900px){
+  body.ficha-em-campanha .historico-campanha-ficha{
+    height: 600px;
   }
 }
