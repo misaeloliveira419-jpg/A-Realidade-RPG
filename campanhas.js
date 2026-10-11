@@ -1533,6 +1533,20 @@ function verificarConviteNaURL(usuario) {
   abrirTelaSite("tela-entrar-campanha");
 }
 
+async function verificarCampanhaNaURL(usuario) {
+  if (!usuario) return;
+
+  const url = new URL(window.location.href);
+  const campanhaId = url.searchParams.get("campanha");
+
+  if (!campanhaId) return;
+
+  url.searchParams.delete("campanha");
+  history.replaceState({}, "", url.pathname + url.search + url.hash);
+
+  await abrirCampanha(campanhaId);
+}
+
 /*Eventos*/
 
 botoesAbasFichasCampanha.forEach(botao => {
@@ -1569,6 +1583,7 @@ document.querySelector("#tela-campanha .botao-voltar")?.addEventListener("click"
 auth.onAuthStateChanged(usuario => {
   iniciarEscutaCampanhas(usuario);
   verificarConviteNaURL(usuario);
+  verificarCampanhaNaURL(usuario);
 
   const podeCriar = usuario?.uid === UID_CRIADOR_CAMPANHAS;
 

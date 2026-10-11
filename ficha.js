@@ -1,6 +1,17 @@
 const parametrosFicha = new URLSearchParams(window.location.search);
 const idFicha = parametrosFicha.get("ficha");
 const idCampanhaFicha = parametrosFicha.get("campanha");
+const botaoVoltarFicha = document.querySelector(".botao-voltar");
+if (botaoVoltarFicha) {
+  botaoVoltarFicha.onclick = () => {
+    if (idCampanhaFicha) {
+      window.location.href = `index.html?campanha=${encodeURIComponent(idCampanhaFicha)}`;
+      return;
+    }
+
+    window.location.href = "index-suas-fichas.html";
+  };
+}
 
 const previewLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
 
