@@ -3335,3 +3335,123 @@ body.ficha-em-campanha .item-historico-rolagem{
     height: 600px;
   }
 }
+
+/* Menu interno do Painel Principal em fichas abertas pela campanha */
+
+body.ficha-em-campanha .menu-areas-painel-principal{
+  position:relative;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  margin-bottom:12px;
+  border-bottom:1px solid rgb(70,70,70);
+}
+
+body.ficha-em-campanha .botao-area-pontos{
+  padding:11px 8px;
+  background:black;
+  color:rgb(150,150,150);
+  border:none;
+  border-bottom:3px solid transparent;
+  cursor:pointer;
+  font-size:12px;
+  font-weight:bold;
+  transition:color 0.25s, border-color 0.25s, text-shadow 0.25s;
+}
+
+body.ficha-em-campanha .botao-area-pontos:hover{
+  color:rgb(225,250,255);
+}
+
+body.ficha-em-campanha .botao-area-pontos.ativa{
+  color:white;
+  border-bottom-color:rgb(0,225,240);
+  text-shadow:0 0 8px rgb(0,210,225);
+}
+
+body.ficha-em-campanha .grade-painel-principal{
+  display:block;
+}
+
+body.ficha-em-campanha .grade-painel-principal .painel-painel-principal{
+  display:none;
+  width:100%;
+  min-width:0;
+  box-sizing:border-box;
+}
+
+body.ficha-em-campanha .grade-painel-principal .painel-painel-principal.area-pontos-ativa{
+  display:block;
+}
+
+/* Perícias aproveitam toda a largura quando essa área estiver aberta */
+
+body.ficha-em-campanha .painel-pericias-ficha .lista-pericias-ficha{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:3px 22px;
+}
+
+/* Rolagens aproveitam toda a largura */
+
+body.ficha-em-campanha .painel-rolagens-ficha .grade-area-rolagem{
+  grid-template-columns:minmax(280px,1.4fr) minmax(220px,1fr);
+  gap:16px;
+}
+
+/* Organização do conteúdo das rolagens no histórico da campanha */
+
+.conteudo-historico-campanha-ficha{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:2px;
+  overflow:hidden;
+}
+
+.nome-personagem-historico-campanha-ficha{
+  display:block;
+  width:100%;
+  margin:0 0 5px;
+  overflow:hidden;
+  color:white;
+  font-size:11px;
+  font-weight:bold;
+  line-height:1.2;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.teste-historico-campanha-ficha{
+  display:block;
+  width:100%;
+  margin:0;
+  font-size:10px;
+  line-height:1.25;
+  overflow-wrap:anywhere;
+}
+
+.detalhes-historico-campanha-ficha{
+  display:block;
+  width:100%;
+  margin:1px 0 0;
+  color:rgb(150,150,150);
+  font-size:8px;
+  line-height:1.35;
+  overflow-wrap:anywhere;
+}
+
+.numeros-historico-campanha-ficha{
+  width:100%;
+  display:flex;
+  flex-wrap:wrap;
+  gap:5px;
+  margin-top:4px;
+}
+
+.final-historico-campanha-ficha{
+  display:block;
+  width:100%;
+  margin-top:3px;
+  font-size:10px;
+  font-weight:bold;
+}
