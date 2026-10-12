@@ -27,7 +27,7 @@ document.getElementById("niveis-habilidades").addEventListener("click", () => {
 
 /*Redirecionamento de subtópicos*/
 
-document.querySelectorAll(".lista-subtopicos-sistema[data-tela][data-alvo]").forEach(subtopico => {
+document.querySelectorAll(".lista-subtopicos-sistema[data-tela][data-alvo], .ir-para-mecanicas-adicionais[data-tela][data-alvo]").forEach(subtopico => {
   subtopico.addEventListener("click", evento => {
     evento.stopPropagation();
 

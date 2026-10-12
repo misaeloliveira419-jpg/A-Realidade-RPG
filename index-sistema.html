@@ -384,7 +384,7 @@
     <br>
     <p>Se um personagem chegar a <b>0 PV</b>, ele adquire a Condição <b>Morrendo</b>.</p>
     <br>
-    <p>Essas Condições são explicadas em <a class="ir-para-mecanicas-adicionais" href="#" onclick="abrirTelaSite('tela-mecanicas-adicionais')">Mecânicas Adicionais</a>.</p>
+    <p>Essas Condições são explicadas em <a class="ir-para-mecanicas-adicionais" href="#" data-tela="tela-mecanicas-adicionais" data-alvo="condicoes">Mecânicas Adicionais</a>.</p>
     
     <h2 id="pontos-determinacao">Pontos de Determinação (PD)</h2>
     <p>Os Pontos de Determinação, ou PD, são a medida de saúde mental de um personagem, indicando seu estresse e racionalidade. O cálculo de PD é:</p>
@@ -397,7 +397,7 @@
     <br>
     <p>Se um personagem chegar a <b>0 PD</b>, ele adquire a Condição <b>Enlouquecendo</b>.</p>
     <br>
-    <p>Essas Condições são explicadas em <a class="ir-para-mecanicas-adicionais" href="#" onclick="abrirTelaSite('tela-mecanicas-adicionais')">Mecânicas Adicionais</a>.</p>
+    <p>Essas Condições são explicadas em <a class="ir-para-mecanicas-adicionais" href="#" data-tela="tela-mecanicas-adicionais" data-alvo="condicoes">Mecânicas Adicionais</a>.</p>
     <br><br>
 
   </div>
@@ -1527,7 +1527,7 @@
     <h3>Lista de Condições:</h3>
     <ul id="lista-condicoes">
       <li><b>ABALADO:</b> O personagem sofre desvantagem de -1d20 em testes de Perícia.</li>
-      <li><b>AGARRADO:</b> O personagem fica Desprevinido e Imóvel, e sofre desvantagem de -1d20 em testes de Ataque. Se um personagem fizer um Ataque à distância contra um dos alvos envolvidos, há 50% de chance de acertar o alvo errado.</li>
+      <li><b>AGARRADO:</b> O personagem fica Desprevinido e Imóvel, e sofre desvantagem de -1d20 em testes de Ataque. Um personagem agarrando outro perde 1/2 do seu Deslocamento, e se o agarrado estiver resistindo, perde 3/4 do Deslocamento. Se um personagem fizer um Ataque à distância contra um dos alvos envolvidos, há 50% de chance de acertar o alvo errado.</li>
       <li><b>APAVORADO:</b> Ainda mais Pasmo. O personagem sofre desvantagem de -2d20 em testes de Perícia com Atributo base Presença e deve fugir da fonte do medo até que não a veja ou esteja a alcance médio dela. Se não puder fugir, pode agir normalmente, mas não pode se aproximar voluntariamente da fonte do medo.</li>
       <li><b>ASFIXIADO:</b> O personagem não consegue respirar. Enquanto está Asfixiado, o personagem pode prender a respiração por um número de turnos igual ao seu Físico. Depois disso, deve fazer um teste de Fortitude DT Normal + 1 nível por teste anterior. Se Fracassar, cai Inconsciente e perde 1d6 de PV por turno até conseguir respirar novamente ou morrer.</li>
       <li><b>ATORDOADO:</b> O personagem fica Desprevenido e não pode fazer Ações.</li>
