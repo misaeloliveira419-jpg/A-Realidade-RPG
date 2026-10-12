@@ -142,13 +142,35 @@
 }
 .expandir-habilidade-criatura,
 .excluir-habilidade-criatura{
-  width:30px;
-  height:30px;
-  background:black;
-  color:white;
-  border:1px solid rgb(90,90,90);
-  border-radius:4px;
+  height:100%;
+  padding:0;
+  background:transparent;
+  border:none;
   cursor:pointer;
+}
+
+.expandir-habilidade-criatura{
+  color:rgb(190,190,190);
+  font-size:10px;
+  transition:
+    transform 0.2s,
+    color 0.2s;
+}
+.card-habilidade-criatura.aberta
+.expandir-habilidade-criatura{
+  transform:rotate(90deg);
+  color:rgb(0,225,240);
+}
+.excluir-habilidade-criatura{
+  color:rgb(150,150,150);
+  font-size:12px;
+  transition:
+    color 0.2s,
+    transform 0.2s;
+}
+.excluir-habilidade-criatura:hover{
+  color:rgb(255,80,80);
+  transform:scale(1.12);
 }
 .excluir-habilidade-criatura:hover{
   color:rgb(255,90,90);

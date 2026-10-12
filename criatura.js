@@ -235,6 +235,10 @@ function atualizarBarraPvCriatura() {
   const porcentagem = maximo > 0 ? Math.max(0,Math.min(100,(atual / maximo) * 100)) : 0;
   preenchimentoPvCriatura.style.width = `${porcentagem}%`;
 }
+function arredondarDeslocamentoCriatura(valor) {
+  return Math.floor((valor + 0.0000001) * 10) / 10;
+}
+
 function salvarAtributosCriatura() {
   const atributos = {
     fisico:Math.max(0,Math.min(9,Math.trunc(Number(campoFisicoCriatura.value) || 0))),
@@ -243,11 +247,126 @@ function salvarAtributosCriatura() {
     deslocamentoMetros:Math.max(0,Number(campoDeslocamentoMetrosCriatura.value) || 0),
     deslocamentoQuadrados:Math.max(0,Number(campoDeslocamentoQuadradosCriatura.value) || 0)
   };
+
   if (dadosCriatura) dadosCriatura.atributos = atributos;
+
   salvarCriatura({atributos});
   atualizarRolagemPericiaSelecionadaCriatura();
 }
-[campoFisicoCriatura,campoCognicaoCriatura,campoPresencaCriatura,campoDeslocamentoMetrosCriatura,campoDeslocamentoQuadradosCriatura].forEach(campo => campo.addEventListener("change",salvarAtributosCriatura));
+
+function atualizarDeslocamentoCriatura(metros,quadrados) {
+  campoDeslocamentoMetrosCriatura.value = metros;
+  campoDeslocamentoQuadradosCriatura.value = quadrados;
+
+  salvarAtributosCriatura();
+}
+
+[
+  campoFisicoCriatura,
+  campoCognicaoCriatura,
+  campoPresencaCriatura
+].forEach(campo => {
+  campo.addEventListener(
+    "change",
+    salvarAtributosCriatura
+  );
+});
+
+campoDeslocamentoMetrosCriatura.addEventListener(
+  "change",
+  () => {
+    const metros =
+      Number(
+        campoDeslocamentoMetrosCriatura.value
+      );
+
+    if (
+      !Number.isFinite(metros) ||
+      metros < 0
+    ) {
+      const metrosAnterior =
+        Number(
+          dadosCriatura?.atributos
+            ?.deslocamentoMetros
+        ) || 9;
+
+      const quadradosAnterior =
+        arredondarDeslocamentoCriatura(
+          metrosAnterior / 1.5
+        );
+
+      atualizarDeslocamentoCriatura(
+        metrosAnterior,
+        quadradosAnterior
+      );
+
+      return;
+    }
+
+    const metrosFinal =
+      arredondarDeslocamentoCriatura(
+        metros
+      );
+
+    const quadradosFinal =
+      arredondarDeslocamentoCriatura(
+        metrosFinal / 1.5
+      );
+
+    atualizarDeslocamentoCriatura(
+      metrosFinal,
+      quadradosFinal
+    );
+  }
+);
+
+campoDeslocamentoQuadradosCriatura.addEventListener(
+  "change",
+  () => {
+    const quadrados =
+      Number(
+        campoDeslocamentoQuadradosCriatura.value
+      );
+
+    if (
+      !Number.isFinite(quadrados) ||
+      quadrados < 0
+    ) {
+      const metrosAnterior =
+        Number(
+          dadosCriatura?.atributos
+            ?.deslocamentoMetros
+        ) || 9;
+
+      const quadradosAnterior =
+        arredondarDeslocamentoCriatura(
+          metrosAnterior / 1.5
+        );
+
+      atualizarDeslocamentoCriatura(
+        metrosAnterior,
+        quadradosAnterior
+      );
+
+      return;
+    }
+
+    const quadradosFinal =
+      arredondarDeslocamentoCriatura(
+        quadrados
+      );
+
+    const metrosFinal =
+      arredondarDeslocamentoCriatura(
+        quadradosFinal * 1.5
+      );
+
+    atualizarDeslocamentoCriatura(
+      metrosFinal,
+      quadradosFinal
+    );
+  }
+);
 [campoPvAtualCriatura,campoPvMaximoCriatura].forEach(campo => campo.addEventListener("change",() => {
   const pv = {
     atual:Math.max(0,Math.trunc(Number(campoPvAtualCriatura.value) || 0)),
@@ -556,8 +675,33 @@ function renderizarHabilidadesCriatura(idAbrir = null) {
     excluir.textContent = "🗑";
     const conteudo = document.createElement("div");
     conteudo.className = "conteudo-habilidade-criatura";
-    conteudo.hidden = habilidade.id !== idAbrir;
-    expandir.addEventListener("click",() => conteudo.hidden = !conteudo.hidden);
+
+    const abertoInicial =
+      habilidade.id === idAbrir;
+
+    conteudo.hidden =
+      !abertoInicial;
+
+    card.classList.toggle(
+      "aberta",
+      abertoInicial
+    );
+
+    expandir.addEventListener(
+      "click",
+      () => {
+        const abrir =
+          conteudo.hidden;
+
+        conteudo.hidden =
+          !abrir;
+
+        card.classList.toggle(
+          "aberta",
+          abrir
+        );
+      }
+    );
     excluir.addEventListener("click",() => {
       if (!confirm(`Excluir "${habilidade.nome.trim() || "esta Habilidade"}"?`)) return;
       habilidadesCriatura = habilidadesCriatura.filter(item => item.id !== habilidade.id);
