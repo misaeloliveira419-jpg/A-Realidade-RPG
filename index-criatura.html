@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style-ficha.css">
+  <link rel="stylesheet" href="style-criatura.css">
+  <title>Criatura: A Realidade RPG</title>
+</head>
+<body class="ficha-em-campanha criatura-campanha">
+  <button class="botao-voltar" type="button">← Voltar</button>
+  <br><br><br>
+
+  <main id="tela-criatura" class="tela-ficha">
+    <section id="personagens-campanha-ficha" class="personagens-campanha-ficha" hidden>
+      <h2>PERSONAGENS</h2>
+      <div id="lista-personagens-campanha-ficha" class="lista-personagens-campanha-ficha"></div>
+    </section>
+
+    <div class="area-principal-ficha-campanha">
+      <section class="painel-ficha">
+        <header class="cabecalho-ficha">
+          <div class="area-foto-ficha">
+            <label class="controle-foto-ficha" for="input-foto-criatura" title="Adicionar ou alterar foto">
+              <input id="input-foto-criatura" type="file" accept="image/*" hidden>
+              <img id="imagem-foto-criatura" class="imagem-foto-ficha" alt="Foto da criatura" hidden>
+              <span id="sem-foto-criatura" class="sem-foto-ficha">+</span>
+            </label>
+            <button id="remover-foto-criatura" class="botao-remover-foto-ficha" type="button" title="Remover foto" aria-label="Remover foto" hidden>×</button>
+          </div>
+          <input id="nome-criatura" class="nome-personagem-ficha" type="text" maxlength="80" value="Nova Criatura" aria-label="Nome da criatura">
+        </header>
+
+        <nav class="menu-ficha" role="tablist" aria-label="Áreas da criatura">
+          <button class="aba-ficha" type="button" role="tab" aria-selected="false" data-aba="informacoes">INFORMAÇÕES</button>
+          <button class="aba-ficha ativa" type="button" role="tab" aria-selected="true" data-aba="painel-principal">PAINEL PRINCIPAL</button>
+          <button class="aba-ficha" type="button" role="tab" aria-selected="false" data-aba="habilidades">HABILIDADES</button>
+          <span id="indicador-menu-criatura" class="indicador-menu-ficha"></span>
+        </nav>
+
+        <div class="conteudo-ficha">
+          <section id="aba-informacoes" class="conteudo-aba-ficha" role="tabpanel">
+            <div class="grade-informacoes-ficha grade-informacoes-criatura">
+              <label class="campo-informacao-ficha campo-texto-ficha">
+                <span style="text-shadow:0 0 10px rgb(230,230,230);">APARÊNCIA</span>
+                <textarea id="aparencia-criatura" placeholder="Descreva a aparência da criatura..."></textarea>
+              </label>
+
+              <label class="campo-informacao-ficha campo-texto-ficha">
+                <span style="text-shadow:0 0 10px rgb(220,100,255);">ANOTAÇÕES</span>
+                <textarea id="anotacoes-criatura" placeholder="Adicione suas anotações..."></textarea>
+              </label>
+            </div>
+          </section>
+
+          <section id="aba-painel-principal" class="conteudo-aba-ficha ativo" role="tabpanel">
+            <nav class="menu-areas-painel-principal" aria-label="Áreas do Painel Principal">
+              <button class="botao-area-pontos ativa" type="button" data-area-pontos="atributos">ATRIBUTOS</button>
+              <button class="botao-area-pontos" type="button" data-area-pontos="pericias">PERÍCIAS</button>
+              <button class="botao-area-pontos" type="button" data-area-pontos="rolagens">ROLAGENS</button>
+            </nav>
+
+            <div class="grade-painel-principal">
+              <section class="painel-painel-principal painel-atributos-ficha area-pontos-ativa" data-painel-pontos="atributos">
+                <h2>ATRIBUTOS</h2>
+
+                <div class="lista-atributos-ficha lista-atributos-criatura">
+                  <label class="linha-atributo-ficha atributo-fisico-ficha">
+                    <span>FÍSICO</span>
+                    <span class="borda-atributo-ficha"><input id="fisico-criatura" type="number" min="0" max="9" value="1"></span>
+                  </label>
+
+                  <label class="linha-atributo-ficha atributo-cognicao-ficha">
+                    <span>COGNIÇÃO</span>
+                    <span class="borda-atributo-ficha"><input id="cognicao-criatura" type="number" min="0" max="9" value="1"></span>
+                  </label>
+
+                  <label class="linha-atributo-ficha atributo-presenca-ficha">
+                    <span>PRESENÇA</span>
+                    <span class="borda-atributo-ficha"><input id="presenca-criatura" type="number" min="0" max="9" value="1"></span>
+                  </label>
+
+                  <div class="linha-atributo-ficha atributo-deslocamento-ficha">
+                    <span>DESLOCAMENTO</span>
+                    <div class="borda-deslocamento-ficha">
+                      <div class="valor-deslocamento-ficha">
+                        <label><input id="deslocamento-metros-criatura" type="number" min="0" step="0.1" value="9"><span>m</span></label>
+                        <span>/</span>
+                        <label><input id="deslocamento-quadrados-criatura" type="number" min="0" step="0.1" value="6"><span>q</span></label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="area-pontos-recurso vida-criatura">
+                  <div class="cabecalho-recurso">
+                    <strong>PV</strong>
+                    <div class="valores-recurso">
+                      <input id="pv-atual-criatura" type="number" min="0" value="50">
+                      <span>/</span>
+                      <input id="pv-maximo-criatura" type="number" min="0" value="50">
+                    </div>
+                  </div>
+                  <div class="barra-recurso barra-pv"><div id="preenchimento-pv-criatura" class="preenchimento-recurso"></div></div>
+                </div>
+              </section>
+
+              <section class="painel-painel-principal painel-pericias-ficha" data-painel-pontos="pericias">
+                <div class="cabecalho-painel-pericias cabecalho-pericias-criatura">
+                  <div class="titulo-contadores-pericias-ficha">
+                    <h2>PERÍCIAS</h2>
+                    <div class="contador-pericias-criatura">
+                      <span>PONTOS:</span>
+                      <strong id="pontos-atuais-pericias-criatura">140</strong>
+                      <span>/</span>
+                      <input id="limite-pericias-criatura" type="number" min="0" step="1" value="140" aria-label="Limite de pontos das Perícias">
+                    </div>
+                  </div>
+
+                  <div class="legenda-valores-pericia legenda-valores-pericia-criatura">
+                    <span></span><span>Normal</span><span>Bom</span><span>Extremo</span><span>Modificador</span>
+                  </div>
+                </div>
+                <div id="lista-pericias-criatura" class="lista-pericias-ficha"></div>
+              </section>
+
+              <section class="painel-painel-principal painel-rolagens-ficha" data-painel-pontos="rolagens">
+                <h2>ROLAGENS</h2>
+                <select id="tipo-rolagem-criatura" class="tipo-rolagem-ficha">
+                  <option value="pericia">Teste de Perícia</option>
+                  <option value="outro">Outro Teste</option>
+                </select>
+
+                <div class="grade-area-rolagem">
+                  <div class="montador-rolagem">
+                    <div id="rolagem-pericia-criatura" class="tipo-teste-ficha">
+                      <input id="pesquisa-pericia-criatura" class="pesquisa-pericia-rolagem" type="search" list="datalist-pericias-criatura" placeholder="Pesquisar Perícia...">
+                      <datalist id="datalist-pericias-criatura"></datalist>
+
+                      <div class="dados-teste-pericia">
+                        <label><span>Dados:</span><div><input id="quantidade-d20-criatura" type="number" min="0" max="99" value="1"><strong>d20</strong></div></label>
+                        <label><span>Valor:</span><input id="valor-teste-criatura" type="number" min="1" max="18" value="5"></label>
+                      </div>
+                    </div>
+
+                    <div id="rolagem-outro-criatura" class="tipo-teste-ficha" hidden>
+                      <div id="lista-dados-personalizados-criatura"></div>
+                      <button id="adicionar-dado-criatura" class="adicionar-dado-rolagem" type="button">+ DADO</button>
+                    </div>
+
+                    <div class="resultado-rolagem-ficha">
+                      <div id="dados-resultado-criatura" class="dados-resultado-ficha"></div>
+                      <strong id="resultado-sucesso-criatura" class="resultado-sucesso-ficha" hidden></strong>
+                    </div>
+
+                    <div class="acoes-rolagem-ficha">
+                      <button id="rolar-criatura" class="botao-rolar-ficha" type="button">ROLAR</button>
+                    </div>
+                  </div>
+
+                  <div class="historico-rolagens-ficha">
+                    <h3>HISTÓRICO</h3>
+                    <div id="historico-rolagens-criatura" class="lista-historico-rolagens-ficha"></div>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </section>
+
+          <section id="aba-habilidades" class="conteudo-aba-ficha" role="tabpanel">
+            <div class="cabecalho-habilidades-criatura">
+              <h2>HABILIDADES</h2>
+              <button id="adicionar-habilidade-criatura" class="adicionar-habilidade-ficha" type="button">+ ADICIONAR HABILIDADE</button>
+            </div>
+            <p id="habilidades-criatura-vazio" class="habilidades-criatura-vazio">Nenhuma Habilidade criada.</p>
+            <div id="lista-habilidades-criatura" class="lista-habilidades-criatura"></div>
+          </section>
+        </div>
+      </section>
+
+      <aside id="historico-campanha-ficha" class="historico-campanha-ficha historico-campanha-com-mestre">
+        <section class="bloco-historico-campanha-ficha">
+          <h2>HISTÓRICO DOS JOGADORES</h2>
+          <div id="lista-historico-jogadores-campanha-ficha" class="lista-historico-campanha-ficha"></div>
+        </section>
+
+        <section id="historico-mestre-campanha-ficha" class="bloco-historico-campanha-ficha">
+          <h2>HISTÓRICO DO MESTRE</h2>
+          <div id="lista-historico-mestre-campanha-ficha" class="lista-historico-campanha-ficha"></div>
+        </section>
+      </aside>
+    </div>
+  </main>
+
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="criatura.js"></script>
+</body>
+</html>

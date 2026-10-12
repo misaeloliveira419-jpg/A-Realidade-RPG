@@ -1142,13 +1142,13 @@ body.modal-fichas-campanha-aberto{
 }
 .adicionar-ficha-campanha:not(:disabled):hover{
   transform: scale(1.1);
-  color: rgb(0,225,175);
-  border-color: rgb(0,225,175);
-  box-shadow: 0 0 10px rgba(0,225,175,0.6);
+  color: rgb(150,0,225);
+  border-color: rgb(150,0,225);
+  box-shadow: 0 0 10px rgba(150,0,225,0.5);
 }
 .adicionar-ficha-campanha:disabled{
-  color: rgb(0,225,175);
-  border-color: rgb(0,150,120);
+  color: rgb(150,0,225);
+  border-color: rgb(100,0,170);
   cursor: default;
 }
 .suas-fichas-campanha-vazio{

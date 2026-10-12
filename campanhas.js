@@ -37,6 +37,9 @@ let cancelarEscutaSuasFichasCampanha = null;
 let cancelamentosDadosFichasCampanha = [];
 let cancelarEscutaFichasNpcsCampanha = null;
 let cancelamentosDadosFichasNpcsCampanha = [];
+let cancelarEscutaCriaturasCampanha = null;
+let ordemCriaturasCampanha = [];
+let dadosCriaturasCampanha = new Map();
 
 let campanhaAtualId = null;
 let campanhaAtualDados = null;
@@ -945,6 +948,327 @@ function renderizarNpcsCampanha() {
 
   conteudoFichasCampanha.appendChild(area);
 }
+function criarBotaoAdicionarCriaturaCampanha() {
+  const botao = document.createElement("button");
+  botao.type = "button";
+  botao.className = "botao-adicionar-personagem-campanha";
+  botao.innerHTML = `<span>+</span> ADICIONAR CRIATURA`;
+
+  botao.addEventListener(
+    "click",
+    criarCriaturaCampanha
+  );
+
+  return botao;
+}
+
+function criarCardCriaturaCampanha(criatura) {
+  const card = document.createElement("button");
+  card.type = "button";
+  card.className = "card-personagem-campanha";
+
+  const foto =
+    criarFotoPersonagemCampanha(
+      criatura,
+      "foto-personagem-campanha"
+    );
+
+  const informacoes =
+    document.createElement("div");
+
+  informacoes.className =
+    "informacoes-personagem-campanha";
+
+  const nome =
+    document.createElement("strong");
+
+  nome.className =
+    "nome-personagem-campanha";
+
+  nome.textContent =
+    criatura.nome ||
+    "NOVA CRIATURA";
+
+  const atualizado =
+    document.createElement("span");
+
+  atualizado.className =
+    "data-personagem-campanha";
+
+  atualizado.innerHTML =
+    `<b>Atualizado há:</b> ${formatarTempoCampanha(criatura.atualizadoEm)}`;
+
+  const criado =
+    document.createElement("span");
+
+  criado.className =
+    "data-personagem-campanha";
+
+  criado.innerHTML =
+    `<b>Criado em:</b> ${formatarDataCampanha(criatura.criadoEm)}`;
+
+  informacoes.append(
+    nome,
+    atualizado,
+    criado
+  );
+
+  card.append(
+    foto,
+    informacoes
+  );
+
+  card.addEventListener(
+    "click",
+    () => {
+      if (
+        !campanhaAtualId ||
+        !criatura.id
+      ) return;
+
+      const parametros =
+        new URLSearchParams({
+          criatura: criatura.id,
+          campanha: campanhaAtualId
+        });
+
+      window.location.href =
+        `index-criatura.html?${parametros.toString()}`;
+    }
+  );
+
+  return card;
+}
+
+function renderizarCriaturasCampanha() {
+  conteudoFichasCampanha.replaceChildren();
+
+  const area =
+    document.createElement("div");
+
+  area.className =
+    "area-jogadores-campanha";
+
+  const cabecalho =
+    document.createElement("div");
+
+  cabecalho.className =
+    "cabecalho-jogadores-campanha";
+
+  const titulo =
+    document.createElement("h3");
+
+  titulo.textContent =
+    "CRIATURAS";
+
+  cabecalho.appendChild(
+    titulo
+  );
+
+  const botaoAdicionar =
+    criarBotaoAdicionarCriaturaCampanha();
+
+  const grade =
+    document.createElement("div");
+
+  grade.className =
+    "grade-personagens-campanha";
+
+  const criaturas =
+    ordemCriaturasCampanha
+      .map(
+        id =>
+          dadosCriaturasCampanha.get(id)
+      )
+      .filter(Boolean);
+
+  if (
+    criaturas.length === 0
+  ) {
+    const vazio =
+      document.createElement("p");
+
+    vazio.className =
+      "fichas-campanha-vazio";
+
+    vazio.textContent =
+      "Nenhuma criatura foi adicionada à campanha.";
+
+    grade.appendChild(vazio);
+
+  } else {
+    criaturas.forEach(
+      criatura => {
+        grade.appendChild(
+          criarCardCriaturaCampanha(
+            criatura
+          )
+        );
+      }
+    );
+  }
+
+  area.append(
+    cabecalho,
+    botaoAdicionar,
+    grade
+  );
+
+  conteudoFichasCampanha
+    .appendChild(area);
+}
+
+async function criarCriaturaCampanha() {
+  const usuario =
+    auth.currentUser;
+
+  if (
+    !usuario ||
+    !campanhaAtualId ||
+    papelAtualCampanha !== "mestre"
+  ) return;
+
+  const referencia =
+    db.collection("campanhas")
+      .doc(campanhaAtualId)
+      .collection("criaturas")
+      .doc();
+
+  try {
+    await referencia.set({
+      tipo: "criatura",
+
+      nome:
+        "Nova Criatura",
+
+      foto: "",
+
+      aparencia: "",
+      anotacoes: "",
+
+      atributos: {
+        fisico: 1,
+        cognicao: 1,
+        presenca: 1,
+        deslocamentoMetros: 9,
+        deslocamentoQuadrados: 6
+      },
+
+      pericias: {},
+
+      limitePontosPericias:
+        140,
+
+      pv: {
+        atual: 50,
+        maximo: 50
+      },
+
+      habilidades: [],
+
+      criadoPor:
+        usuario.uid,
+
+      criadoEm:
+        firebase.firestore
+          .FieldValue
+          .serverTimestamp(),
+
+      atualizadoEm:
+        firebase.firestore
+          .FieldValue
+          .serverTimestamp()
+    });
+
+    const parametros =
+      new URLSearchParams({
+        criatura:
+          referencia.id,
+        campanha:
+          campanhaAtualId
+      });
+
+    window.location.href =
+      `index-criatura.html?${parametros.toString()}`;
+
+  } catch (erro) {
+    console.error(
+      "Erro ao criar Criatura:",
+      erro
+    );
+
+    alert(
+      "Não foi possível criar a Criatura."
+    );
+  }
+}
+
+function iniciarEscutaCriaturasCampanha() {
+  if (
+    cancelarEscutaCriaturasCampanha
+  ) {
+    cancelarEscutaCriaturasCampanha();
+    cancelarEscutaCriaturasCampanha =
+      null;
+  }
+
+  if (
+    !campanhaAtualId ||
+    !auth.currentUser ||
+    papelAtualCampanha !== "mestre"
+  ) {
+    renderizarConteudoFichasCampanha();
+    return;
+  }
+
+  const idCampanha =
+    campanhaAtualId;
+
+  cancelarEscutaCriaturasCampanha =
+    db.collection("campanhas")
+      .doc(idCampanha)
+      .collection("criaturas")
+      .orderBy(
+        "criadoEm",
+        "asc"
+      )
+      .onSnapshot(
+        resultado => {
+          if (
+            campanhaAtualId !==
+            idCampanha
+          ) return;
+
+          ordemCriaturasCampanha =
+            resultado.docs.map(
+              documento =>
+                documento.id
+            );
+
+          dadosCriaturasCampanha.clear();
+
+          resultado.docs.forEach(
+            documento => {
+              dadosCriaturasCampanha.set(
+                documento.id,
+                {
+                  id: documento.id,
+                  ...documento.data()
+                }
+              );
+            }
+          );
+
+          renderizarConteudoFichasCampanha();
+        },
+        erro => {
+          console.error(
+            "Erro ao acompanhar Criaturas da campanha:",
+            erro
+          );
+        }
+      );
+}
 function renderizarConteudoFichasCampanha() {
   botoesAbasFichasCampanha.forEach(botao => {
     botao.classList.toggle(
@@ -953,23 +1277,29 @@ function renderizarConteudoFichasCampanha() {
     );
   });
 
-  if (tipoFichasCampanhaAtual === "jogadores") {
+  if (
+    tipoFichasCampanhaAtual ===
+    "jogadores"
+  ) {
     renderizarJogadoresCampanha();
     return;
   }
 
-  if (tipoFichasCampanhaAtual === "npcs") {
+  if (
+    tipoFichasCampanhaAtual ===
+    "npcs"
+  ) {
     renderizarNpcsCampanha();
     return;
   }
 
-  conteudoFichasCampanha.replaceChildren();
-
-  const vazio = document.createElement("p");
-  vazio.className = "fichas-campanha-vazio";
-  vazio.textContent = "Nenhuma criatura foi adicionada à campanha.";
-
-  conteudoFichasCampanha.appendChild(vazio);
+  if (
+    tipoFichasCampanhaAtual ===
+    "criaturas"
+  ) {
+    renderizarCriaturasCampanha();
+    return;
+  }
 }
 function criarCardSeletorFichaCampanha(ficha) {
   const card = document.createElement("article");
@@ -1534,29 +1864,33 @@ function aplicarPapelCampanha(membro) {
 
   const mestre = membro.papel === "mestre";
 
-  if (
-    mestre &&
-    campanhaAtualId
-  ) {
+  if (mestre && campanhaAtualId) {
     iniciarEscutaFichasNpcsCampanha();
-
   } else {
-    if (
-      cancelarEscutaFichasNpcsCampanha
-    ) {
+    if (cancelarEscutaFichasNpcsCampanha) {
       cancelarEscutaFichasNpcsCampanha();
-      cancelarEscutaFichasNpcsCampanha =
-        null;
+      cancelarEscutaFichasNpcsCampanha = null;
     }
 
     cancelarEscutasDadosFichasNpcsCampanha();
 
-    idsFichasNpcsCampanha =
-      new Set();
+    idsFichasNpcsCampanha = new Set();
 
     ordemFichasNpcsCampanha = [];
 
     dadosFichasNpcsCampanha.clear();
+  }
+
+  if (mestre && campanhaAtualId) {
+    iniciarEscutaCriaturasCampanha();
+  } else {
+    if (cancelarEscutaCriaturasCampanha) {
+    cancelarEscutaCriaturasCampanha();
+    cancelarEscutaCriaturasCampanha = null;
+    }
+    
+    ordemCriaturasCampanha = [];
+    dadosCriaturasCampanha.clear();
   }
 
   papelCampanhaAtual.textContent = mestre ? "Mestre" : "Jogador";
@@ -1624,6 +1958,9 @@ function cancelarEscutasCampanha() {
   if (cancelarEscutaMembros) cancelarEscutaMembros();
   if (cancelarEscutaFichasCampanha) cancelarEscutaFichasCampanha();
   if (cancelarEscutaFichasNpcsCampanha) cancelarEscutaFichasNpcsCampanha();
+  if (cancelarEscutaCriaturasCampanha) {
+    cancelarEscutaCriaturasCampanha();
+  }
 
   cancelarEscutasDadosFichasCampanha();
   cancelarEscutasDadosFichasNpcsCampanha();
@@ -1633,8 +1970,8 @@ function cancelarEscutasCampanha() {
   cancelarEscutaMembros = null;
   cancelarEscutaFichasCampanha = null;
   cancelarEscutaFichasNpcsCampanha = null;
+  cancelarEscutaCriaturasCampanha = null;
 }
-
 function iniciarEscutasCampanhaAtual() {
   cancelarEscutasCampanha();
 
@@ -1666,10 +2003,12 @@ function iniciarEscutasCampanhaAtual() {
 
   iniciarEscutaFichasCampanha();
 
-  if (
-    papelAtualCampanha === "mestre"
-  ) {
+  if (papelAtualCampanha === "mestre") {
     iniciarEscutaFichasNpcsCampanha();
+  }
+
+  if (papelAtualCampanha === "mestre") {
+    iniciarEscutaCriaturasCampanha();
   }
 }
 

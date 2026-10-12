@@ -1,0 +1,229 @@
+/* Ficha de Criatura */
+
+.criatura-campanha .painel-ficha{
+  min-height:calc(100vh - 45px);
+}
+.criatura-campanha .grade-informacoes-criatura{
+  grid-template-columns:1fr;
+  max-width:none;
+}
+.criatura-campanha .grade-informacoes-criatura textarea{
+  min-height:180px;
+}
+.criatura-campanha .menu-areas-painel-principal{
+  position:relative;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  margin-bottom:12px;
+  border-bottom:1px solid rgb(70,70,70);
+}
+.criatura-campanha .botao-area-pontos{
+  padding:11px 8px;
+  background:black;
+  color:rgb(150,150,150);
+  border:none;
+  border-bottom:3px solid transparent;
+  cursor:pointer;
+  font-size:12px;
+  font-weight:bold;
+  transition:color 0.25s,border-color 0.25s,text-shadow 0.25s;
+}
+.criatura-campanha .botao-area-pontos:hover{
+  color:rgb(225,250,255);
+}
+.criatura-campanha .botao-area-pontos.ativa{
+  color:white;
+  border-bottom-color:rgb(0,225,240);
+  text-shadow:0 0 8px rgb(0,210,225);
+}
+.criatura-campanha .grade-painel-principal{
+  display:block;
+}
+.criatura-campanha .grade-painel-principal .painel-painel-principal{
+  display:none;
+  width:100%;
+}
+.criatura-campanha .grade-painel-principal .painel-painel-principal.area-pontos-ativa{
+  display:block;
+}
+.criatura-campanha .lista-atributos-criatura{
+  max-width:520px;
+  margin:0 auto;
+}
+.criatura-campanha .vida-criatura{
+  max-width:520px;
+  margin:28px auto 0;
+}
+.criatura-campanha .cabecalho-pericias-criatura{
+  align-items:flex-end;
+}
+.contador-pericias-criatura{
+  display:flex;
+  align-items:center;
+  gap:5px;
+  padding:4px 7px;
+  background:rgb(8,8,8);
+  border:1px solid rgb(80,80,80);
+  border-radius:4px;
+  color:rgb(210,210,210);
+  font-size:9px;
+  white-space:nowrap;
+}
+.contador-pericias-criatura input{
+  width:50px;
+  padding:2px 4px;
+  background:black;
+  color:white;
+  border:1px solid rgb(100,100,100);
+  border-radius:3px;
+  outline:none;
+  text-align:center;
+  font:inherit;
+  font-weight:bold;
+}
+.contador-pericias-criatura.estourado{
+  color:rgb(255,110,90);
+  border-color:rgb(160,70,60);
+  text-shadow:0 0 6px rgba(255,80,60,0.45);
+}
+.legenda-valores-pericia-criatura{
+  grid-template-columns:20px 31px 31px 31px 58px;
+}
+.criatura-campanha .lista-pericias-ficha{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+.cabecalho-habilidades-criatura{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:16px;
+}
+.cabecalho-habilidades-criatura h2{
+  margin:0;
+}
+.lista-habilidades-criatura{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+}
+.habilidades-criatura-vazio{
+  width:100%;
+  max-width:none;
+  margin:35px 0;
+  color:rgb(145,145,145);
+  text-align:center;
+}
+.card-habilidade-criatura{
+  min-width:0;
+  background:rgb(6,6,6);
+  border:1px solid rgb(80,80,80);
+  border-radius:6px;
+  overflow:hidden;
+}
+.cabecalho-card-habilidade-criatura{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto auto;
+  align-items:center;
+  gap:6px;
+  padding:8px;
+}
+.nome-habilidade-criatura{
+  width:100%;
+  min-width:0;
+  padding:7px 8px;
+  box-sizing:border-box;
+  background:black;
+  color:white;
+  border:1px solid rgb(80,80,80);
+  border-radius:4px;
+  outline:none;
+  font-weight:bold;
+}
+.expandir-habilidade-criatura,
+.excluir-habilidade-criatura{
+  width:30px;
+  height:30px;
+  background:black;
+  color:white;
+  border:1px solid rgb(90,90,90);
+  border-radius:4px;
+  cursor:pointer;
+}
+.excluir-habilidade-criatura:hover{
+  color:rgb(255,90,90);
+  border-color:rgb(255,90,90);
+}
+.conteudo-habilidade-criatura{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:9px;
+  padding:0 8px 9px;
+}
+.conteudo-habilidade-criatura[hidden]{
+  display:none;
+}
+.campo-habilidade-criatura{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  min-width:0;
+  color:rgb(180,180,180);
+  font-size:9px;
+  font-weight:bold;
+}
+.campo-habilidade-criatura input,
+.campo-habilidade-criatura textarea{
+  width:100%;
+  box-sizing:border-box;
+  padding:7px;
+  background:black;
+  color:white;
+  border:1px solid rgb(80,80,80);
+  border-radius:4px;
+  outline:none;
+  font-family:inherit;
+}
+.campo-habilidade-criatura.descricao-habilidade-criatura{
+  grid-column:1 / -1;
+}
+.campo-habilidade-criatura textarea{
+  min-height:85px;
+  resize:vertical;
+}
+.criatura-campanha .linha-dado-criatura{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 90px auto;
+  gap:6px;
+  margin-bottom:6px;
+}
+.criatura-campanha .linha-dado-criatura input,
+.criatura-campanha .linha-dado-criatura select{
+  min-width:0;
+  padding:7px;
+  background:black;
+  color:white;
+  border:1px solid rgb(90,90,90);
+  border-radius:4px;
+}
+.criatura-campanha .remover-dado-criatura{
+  width:34px;
+  background:black;
+  color:white;
+  border:1px solid rgb(100,100,100);
+  border-radius:4px;
+  cursor:pointer;
+}
+
+@media (max-width:900px){
+  .lista-habilidades-criatura{
+    grid-template-columns:1fr;
+  }
+  .criatura-campanha .lista-pericias-ficha{
+    grid-template-columns:1fr;
+  }
+  .cabecalho-habilidades-criatura{
+    align-items:stretch;
+    flex-direction:column;
+  }
+}
