@@ -35,6 +35,8 @@ let cancelarEscutaMembros = null;
 let cancelarEscutaFichasCampanha = null;
 let cancelarEscutaSuasFichasCampanha = null;
 let cancelamentosDadosFichasCampanha = [];
+let cancelarEscutaFichasNpcsCampanha = null;
+let cancelamentosDadosFichasNpcsCampanha = [];
 
 let campanhaAtualId = null;
 let campanhaAtualDados = null;
@@ -45,6 +47,9 @@ let fichasUsuarioCampanha = [];
 let idsFichasJogadoresCampanha = new Set();
 let ordemFichasJogadoresCampanha = [];
 let dadosFichasJogadoresCampanha = new Map();
+let idsFichasNpcsCampanha = new Set();
+let ordemFichasNpcsCampanha = [];
+let dadosFichasNpcsCampanha = new Map();
 
 window.campanhaAtualId = null;
 window.papelCampanhaAtual = null;
@@ -893,9 +898,59 @@ function renderizarJogadoresCampanha() {
   area.append(cabecalho,botaoAdicionar,grade);
   conteudoFichasCampanha.appendChild(area);
 }
+function renderizarNpcsCampanha() {
+  conteudoFichasCampanha.replaceChildren();
+
+  const area = document.createElement("div");
+  area.className = "area-jogadores-campanha";
+
+  const cabecalho = document.createElement("div");
+  cabecalho.className = "cabecalho-jogadores-campanha";
+
+  const titulo = document.createElement("h3");
+  titulo.textContent = "NPC's";
+
+  cabecalho.appendChild(titulo);
+
+  const botaoAdicionar =
+    criarBotaoAdicionarPersonagemCampanha();
+
+  const grade = document.createElement("div");
+  grade.className = "grade-personagens-campanha";
+
+  const fichas = ordemFichasNpcsCampanha
+    .map(id => dadosFichasNpcsCampanha.get(id))
+    .filter(Boolean);
+
+  if (fichas.length === 0) {
+    const vazio = document.createElement("p");
+    vazio.className = "fichas-campanha-vazio";
+    vazio.textContent = "Nenhum NPC foi adicionado à campanha.";
+
+    grade.appendChild(vazio);
+
+  } else {
+    fichas.forEach(ficha => {
+      grade.appendChild(
+        criarCardPersonagemCampanha(ficha)
+      );
+    });
+  }
+
+  area.append(
+    cabecalho,
+    botaoAdicionar,
+    grade
+  );
+
+  conteudoFichasCampanha.appendChild(area);
+}
 function renderizarConteudoFichasCampanha() {
   botoesAbasFichasCampanha.forEach(botao => {
-    botao.classList.toggle("ativa",botao.dataset.tipo === tipoFichasCampanhaAtual);
+    botao.classList.toggle(
+      "ativa",
+      botao.dataset.tipo === tipoFichasCampanhaAtual
+    );
   });
 
   if (tipoFichasCampanhaAtual === "jogadores") {
@@ -903,11 +958,16 @@ function renderizarConteudoFichasCampanha() {
     return;
   }
 
+  if (tipoFichasCampanhaAtual === "npcs") {
+    renderizarNpcsCampanha();
+    return;
+  }
+
   conteudoFichasCampanha.replaceChildren();
 
   const vazio = document.createElement("p");
   vazio.className = "fichas-campanha-vazio";
-  vazio.textContent = "Nenhuma ficha adicionada nesta área.";
+  vazio.textContent = "Nenhuma criatura foi adicionada à campanha.";
 
   conteudoFichasCampanha.appendChild(vazio);
 }
@@ -915,33 +975,83 @@ function criarCardSeletorFichaCampanha(ficha) {
   const card = document.createElement("article");
   card.className = "card-seletor-ficha-campanha";
 
-  const jaAdicionada = idsFichasJogadoresCampanha.has(ficha.id);
+  const adicionandoNpc =
+    tipoFichasCampanhaAtual === "npcs";
 
-  if (jaAdicionada) card.classList.add("ja-adicionada");
+  const jaAdicionada = adicionandoNpc
+    ? idsFichasNpcsCampanha.has(ficha.id)
+    : idsFichasJogadoresCampanha.has(ficha.id);
 
-  const foto = criarFotoPersonagemCampanha(ficha,"foto-seletor-ficha-campanha");
+  if (jaAdicionada) {
+    card.classList.add("ja-adicionada");
+  }
 
-  const nome = document.createElement("strong");
-  nome.className = "nome-seletor-ficha-campanha";
-  nome.textContent = ficha.nome || "SEM NOME";
+  const foto =
+    criarFotoPersonagemCampanha(
+      ficha,
+      "foto-seletor-ficha-campanha"
+    );
 
-  const botaoAdicionar = document.createElement("button");
+  const nome =
+    document.createElement("strong");
+
+  nome.className =
+    "nome-seletor-ficha-campanha";
+
+  nome.textContent =
+    ficha.nome || "SEM NOME";
+
+  const botaoAdicionar =
+    document.createElement("button");
+
   botaoAdicionar.type = "button";
-  botaoAdicionar.className = "adicionar-ficha-campanha";
-  botaoAdicionar.textContent = jaAdicionada ? "✓" : "+";
-  botaoAdicionar.title = jaAdicionada ? "Ficha já adicionada" : "Adicionar à campanha";
-  botaoAdicionar.setAttribute("aria-label",jaAdicionada ? "Ficha já adicionada" : `Adicionar ${ficha.nome || "personagem"} à campanha`);
-  botaoAdicionar.disabled = jaAdicionada;
+  botaoAdicionar.className =
+    "adicionar-ficha-campanha";
 
-  botaoAdicionar.addEventListener("click",async evento => {
-    evento.stopPropagation();
+  botaoAdicionar.textContent =
+    jaAdicionada ? "✓" : "+";
 
-    if (jaAdicionada) return;
+  botaoAdicionar.title =
+    jaAdicionada
+      ? "Ficha já adicionada"
+      : "Adicionar à campanha";
 
-    await adicionarFichaJogadorCampanha(ficha);
-  });
+  botaoAdicionar.setAttribute(
+    "aria-label",
+    jaAdicionada
+      ? "Ficha já adicionada"
+      : `Adicionar ${ficha.nome || "personagem"} à campanha`
+  );
 
-  card.append(foto,nome,botaoAdicionar);
+  botaoAdicionar.disabled =
+    jaAdicionada;
+
+  botaoAdicionar.addEventListener(
+    "click",
+    async evento => {
+      evento.stopPropagation();
+
+      if (jaAdicionada) return;
+
+      if (adicionandoNpc) {
+        await adicionarFichaNpcCampanha(
+          ficha
+        );
+
+        return;
+      }
+
+      await adicionarFichaJogadorCampanha(
+        ficha
+      );
+    }
+  );
+
+  card.append(
+    foto,
+    nome,
+    botaoAdicionar
+  );
 
   return card;
 }
@@ -995,10 +1105,56 @@ function iniciarEscutaSuasFichasCampanha() {
     });
 }
 function abrirModalAdicionarPersonagemCampanha() {
-  if (!campanhaAtualId || !auth.currentUser) return;
+  if (
+    !campanhaAtualId ||
+    !auth.currentUser
+  ) return;
 
-  modalAdicionarPersonagemCampanha.hidden = false;
-  document.body.classList.add("modal-fichas-campanha-aberto");
+  if (
+    tipoFichasCampanhaAtual === "npcs" &&
+    papelAtualCampanha !== "mestre"
+  ) return;
+
+  const titulo =
+    document.getElementById(
+      "titulo-modal-fichas-campanha"
+    );
+
+  const texto =
+    modalAdicionarPersonagemCampanha
+      .querySelector(
+        ".texto-modal-fichas-campanha"
+      );
+
+  if (
+    tipoFichasCampanhaAtual === "npcs"
+  ) {
+    if (titulo) {
+      titulo.textContent = "SUAS FICHAS";
+    }
+
+    if (texto) {
+      texto.textContent =
+        "Escolha uma ficha sua para adicionar como NPC à campanha.";
+    }
+
+  } else {
+    if (titulo) {
+      titulo.textContent = "SUAS FICHAS";
+    }
+
+    if (texto) {
+      texto.textContent =
+        "Escolha uma ficha para adicionar à campanha.";
+    }
+  }
+
+  modalAdicionarPersonagemCampanha.hidden =
+    false;
+
+  document.body.classList.add(
+    "modal-fichas-campanha-aberto"
+  );
 
   iniciarEscutaSuasFichasCampanha();
 }
@@ -1047,9 +1203,72 @@ async function adicionarFichaJogadorCampanha(ficha) {
     alert("Não foi possível adicionar o personagem à campanha.");
   }
 }
+async function adicionarFichaNpcCampanha(ficha) {
+  const usuario = auth.currentUser;
+
+  if (
+    !usuario ||
+    !campanhaAtualId ||
+    !ficha?.id
+  ) return;
+
+  if (papelAtualCampanha !== "mestre") return;
+  if (ficha.donoUid !== usuario.uid) return;
+  if (ficha.estado !== "pronta") return;
+
+  if (
+    idsFichasNpcsCampanha.has(
+      ficha.id
+    )
+  ) return;
+
+  try {
+    await db.collection("campanhas")
+      .doc(campanhaAtualId)
+      .collection("fichasNpcs")
+      .doc(ficha.id)
+      .set({
+        fichaId: ficha.id,
+        donoUid: usuario.uid,
+        adicionadoPor: usuario.uid,
+        adicionadoEm:
+          firebase.firestore
+            .FieldValue
+            .serverTimestamp()
+      });
+
+    fecharModalAdicionarPersonagemCampanha();
+
+  } catch (erro) {
+    console.error(
+      "Erro ao adicionar NPC à campanha:",
+      erro
+    );
+
+    if (
+      erro.code === "permission-denied"
+    ) {
+      alert(
+        "O Firebase bloqueou a adição do NPC. Verifique se as novas regras do Firestore foram publicadas."
+      );
+
+      return;
+    }
+
+    alert(
+      "Não foi possível adicionar o NPC à campanha."
+    );
+  }
+}
 function cancelarEscutasDadosFichasCampanha() {
   cancelamentosDadosFichasCampanha.forEach(cancelar => cancelar());
   cancelamentosDadosFichasCampanha = [];
+}
+function cancelarEscutasDadosFichasNpcsCampanha() {
+  cancelamentosDadosFichasNpcsCampanha
+    .forEach(cancelar => cancelar());
+
+  cancelamentosDadosFichasNpcsCampanha = [];
 }
 async function garantirAcessoFichaCampanha(fichaId,idCampanha) {
   const usuario = auth.currentUser;
@@ -1157,6 +1376,141 @@ function iniciarEscutaFichasCampanha() {
     });
   });
 }
+function iniciarEscutaFichasNpcsCampanha() {
+  if (cancelarEscutaFichasNpcsCampanha) {
+    cancelarEscutaFichasNpcsCampanha();
+    cancelarEscutaFichasNpcsCampanha = null;
+  }
+
+  cancelarEscutasDadosFichasNpcsCampanha();
+
+  idsFichasNpcsCampanha =
+    new Set();
+
+  ordemFichasNpcsCampanha = [];
+
+  dadosFichasNpcsCampanha.clear();
+
+  if (
+    !campanhaAtualId ||
+    !auth.currentUser ||
+    papelAtualCampanha !== "mestre"
+  ) {
+    renderizarConteudoFichasCampanha();
+    return;
+  }
+
+  const idCampanha =
+    campanhaAtualId;
+
+  cancelarEscutaFichasNpcsCampanha =
+    db.collection("campanhas")
+      .doc(idCampanha)
+      .collection("fichasNpcs")
+      .orderBy(
+        "adicionadoEm",
+        "asc"
+      )
+      .onSnapshot(
+        resultado => {
+          cancelarEscutasDadosFichasNpcsCampanha();
+
+          ordemFichasNpcsCampanha =
+            resultado.docs.map(
+              documento =>
+                documento.id
+            );
+
+          idsFichasNpcsCampanha =
+            new Set(
+              ordemFichasNpcsCampanha
+            );
+
+          dadosFichasNpcsCampanha.clear();
+
+          renderizarConteudoFichasCampanha();
+
+          resultado.docs.forEach(
+            async documentoVinculo => {
+              const dadosVinculo =
+                documentoVinculo.data();
+
+              const fichaId =
+                dadosVinculo.fichaId ||
+                documentoVinculo.id;
+
+              const acessoLiberado =
+                await garantirAcessoFichaCampanha(
+                  fichaId,
+                  idCampanha
+                );
+
+              if (
+                !acessoLiberado ||
+                campanhaAtualId !==
+                  idCampanha
+              ) return;
+
+              const cancelar =
+                db.collection("fichas")
+                  .doc(fichaId)
+                  .onSnapshot(
+                    documentoFicha => {
+                      if (
+                        campanhaAtualId !==
+                        idCampanha
+                      ) return;
+
+                      if (
+                        !documentoFicha.exists
+                      ) {
+                        dadosFichasNpcsCampanha
+                          .delete(fichaId);
+
+                        renderizarConteudoFichasCampanha();
+                        return;
+                      }
+
+                      dadosFichasNpcsCampanha
+                        .set(
+                          fichaId,
+                          {
+                            id:
+                              documentoFicha.id,
+                            ...documentoFicha.data()
+                          }
+                        );
+
+                      renderizarConteudoFichasCampanha();
+
+                      if (
+                        !modalAdicionarPersonagemCampanha
+                          .hidden
+                      ) {
+                        renderizarSuasFichasCampanha();
+                      }
+                    },
+                    erro => {
+                      console.error(
+                        `Erro ao acompanhar NPC ${fichaId}:`,
+                        erro
+                      );
+                    }
+                  );
+
+              cancelamentosDadosFichasNpcsCampanha
+                .push(cancelar);
+            }
+          );
+        },
+        erro => {
+          console.error(
+            "Erro ao acompanhar NPCs da campanha:",
+            erro
+          );
+        }
+      );
+}
 
 /*Abrir campanha*/
 
@@ -1179,6 +1533,31 @@ function aplicarPapelCampanha(membro) {
   window.papelCampanhaAtual = membro.papel;
 
   const mestre = membro.papel === "mestre";
+
+  if (
+    mestre &&
+    campanhaAtualId
+  ) {
+    iniciarEscutaFichasNpcsCampanha();
+
+  } else {
+    if (
+      cancelarEscutaFichasNpcsCampanha
+    ) {
+      cancelarEscutaFichasNpcsCampanha();
+      cancelarEscutaFichasNpcsCampanha =
+        null;
+    }
+
+    cancelarEscutasDadosFichasNpcsCampanha();
+
+    idsFichasNpcsCampanha =
+      new Set();
+
+    ordemFichasNpcsCampanha = [];
+
+    dadosFichasNpcsCampanha.clear();
+  }
 
   papelCampanhaAtual.textContent = mestre ? "Mestre" : "Jogador";
 
@@ -1244,13 +1623,16 @@ function cancelarEscutasCampanha() {
   if (cancelarEscutaMembroAtual) cancelarEscutaMembroAtual();
   if (cancelarEscutaMembros) cancelarEscutaMembros();
   if (cancelarEscutaFichasCampanha) cancelarEscutaFichasCampanha();
+  if (cancelarEscutaFichasNpcsCampanha) cancelarEscutaFichasNpcsCampanha();
 
   cancelarEscutasDadosFichasCampanha();
+  cancelarEscutasDadosFichasNpcsCampanha();
 
   cancelarEscutaCampanhaAtual = null;
   cancelarEscutaMembroAtual = null;
   cancelarEscutaMembros = null;
   cancelarEscutaFichasCampanha = null;
+  cancelarEscutaFichasNpcsCampanha = null;
 }
 
 function iniciarEscutasCampanhaAtual() {
@@ -1283,6 +1665,12 @@ function iniciarEscutasCampanhaAtual() {
   });
 
   iniciarEscutaFichasCampanha();
+
+  if (
+    papelAtualCampanha === "mestre"
+  ) {
+    iniciarEscutaFichasNpcsCampanha();
+  }
 }
 
 /*Membros*/
