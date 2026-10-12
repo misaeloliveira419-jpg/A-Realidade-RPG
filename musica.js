@@ -1,7 +1,13 @@
 (() => {
   const MUSICAS = [
-    // { nome: "Tema Principal", arquivo: "musicas/tema-principal.mp3" },
-    // { nome: "Investigação", arquivo: "musicas/investigacao.mp3" }
+    { nome: "Ataque", arquivo: "musicas/Misael Oliveira - Ataque - A Realidade 2026-07-25 13_38.m4a" },
+    { nome: "Até", arquivo: "musicas/Misael Oliveira - Até - A Realidade 2026-08-02 13_06.m4a" },
+    { nome: "Caos", arquivo: "musicas/Misael Oliveira - Caos - A Realidade 2026-07-31 21_22.m4a" },
+    { nome: "Dream", arquivo: "musicas/Misael Oliveira - Dream - A Realidade - 1788016700298 2026-08-29 12_18.m4a" },
+    { nome: "Efêmero", arquivo: "musicas/Misael Oliveira - Efêmero - A Realidade 2026-07-31 21_23.m4a" },
+    { nome: "Libertados", arquivo: "musicas/Misael Oliveira - Libertados - A Realidade 2026-07-31 21_23.m4a" },
+    { nome: "Shopping", arquivo: "musicas/Misael Oliveira - Shopping - A Realidade 2026-06-27 16_36.m4a" },
+    { nome: "Tudo é Nada", arquivo: "musicas/Misael Oliveira - Tudo é Nada - A Realidade 2026-07-20 14_31.m4a" }
   ];
 
   const alvoPlayer = document.getElementById("fichas-campanha") || document.querySelector(".painel-ficha");
