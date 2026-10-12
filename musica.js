@@ -276,7 +276,7 @@
 
     if (
       forcar ||
-      Math.abs(audio.currentTime - alvo) > 1.25
+      Math.abs(audio.currentTime - alvo) > 0.5
     ) {
       try {
         audio.currentTime = alvo;
@@ -359,12 +359,12 @@
     }
 
     const aplicarDepoisDeCarregar = async () => {
-      sincronizarPosicao(true);
       atualizarTempo();
 
       if (estado?.tocando) {
         await tocarLocal(true);
       } else {
+        sincronizarPosicao(true);
         audio.pause();
         audio.volume = volumeLocal;
       }
@@ -420,77 +420,60 @@
   async function trocarMusica(
     indice,
     continuarTocando = Boolean(estado?.tocando)
-  ) {
+    ) {
     const musica = MUSICAS[indice];
 
     if (
-      !musica ||
-      papel !== "mestre"
+        !musica ||
+        papel !== "mestre"
     ) return;
 
-    colocarFonte(musica.arquivo);
+    interagiu = true;
 
-    try {
-      audio.currentTime = 0;
-    } catch {}
-
-    if (continuarTocando) {
-      interagiu = true;
-
-      try {
-        await audio.play();
-        fadeVolume(volumeLocal);
-      } catch {}
-
-    } else {
-      audio.pause();
-      audio.volume = volumeLocal;
-    }
+    // Para a faixa anterior imediatamente.
+    // O Firestore definirá o instante oficial da nova faixa.
+    audio.pause();
 
     await gravar({
-      arquivo: musica.arquivo,
-      nome: musica.nome,
-      tocando: continuarTocando,
+        arquivo: musica.arquivo,
+        nome: musica.nome,
+        tocando: continuarTocando,
 
-      iniciadoEm:
+        iniciadoEm:
         firebase.firestore.FieldValue.serverTimestamp(),
 
-      pausadoEm: 0
+        pausadoEm: 0
     });
   }
 
   async function tocar() {
     if (
-      papel !== "mestre" ||
-      !MUSICAS.length
+        papel !== "mestre" ||
+        !MUSICAS.length
     ) return;
 
     interagiu = true;
 
     if (!estado?.arquivo) {
-      return trocarMusica(0, true);
+        return trocarMusica(0, true);
     }
 
     const posicao =
-      Math.max(
+        Math.max(
         0,
         Number(audio.currentTime) ||
         Number(estado.pausadoEm) ||
         0
-      );
+        );
 
-    try {
-      await audio.play();
-      fadeVolume(volumeLocal);
-    } catch {}
-
+    // O Firestore define quando a reprodução realmente começa.
     await gravar({
-      tocando: true,
+        tocando: true,
 
-      iniciadoEm:
+        iniciadoEm:
         firebase.firestore.FieldValue.serverTimestamp(),
 
-      pausadoEm: posicao
+        pausadoEm: posicao
     });
   }
 
@@ -610,12 +593,7 @@
     preencherBiblioteca();
 
     if (mesmaCampanha) {
-      if (estado) {
-        aplicarEstado(estado);
-      } else {
-        atualizarBotoes();
-      }
-
+      atualizarBotoes();
       return;
     }
 
@@ -634,17 +612,11 @@
         .collection("musica")
         .doc("estado");
 
-    cancelarEscuta =
-      refEstado.onSnapshot(
-        documento => {
-          aplicarEstado(
-            documento.exists
-              ? documento.data()
-              : null
-          );
-        },
-
-        erro => {
+    cancelarEscuta = refEstado.onSnapshot(documento => {
+      if (documento.metadata.hasPendingWrites) return;
+      
+      aplicarEstado(documento.exists ? documento.data() : null);
+      },erro => {
           console.error(
             "Erro ao acompanhar a música da campanha:",
             erro
@@ -844,18 +816,11 @@
     }
   );
 
-  document.addEventListener(
-    "visibilitychange",
-    () => {
-      if (
-        !document.hidden &&
-        estado?.tocando
-      ) {
-        sincronizarPosicao(true);
-        tocarLocal(true);
-      }
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden && estado?.tocando) {
+      tocarLocal(true);
     }
-  );
+});
 
   document
     .querySelector("#tela-campanha .botao-voltar")
