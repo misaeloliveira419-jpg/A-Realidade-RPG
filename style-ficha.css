@@ -3455,3 +3455,35 @@ body.ficha-em-campanha .painel-rolagens-ficha .grade-area-rolagem{
   font-size:10px;
   font-weight:bold;
 }
+
+/* Correções finais de visibilidade e responsividade */
+
+/* O histórico geral da campanha nunca deve existir visualmente fora de uma campanha */
+
+body:not(.ficha-em-campanha) .historico-campanha-ficha{
+  display:none !important;
+}
+
+.historico-campanha-ficha[hidden]{
+  display:none !important;
+}
+
+/* Responsividade final da ficha */
+
+@media (max-width:650px){
+  .lista-pericias-ficha,
+  body.ficha-em-campanha .painel-pericias-ficha .lista-pericias-ficha{
+    grid-template-columns:1fr;
+    gap:3px 0;
+  }
+
+  .nome-e-atributo-pericia strong{
+    overflow-wrap:break-word;
+    word-break:normal;
+  }
+
+  .grade-area-rolagem,
+  body.ficha-em-campanha .painel-rolagens-ficha .grade-area-rolagem{
+    grid-template-columns:1fr;
+  }
+}
