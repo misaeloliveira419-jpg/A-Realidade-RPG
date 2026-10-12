@@ -47,3 +47,105 @@ document.querySelectorAll(".lista-subtopicos-sistema[data-tela][data-alvo]").for
     });
   });
 });
+
+/* Pesquisa das Habilidades de Ocupação */
+
+const pesquisaHabilidadesOcupacao = document.getElementById("pesquisa-habilidades-ocupacao");
+const gruposHabilidadesOcupacao = [...document.querySelectorAll(".grupo-habilidades-ocupacao")];
+const semResultadosHabilidadesOcupacao = document.getElementById("sem-resultados-habilidades-ocupacao");
+
+function normalizarPesquisaHabilidadesOcupacao(valor) {
+  return String(valor || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g,"")
+    .toLowerCase()
+    .trim();
+}
+
+function filtrarHabilidadesOcupacao() {
+  if (!pesquisaHabilidadesOcupacao) return;
+
+  const termo = normalizarPesquisaHabilidadesOcupacao(
+    pesquisaHabilidadesOcupacao.value
+  );
+
+  let gruposVisiveis = 0;
+
+  gruposHabilidadesOcupacao.forEach(grupo => {
+    const nomeOcupacao =
+      normalizarPesquisaHabilidadesOcupacao(
+        grupo.dataset.ocupacao
+      );
+
+    const linhas =
+      [...grupo.querySelectorAll("tbody tr")];
+
+    if (!termo) {
+      grupo.hidden = false;
+      linhas.forEach(
+        linha =>
+          linha.hidden = false
+      );
+
+      gruposVisiveis++;
+      return;
+    }
+
+    if (
+      nomeOcupacao.includes(termo)
+    ) {
+      grupo.hidden = false;
+
+      linhas.forEach(
+        linha =>
+          linha.hidden = false
+      );
+
+      gruposVisiveis++;
+      return;
+    }
+
+    let encontrouLinha = false;
+
+    linhas.forEach(linha => {
+      const textoLinha =
+        normalizarPesquisaHabilidadesOcupacao(
+          linha.textContent
+        );
+
+      const corresponde =
+        textoLinha.includes(termo);
+
+      linha.hidden =
+        !corresponde;
+
+      if (corresponde) {
+        encontrouLinha = true;
+      }
+    });
+
+    grupo.hidden =
+      !encontrouLinha;
+
+    if (encontrouLinha) {
+      gruposVisiveis++;
+    }
+  });
+
+  if (
+    semResultadosHabilidadesOcupacao
+  ) {
+    semResultadosHabilidadesOcupacao.hidden =
+      gruposVisiveis > 0;
+  }
+}
+
+if (
+  pesquisaHabilidadesOcupacao
+) {
+  pesquisaHabilidadesOcupacao.addEventListener(
+    "input",
+    filtrarHabilidadesOcupacao
+  );
+}
+
