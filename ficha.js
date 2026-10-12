@@ -34,6 +34,7 @@ let dadosFichaAtual = null;
 let nomeFichaSalvo = "";
 let podeEditarFichaAtual = true;
 let papelCampanhaFichaAtual = null;
+let tipoFichaCampanhaAtual = null;
 let cancelarEscutaVinculosPersonagensFicha = null;
 let cancelamentosDadosPersonagensFicha = [];
 let ordemPersonagensCampanhaFicha = [];
@@ -110,32 +111,115 @@ function redirecionarSemAcessoFicha() {
   window.location.replace(idCampanhaFicha ? "index.html" : "index-suas-fichas.html");
 }
 async function prepararContextoCampanhaFicha(usuario) {
-  if (!idCampanhaFicha || !usuario || !idFicha) return null;
+  if (
+    !idCampanhaFicha ||
+    !usuario ||
+    !idFicha
+  ) return null;
 
-  const referenciaCampanha = db.collection("campanhas").doc(idCampanhaFicha);
-  const referenciaMembro = referenciaCampanha.collection("membros").doc(usuario.uid);
-  const referenciaVinculo = referenciaCampanha.collection("fichasJogadores").doc(idFicha);
+  const referenciaCampanha =
+    db.collection("campanhas")
+      .doc(idCampanhaFicha);
+
+  const referenciaMembro =
+    referenciaCampanha
+      .collection("membros")
+      .doc(usuario.uid);
 
   try {
-    const [membro,vinculo] = await Promise.all([
-      referenciaMembro.get(),
-      referenciaVinculo.get()
-    ]);
+    const membro =
+      await referenciaMembro.get();
 
-    if (!membro.exists || !vinculo.exists) return null;
+    if (!membro.exists) {
+      return null;
+    }
 
-    const dadosVinculo = vinculo.data();
-    if ((dadosVinculo.fichaId || vinculo.id) !== idFicha) return null;
+    const papel =
+      membro.data().papel ||
+      "jogador";
 
-    await db.collection("acessosFichas").doc(idFicha).collection("usuarios").doc(usuario.uid).set({
-      campanhaId: idCampanhaFicha
-    });
+    /* Primeiro verifica se é uma ficha de Jogador */
+
+    const vinculoJogador =
+      await referenciaCampanha
+        .collection("fichasJogadores")
+        .doc(idFicha)
+        .get();
+
+    if (vinculoJogador.exists) {
+      const dadosVinculo =
+        vinculoJogador.data();
+
+      if (
+        (dadosVinculo.fichaId ||
+          vinculoJogador.id) !==
+        idFicha
+      ) return null;
+
+      await db.collection(
+        "acessosFichas"
+      )
+        .doc(idFicha)
+        .collection("usuarios")
+        .doc(usuario.uid)
+        .set({
+          campanhaId:
+            idCampanhaFicha
+        });
+
+      return {
+        papel: papel,
+        tipo: "jogador"
+      };
+    }
+
+    /* NPCs só podem ser abertos por Mestres */
+
+    if (papel !== "mestre") {
+      return null;
+    }
+
+    const vinculoNpc =
+      await referenciaCampanha
+        .collection("fichasNpcs")
+        .doc(idFicha)
+        .get();
+
+    if (!vinculoNpc.exists) {
+      return null;
+    }
+
+    const dadosNpc =
+      vinculoNpc.data();
+
+    if (
+      (dadosNpc.fichaId ||
+        vinculoNpc.id) !==
+      idFicha
+    ) return null;
+
+    await db.collection(
+      "acessosFichas"
+    )
+      .doc(idFicha)
+      .collection("usuarios")
+      .doc(usuario.uid)
+      .set({
+        campanhaId:
+          idCampanhaFicha
+      });
 
     return {
-      papel: membro.data().papel || "jogador"
+      papel: papel,
+      tipo: "npc"
     };
+
   } catch (erro) {
-    console.error("Erro ao preparar acesso da ficha pela campanha:",erro);
+    console.error(
+      "Erro ao preparar acesso da ficha pela campanha:",
+      erro
+    );
+
     return null;
   }
 }
@@ -798,6 +882,7 @@ async function carregarFichaAutenticada(usuario) {
     }
 
     papelCampanhaFichaAtual = contextoCampanha.papel;
+    tipoFichaCampanhaAtual = contextoCampanha.tipo;
   }
 
   let documento;
