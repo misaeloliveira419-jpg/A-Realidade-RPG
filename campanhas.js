@@ -815,43 +815,224 @@ function criarFotoPersonagemCampanha(ficha,classe) {
 
   return areaFoto;
 }
-function criarCardPersonagemCampanha(ficha) {
-  const card = document.createElement("button");
+function podeRemoverFichaCampanha(tipo,dados) {
+  const usuario = auth.currentUser;
+
+  if (!usuario || !campanhaAtualId) return false;
+
+  if (tipo === "jogador") {
+    return papelAtualCampanha === "mestre" || dados.donoUid === usuario.uid;
+  }
+
+  return papelAtualCampanha === "mestre";
+}
+
+async function removerFichaDaCampanha(tipo,id,nome) {
+  if (!campanhaAtualId || !id) return;
+
+  const configuracoes = {
+    jogador: {
+      colecao: "fichasJogadores",
+      nome: "personagem",
+      mensagem: `Remover "${nome || "este personagem"}" da campanha?`
+    },
+
+    npc: {
+      colecao: "fichasNpcs",
+      nome: "NPC",
+      mensagem: `Remover o NPC "${nome || "Sem nome"}" da campanha? A ficha original continuará em Suas Fichas.`
+    },
+
+    criatura: {
+      colecao: "criaturas",
+      nome: "Criatura",
+      mensagem: `Excluir permanentemente a Criatura "${nome || "Sem nome"}" desta campanha?`
+    }
+  };
+
+  const configuracao = configuracoes[tipo];
+
+  if (!configuracao) return;
+
+  const confirmar = window.confirm(
+    configuracao.mensagem
+  );
+
+  if (!confirmar) return;
+
+  try {
+    await db.collection("campanhas")
+      .doc(campanhaAtualId)
+      .collection(configuracao.colecao)
+      .doc(id)
+      .delete();
+
+  } catch (erro) {
+    console.error(
+      `Erro ao remover ${configuracao.nome} da campanha:`,
+      erro
+    );
+
+    alert(
+      `Não foi possível remover ${configuracao.nome} da campanha.`
+    );
+  }
+}
+
+function criarBotaoRemoverFichaCampanha(tipo,dados) {
+  if (
+    !podeRemoverFichaCampanha(
+      tipo,
+      dados
+    )
+  ) return null;
+
+  const botao =
+    document.createElement("button");
+
+  botao.type = "button";
+  botao.className =
+    "botao-remover-ficha-campanha";
+
+  botao.textContent = "×";
+
+  botao.title =
+    tipo === "criatura"
+      ? "Excluir Criatura"
+      : "Remover da campanha";
+
+  botao.setAttribute(
+    "aria-label",
+    botao.title
+  );
+
+  botao.addEventListener(
+    "click",
+    async evento => {
+      evento.preventDefault();
+      evento.stopPropagation();
+
+      await removerFichaDaCampanha(
+        tipo,
+        dados.id,
+        dados.nome
+      );
+    }
+  );
+
+  return botao;
+}
+function criarCardPersonagemCampanha(ficha,tipo = "jogador") {
+  const container =
+    document.createElement("div");
+
+  container.className =
+    "container-card-personagem-campanha";
+
+  const card =
+    document.createElement("button");
+
   card.type = "button";
-  card.className = "card-personagem-campanha";
+  card.className =
+    "card-personagem-campanha";
 
-  const foto = criarFotoPersonagemCampanha(ficha,"foto-personagem-campanha");
+  const foto =
+    criarFotoPersonagemCampanha(
+      ficha,
+      "foto-personagem-campanha"
+    );
 
-  const informacoes = document.createElement("div");
-  informacoes.className = "informacoes-personagem-campanha";
+  const informacoes =
+    document.createElement("div");
 
-  const nome = document.createElement("strong");
-  nome.className = "nome-personagem-campanha";
-  nome.textContent = ficha.nome || "SEM NOME";
+  informacoes.className =
+    "informacoes-personagem-campanha";
 
-  const atualizado = document.createElement("span");
-  atualizado.className = "data-personagem-campanha";
-  atualizado.innerHTML = `<b>Atualizado há:</b> ${formatarTempoCampanha(ficha.atualizadoEm)}`;
+  const nome =
+    document.createElement("strong");
 
-  const criado = document.createElement("span");
-  criado.className = "data-personagem-campanha";
-  criado.innerHTML = `<b>Criado em:</b> ${formatarDataCampanha(ficha.criadoEm)}`;
+  nome.className =
+    "nome-personagem-campanha";
 
-  informacoes.append(nome,atualizado,criado);
-  card.append(foto,informacoes);
+  nome.textContent =
+    ficha.nome || "SEM NOME";
 
-  card.addEventListener("click",() => {
-    if (!campanhaAtualId || !ficha.id) return;
+  const atualizado =
+    document.createElement("span");
 
-    const parametros = new URLSearchParams({
-      ficha: ficha.id,
-      campanha: campanhaAtualId
-    });
+  atualizado.className =
+    "data-personagem-campanha";
 
-    window.location.href = `index-ficha.html?${parametros.toString()}`;
-  });
+  atualizado.innerHTML =
+    `<b>Atualizado há:</b> ${formatarTempoCampanha(ficha.atualizadoEm)}`;
 
-  return card;
+  const criado =
+    document.createElement("span");
+
+  criado.className =
+    "data-personagem-campanha";
+
+  criado.innerHTML =
+    `<b>Criado em:</b> ${formatarDataCampanha(ficha.criadoEm)}`;
+
+  informacoes.append(
+    nome,
+    atualizado,
+    criado
+  );
+
+  card.append(
+    foto,
+    informacoes
+  );
+
+  card.addEventListener(
+    "click",
+    () => {
+      if (
+        !campanhaAtualId ||
+        !ficha.id
+      ) return;
+
+      if (tipo === "criatura") {
+        const parametros =
+          new URLSearchParams({
+            criatura: ficha.id,
+            campanha: campanhaAtualId
+          });
+
+        window.location.href =
+          `index-criatura.html?${parametros.toString()}`;
+
+        return;
+      }
+
+      const parametros =
+        new URLSearchParams({
+          ficha: ficha.id,
+          campanha: campanhaAtualId
+        });
+
+      window.location.href =
+        `index-ficha.html?${parametros.toString()}`;
+    }
+  );
+
+  container.appendChild(card);
+
+  const botaoRemover =
+    criarBotaoRemoverFichaCampanha(
+      tipo,
+      ficha
+    );
+
+  if (botaoRemover) {
+    container.appendChild(
+      botaoRemover
+    );
+  }
+
+  return container;
 }
 function criarBotaoAdicionarPersonagemCampanha() {
   const botao = document.createElement("button");
@@ -894,7 +1075,7 @@ function renderizarJogadoresCampanha() {
     grade.appendChild(vazio);
   } else {
     fichas.forEach(ficha => {
-      grade.appendChild(criarCardPersonagemCampanha(ficha));
+      grade.appendChild(criarCardPersonagemCampanha(ficha,"jogador"));
     });
   }
 
@@ -934,17 +1115,11 @@ function renderizarNpcsCampanha() {
 
   } else {
     fichas.forEach(ficha => {
-      grade.appendChild(
-        criarCardPersonagemCampanha(ficha)
-      );
+      grade.appendChild(criarCardPersonagemCampanha(ficha, "npc"));
     });
   }
 
-  area.append(
-    cabecalho,
-    botaoAdicionar,
-    grade
-  );
+  area.append(cabecalho, botaoAdicionar, grade);
 
   conteudoFichasCampanha.appendChild(area);
 }
@@ -963,83 +1138,8 @@ function criarBotaoAdicionarCriaturaCampanha() {
 }
 
 function criarCardCriaturaCampanha(criatura) {
-  const card = document.createElement("button");
-  card.type = "button";
-  card.className = "card-personagem-campanha";
-
-  const foto =
-    criarFotoPersonagemCampanha(
-      criatura,
-      "foto-personagem-campanha"
-    );
-
-  const informacoes =
-    document.createElement("div");
-
-  informacoes.className =
-    "informacoes-personagem-campanha";
-
-  const nome =
-    document.createElement("strong");
-
-  nome.className =
-    "nome-personagem-campanha";
-
-  nome.textContent =
-    criatura.nome ||
-    "NOVA CRIATURA";
-
-  const atualizado =
-    document.createElement("span");
-
-  atualizado.className =
-    "data-personagem-campanha";
-
-  atualizado.innerHTML =
-    `<b>Atualizado há:</b> ${formatarTempoCampanha(criatura.atualizadoEm)}`;
-
-  const criado =
-    document.createElement("span");
-
-  criado.className =
-    "data-personagem-campanha";
-
-  criado.innerHTML =
-    `<b>Criado em:</b> ${formatarDataCampanha(criatura.criadoEm)}`;
-
-  informacoes.append(
-    nome,
-    atualizado,
-    criado
-  );
-
-  card.append(
-    foto,
-    informacoes
-  );
-
-  card.addEventListener(
-    "click",
-    () => {
-      if (
-        !campanhaAtualId ||
-        !criatura.id
-      ) return;
-
-      const parametros =
-        new URLSearchParams({
-          criatura: criatura.id,
-          campanha: campanhaAtualId
-        });
-
-      window.location.href =
-        `index-criatura.html?${parametros.toString()}`;
-    }
-  );
-
-  return card;
+  return criarCardPersonagemCampanha(criatura, "criatura");
 }
-
 function renderizarCriaturasCampanha() {
   conteudoFichasCampanha.replaceChildren();
 
