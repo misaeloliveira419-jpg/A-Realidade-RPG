@@ -2527,44 +2527,32 @@ body.catalogo-itens-aberto{
     font-size: 11px;
     font-weight: bold;
   }
-
   .botao-area-pontos.ativa{
     color: white;
     border-bottom-color: rgb(0,225,240);
     text-shadow: 0 0 8px rgb(0,210,225);
   }
-
   .grade-painel-principal{
     display: block;
   }
-
   .grade-painel-principal .painel-painel-principal{
     display: none;
   }
-
   .grade-painel-principal .painel-painel-principal.area-pontos-ativa{
     display: block;
   }
-
   .lista-pericias-ficha{
     grid-template-columns: repeat(2,minmax(0,1fr));
   }
-    
   .menu-areas-habilidades-ficha{
     display: grid;
     grid-template-columns: repeat(3,1fr);
     margin-bottom: 10px;
     border-bottom: 1px solid rgb(70,70,70);
   }
-
   .cabecalho-habilidades-ficha{
     grid-template-columns: 1fr;
   }
-
-  .cabecalho-habilidades-ficha{
-    grid-template-columns: 1fr;
-  }
-
   .botao-area-habilidade{
     padding: 10px 6px;
     background: black;
@@ -2974,58 +2962,42 @@ body.ficha-em-campanha .cabecalho-painel-principal{
   margin-bottom: 12px;
   padding: 10px 12px;
 }
-
-body.ficha-em-campanha .grade-painel-principal{
-  grid-template-columns: 0.82fr 1.55fr 1.05fr;
-  gap: 10px;
-  align-items: start;
-}
-
 body.ficha-em-campanha .painel-painel-principal{
   min-width: 0;
   padding: 10px;
 }
-
 body.ficha-em-campanha .painel-painel-principal h2{
   margin-bottom: 10px;
   font-size: 15px;
 }
-
 body.ficha-em-campanha .contador-atributos-ficha{
   margin-bottom: 10px;
   font-size: 14px;
 }
-
 body.ficha-em-campanha .lista-atributos-ficha{
   gap: 4px;
 }
-
 body.ficha-em-campanha .linha-atributo-ficha{
   min-height: 34px;
   font-size: 12px;
 }
-
 body.ficha-em-campanha .borda-atributo-ficha input{
   width: 40px;
   height: 40px;
   font-size: 17px;
 }
-
 body.ficha-em-campanha .valor-deslocamento-ficha{
   padding: 6px;
 }
-
 body.ficha-em-campanha .valor-deslocamento-ficha input{
   flex: 0 0 50px;
   width: 50px;
   min-width: 50px;
   font-size: 12px;
 }
-
 body.ficha-em-campanha .area-pontos-recurso{
   margin-top: 14px;
 }
-
 body.ficha-em-campanha .valores-recurso input{
   width: 40px;
 }
@@ -3046,32 +3018,22 @@ body.ficha-em-campanha .cabecalho-painel-pericias{
   margin-bottom: 8px;
   gap: 8px;
 }
-
 body.ficha-em-campanha .titulo-contadores-pericias-ficha{
   gap: 6px;
 }
-
 body.ficha-em-campanha .contadores-pericias-ficha{
   gap: 4px;
 }
-
 body.ficha-em-campanha .contador-pontos-pericias-ficha,
 body.ficha-em-campanha .contador-naturais-pericias-ficha{
   padding: 2px 5px;
   font-size: 8px;
 }
-
 body.ficha-em-campanha .legenda-valores-pericia{
   grid-template-columns: 18px 28px 28px 28px 52px;
   gap: 3px;
   font-size: 6px;
 }
-
-body.ficha-em-campanha .lista-pericias-ficha{
-  grid-template-columns: repeat(2,minmax(0,1fr));
-  gap: 2px 10px;
-}
-
 body.ficha-em-campanha .linha-pericia-ficha{
   display: grid;
   grid-template-columns: minmax(0,1fr) auto;
@@ -3079,12 +3041,10 @@ body.ficha-em-campanha .linha-pericia-ficha{
   gap: 6px;
   min-height: 28px;
 }
-
 body.ficha-em-campanha .nome-e-atributo-pericia{
   min-width: 0;
   gap: 4px;
 }
-
 body.ficha-em-campanha .nome-e-atributo-pericia strong{
   min-width: 0;
   font-size: 9px;
@@ -3128,20 +3088,13 @@ body.ficha-em-campanha .modificador-pericia-ficha{
 
 /* Rolagens dentro da campanha */
 
-body.ficha-em-campanha .grade-area-rolagem{
-  grid-template-columns: minmax(0,1fr) minmax(110px,0.72fr);
-  gap: 8px;
-}
-
 body.ficha-em-campanha .historico-rolagens-ficha{
   min-width: 0;
   padding-left: 8px;
 }
-
 body.ficha-em-campanha .lista-historico-rolagens-ficha{
   height: 170px;
 }
-
 body.ficha-em-campanha .item-historico-rolagem{
   font-size: 8px;
   overflow-wrap: anywhere;
@@ -3149,17 +3102,21 @@ body.ficha-em-campanha .item-historico-rolagem{
 
 /* Histórico da campanha */
 
-.historico-campanha-ficha{
-  min-width: 0;
-  height: calc(100vh - 45px);
-  display: grid;
-  grid-template-rows: minmax(0,1fr);
-  gap: 12px;
-  overflow: hidden;
+body.ficha-em-campanha .historico-campanha-ficha{
+  min-width:0;
+  height:calc(100vh - 45px);
+  display:grid;
+  grid-template-rows:minmax(0,1fr);
+  gap:12px;
+  overflow:hidden;
 }
 
-.historico-campanha-ficha.historico-campanha-com-mestre{
-  grid-template-rows: minmax(0,1fr) minmax(0,1fr);
+body.ficha-em-campanha .historico-campanha-ficha.historico-campanha-com-mestre{
+  grid-template-rows:minmax(0,1fr) minmax(0,1fr);
+}
+
+.historico-campanha-ficha[hidden]{
+  display:none !important;
 }
 
 .bloco-historico-campanha-ficha{
@@ -3298,10 +3255,6 @@ body.ficha-em-campanha .item-historico-rolagem{
   body.ficha-em-campanha .area-principal-ficha-campanha{
     grid-template-columns: minmax(0,1fr) 320px;
   }
-
-  body.ficha-em-campanha .grade-painel-principal{
-    grid-template-columns: 0.8fr 1.45fr 1fr;
-  }
 }
 
 @media (max-width: 1280px){
@@ -3345,7 +3298,6 @@ body.ficha-em-campanha .menu-areas-painel-principal{
   margin-bottom:12px;
   border-bottom:1px solid rgb(70,70,70);
 }
-
 body.ficha-em-campanha .botao-area-pontos{
   padding:11px 8px;
   background:black;
@@ -3357,28 +3309,23 @@ body.ficha-em-campanha .botao-area-pontos{
   font-weight:bold;
   transition:color 0.25s, border-color 0.25s, text-shadow 0.25s;
 }
-
 body.ficha-em-campanha .botao-area-pontos:hover{
   color:rgb(225,250,255);
 }
-
 body.ficha-em-campanha .botao-area-pontos.ativa{
   color:white;
   border-bottom-color:rgb(0,225,240);
   text-shadow:0 0 8px rgb(0,210,225);
 }
-
 body.ficha-em-campanha .grade-painel-principal{
   display:block;
 }
-
 body.ficha-em-campanha .grade-painel-principal .painel-painel-principal{
   display:none;
   width:100%;
   min-width:0;
   box-sizing:border-box;
 }
-
 body.ficha-em-campanha .grade-painel-principal .painel-painel-principal.area-pontos-ativa{
   display:block;
 }
