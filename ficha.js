@@ -4883,7 +4883,9 @@ let periciasPontosFicha = [];
 let estadoPericiasFicha = {};
 let modificadoresPericiasLayout = {};
 let limitePontosPericiasFicha = 25;
-
+const VALOR_BASE_PERICIA_FICHA = 4;
+const PONTOS_PERICIA_INICIAIS_FICHA = 25;
+const MAXIMO_PONTOS_RECUPERADOS_FICHA = 15;
 let estadoAtributosFicha = {
   fisico: 1,
   cognicao: 1,
@@ -5201,55 +5203,47 @@ function salvarAtualizacaoPontosFicha(alteracoes) {
   return filaSalvamentoPontos;
 }
 
-function renderizarContadoresPericiasFicha() {
-  let pontosPericias = 0;
+function obterResumoPontosPericiasFicha() {
+  let pontosGastos = 0;
+  let pontosRecuperados = 0;
   let bonusNaturais = 0;
 
-  Object.values(
-    estadoPericiasFicha
-  ).forEach(
-    dados => {
-      const valor =
-        Number(dados.valor) || 0;
+  Object.values(estadoPericiasFicha).forEach(dados => {
+    const valor = Number(dados.valor) || 0;
+    const bonusNatural = Number(dados.bonusNatural) || 0;
+    const valorDistribuido = valor - bonusNatural;
 
-      const bonusNatural =
-        Number(
-          dados.bonusNatural
-        ) || 0;
-
-      /*
-        Remove o bônus Natural para
-        descobrir o valor normal
-        distribuído na Perícia.
-      */
-
-      const valorDistribuido =
-        valor - bonusNatural;
-
-      /*
-        A base de toda Perícia é 4.
-
-        Só contamos como pontos gastos
-        aquilo que estiver acima de 4.
-      */
-
-      if (valorDistribuido > 4) {
-        pontosPericias +=
-          valorDistribuido - 4;
-      }
-
-      bonusNaturais +=
-        bonusNatural;
+    if (valorDistribuido > VALOR_BASE_PERICIA_FICHA) {
+      pontosGastos += valorDistribuido - VALOR_BASE_PERICIA_FICHA;
     }
-  );
 
-  contadorPontosPericiasFicha
-    .textContent =
-      `${pontosPericias} / ${limitePontosPericiasFicha}`;
+    if (valorDistribuido < VALOR_BASE_PERICIA_FICHA) {
+      pontosRecuperados += VALOR_BASE_PERICIA_FICHA - valorDistribuido;
+    }
 
-  contadorNaturaisPericiasFicha
-    .textContent =
-      `NATURAIS: ${bonusNaturais} / 5`;
+    bonusNaturais += bonusNatural;
+  });
+
+  return {
+    pontosGastos,
+    pontosRecuperados,
+    limitePontos: PONTOS_PERICIA_INICIAIS_FICHA + pontosRecuperados,
+    bonusNaturais
+  };
+}
+
+function renderizarContadoresPericiasFicha() {
+  const resumo =
+    obterResumoPontosPericiasFicha();
+
+  limitePontosPericiasFicha =
+    resumo.limitePontos;
+
+  contadorPontosPericiasFicha.textContent =
+    `${resumo.pontosGastos} / ${resumo.limitePontos}`;
+
+  contadorNaturaisPericiasFicha.textContent =
+    `NATURAIS: ${resumo.bonusNaturais} / 5`;
 }
 
 /* Renderizar Perícias */
@@ -5391,7 +5385,7 @@ function renderizarPericiasPontosFicha() {
       document.createElement("input");
 
     inputNormal.type = "number";
-    inputNormal.min = "0";
+    inputNormal.min = String(1 + (Number(dados.bonusNatural) || 0));
     inputNormal.max = "99";
     inputNormal.step = "1";
     inputNormal.value = dados.valor;
@@ -5438,61 +5432,86 @@ function renderizarPericiasPontosFicha() {
     );
 
     inputNormal.addEventListener(
-      "change",
-      () => {
-        const novoValor =
-          Number(inputNormal.value);
+  "change",
+  () => {
+    const novoValor =
+      Number(inputNormal.value);
 
-        if (
-          !Number.isInteger(novoValor) ||
-          novoValor < 0 ||
-          novoValor > 99
-        ) {
-          inputNormal.value =
-            dados.valor;
+    const bonusNatural =
+      Number(dados.bonusNatural) || 0;
 
-          return;
-        }
+    const valorMinimo =
+      1 + bonusNatural;
 
-        dados.valor =
+    if (
+      !Number.isInteger(novoValor) ||
+      novoValor < valorMinimo ||
+      novoValor > 99
+    ) {
+      inputNormal.value =
+        dados.valor;
+
+      return;
+    }
+
+    const valorAnterior =
+      dados.valor;
+
+    dados.valor =
+      novoValor;
+
+    const resumo =
+      obterResumoPontosPericiasFicha();
+
+    if (
+      resumo.pontosRecuperados >
+      MAXIMO_PONTOS_RECUPERADOS_FICHA
+    ) {
+      dados.valor =
+        valorAnterior;
+
+      inputNormal.value =
+        valorAnterior;
+
+      return;
+    }
+
+    if (dadosFichaAtual) {
+      dadosFichaAtual.pericias ||= {};
+
+      dadosFichaAtual
+        .pericias[pericia.id] ||= {};
+
+      dadosFichaAtual
+        .pericias[pericia.id]
+        .valorAtual =
           novoValor;
+    }
 
-        if (dadosFichaAtual) {
-          dadosFichaAtual.pericias ||= {};
+    const alteracoes = {
+      [`pericias.${pericia.id}.valorAtual`]:
+        novoValor
+    };
 
-          dadosFichaAtual
-            .pericias[pericia.id] ||= {};
-
-          dadosFichaAtual
-            .pericias[pericia.id]
-            .valorAtual =
-              novoValor;
-        }
-
-        const alteracoes = {
-          [`pericias.${pericia.id}.valorAtual`]:
-            novoValor
-        };
-
-        recalcularRecursosAutomaticos(
-          alteracoes
-        );
-
-        salvarAtualizacaoPontosFicha(
-          alteracoes
-        );
-
-        if (
-          periciaSelecionadaRolagemId ===
-          pericia.id
-        ) {
-          valorTestePericia.value =
-            novoValor;
-        }
-
-        renderizarPericiasPontosFicha();
-      }
+    recalcularRecursosAutomaticos(
+      alteracoes
     );
+
+    salvarAtualizacaoPontosFicha(
+      alteracoes
+    );
+
+    if (
+      periciaSelecionadaRolagemId ===
+      pericia.id
+    ) {
+      valorTestePericia.value =
+        novoValor;
+    }
+
+    renderizarPericiasPontosFicha();
+  }
+);
 
     grupoValores.append(
       inputNormal,
@@ -5601,24 +5620,7 @@ async function preencherPontosFicha(ficha) {
   const periciasSalvas =
     ficha.pericias || {};
 
-  let pontosRecuperadosCriacao = 0;
-
-  Object.values(
-    periciasSalvas
-  ).forEach(
-    salva => {
-      const valorDistribuido =
-        Number(
-          salva.valorDistribuido
-        );
-
-      if (Number.isFinite(valorDistribuido) &&valorDistribuido < 4) {
-        pontosRecuperadosCriacao += 4 - valorDistribuido;
-      }
-    }
-  );
-
-  limitePontosPericiasFicha = 25 + pontosRecuperadosCriacao;
+  limitePontosPericiasFicha = PONTOS_PERICIA_INICIAIS_FICHA;
 
   estadoPericiasFicha = {};
 
