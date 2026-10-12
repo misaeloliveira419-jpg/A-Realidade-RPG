@@ -862,7 +862,7 @@ footer{
   border-top: 2px solid white;
 }
 .aba-ficha-campanha.ativa{
-  border-color: rgb(200,100,225);
+  border-color: rgb(150,0,225);
   box-shadow: 0 0 10px rgba(150,0,225,0.5);
 }
 .area-jogadores-campanha{
