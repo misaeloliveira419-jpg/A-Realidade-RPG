@@ -412,10 +412,6 @@ function mostrarResultadoPericiaCriatura(resultados,alvo,categoria) {
   resultadoSucessoCriatura.classList.add(`resultado-${categoria}`);
   resultadoSucessoCriatura.textContent = nomeCategoriaCriatura(categoria);
 }
-function corDadoSomaCriatura(lados) {
-  const classes = {4:"dado-d4",6:"dado-d6",8:"dado-d8",10:"dado-d10",12:"dado-d12",20:"dado-d20",30:"dado-d30",100:"dado-d100"};
-  return classes[lados] || "";
-}
 function criarLinhaDadoCriatura() {
   const linha = document.createElement("div");
   linha.className = "linha-dado-criatura";
