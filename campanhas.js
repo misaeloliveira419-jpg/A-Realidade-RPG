@@ -894,7 +894,7 @@ function criarBotaoRemoverFichaCampanha(tipo,dados) {
   botao.className =
     "botao-remover-ficha-campanha";
 
-  botao.textContent = "×";
+  botao.textContent = "🗑";
 
   botao.title =
     tipo === "criatura"

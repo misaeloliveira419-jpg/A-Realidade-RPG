@@ -553,11 +553,11 @@ function renderizarHabilidadesCriatura(idAbrir = null) {
     const expandir = document.createElement("button");
     expandir.type = "button";
     expandir.className = "expandir-habilidade-criatura";
-    expandir.textContent = "⌄";
+    expandir.textContent = "▶";
     const excluir = document.createElement("button");
     excluir.type = "button";
     excluir.className = "excluir-habilidade-criatura";
-    excluir.textContent = "×";
+    excluir.textContent = "🗑";
     const conteudo = document.createElement("div");
     conteudo.className = "conteudo-habilidade-criatura";
     conteudo.hidden = habilidade.id !== idAbrir;
