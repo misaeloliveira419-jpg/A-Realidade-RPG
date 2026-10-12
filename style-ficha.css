@@ -3428,3 +3428,38 @@ body:not(.ficha-em-campanha) .historico-campanha-ficha{
     grid-template-columns:1fr;
   }
 }
+
+/* Player de música abaixo da ficha aberta pela campanha */
+
+body.ficha-em-campanha .painel-ficha{
+  grid-column:1;
+  grid-row:1;
+}
+
+body.ficha-em-campanha .player-musica-campanha{
+  grid-column:1;
+  grid-row:2;
+  margin:0;
+}
+
+body.ficha-em-campanha .historico-campanha-ficha{
+  grid-column:2;
+  grid-row:1 / span 2;
+}
+
+@media(max-width:1280px){
+  body.ficha-em-campanha .painel-ficha{
+    grid-column:1;
+    grid-row:1;
+  }
+
+  body.ficha-em-campanha .player-musica-campanha{
+    grid-column:1;
+    grid-row:2;
+  }
+
+  body.ficha-em-campanha .historico-campanha-ficha{
+    grid-column:1;
+    grid-row:3;
+  }
+}

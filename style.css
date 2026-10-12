@@ -1228,3 +1228,171 @@ body.modal-fichas-campanha-aberto{
   transform:scale(1.12);
   box-shadow:0 0 8px rgba(255,70,70,0.55);
 }
+
+/* Música da campanha */
+
+.player-musica-campanha{
+  width:100%;
+  padding:16px;
+  background:black;
+  border:2px solid white;
+  border-radius:6px;
+  box-sizing:border-box;
+  box-shadow:0 0 14px rgba(0,210,225,0.12);
+}
+
+#tela-campanha > .player-musica-campanha{
+  width:min(900px,90%);
+  margin:40px auto;
+}
+
+.player-musica-campanha[hidden],
+.controles-musica-mestre[hidden]{
+  display:none !important;
+}
+
+.cabecalho-musica-campanha{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  min-width:0;
+  margin-bottom:14px;
+}
+
+.cabecalho-musica-campanha > span{
+  flex-shrink:0;
+  color:rgb(180,180,180);
+  font-size:11px;
+  font-weight:bold;
+  letter-spacing:1px;
+}
+
+#nome-musica-campanha{
+  min-width:0;
+  overflow:hidden;
+  color:white;
+  font-size:15px;
+  text-align:right;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  text-shadow:0 0 9px rgb(0,210,225);
+}
+
+.controles-musica-mestre{
+  display:grid;
+  gap:12px;
+  margin-bottom:14px;
+  padding-top:14px;
+  border-top:1px solid rgb(70,70,70);
+}
+
+#seletor-musica-campanha{
+  width:100%;
+  height:40px;
+  padding:0 10px;
+  background:rgb(7,7,7);
+  color:white;
+  border:1px solid rgb(105,105,105);
+  border-radius:5px;
+  outline:none;
+}
+
+.botoes-musica-campanha{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:8px;
+}
+
+.botoes-musica-campanha button{
+  min-height:38px;
+  padding:7px;
+  background:black;
+  color:white;
+  border:1px solid white;
+  border-radius:5px;
+  cursor:pointer;
+  font-size:12px;
+  font-weight:bold;
+  transition:transform .2s,box-shadow .2s,border-color .2s;
+}
+
+.botoes-musica-campanha button:hover:not(:disabled){
+  transform:translateY(-1px);
+  border-color:rgb(0,225,240);
+  box-shadow:0 0 10px rgba(0,225,240,.45);
+}
+
+.botoes-musica-campanha button:disabled{
+  opacity:.35;
+  cursor:default;
+}
+
+.linha-progresso-musica-campanha{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 105px;
+  gap:10px;
+  align-items:center;
+}
+
+#progresso-musica-campanha,
+#volume-musica-campanha{
+  width:100%;
+  accent-color:rgb(0,225,240);
+  cursor:pointer;
+}
+
+#tempo-musica-campanha{
+  color:rgb(180,180,180);
+  font-size:11px;
+  text-align:right;
+  white-space:nowrap;
+}
+
+.volume-musica-campanha{
+  display:grid;
+  grid-template-columns:auto minmax(100px,240px);
+  justify-content:end;
+  align-items:center;
+  gap:10px;
+  color:rgb(190,190,190);
+  font-size:10px;
+  font-weight:bold;
+}
+
+.player-musica-jogador{
+  padding:13px 16px;
+}
+
+.player-musica-jogador .cabecalho-musica-campanha{
+  margin-bottom:10px;
+}
+
+@media(max-width:650px){
+  .cabecalho-musica-campanha{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  #nome-musica-campanha{
+    width:100%;
+    text-align:left;
+  }
+
+  .botoes-musica-campanha{
+    grid-template-columns:repeat(3,1fr);
+  }
+
+  .linha-progresso-musica-campanha{
+    grid-template-columns:1fr;
+  }
+
+  #tempo-musica-campanha{
+    text-align:left;
+  }
+
+  .volume-musica-campanha{
+    grid-template-columns:auto 1fr;
+    justify-content:stretch;
+  }
+}

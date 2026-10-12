@@ -946,6 +946,11 @@ async function carregarFichaAutenticada(usuario) {
     if (idCampanhaFicha) {
       iniciarEscutaPersonagensCampanhaFicha();
       iniciarEscutasHistoricoCampanhaFicha();
+
+      window.iniciarMusicaCampanha?.({
+        campanhaId: idCampanhaFicha,
+        papel: papelCampanhaFichaAtual
+      });
     }
 
     document.title = `${ficha.nome || "Ficha"}: A Realidade RPG`;

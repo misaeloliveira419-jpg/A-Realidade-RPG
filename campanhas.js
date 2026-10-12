@@ -2005,10 +2005,14 @@ function aplicarPapelCampanha(membro) {
   if (mestre && campanhaAtualDados) {
     linkConviteAtual.value = gerarLinkConvite(campanhaAtualDados.conviteCodigo);
   }
-  
+
+  window.iniciarMusicaCampanha?.({
+    campanhaId: campanhaAtualId,
+    papel: membro.papel
+  });
+
   iniciarEscutaMembros();
 }
-
 async function abrirCampanha(id) {
   const usuario = auth.currentUser;
 
