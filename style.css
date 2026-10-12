@@ -862,8 +862,8 @@ footer{
   border-top: 2px solid white;
 }
 .aba-ficha-campanha.ativa{
-  border-color: rgb(150,0,225);
-  box-shadow: 0 0 10px rgba(150,0,225,0.5);
+  border-color: rgb(100,0,170);
+  box-shadow: 0 0 10px rgb(200,100,225);
 }
 .area-jogadores-campanha{
   padding-top: 18px;
@@ -901,7 +901,7 @@ footer{
 }
 .botao-adicionar-personagem-campanha:hover{
   transform: scale(1.01);
-  border-color: rgb(200,100,225);
+  border-color: white;
   box-shadow: 0 0 10px rgba(150,0,225,0.5);
 }
 .grade-personagens-campanha{
