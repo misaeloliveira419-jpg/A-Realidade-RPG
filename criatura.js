@@ -985,6 +985,10 @@ async function carregarCriatura(usuario) {
     renderizarHabilidadesCriatura();
     iniciarJogadoresCriatura();
     iniciarHistoricosCampanhaCriatura();
+    window.iniciarMusicaCampanha?.({
+      campanhaId: idCampanhaCriatura,
+      papel: "mestre"
+    });
     document.title = `${dadosCriatura.nome || "Criatura"}: A Realidade RPG`;
     requestAnimationFrame(atualizarIndicadorCriatura);
   } catch (erro) {
