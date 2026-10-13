@@ -1169,7 +1169,32 @@ body.modal-fichas-campanha-aberto{
     max-width: 90%;
   }
   #nome-campanha-atual{
-    max-width: 95%;
+    width:100%;
+    min-width:0;
+    max-width:none;
+    box-sizing:border-box;
+    padding:10px 8px;
+    font-size:clamp(20px,7vw,30px);
+  }
+  .linha-edicao-campanha{
+    grid-template-columns:minmax(0,1fr) auto;
+    width:100%;
+    box-sizing:border-box;
+  }
+  #nome-campanha-atual,
+  #descricao-campanha-atual{
+    grid-column:1;
+    justify-self:stretch;
+  }
+  .botao-editar-nome-campanha,
+  .botao-editar-descricao-campanha{
+    grid-column:2;
+    justify-self:start;
+    margin-left:6px;
+  }
+  .botao-editar-nome-campanha{
+    left:0;
+    width:40px;
   }
   #lista-membros-campanha{
     grid-template-columns: 1fr;
