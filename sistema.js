@@ -48,6 +48,16 @@ document.querySelectorAll(".lista-subtopicos-sistema[data-tela][data-alvo], .ir-
   });
 });
 
+document.querySelectorAll("#tela-niveis-habilidades .tabela-habilidades").forEach(tabela => {
+  if (tabela.parentElement?.classList.contains("area-tabela-habilidades")) return;
+
+  const area = document.createElement("div");
+  area.className = "area-tabela-habilidades";
+
+  tabela.parentNode.insertBefore(area,tabela);
+  area.appendChild(tabela);
+});
+
 /* Pesquisa das Habilidades de Ocupação */
 
 const pesquisaHabilidadesOcupacao = document.getElementById("pesquisa-habilidades-ocupacao");
