@@ -1300,7 +1300,7 @@ body.modal-fichas-campanha-aberto{
 
 .botoes-musica-campanha{
   display:grid;
-  grid-template-columns:repeat(5,minmax(0,1fr));
+  grid-template-columns:repeat(6,minmax(0,1fr));
   gap:8px;
 }
 
@@ -1316,25 +1316,27 @@ body.modal-fichas-campanha-aberto{
   font-weight:bold;
   transition:transform .2s,box-shadow .2s,border-color .2s;
 }
-
 .botoes-musica-campanha button:hover:not(:disabled){
   transform:translateY(-1px);
   border-color:rgb(0,225,240);
   box-shadow:0 0 10px rgba(0,225,240,.45);
 }
-
+#musica-loop-campanha.ativo{
+  color:rgb(0,225,240);
+  border-color:rgb(0,225,240);
+  text-shadow:0 0 8px rgb(0,225,240);
+  box-shadow:0 0 10px rgba(0,225,240,.45), inset 0 0 10px rgba(0,225,240,.12);
+}
 .botoes-musica-campanha button:disabled{
   opacity:.35;
   cursor:default;
 }
-
 .linha-progresso-musica-campanha{
   display:grid;
   grid-template-columns:minmax(0,1fr) 105px;
   gap:10px;
   align-items:center;
 }
-
 #progresso-musica-campanha,
 #volume-musica-campanha{
   width:100%;
