@@ -3453,12 +3453,12 @@ body.ficha-em-campanha .historico-campanha-ficha{
     grid-row:1;
   }
 
-  body.ficha-em-campanha .player-musica-campanha{
+  body.ficha-em-campanha .historico-campanha-ficha{
     grid-column:1;
     grid-row:2;
   }
 
-  body.ficha-em-campanha .historico-campanha-ficha{
+  body.ficha-em-campanha .player-musica-campanha{
     grid-column:1;
     grid-row:3;
   }

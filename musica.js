@@ -37,6 +37,7 @@
         <button id="musica-play-campanha" type="button">▶ PLAY</button>
         <button id="musica-pause-campanha" type="button">Ⅱ PAUSE</button>
         <button id="musica-stop-campanha" type="button">■ STOP</button>
+        <button id="musica-loop-campanha" type="button" aria-pressed="false">↻ LOOP</button>
         <button id="musica-proxima-campanha" type="button">PRÓXIMA ▶</button>
       </div>
 
@@ -67,6 +68,7 @@
   const play = $("musica-play-campanha");
   const pause = $("musica-pause-campanha");
   const stop = $("musica-stop-campanha");
+  const loop = $("musica-loop-campanha");
   const proxima = $("musica-proxima-campanha");
 
   const progresso = $("progresso-musica-campanha");
@@ -138,9 +140,19 @@
 
     const inicio = millis(estado.iniciadoEm);
 
-    return inicio
+    let posicao = inicio
       ? Math.max(0, base + (Date.now() - inicio) / 1000)
       : base;
+
+    if (
+      estado.loop &&
+      Number.isFinite(audio.duration) &&
+      audio.duration > 0
+    ) {
+      posicao %= audio.duration;
+    }
+
+    return posicao;
   }
 
   function indiceAtual() {
@@ -188,19 +200,16 @@
     anterior.disabled = !mestre || !temLista;
     proxima.disabled = !mestre || !temLista;
 
-    play.disabled =
-      !mestre ||
-      !temLista ||
-      Boolean(estado?.tocando);
+    play.disabled = !mestre || !temLista || Boolean(estado?.tocando);
 
-    pause.disabled =
-      !mestre ||
-      !temMusica ||
-      !estado?.tocando;
+    pause.disabled = !mestre || !temMusica || !estado?.tocando;
 
-    stop.disabled =
-      !mestre ||
-      !temMusica;
+    stop.disabled = !mestre || !temMusica;
+
+    loop.disabled = !mestre || !temMusica;
+
+    loop.classList.toggle("ativo", Boolean(estado?.loop));
+    loop.setAttribute("aria-pressed", String(Boolean(estado?.loop)));
   }
 
   function fadeVolume(alvo, duracao = 260) {
@@ -330,23 +339,17 @@
   async function aplicarEstado(novoEstado) {
     estado = novoEstado || null;
 
-    const arquivo =
-      estado?.arquivo || "";
+    const arquivo = estado?.arquivo || "";
 
-    nome.textContent =
-      estado?.nome ||
-      MUSICAS.find(musica => musica.arquivo === arquivo)?.nome ||
-      "Nenhuma música selecionada";
+    audio.loop = Boolean(estado?.loop);
+
+    nome.textContent = estado?.nome || MUSICAS.find(musica => musica.arquivo === arquivo)?.nome || "Nenhuma música selecionada";
 
     const indice = indiceAtual();
 
-    seletor.value =
-      indice >= 0
-        ? String(indice)
-        : "";
+    seletor.value = indice >= 0 ? String(indice): "";
 
-    const mudouFonte =
-      colocarFonte(arquivo);
+    const mudouFonte = colocarFonte(arquivo);
 
     if (!arquivo) {
       progresso.value = 0;
@@ -417,16 +420,10 @@
     }
   }
 
-  async function trocarMusica(
-    indice,
-    continuarTocando = Boolean(estado?.tocando)
-    ) {
+  async function trocarMusica(indice, continuarTocando = Boolean(estado?.tocando)) {
     const musica = MUSICAS[indice];
 
-    if (
-        !musica ||
-        papel !== "mestre"
-    ) return;
+    if (!musica || papel !== "mestre") return;
 
     interagiu = true;
 
@@ -435,14 +432,15 @@
     audio.pause();
 
     await gravar({
-        arquivo: musica.arquivo,
-        nome: musica.nome,
-        tocando: continuarTocando,
+      arquivo: musica.arquivo,
+      nome: musica.nome,
+      tocando: continuarTocando,
+      loop: Boolean(estado?.loop),
 
-        iniciadoEm:
+      iniciadoEm:
         firebase.firestore.FieldValue.serverTimestamp(),
 
-        pausadoEm: 0
+      pausadoEm: 0
     });
   }
 
@@ -516,6 +514,24 @@
     await gravar({
       tocando: false,
       pausadoEm: 0
+    });
+  }
+
+  async function alternarLoop() {
+    if (papel !== "mestre" || !estado?.arquivo) return;
+
+    const posicao = Math.max(0, Number(audio.currentTime) || Number(estado.pausadoEm) || 0);
+
+    await gravar({
+      loop: !Boolean(estado.loop),
+      pausadoEm: posicao,
+
+      ...(estado.tocando
+        ? {
+            iniciadoEm:
+              firebase.firestore.FieldValue.serverTimestamp()
+          }
+        : {})
     });
   }
 
@@ -647,125 +663,71 @@
     const indice =
       Number(seletor.value);
 
-    if (
-      Number.isInteger(indice)
-    ) {
+    if (Number.isInteger(indice)) {
       trocarMusica(indice);
     }
   });
 
-  anterior.addEventListener(
-    "click",
-    () => trocarRelativo(-1)
-  );
+  anterior.addEventListener("click", () => trocarRelativo(-1));
 
-  play.addEventListener(
-    "click",
-    tocar
-  );
+  play.addEventListener("click", tocar);
 
-  pause.addEventListener(
-    "click",
-    pausar
-  );
+  pause.addEventListener("click", pausar);
 
-  stop.addEventListener(
-    "click",
-    parar
-  );
+  stop.addEventListener("click", parar);
 
-  proxima.addEventListener(
-    "click",
-    () => trocarRelativo(1)
-  );
+  loop.addEventListener("click", alternarLoop);
 
-  progresso.addEventListener(
-    "pointerdown",
-    () => {
-      arrastando = true;
+  proxima.addEventListener("click", () => trocarRelativo(1));
+
+  progresso.addEventListener("pointerdown", () => {
+    arrastando = true;
+  });
+
+  progresso.addEventListener("input", () => {
+    if (papel !== "mestre") return;
+
+    const posicao = Number(progresso.value) || 0;
+
+    try {
+      audio.currentTime = posicao;
+    } catch {}
+
+    tempo.textContent = `${formatarTempo(posicao)} / ${formatarTempo(audio.duration)}`;
+  });
+
+  progresso.addEventListener("change", async () => {
+    if (papel !== "mestre" || !estado?.arquivo) return;
+
+    arrastando = false;
+
+    const posicao = Math.max(0, Number(progresso.value) || 0);
+
+    await gravar({
+      pausadoEm: posicao,...(estado.tocando ? {
+        iniciadoEm: firebase.firestore.FieldValue.serverTimestamp()
+      } : {})
+    });
+  });
+
+  progresso.addEventListener("pointerup", () => {
+    arrastando = false;
+  });
+
+  volume.addEventListener("input", () => {
+    volumeLocal = clamp((Number(volume.value) || 0) / 100, 0, 1);
+    
+    try {
+      sessionStorage.setItem("volume-musica-campanha", String(volumeLocal));
+    } catch {}
+    
+    if (animacaoVolume) {
+      cancelAnimationFrame(animacaoVolume);
     }
-  );
 
-  progresso.addEventListener(
-    "input",
-    () => {
-      if (
-        papel !== "mestre"
-      ) return;
-
-      const posicao =
-        Number(progresso.value) || 0;
-
-      try {
-        audio.currentTime = posicao;
-      } catch {}
-
-      tempo.textContent =
-        `${formatarTempo(posicao)} / ${formatarTempo(audio.duration)}`;
-    }
-  );
-
-  progresso.addEventListener(
-    "change",
-    async () => {
-      if (
-        papel !== "mestre" ||
-        !estado?.arquivo
-      ) return;
-
-      arrastando = false;
-
-      const posicao =
-        Math.max(
-          0,
-          Number(progresso.value) || 0
-        );
-
-      await gravar({
-        pausadoEm: posicao,
-
-        ...(estado.tocando
-          ? {
-              iniciadoEm:
-                firebase.firestore.FieldValue.serverTimestamp()
-            }
-          : {})
-      });
-    }
-  );
-
-  progresso.addEventListener(
-    "pointerup",
-    () => {
-      arrastando = false;
-    }
-  );
-
-  volume.addEventListener(
-    "input",
-    () => {
-      volumeLocal =
-        clamp(
-          (Number(volume.value) || 0) / 100,
-          0,
-          1
-        );
-
-      try {
-        sessionStorage.setItem(
-          "volume-musica-campanha",
-          String(volumeLocal)
-        );
-      } catch {}
-
-      if (animacaoVolume) {
-        cancelAnimationFrame(animacaoVolume);
-      }
-
-      animacaoVolume = null;
-      audio.volume = volumeLocal;
-    }
-  );
+    animacaoVolume = null;
+    audio.volume = volumeLocal;
+  });
 
   audio.addEventListener(
     "loadedmetadata",
