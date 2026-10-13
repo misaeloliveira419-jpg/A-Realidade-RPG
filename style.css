@@ -1169,7 +1169,7 @@ body.modal-fichas-campanha-aberto{
     max-width: 90%;
   }
   #nome-campanha-atual{
-    width: 95%;
+    max-width: 95%;
   }
   #lista-membros-campanha{
     grid-template-columns: 1fr;
