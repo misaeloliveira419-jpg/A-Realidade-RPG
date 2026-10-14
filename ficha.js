@@ -268,7 +268,10 @@ function aplicarPermissaoEdicaoFicha() {
     "#criar-item-ficha",
     "#confirmar-criar-item-ficha",
     ".excluir-item-ficha",
-    ".adicionar-catalogo-item-ficha"
+    ".adicionar-catalogo-item-ficha",
+    "#alterar-pericias-naturais-ficha",
+    "#cancelar-editor-pericias-naturais",
+    "#salvar-editor-pericias-naturais"
   ].join(",")).forEach(botao => {
     botao.disabled = true;
   });
@@ -1029,7 +1032,74 @@ function criarIdOcupacaoFicha(nome) {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
 }
+function limparNomePericiaOcupacaoFicha(pericia) {
+  return pericia.trim().replace(/\.$/,"").replace(/^Área\s*-\s*/i,"Área - ");
+}
 
+function textoOcupacaoFichaComQuebras(elemento) {
+  const copia = elemento.cloneNode(true);
+
+  copia.querySelectorAll("br").forEach(br => {
+    br.replaceWith("\n");
+  });
+
+  return copia.textContent
+    .replace(/\u00a0/g," ")
+    .replace(/[ \t]+/g," ")
+    .replace(/\s*\n\s*/g,"\n")
+    .trim();
+}
+
+function extrairOcupacaoFichaDoSistema(item) {
+  const nome = item.querySelector("b")?.textContent.trim().replace(/:$/,"");
+  if (!nome) return null;
+
+  const texto = textoOcupacaoFichaComQuebras(item);
+
+  const blocoPericias = texto.match(
+    /Perícias\s*:\s*([\s\S]*?)\n\s*(\d+(?:[.,]\d+)?)\s*PC/i
+  );
+
+  if (!blocoPericias) return null;
+
+  const textoPericias = blocoPericias[1].trim();
+
+  const linhaAreas = textoPericias.match(
+    /Áreas?\s*-\s*([^;\n]+)/i
+  );
+
+  const linhaGerais = textoPericias.match(
+    /Ger(?:al|ais)\s*[-:]\s*([^;\n.]+)/i
+  );
+
+  let pericias = [];
+  let areasObrigatorias = [];
+
+  if (linhaAreas && linhaGerais) {
+    areasObrigatorias = linhaAreas[1]
+      .split(",")
+      .map(pericia => "Área - " + pericia.trim());
+
+    const gerais = linhaGerais[1]
+      .split(",")
+      .map(limparNomePericiaOcupacaoFicha);
+
+    pericias = [...areasObrigatorias,...gerais];
+  } else {
+    pericias = textoPericias
+      .replace(/\n/g," ")
+      .split(",")
+      .map(limparNomePericiaOcupacaoFicha)
+      .filter(Boolean);
+  }
+
+  return {
+    id: criarIdOcupacaoFicha(nome),
+    nome,
+    pericias,
+    areasObrigatorias
+  };
+}
 function renderizarOpcoesOcupacoesFicha() {
   campoOcupacao1Ficha.replaceChildren();
   campoOcupacao2Ficha.replaceChildren();
@@ -1075,18 +1145,7 @@ async function carregarOcupacoesFichaDoSistema() {
     ];
 
     ocupacoesFichaDisponiveis = itens
-      .map(item => {
-        const nome = item.querySelector("b")?.textContent
-          .trim()
-          .replace(/:$/, "");
-
-        if (!nome) return null;
-
-        return {
-          id: criarIdOcupacaoFicha(nome),
-          nome: nome
-        };
-      })
+      .map(extrairOcupacaoFichaDoSistema)
       .filter(Boolean);
 
     renderizarOpcoesOcupacoesFicha();
@@ -4952,6 +5011,14 @@ const preenchimentoPdFicha = document.querySelector(".barra-pd .preenchimento-re
 const listaPericiasFicha = document.getElementById("lista-pericias-ficha");
 const contadorPontosPericiasFicha = document.getElementById("contador-pontos-pericias-ficha");
 const contadorNaturaisPericiasFicha = document.getElementById("contador-naturais-pericias-ficha");
+const botaoAlterarPericiasNaturaisFicha = document.getElementById("alterar-pericias-naturais-ficha");
+const editorPericiasNaturaisFicha = document.getElementById("editor-pericias-naturais-ficha");
+const listaEditorPericiasNaturaisFicha = document.getElementById("lista-editor-pericias-naturais");
+const contadorEditorPericiasNaturaisFicha = document.getElementById("contador-editor-pericias-naturais");
+const regraEditorPericiasNaturaisFicha = document.getElementById("regra-editor-pericias-naturais");
+const mensagemEditorPericiasNaturaisFicha = document.getElementById("mensagem-editor-pericias-naturais");
+const botaoCancelarEditorPericiasNaturaisFicha = document.getElementById("cancelar-editor-pericias-naturais");
+const botaoSalvarEditorPericiasNaturaisFicha = document.getElementById("salvar-editor-pericias-naturais");
 
 const tipoRolagemFicha = document.getElementById("tipo-rolagem-ficha");
 const areaRolagemPericiaFicha = document.getElementById("rolagem-pericia-ficha");
@@ -4976,6 +5043,14 @@ let limitePontosPericiasFicha = 25;
 const VALOR_BASE_PERICIA_FICHA = 4;
 const PONTOS_PERICIA_INICIAIS_FICHA = 25;
 const MAXIMO_PONTOS_RECUPERADOS_FICHA = 15;
+const BONUS_NATURAL_TOTAL_FICHA = 5;
+const BONUS_NATURAL_POR_PERICIA_FICHA = 3;
+const MAXIMO_PERICIA_NORMAL_FICHA = 12;
+const MAXIMO_PERICIA_NATURAL_FICHA = 14;
+
+let periciasNaturaisFicha = [];
+let periciasNaturaisRascunho = [];
+let bonusNaturaisRascunho = {};
 let estadoAtributosFicha = {
   fisico: 1,
   cognicao: 1,
@@ -5336,6 +5411,328 @@ function renderizarContadoresPericiasFicha() {
     `NATURAIS: ${resumo.bonusNaturais} / 5`;
 }
 
+function nomesIguaisPericiaFicha(a,b) {
+  return normalizarTextoPontosFicha(a) === normalizarTextoPontosFicha(b);
+}
+
+function ehPericiaNaturalFicha(pericia) {
+  return periciasNaturaisFicha.some(nome => nomesIguaisPericiaFicha(nome,pericia.nome));
+}
+
+function obterOcupacoesNaturaisFicha() {
+  const ids = Array.isArray(dadosFichaAtual?.ocupacoes)
+    ? dadosFichaAtual.ocupacoes
+    : [];
+
+  return ids
+    .map(id => ocupacoesFichaDisponiveis.find(ocupacao => ocupacao.id === id))
+    .filter(Boolean);
+}
+
+function obterPericiasNaturaisDisponiveisFicha() {
+  const resultado = [];
+
+  obterOcupacoesNaturaisFicha().forEach(ocupacao => {
+    ocupacao.pericias.forEach(pericia => {
+      if (!resultado.some(nome => nomesIguaisPericiaFicha(nome,pericia))) {
+        resultado.push(pericia);
+      }
+    });
+  });
+
+  return resultado;
+}
+
+function obterOcupacoesAreaObrigatoriaFicha() {
+  return obterOcupacoesNaturaisFicha().filter(ocupacao => ocupacao.areasObrigatorias.length > 0);
+}
+
+function bonusRascunhoPericiaFicha(nome) {
+  return Number(bonusNaturaisRascunho[nome]) || 0;
+}
+
+function validarEdicaoPericiasNaturaisFicha() {
+  const disponiveis = obterPericiasNaturaisDisponiveisFicha();
+
+  if (!disponiveis.length) {
+    return { valida:false, mensagem:"As Ocupações atuais não possuem Perícias disponíveis." };
+  }
+
+  if (disponiveis.length > 3 && periciasNaturaisRascunho.length !== 3) {
+    return { valida:false, mensagem:"Escolha exatamente 3 Perícias Naturais." };
+  }
+
+  if (disponiveis.length <= 3) {
+    periciasNaturaisRascunho = [...disponiveis];
+  }
+
+  for (const ocupacao of obterOcupacoesAreaObrigatoriaFicha()) {
+    const possuiArea = periciasNaturaisRascunho.some(nome =>
+      ocupacao.areasObrigatorias.some(area => nomesIguaisPericiaFicha(area,nome))
+    );
+
+    if (!possuiArea) {
+      return {
+        valida:false,
+        mensagem:`Escolha pelo menos uma Perícia de Área de ${ocupacao.nome}.`
+      };
+    }
+  }
+
+  let totalBonus = 0;
+
+  for (const nome of periciasNaturaisRascunho) {
+    const bonus = bonusRascunhoPericiaFicha(nome);
+
+    if (!Number.isInteger(bonus) || bonus < 0 || bonus > BONUS_NATURAL_POR_PERICIA_FICHA) {
+      return { valida:false, mensagem:"Cada Perícia Natural pode receber de +0 a +3." };
+    }
+
+    totalBonus += bonus;
+
+    const id = criarIdPericiaPontosFicha(nome);
+    const dados = estadoPericiasFicha[id];
+
+    if (!dados) continue;
+
+    const valorDistribuido = Number(dados.valor) - (Number(dados.bonusNatural) || 0);
+
+    if (valorDistribuido > MAXIMO_PERICIA_NORMAL_FICHA) {
+      return { valida:false, mensagem:`${nome} possui mais de 12 pontos normais.` };
+    }
+
+    if (valorDistribuido + bonus > MAXIMO_PERICIA_NATURAL_FICHA) {
+      return { valida:false, mensagem:`${nome} não pode ultrapassar 14.` };
+    }
+  }
+
+  if (totalBonus !== BONUS_NATURAL_TOTAL_FICHA) {
+    return { valida:false, mensagem:"Distribua exatamente os 5 pontos bônus das Perícias Naturais." };
+  }
+
+  return { valida:true, mensagem:"" };
+}
+
+function atualizarEstadoEditorPericiasNaturaisFicha() {
+  const total = periciasNaturaisRascunho.reduce(
+    (soma,nome) => soma + bonusRascunhoPericiaFicha(nome),
+    0
+  );
+
+  contadorEditorPericiasNaturaisFicha.textContent =
+    `${periciasNaturaisRascunho.length} / 3 • ${total} / 5 pontos`;
+
+  const validacao = validarEdicaoPericiasNaturaisFicha();
+
+  mensagemEditorPericiasNaturaisFicha.textContent =
+    validacao.valida ? "" : validacao.mensagem;
+
+  botaoSalvarEditorPericiasNaturaisFicha.disabled =
+    !validacao.valida;
+}
+
+function renderizarEditorPericiasNaturaisFicha() {
+  const disponiveis = obterPericiasNaturaisDisponiveisFicha();
+
+  if (disponiveis.length <= 3) {
+    periciasNaturaisRascunho = [...disponiveis];
+  }
+
+  const especiais = obterOcupacoesAreaObrigatoriaFicha();
+
+  if (!especiais.length) {
+    regraEditorPericiasNaturaisFicha.textContent =
+      "Escolha 3 Perícias Naturais e distribua os 5 pontos bônus.";
+  } else {
+    regraEditorPericiasNaturaisFicha.textContent =
+      `Escolha 3 Perícias e mantenha pelo menos uma Perícia de Área de ${especiais.map(o => o.nome).join(" e ")}.`;
+  }
+
+  const fragmento = document.createDocumentFragment();
+
+  disponiveis.forEach(nomePericia => {
+    const selecionada = periciasNaturaisRascunho.some(nome =>
+      nomesIguaisPericiaFicha(nome,nomePericia)
+    );
+
+    const card = document.createElement("label");
+    card.className = "opcao-editor-pericia-natural";
+    card.classList.toggle("selecionada",selecionada);
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.checked = selecionada;
+    checkbox.disabled = disponiveis.length <= 3;
+
+    const nome = document.createElement("strong");
+    nome.textContent = nomePericia;
+
+    const areaBonus = document.createElement("label");
+    areaBonus.className = "bonus-editor-pericia-natural";
+
+    const sinal = document.createElement("span");
+    sinal.textContent = "+";
+
+    const bonus = document.createElement("input");
+    bonus.type = "number";
+    bonus.min = "0";
+    bonus.max = "3";
+    bonus.step = "1";
+    bonus.value = bonusRascunhoPericiaFicha(nomePericia);
+    bonus.disabled = !selecionada;
+
+    checkbox.addEventListener("change",evento => {
+      evento.stopPropagation();
+
+      if (checkbox.checked) {
+        if (periciasNaturaisRascunho.length >= 3) {
+          checkbox.checked = false;
+          mensagemEditorPericiasNaturaisFicha.textContent =
+            "Você pode escolher somente 3 Perícias Naturais.";
+          return;
+        }
+
+        periciasNaturaisRascunho.push(nomePericia);
+        bonusNaturaisRascunho[nomePericia] ||= 0;
+      } else {
+        periciasNaturaisRascunho = periciasNaturaisRascunho.filter(
+          nome => !nomesIguaisPericiaFicha(nome,nomePericia)
+        );
+
+        bonusNaturaisRascunho[nomePericia] = 0;
+      }
+
+      renderizarEditorPericiasNaturaisFicha();
+    });
+
+    bonus.addEventListener("change",evento => {
+      evento.preventDefault();
+      evento.stopPropagation();
+
+      const valor = Number(bonus.value);
+
+      if (!Number.isInteger(valor) || valor < 0 || valor > 3) {
+        bonus.value = bonusRascunhoPericiaFicha(nomePericia);
+        return;
+      }
+
+      const totalOutras = periciasNaturaisRascunho
+        .filter(nome => !nomesIguaisPericiaFicha(nome,nomePericia))
+        .reduce((soma,nome) => soma + bonusRascunhoPericiaFicha(nome),0);
+
+      if (totalOutras + valor > 5) {
+        bonus.value = bonusRascunhoPericiaFicha(nomePericia);
+        mensagemEditorPericiasNaturaisFicha.textContent =
+          "As Perícias Naturais possuem somente 5 pontos bônus.";
+        return;
+      }
+
+      bonusNaturaisRascunho[nomePericia] = valor;
+      atualizarEstadoEditorPericiasNaturaisFicha();
+    });
+
+    areaBonus.append(sinal,bonus);
+    card.append(checkbox,nome,areaBonus);
+    fragmento.appendChild(card);
+  });
+
+  listaEditorPericiasNaturaisFicha.replaceChildren(fragmento);
+  atualizarEstadoEditorPericiasNaturaisFicha();
+}
+
+function abrirEditorPericiasNaturaisFicha() {
+  if (!podeEditarFichaAtual) return;
+
+  const disponiveis = obterPericiasNaturaisDisponiveisFicha();
+
+  periciasNaturaisRascunho = disponiveis.filter(pericia =>
+    periciasNaturaisFicha.some(atual => nomesIguaisPericiaFicha(atual,pericia))
+  );
+
+  bonusNaturaisRascunho = {};
+
+  disponiveis.forEach(nome => {
+    const id = criarIdPericiaPontosFicha(nome);
+
+    bonusNaturaisRascunho[nome] =
+      periciasNaturaisRascunho.some(atual => nomesIguaisPericiaFicha(atual,nome))
+        ? Number(estadoPericiasFicha[id]?.bonusNatural) || 0
+        : 0;
+  });
+
+  editorPericiasNaturaisFicha.hidden = false;
+  renderizarEditorPericiasNaturaisFicha();
+}
+
+function cancelarEditorPericiasNaturaisFicha() {
+  editorPericiasNaturaisFicha.hidden = true;
+  mensagemEditorPericiasNaturaisFicha.textContent = "";
+}
+
+async function salvarEditorPericiasNaturaisFicha() {
+  const validacao = validarEdicaoPericiasNaturaisFicha();
+
+  if (!validacao.valida) {
+    mensagemEditorPericiasNaturaisFicha.textContent = validacao.mensagem;
+    return;
+  }
+
+  const alteracoes = {
+    periciasNaturais:[...periciasNaturaisRascunho]
+  };
+
+  periciasPontosFicha.forEach(pericia => {
+    const dados = estadoPericiasFicha[pericia.id];
+    if (!dados) return;
+
+    const valorDistribuido =
+      Number(dados.valor) -
+      (Number(dados.bonusNatural) || 0);
+
+    const natural =
+      periciasNaturaisRascunho.some(nome =>
+        nomesIguaisPericiaFicha(nome,pericia.nome)
+      );
+
+    const novoBonus = natural
+      ? bonusRascunhoPericiaFicha(pericia.nome)
+      : 0;
+
+    const novoValor = valorDistribuido + novoBonus;
+
+    dados.bonusNatural = novoBonus;
+    dados.valor = novoValor;
+
+    alteracoes[`pericias.${pericia.id}.valorDistribuido`] = valorDistribuido;
+    alteracoes[`pericias.${pericia.id}.bonusNatural`] = novoBonus;
+    alteracoes[`pericias.${pericia.id}.valorAtual`] = novoValor;
+
+    if (dadosFichaAtual) {
+      dadosFichaAtual.pericias ||= {};
+      dadosFichaAtual.pericias[pericia.id] ||= {};
+      dadosFichaAtual.pericias[pericia.id].valorDistribuido = valorDistribuido;
+      dadosFichaAtual.pericias[pericia.id].bonusNatural = novoBonus;
+      dadosFichaAtual.pericias[pericia.id].valorAtual = novoValor;
+    }
+  });
+
+  periciasNaturaisFicha = [...periciasNaturaisRascunho];
+
+  if (dadosFichaAtual) {
+    dadosFichaAtual.periciasNaturais = [...periciasNaturaisFicha];
+  }
+
+  recalcularRecursosAutomaticos(alteracoes);
+  await salvarAtualizacaoPontosFicha(alteracoes);
+
+  editorPericiasNaturaisFicha.hidden = true;
+  renderizarPericiasPontosFicha();
+}
+
+botaoAlterarPericiasNaturaisFicha.addEventListener("click",abrirEditorPericiasNaturaisFicha);
+botaoCancelarEditorPericiasNaturaisFicha.addEventListener("click",cancelarEditorPericiasNaturaisFicha);
+botaoSalvarEditorPericiasNaturaisFicha.addEventListener("click",salvarEditorPericiasNaturaisFicha);
+
 /* Renderizar Perícias */
 
 function renderizarPericiasPontosFicha() {
@@ -5350,13 +5747,15 @@ function renderizarPericiasPontosFicha() {
 
     if (!dados) return;
 
+    const natural = ehPericiaNaturalFicha(pericia);
+
     const linha =
       document.createElement("div");
 
     linha.className =
       "linha-pericia-ficha";
 
-    if (dados.bonusNatural > 0) {
+    if (natural) {
       linha.classList.add(
         "pericia-natural-ficha"
       );
@@ -5441,7 +5840,7 @@ function renderizarPericiasPontosFicha() {
     grupoValores.className =
       "valores-pericia-ficha";
 
-    if (dados.bonusNatural > 0) {
+    if (natural) {
       const bonus =
         document.createElement(
           "span"
@@ -5709,6 +6108,13 @@ async function preencherPontosFicha(ficha) {
 
   const periciasSalvas =
     ficha.pericias || {};
+
+  periciasNaturaisFicha =
+    Array.isArray(ficha.periciasNaturais)
+      ? [...ficha.periciasNaturais]
+      : periciasPontosFicha
+          .filter(pericia => Number(periciasSalvas[pericia.id]?.bonusNatural) > 0)
+          .map(pericia => pericia.nome);
 
   limitePontosPericiasFicha = PONTOS_PERICIA_INICIAIS_FICHA;
 
