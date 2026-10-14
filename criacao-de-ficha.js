@@ -2385,9 +2385,21 @@ function criarCardItemDisponivel(item) {
   const descricao = document.createElement("p");
   descricao.className = "descricao-item-disponivel";
   descricao.textContent = item.descricao;
-  descricao.title = item.descricao;
+
+  const botaoDescricao = document.createElement("button");
+  botaoDescricao.type = "button";
+  botaoDescricao.className = "botao-ver-descricao-item";
+  botaoDescricao.textContent = "VER MAIS";
+  botaoDescricao.hidden = true;
+
+  botaoDescricao.addEventListener("click",() => {
+    const aberta = card.classList.toggle("descricao-aberta");
+
+    botaoDescricao.textContent = aberta ? "VER MENOS" : "VER MAIS";
+  });
 
   const dados = document.createElement("div");
+
   dados.className = "dados-item-disponivel";
 
   const peso = document.createElement("span");
@@ -2404,7 +2416,13 @@ function criarCardItemDisponivel(item) {
   }
 
   dados.append(peso,custo);
-  conteudo.append(nome,descricao,dados);
+  conteudo.append(nome,descricao,botaoDescricao,dados);
+
+  requestAnimationFrame(() => {
+    const descricaoCortada = descricao.scrollHeight > descricao.clientHeight + 1;
+
+    botaoDescricao.hidden = !descricaoCortada;
+  });
 
   if (item.compatibilidades.length > 0) {
     const compatibilidade = document.createElement("span");

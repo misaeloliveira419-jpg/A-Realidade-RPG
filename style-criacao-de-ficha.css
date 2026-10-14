@@ -1081,6 +1081,32 @@
   font-size: 9px;
   line-height: 1.35;
 }
+.card-item-disponivel.descricao-aberta .descricao-item-disponivel{
+  max-height:none;
+  overflow:visible;
+}
+.botao-ver-descricao-item{
+  display:block;
+  width:max-content;
+  margin:1px 0 4px;
+  padding:0;
+  background:transparent;
+  color:rgb(190,120,235);
+  border:none;
+  cursor:pointer;
+  font-family:inherit;
+  font-size:8px;
+  font-weight:bold;
+  text-decoration:underline;
+  text-underline-offset:2px;
+}
+.botao-ver-descricao-item:hover{
+  color:rgb(225,175,255);
+  text-shadow:0 0 6px rgba(180,80,230,.65);
+}
+.botao-ver-descricao-item[hidden]{
+  display:none;
+}
 .dados-item-disponivel{
   display: flex;
   flex-wrap: wrap;
@@ -1276,6 +1302,15 @@
   }
   .nome-ocupacao-selecionada{
     font-size: 20px;
+  }
+  .descricao-item-disponivel{
+    font-size:10px;
+    line-height:1.4;
+    max-height:28px;
+  }
+  .botao-ver-descricao-item{
+    margin-top:3px;
+    font-size:9px;
   }
 }
 
