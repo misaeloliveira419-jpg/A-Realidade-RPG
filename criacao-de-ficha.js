@@ -2166,16 +2166,30 @@ function formatarCredito(valor) {
 
 function encontrarTabelaItens(documento, titulo) {
   const alvo = normalizarBuscaOcupacao(titulo).replace(/:$/,"");
+
   const cabecalho = [...documento.querySelectorAll("h3")].find(elemento => normalizarBuscaOcupacao(elemento.textContent).replace(/:$/,"") === alvo);
+
   if (!cabecalho) return null;
 
   let elemento = cabecalho.nextElementSibling;
 
-  while (elemento && elemento.tagName !== "TABLE") {
+  while (elemento) {
+    if (elemento.tagName === "H3") break;
+
+    if (elemento.tagName === "TABLE") {
+      return elemento;
+    }
+
+    const tabelaInterna = elemento.querySelector("table.tabela-itens");
+
+    if (tabelaInterna) {
+      return tabelaInterna;
+    }
+
     elemento = elemento.nextElementSibling;
   }
 
-  return elemento?.tagName === "TABLE" ? elemento : null;
+  return null;
 }
 
 function extrairItensTabela(tabela, categoria) {

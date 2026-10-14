@@ -5645,19 +5645,14 @@ function abrirEditorPericiasNaturaisFicha() {
 
   const disponiveis = obterPericiasNaturaisDisponiveisFicha();
 
-  periciasNaturaisRascunho = disponiveis.filter(pericia =>
-    periciasNaturaisFicha.some(atual => nomesIguaisPericiaFicha(atual,pericia))
-  );
+  periciasNaturaisRascunho = disponiveis.filter(pericia => periciasNaturaisFicha.some(atual => nomesIguaisPericiaFicha(atual,pericia)));
 
   bonusNaturaisRascunho = {};
 
   disponiveis.forEach(nome => {
     const id = criarIdPericiaPontosFicha(nome);
 
-    bonusNaturaisRascunho[nome] =
-      periciasNaturaisRascunho.some(atual => nomesIguaisPericiaFicha(atual,nome))
-        ? Number(estadoPericiasFicha[id]?.bonusNatural) || 0
-        : 0;
+    bonusNaturaisRascunho[nome] = periciasNaturaisRascunho.some(atual => nomesIguaisPericiaFicha(atual,nome)) ? Number(estadoPericiasFicha[id]?.bonusNatural) || 0 : 0;
   });
 
   editorPericiasNaturaisFicha.hidden = false;
