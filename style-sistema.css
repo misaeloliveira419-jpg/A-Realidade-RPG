@@ -148,7 +148,7 @@ a{
 #lista-ocupacoes-personagem{
   display: grid;
   grid-auto-flow: column;
-  grid-template-rows: repeat(26, auto);
+  grid-template-rows: repeat(27, auto);
   font-size: 16px;
   max-width: 1200px;
   margin: 0 auto;
