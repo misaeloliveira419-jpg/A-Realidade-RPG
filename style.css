@@ -1181,18 +1181,14 @@ body.modal-fichas-campanha-aberto{
     width:100%;
     box-sizing:border-box;
   }
-  #nome-campanha-atual,
-  #descricao-campanha-atual{
+  #nome-campanha-atual{
     grid-column:1;
     justify-self:stretch;
   }
-  .botao-editar-nome-campanha,
-  .botao-editar-descricao-campanha{
+  .botao-editar-nome-campanha{
     grid-column:2;
     justify-self:start;
     margin-left:6px;
-  }
-  .botao-editar-nome-campanha{
     left:0;
     width:40px;
   }
@@ -1425,5 +1421,43 @@ body.modal-fichas-campanha-aberto{
   .volume-musica-campanha{
     grid-template-columns:auto 1fr;
     justify-content:stretch;
+  }
+}
+
+@media(max-width:700px){
+  .linha-descricao-campanha{
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:100%;
+    min-height:34px;
+    padding:0 42px;
+    box-sizing:border-box;
+  }
+
+  #descricao-campanha-atual{
+    width:100%;
+    max-width:420px;
+    margin:0 auto;
+    justify-self:auto;
+    text-align:center;
+    line-height:1.5;
+    overflow-wrap:break-word;
+    word-break:normal;
+  }
+
+  .botao-editar-descricao-campanha{
+    position:absolute;
+    top:50%;
+    right:6px;
+    grid-column:auto;
+    justify-self:auto;
+    margin:0;
+    transform:translateY(-50%);
+  }
+
+  .botao-editar-descricao-campanha:hover{
+    transform:translateY(-50%) scale(1.2);
   }
 }
