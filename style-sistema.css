@@ -67,6 +67,24 @@ h4{
 #lista-explicacao-tipos-sucesso li{
   margin-top: 20px;
 }
+#lista-tipos-dano{
+  font-size: 14px;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+#lista-tipos-dano li{
+  margin-top: 5px;
+}
+#lista-dano-de-queda{
+  font-size: 14px;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+#lista-dano-de-queda li{
+  margin-top: 5px;
+}
 #lista-exemplos-casos-especiais{
   font-size: 14px;
   max-width: 550px;

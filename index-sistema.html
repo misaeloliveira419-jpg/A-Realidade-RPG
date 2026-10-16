@@ -77,10 +77,11 @@
       <li id="mecanicas-basicas" class="topicos-sistema">
         Mecânicas Básicas
         <ul>
-          <li class="lista-subtopicos-sistema" data-tela="tela-mecanicas-basicas" data-alvo="termos-importantes">Termos importantes</li>
+          <li class="lista-subtopicos-sistema" data-tela="tela-mecanicas-basicas" data-alvo="termos-importantes">Termos Importantes</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-mecanicas-basicas" data-alvo="testes-pericia">Testes de Perícia</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-mecanicas-basicas" data-alvo="tipos-sucesso">Tipos de Sucesso</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-mecanicas-basicas" data-alvo="testes-dano">Testes de Dano</li>
+          <li class="lista-subtopicos-sistema" data-tela="tela-mecanicas-basicas" data-alvo="tipos-dano">Tipos de Dano</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-mecanicas-basicas" data-alvo="casos-especiais">Casos Especiais</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-mecanicas-basicas" data-alvo="distancias">Distâncias</li>
         </ul>
@@ -207,7 +208,30 @@
     <p>Os dados usados para testes de dano geralmente são o <b>d4</b>, <b>d6</b>, <b>d8</b>, <b>d10</b>, e <b>d12</b>.</p>
     <br>
     <p>Existem casos em que esse teste não irá acontecer, como por exemplo, quando um personagem sofre um <b>dano mínimo</b>, 1 PV ou 1 PD, ou quando o personagem sofre um <b>dano máximo</b>.</p>
-    
+
+    <h2 id="tipos-dano">Tipos de Dano</h2>
+    <p>Todo dano causado em um personagem é classificado em algum tipo de dano. Os tipos de dano são:</p>
+    <br>
+    <ul id="lista-tipos-dano">
+      <li><b>Balístico:</b> dano causado por balas de armas de fogo.</li>
+      <li><b>Corte:</b> dano causado por ataques de facas, adagas, entre outras.</li>
+      <li><b>Fogo:</b> dano causado por chamas.</li>
+      <li><b>Impacto:</b> dano causado por força bruta, como um soco, queda, entre outros.</li>
+      <li><b>Perfuração:</b> dano causado por armas que penetram no corpo, como uma flecha, lança, entre outras.</li>
+    </ul>
+    <br>
+
+    <p>O <b>dano de queda</b> é um tipo de <b>dano de impacto</b> que é causado quando um personagem cai de um lugar alto. Abaixo está uma lista das alturas e respectivos danos:</p>
+    <br>
+    <ul id="lista-dano-de-queda">
+      <li><b>A partir de 3 metros:</b> 2d6;</li>
+      <li><b>A partir de 6 metros:</b> 3d8;</li>
+      <li><b>A partir de 9 metros:</b> 5d6;</li>
+      <li><b>A partir de 18 metros:</b> 8d8.</li>
+    </ul>
+    <br>
+
+    <p>Um dano de queda pode ser reduzido pela metade caso o personagem que está caindo faça um teste de <b>Acrobacia ou Reflexo DT Sucesso Bom</b> (Sucesso Extremo reduz em 3/4).</p>
 
     <h2 id="casos-especiais">Casos Especiais</h2>
     <p>Existem alguns momentos específicos em que o mestre não necessariamente vai pedir para um jogador rolar um teste. A seguir estão alguns exemplos:</p>
