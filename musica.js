@@ -6,7 +6,7 @@
     { nome: "Dream", arquivo: "musicas/Misael Oliveira - Dream - A Realidade - 1788016700298 2026-08-29 12_18.m4a" },
     { nome: "Efêmero", arquivo: "musicas/Misael Oliveira - Efêmero - A Realidade 2026-07-31 21_23.m4a" },
     { nome: "Libertados", arquivo: "musicas/Misael Oliveira - Libertados - A Realidade 2026-07-31 21_23.m4a" },
-    { nome: "Mosh", arquivo: "musicas/Misael Oliveira - Mosh - A Realidade 1792086538406 2026-10-15 14_48.m4a" },
+    { nome: "Mosh", arquivo: "musicas/Misael Oliveira - Mosh - A Realidade - 1792086538406 2026-10-15 14_48.m4a" },
     { nome: "Shopping", arquivo: "musicas/Misael Oliveira - Shopping - A Realidade 2026-06-27 16_36.m4a" },
     { nome: "Tudo é Nada", arquivo: "musicas/Misael Oliveira - Tudo é Nada - A Realidade 2026-07-20 14_31.m4a" }
   ];
