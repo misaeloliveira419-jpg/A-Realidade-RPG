@@ -116,6 +116,7 @@
           <li class="lista-subtopicos-sistema" data-tela="tela-cenas-acoes" data-alvo="cena-interludio">Cena de Interlúdio</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-cenas-acoes" data-alvo="cena-investigacao">Cena de Investigação</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-cenas-acoes" data-alvo="cena-combate">Cena de Combate</li>
+          <li class="lista-subtopicos-sistema" data-tela="tela-cenas-acoes" data-alvo="cena-perseguicao">Cena de Perseguição</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-cenas-acoes" data-alvo="protecoes">Proteções</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-cenas-acoes" data-alvo="acoes-gerais">Ações Gerais</li>
         </ul>
@@ -129,7 +130,6 @@
           <li class="lista-subtopicos-sistema" data-tela="tela-mecanicas-adicionais" data-alvo="destrancar">Destrancar</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-mecanicas-adicionais" data-alvo="arrombar">Arrombar</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-mecanicas-adicionais" data-alvo="invadir-sistema">Invadir Sistema</li>
-          <li class="lista-subtopicos-sistema" data-tela="tela-mecanicas-adicionais" data-alvo="perseguicoes">Perseguições</li>
           <li class="lista-subtopicos-sistema" data-tela="tela-mecanicas-adicionais" data-alvo="condicoes">Condições</li>
         </ul>
       </li>
@@ -1328,6 +1328,49 @@
       </li>
 
     </ul>
+
+    <h2 id="cena-perseguicao">Cena de Perseguição</h2>
+    <p>A Cena de Perseguição é uma Cena que envolve situações que os personagens precisem fugir de algum perigo que está os perseguindo.</p>
+    <br>
+    <p>Se uma Perseguição iniciar, o(s) <b>Caçador(es)</b> será(ão) o último a agir na rodada, ficando atrás da(s) <b>Presa(s)</b>.</p>
+    <br>
+    <p>A área da Perseguição é dividida em <b>Zonas</b>, que são regiões as quais os personagens precisam avançar para conseguir capturar/evitar serem pegos.</p>
+    <br>
+    <p>Se o <b>Caçador</b> estiver na mesma Zona que uma <b>Presa</b>, a <b>Presa</b> é pega; Se houverem 2 <b>Presas</b> na mesma <b>Zona</b> que um <b>Caçador</b>, a <b>Presa</b> capturada é a que tiver menos <b>Pontos de Sucesso</b> (serão explicados mais a frente); Se houverem 2 <b>Presas</b> na mesma <b>Zona</b> que um <b>Caçador</b> com a mesma quantidade de <b>Pontos de Sucesso</b>, o <b>Caçador</b> pode escolher qual <b>Presa</b> capturar.</p>
+    <br>
+    <p>No início da Perseguição, o <b>Caçador</b> inicia no início de sua Zona, há uma <b>Zona livre</b> entre o <b>Caçador</b> e a <b>Presa</b>, e a <b>Presa</b> inicia uma <b>Zona</b> a frente da <b>Zona livre</b> (o mestre pode alterar esse posicionamento baseado no contexto).</p>
+    <br>
+    <p>Para avançar, os personagens têm <b>Pontos de Sucesso (PS)</b>. Os PS definem a posição de um personagem dentro de uma <b>Zona</b>, e a distância para avançar para uma próxima <b>Zona</b>.</p>
+    <br>
+    <p>Para conseguir avançar de <b>Zona</b>, um personagem precisa de um soma total de <b>3 Pontos de Sucesso</b>. Cada tipo de Sucesso dá uma quantidade de PS diferente:</p>
+    <br>
+    <ul id="lista-sucessos-pontos-sucesso">
+      <li><b>Sucesso Normal:</b> 1 PS;</li>
+      <li><b>Sucesso Bom:</b> 2 PS;</li>
+      <li><b>Sucesso Extremo:</b> 3 PS.</li>
+    </ul>
+    <br>
+    <p>Para obter <b>PS</b>, os personagens podem fazer uma Ação dentre as Ações abaixo:</p>
+    <br>
+
+    <h3>Ações de Caçador:</h3>
+    <ul id="lista-acoes-cacador">
+      <li><b>Perseguir:</b> O Caçador corre atrás de sua Presa. Teste de <b>Atletismo ou Acrobacia</b> (esse último dá +1 PS em caso de Sucesso, e -1 PS em Fracasso).</li>
+      <li><b>Criar Obstáculo:</b> O Caçador pode usar o cenário, algum Item, ou artifício para atrapalhar o caminho de todos que estiverem até <b>2 Zonas</b> a frente. A depender da dificuldade da Ação e da Perícia usada, deve fazer um teste com DT definida pelo mestre.</li>
+    </ul>
+
+    <h3>Ações de Presa:</h3>
+    <ul id="lista-acoes-presa">
+      <li><b>Fugir:</b> A Presa corre para o mais longe possível do Caçador. Teste de Atletismo ou Acrobacia (esse último dá +1 PS em caso de Sucesso, e -1 PS em Fracasso).</li>
+      <li><b>Despistar:</b> A Presa se esconde em algum lugar possível dentro do cenário. Teste de <b>Furtividade DT Percepção do Caçador</b> (o Caçador tem +3d20 no teste, -1d20 por distância em Zonas).</li>
+      <li><b>Ajudar:</b> A Presa passa sua rodada ajudando um aliado a Fugir. Teste de <b>Sobrevivência DT Sucesso Bom</b> dá vantagem de <b>+1d20</b>, <b>Sucesso Extremo</b> dá vantagem de <b>+2d20</b>.</li>
+      <li><b>Criar Obstáculo:</b> A Presa pode usar o cenário, algum Item, ou artifício para atrapalhar o caminho de todos que estiverem qualquer <b>Zona</b> atrás (inclui outras Presas ou Caçadores). A DT do teste de <b>Atletismo ou Acrobacia</b> dos afetados é aumentada em <b>+1 nível</b>.</li>
+    </ul>
+    <br><br>
+
+    <p>Se uma Presa for capturada pelo Caçador, inicia-se uma Cena de Combate entre os dois.</p>
+    <br>
+    <p>Para que um grupo de Presas fuja de um Caçador (ou grupo de Caçadores), todas elas devem Despistar o Caçador (seja se escondendo, seja fugindo até que ele as perca de vista), ou estar em um ponto inalcançável para o Caçador (como dentro de um helicóptero voando).</p>
     
     <h2 id="protecoes">Proteções</h2>
     <p>Além das Ações, também há tipos de <b>Proteções</b> que um personagem pode obter para se proteger melhor dos Ataques, como <b>Coberturas</b> e <b>Camuflagens</b>.</p>
@@ -1531,49 +1574,6 @@
         O jogador tem 15 segundos para resolver um mini-puzzle fornecido pelo mestre, como uma <em>charada</em>, <em>o que é o que é</em>, <em>raciocínio lógico</em>, entre outras. Se o jogador acertar, dá 1d6 de dano de PR na defesa do sistema.</li>
     </ul>
 
-    <h2 id="perseguicoes">Perseguições</h2>
-    <p>A mecânica de Perseguições é uma mecânica para situações que os personagens precisem fugir de algum perigo que está os perseguindo.</p>
-    <br>
-    <p>Se uma Perseguição iniciar, o(s) <b>Caçador(es)</b> será(ão) o último a agir na rodada, ficando atrás da(s) <b>Presa(s)</b>.</p>
-    <br>
-    <p>A área da Perseguição é dividida em <b>Zonas</b>, que são regiões as quais os personagens precisam avançar para conseguir capturar/evitar serem pegos.</p>
-    <br>
-    <p>Se o <b>Caçador</b> estiver na mesma Zona que uma <b>Presa</b>, a <b>Presa</b> é pega; Se houverem 2 <b>Presas</b> na mesma <b>Zona</b> que um <b>Caçador</b>, a <b>Presa</b> capturada é a que tiver menos <b>Pontos de Sucesso</b> (serão explicados mais a frente); Se houverem 2 <b>Presas</b> na mesma <b>Zona</b> que um <b>Caçador</b> com a mesma quantidade de <b>Pontos de Sucesso</b>, o <b>Caçador</b> pode escolher qual <b>Presa</b> capturar.</p>
-    <br>
-    <p>No início da Perseguição, o <b>Caçador</b> inicia no início de sua Zona, há uma <b>Zona livre</b> entre o <b>Caçador</b> e a <b>Presa</b>, e a <b>Presa</b> inicia uma <b>Zona</b> a frente da <b>Zona livre</b> (o mestre pode alterar esse posicionamento baseado no contexto).</p>
-    <br>
-    <p>Para avançar, os personagens têm <b>Pontos de Sucesso (PS)</b>. Os PS definem a posição de um personagem dentro de uma <b>Zona</b>, e a distância para avançar para uma próxima <b>Zona</b>.</p>
-    <br>
-    <p>Para conseguir avançar de <b>Zona</b>, um personagem precisa de um soma total de <b>3 Pontos de Sucesso</b>. Cada tipo de Sucesso dá uma quantidade de PS diferente:</p>
-    <br>
-    <ul id="lista-sucessos-pontos-sucesso">
-      <li><b>Sucesso Normal:</b> 1 PS;</li>
-      <li><b>Sucesso Bom:</b> 2 PS;</li>
-      <li><b>Sucesso Extremo:</b> 3 PS.</li>
-    </ul>
-    <br>
-    <p>Para obter <b>PS</b>, os personagens podem fazer uma Ação dentre as Ações abaixo:</p>
-    <br>
-
-    <h3>Ações de Caçador:</h3>
-    <ul id="lista-acoes-cacador">
-      <li><b>Perseguir:</b> O Caçador corre atrás de sua Presa. Teste de <b>Atletismo ou Acrobacia</b> (esse último dá +1 PS em caso de Sucesso, e -1 PS em Fracasso).</li>
-      <li><b>Criar Obstáculo:</b> O Caçador pode usar o cenário, algum Item, ou artifício para atrapalhar o caminho de todos que estiverem até <b>2 Zonas</b> a frente. A depender da dificuldade da Ação e da Perícia usada, deve fazer um teste com DT definida pelo mestre.</li>
-    </ul>
-
-    <h3>Ações de Presa:</h3>
-    <ul id="lista-acoes-presa">
-      <li><b>Fugir:</b> A Presa corre para o mais longe possível do Caçador. Teste de Atletismo ou Acrobacia (esse último dá +1 PS em caso de Sucesso, e -1 PS em Fracasso).</li>
-      <li><b>Despistar:</b> A Presa se esconde em algum lugar possível dentro do cenário. Teste de <b>Furtividade DT Percepção do Caçador</b> (o Caçador tem +3d20 no teste, -1d20 por distância em Zonas).</li>
-      <li><b>Ajudar:</b> A Presa passa sua rodada ajudando um aliado a Fugir. Teste de <b>Sobrevivência DT Sucesso Bom</b> dá vantagem de <b>+1d20</b>, <b>Sucesso Extremo</b> dá vantagem de <b>+2d20</b>.</li>
-      <li><b>Criar Obstáculo:</b> A Presa pode usar o cenário, algum Item, ou artifício para atrapalhar o caminho de todos que estiverem qualquer <b>Zona</b> atrás (inclui outras Presas ou Caçadores). A DT do teste de <b>Atletismo ou Acrobacia</b> dos afetados é aumentada em <b>+1 nível</b>.</li>
-    </ul>
-    <br><br>
-
-    <p>Se uma Presa for capturada pelo Caçador, inicia-se uma Cena de Combate entre os dois.</p>
-    <br>
-    <p>Para que um grupo de Presas fuja de um Caçador (ou grupo de Caçadores), todas elas devem Despistar o Caçador (seja se escondendo, seja fugindo até que ele as perca de vista), ou estar em um ponto inalcançável para o Caçador (como dentro de um helicóptero voando).</p>
-
     <h2 id="condicoes">Condições</h2>
     <p>As Condições são alterações que podem ser aplicadas em um personagem depois de alguma Ação sofrida, dando algum tipo de malefício ao personagem.</p>
     <br>
@@ -1587,7 +1587,7 @@
       <li><b>ATORDOADO:</b> O personagem fica Desprevenido e não pode fazer Ações.</li>
       <li><b>CAÍDO:</b> Deitado no chão. O personagem sofre desvantagem de -2d20 para fazer Ataques corpo a corpo e seu Deslocamento é reduzido para 1,5 metros. Além disso, sofre desvantagem de -1d20 para Reagir a Ataques corpo a corpo, mas recebe +1d20 para Reagir a ataques à distância.</li>
       <li><b>CEGO:</b> O personagem fica Desprevenido e Lento, não pode fazer testes de Percepção para observar e sofre desvantagem de -2d20 em testes de Perícia com Atributo base Físico. Todos os alvos de seus Ataques recebem Camuflagem Total. Um personagem é considerado Cego enquanto estiver em uma área de escuridão total, a menos que algo lhe permita perceber no escuro, ou se estiver com os olhos fechados, por exemplo.</li>
-      <li><b>DESPREVINIDO:</b> O personagem sofre desvantagem de -2d20 em Reações. Um personagem fica Desprevinido contra inimigos que não possa perceber.</li>
+      <li><b>DESPREVINIDO:</b> O personagem sofre desvantagem de -1d20 em Reações. Um personagem fica Desprevinido contra inimigos que não possa perceber.</li>
       <li><b>DOENTE:</b> Sob efeito de uma doença (baseado na doença, o mestre define as penalidades).</li>
       <li><b>EM CHAMAS:</b> O personagem está pegando fogo. No início de suas rodadas, sofre 1d6 de dano de fogo. O personagem pode gastar uma rodada inteira para apagar o fogo com as mãos. Imersão em água também apaga as chamas.</li>
       <li><b>ENJOADO:</b> O personagem só pode realizar uma Ação de cada tipo na sua rodada em Combates, e demora 2 turnos para fazer uma Ação Principal em outras Cenas.</li>
@@ -1901,7 +1901,7 @@
           <td>-</td>
           <td>-</td>
           <td>-</td>
-          <td>Uma vez por Cena, você pode gastar 3 PD para evitar algum efeito que cause a Condição Surpreendido ou Desprevinido.</td>
+          <td>Uma vez por Cena, você pode evitar algum efeito que cause a Condição Surpreendido ou Desprevinido.</td>
         </tr>
         <tr>
           <td>1</td>
@@ -3065,7 +3065,7 @@
           <td>0</td>
           <td>Fascinar</td>
           <td>3 PD</td>
-          <td>Qualquer pessoa</td>
+          <td>Todas as pessoas escolhidas no alcance</td>
           <td>Círculo de raio de alcance Curto (9 metros)</td>
           <td>Vontade anula</td>
           <td>Uma vez por Cena, você pode fazer um teste de Diplomacia ou Lábia DT Vontade do(s) alvo(s). Se vencer e tiver Sucesso, o alvo fica Fascinado por você.</td>
@@ -3393,7 +3393,7 @@
           <td>0</td>
           <td>Fascinar</td>
           <td>3 PD</td>
-          <td>Qualquer pessoa</td>
+          <td>Todas as pessoas escolhidas no alcance</td>
           <td>Círculo de raio de alcance Curto (9 metros)</td>
           <td>Vontade anula</td>
           <td>Uma vez por Cena, você pode fazer um teste de Diplomacia ou Lábia DT Vontade do(s) alvo(s). Se vencer e tiver Sucesso, o alvo fica Fascinado por você.</td>
@@ -3883,12 +3883,12 @@
         <tbody>
         <tr>
           <td>0</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td>Mãos Ágeis</td>
+          <td>3 PD</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>Uma vez por Cena, você reduz uma ação que custaria uma Ação Principal para uma Ação Livre.</td>
         </tr>
         <tr>
           <td>1</td>
@@ -6999,12 +6999,12 @@
         <tbody>
         <tr>
           <td>0</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td>Conhecimentos Gerais</td>
+          <td>3 PD</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>Você soma seu valor no Atributo Cognição no valor númerico da Perícia do seu próximo teste.</td>
         </tr>
         <tr>
           <td>1</td>
@@ -8149,7 +8149,7 @@
           <td>0</td>
           <td>Fascinar</td>
           <td>3 PD</td>
-          <td>Qualquer pessoa</td>
+          <td>Todas as pessoas escolhidas no alcance</td>
           <td>Círculo de raio de alcance Curto (9 metros)</td>
           <td>Vontade anula</td>
           <td>Uma vez por Cena, você pode fazer um teste de Diplomacia ou Lábia DT Vontade do(s) alvo(s). Se vencer e tiver Sucesso, o alvo fica Fascinado por você.</td>
@@ -9624,11 +9624,11 @@
         <tr>
           <td>0</td>
           <td>Devoção</td>
-          <td>5 PD</td>
+          <td>4 PD</td>
           <td>-</td>
           <td>-</td>
           <td>-</td>
-          <td>Você pode gastar 5 PD. Se fizer isso, seu próximo teste de Perícia será alterado para um teste de Área - Religião.</td>
+          <td>Seu próximo teste de Perícia será alterado para um teste de Área - Religião.</td>
         </tr>
         <tr>
           <td>1</td>
@@ -10445,7 +10445,7 @@
           <td>0</td>
           <td>Fascinar</td>
           <td>3 PD</td>
-          <td>Qualquer pessoa</td>
+          <td>Todas as pessoas escolhidas no alcance</td>
           <td>Círculo de raio de alcance Curto (9 metros)</td>
           <td>Vontade anula</td>
           <td>Uma vez por Cena, você pode fazer um teste de Diplomacia ou Lábia DT Vontade do(s) alvo(s). Se vencer e tiver Sucesso, o alvo fica Fascinado por você.</td>
@@ -11919,12 +11919,12 @@
         <tbody>
         <tr>
           <td>0</td>
-          <td>Disciplina</td>
+          <td>Ensinar</td>
           <td>4 PD</td>
-          <td>Uma pessoa</td>
+          <td>1 pessoa</td>
           <td>Curto (9 metros)</td>
           <td>-</td>
-          <td>Escolha uma Perícia e um alvo. No próximo teste que o alvo realizar com a Perícia escolhida, ele utiliza a mesma quantidade de dados e o mesmo bônus numérico que você possui nela.</td>
+          <td>Você deve escolher uma Perícia e um alvo. No próximo teste que o alvo realizar com a Perícia escolhida, ele utiliza a mesma quantidade de dados e o mesmo valor numérico que você possui nela.</td>
         </tr>
         <tr>
           <td>1</td>
