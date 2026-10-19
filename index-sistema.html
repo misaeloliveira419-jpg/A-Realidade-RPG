@@ -1186,10 +1186,10 @@
     <br>
     <p>Uma Cena não tem duração definida, podendo durar minutos ou horas.</p>
     <br>
-    <p>A cada rodada de uma Cena, um personagem pode fazer uma quantidade de Ações definida pela Cena, com excessão de Ações Livres, que são infinitas.</p>
+    <p>A cada rodada de uma Cena, um personagem pode fazer uma quantidade de Ações definida pela Cena, com excessão de <b>Ações Livres</b>, que são <b>infinitas</b>.</p>
 
     <h2 id="tipos-cena">Tipos de Cena</h2>
-    <p>Existem alguns tipos de cenas, sendo elas: <b>Cena de Exploração</b>, <b>Cena de Interlúdio</b>, <b>Cena de Investigação</b>, e <b>Cena de Combate</b>.</p>
+    <p>Existem alguns tipos de cenas, sendo elas: <b>Cena de Exploração</b>, <b>Cena de Interlúdio</b>, <b>Cena de Investigação</b>, <b>Cena de Combate</b>, e <b>Cena de Perseguição</b>.</p>
 
     <h2 id="cena-exploracao">Cena de Exploração</h2>
     <p>Uma Cena de Exploração é caracterizada pela exploração de uma área ou região, com o objetivo de conhecer melhor o ambiente de uma maneira geral, como um shopping, parque, etc.</p>
@@ -1248,20 +1248,24 @@
       <li><b>Interagir:</b> O personagem interage fisicamente com o PI, como abrir um livro, ou olhar embaixo de um tapete. Isso não requer testes, basta a criatividade do jogador.</li>
       <li><b>Analisar:</b> O jogador pode requisitar uma Perícia específica ao mestre para obter mais informações sobre o PI baseado no valor de sua Perícia. Por exemplo, tentar obter informações com a perícia Área - Linguagem ao analisar um livro. Baseado na Perícia descrita pelo jogador, e pela coerência dela com o PI, o mestre pode fornecer informações.
         <br>
-        Além disso, o jogador pode realizar um teste dessa Perícia para tentar obter informações ainda mais específicas baseado no nível do Sucesso obtido.</li>
+        Além disso, o jogador pode gastar 1 PD para rolar um teste da Perícia que escolheu se achar que não obteve todas as informações que podia.
+        <br>
+        A cada novo teste que fizer no mesmo PI, o jogador deve gastar 1 PD a mais (por exemplo, se fizer uma segunda vez, gasta 2 PD, se fizer uma terceira vez, gasta 3 PD, e assim por diante).</li>
     </ul>
 
     <h2 id="cena-combate">Cena de Combate</h2>
     <p>Um Combate ocorre quando há algum tipo de confronto entre personagens, seja ele uma luta física, uma troca de tiros, etc.</p>
     <br>
-    <p>Durante uma Cena de Combate, um personagem pode fazer <b>2 Ações Principais</b>, <b>até 2 Ações Rápidas</b>, e uma quantidade <b>variável de Reações</b>.</p>
+    <p>Durante uma Cena de Combate, um personagem pode fazer <b>1 Ação Principal</b>, <b>1 Ação Rápida</b>, e uma quantidade <b>variável de Reações</b>.</p>
+    <br>
+    <p>Um personagem pode fazer uma <b>Ação Rápida</b> como uma <b>Ação Principal</b>, mas <u>não</u> pode fazer uma <b>Ação Principal</b> como uma <b>Ação Rápida</b>.</p>
     <br>
     <p>Uma <b>Ação Principal</b> é uma Ação que exige maior esforço, que demora mais para ser realizada, ou que impacta diretamente no Combate.</p>
     <br>
     <h3>Lista de Ações Principais de Combate:</h3>
     <ul class="lista-acoes-combate">
 
-      <li><b>Ações de Ataque:</b> O personagem faz um teste de Luta ou outra perícia situacional contra a Reação do alvo (quem vence o teste depende do tipo de Reação usada). Se, tanto o atacante quanto o defensor, tiverem Fracasso, o Ataque não tem êxito; Em casos de Desastre, o mestre deve definir o que acontecerá. Se um Ataque com Sucesso Extremo for acertado, o dano causado é máximo. Fazer um Ataque com uma Arma de Fogo ou Precisão a alcance Pessoal, ou fazer um Ataque com uma Arma de Fogo ou Precisão com aliados a alcance Pessoal do alvo, causa desvantagem de -1d20 no teste de Ataque.</li>
+      <li><b>Ações de Ataque:</b> O personagem faz um teste de Luta ou outra Perícia situacional contra a Reação do alvo (quem vence o teste depende do tipo de Reação usada). Se, tanto o atacante quanto o defensor, tiverem Fracasso, o Ataque não tem êxito; Em casos de Desastre, o mestre deve definir o que acontecerá. Se um Ataque com Sucesso Extremo for acertado, o dano causado é máximo. Fazer um Ataque com uma Arma de Fogo ou Precisão a alcance Pessoal, ou fazer um Ataque com uma Arma de Fogo ou Precisão com aliados a alcance Pessoal do alvo, causa desvantagem de -1d20 no teste de Ataque.</li>
         <ul class="sub-lista-acoes-combate">
           <li><b>Padrão:</b> O personagem desfere um golpe único em um alvo (1d4 + Físico de dano de impacto em golpes desarmados).</li>
           <li><b>Rajada:</b> O personagem desfere até 3 golpes de uma só vez no mesmo Ataque, sendo que a cada novo golpe, ele tem penalidade de -1d20 no teste (por exemplo, dar 2 golpes diminui -1d20 no teste. Se um personagem chegar a 0d20 no teste e ainda puder dar mais um golpe, a cada novo golpe após isso tem desvantagem de -3 na Perícia do teste). Porém, se acertar o Ataque, os dados de dano são multiplicados pela <b>quantidade de golpes dada</b> (ou seja, se acertar um Ataque que daria 1d8 de dano dando 2 golpes, o dano será 2d8).</li>
@@ -1275,37 +1279,36 @@
           <li><b>Empurrar:</b> O personagem empurra um alvo para uma direção escolhida de até 3 metros. Para isso, precisa <b>vencer</b> para empurrar o alvo.</li>
         </ul>
       </li>
-
-      <li><b>Ação de Movimento:</b> O personagem se move em uma distância máxima igual ao seu Deslocamento.</li>
       
       <li><b>Ações Especiais:</b> Algumas Ações Adicionais que o personagem pode fazer durante a Cena.
         <ul class="sub-lista-acoes-combate">
           <li><b>Mirar:</b> O personagem passa a Ação inteira mirando o Ataque em um alvo, ganhando vantagem de +1d20 no próximo ataque ao alvo escolhido.</li>
           <li><b>Preparar:</b> O personagem guarda uma Ação, para que seja feita em qualquer rodada até o fim do turno (o jogador não pode mudar essa Ação, apenas desfazê-la).</li>
-          <li><b>Investida:</b> O personagem gasta 2 Ações Principais e 2 PV percorrendo seu Deslocamento + 1 metro por valor de Atletismo, e desfere um Ataque físico em um alvo. O dano desse Ataque aumenta em +2d6, porém o personagem tem penalidade de -1d20 nas suas Reações até o início da sua próxima rodada.</li>
+          <li><b>Investida:</b> O personagem gasta todas as suas Ações e 2 PV percorrendo seu Deslocamento + 1 metro por valor de Atletismo, e desfere um Ataque físico em um alvo. O dano desse Ataque aumenta em +2d6, porém o personagem tem penalidade de -1d20 nas suas Reações até o início da sua próxima rodada.</li>
         </ul>
       </li>
     </ul>
     <br><br>
 
-    <p>Uma <b>Ação Rápida</b> é uma Ação simples e rápida, a qual demanda pouco tempo para ser feita, ou que pode ser feita em conjunto de outras ações, como <b>entregar/receber um item</b> que já foi sacado, olhar ao redor, etc.</p>
+    <p>Uma <b>Ação Rápida</b> é uma Ação simples e rápida, a qual demanda pouco tempo para ser feita, ou que pode ser feita em conjunto de outras Ações, como <b>entregar ou receber um item</b> que já foi sacado, olhar ao redor, etc.</p>
     <br>
     <h3>Lista de Ações Rápidas de Combate:</h3>
     <ul class="lista-acoes-combate">
+      <li><b>Movimentar-se:</b> O personagem se move em uma distância máxima igual ao seu Deslocamento.</li>
       <li><b>Observar:</b> O personagem olha ao redor rapidamente, para entender o que está acontecendo no meio do Combate.</li>
       <li><b>Levantar rápido:</b> O personagem se levanta rapidamente. Para isso, deve fazer um teste de Acrobacia, precisando de um Sucesso para levantar-se. Se falhar, cai no chão gastando 1 Ação Principal.</li>
-      <li><b>Entregar/Receber Item:</b> O personagem entrega um Item para outro a alcance Pessoal, ou recebe um Item de outro a alcance Pessoal.</li>
+      <li><b>Entregar/Receber Item:</b> O personagem entrega um Item para outro a alcance Pessoal, ou recebe um Item de outro a alcance Pessoal. Tentar entregar um Item de uma distância maior (arremessando) demanda uma Ação Principal.</li>
       <li><b>Soltar Item:</b> O personagem larga um Item no chão.</li>
       <li><b>Apanhar Item:</b> O personagem apanha um Item a alcance Pessoal do chão.</li>
       <li><b>Jogar-se ao chão:</b> O personagem se atira ao chão a alcance Pessoal rapidamente.</li>
     </ul>
     <br><br>
 
-    <p>Uma Reação é uma Ação reativa a algum acontecimento dentro do Combate, como reagir a um ataque que está sofrendo, reagir a um ataque que um aliado está sofrendo (se jogando na frente dele), etc.</p>
+    <p>Uma <b>Reação</b> é uma Ação reativa a algum acontecimento dentro do Combate, como reagir a um Ataque que está sofrendo, reagir a um Ataque que um aliado está sofrendo (se jogando na frente dele), etc.</p>
     <br>
-    <p>A cada nova Reação que um personagem fizer no turno, ele tem penalidade de -1d20 no teste.</p>
+    <p>A cada nova Reação que um personagem fizer no turno, ele tem desvantagem de -1d20 no teste.</p>
     <br>
-    <p>O limite de Reações é atingido quando seu teste de Reação chegar a 0d20 (joga dois dados e pega o pior resultado). Após essa Reação, ele não pode mais reagir.</p>
+    <p>O <em>limite de Reações</em> é atingido quando seu teste de Reação chegar a 0d20 (joga dois dados e pega o pior resultado). Após essa Reação, ele não pode mais Reagir.</p>
     <br>
 
     <h3>Lista de Reações de Combate:</h3>
@@ -1315,14 +1318,14 @@
         <ul class="sub-lista-acoes-combate">
           <li><b>Esquivar:</b> O personagem desvia de um Ataque sofrido. Para isso, deve fazer um teste de <b>Reflexo</b>, precisando <b>vencer</b> para desviar do ataque (não é possível Esquivar de um tiro de uma Arma de Fogo ou Precisão, com exceção se estiver protegido por uma Cobertura Parcial).</li>
           <li><b>Bloquear:</b> O personagem resiste ao Ataque fisicamente. Para isso, deve fazer um teste de <b>Fortitude</b>, precisando <b>empatar</b> para bloquear o ataque (não é possível Bloquear um tiro de uma Arma de Fogo ou Precisão).</li>
-          <li><b>Contra-atacar:</b> O personagem contra-ataca um alvo que acabou de fazer um Ataque. Para fazer isso, deve fazer um teste de <b>Luta</b> (ou outra perícia situacional). Se <b>vencer</b>, acerta o contra-ataque; Se <b>empatar</b>, o atacante dá metade do dano do Ataque e o defensor dá metade do dano do Contra-ataque; Se <b>perder</b> e for o alvo do Ataque, sofre o dano do Ataque e tem uma desvantagem de -1d20 no próximo teste de Perícia, e se <b>perder</b> mas não for o alvo do Ataque, apenas não acerta o Contra-ataque (não é possível Contra-atacar um Ataque à Distância).</li>
+          <li><b>Contra-atacar:</b> O personagem revida contra um alvo que acabou de fazer um Ataque. Para fazer isso, deve fazer um teste de <b>Luta</b> (ou outra perícia situacional). Se <b>vencer</b>, acerta o Contra-ataque; Se <b>empatar</b>, o atacante dá metade do dano do Ataque e o defensor dá metade do dano do Contra-ataque; Se <b>perder</b> e for o alvo do Ataque, sofre o dano do Ataque e tem uma desvantagem de -1d20 no próximo teste de Perícia, e se <b>perder</b> mas não for o alvo do Ataque, apenas não acerta o Contra-ataque (não é possível Contra-atacar um Ataque à Distância).</li>
           <li><b>Intrometer-se:</b> O personagem se põe na frente de um alvo a alcance Pessoal que está prestes a sofrer um Ataque. Para isso, deve fazer um teste de <b>Reflexo DT Sucesso Bom</b> para se pôr a frente do alvo.</li>
         </ul>
       </li>
 
       <li><b>Reações a Ações Táticas:</b>
         <ul class="sub-lista-acoes-combate">
-          <li><b>Desagarrar:</b> O personagem evita um Agarrar sofrido. Para isso, deve fazer um teste de <b>Atletismo</b> ou <b>Luta</b>, precisando <b>vencer</b> para evitar a Condição.</li>
+          <li><b>Soltar-se:</b> O personagem evita um Agarrar sofrido. Para isso, deve fazer um teste de <b>Atletismo</b> ou <b>Luta</b>, precisando <b>vencer</b> para evitar a Condição.</li>
           <li><b>Suster-se:</b> O personagem resiste a um Derrubar ou Empurrar sofrido. Para isso, deve fazer um teste de <b>Atletismo</b> ou <b>Luta</b>, precisando <b>empatar</b> para evitar ser Caído ou empurrado.</li>
         </ul>
       </li>
@@ -2111,22 +2114,9 @@
           <td></td>
           <td></td>
           <td></td>
-          <td></td>
         </tr>
         <tr>
           <td>1</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>1</td>
-          <td></td>
           <td></td>
           <td></td>
           <td></td>
@@ -2144,6 +2134,15 @@
           <td></td>
           <td></td>
           <td></td>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
           <td></td>
         </tr>
         <tr>
@@ -2155,7 +2154,6 @@
           <td></td>
           <td></td>
           <td></td>
-          <td></td>
         </tr>
         <tr>
           <td>1</td>
@@ -2166,22 +2164,9 @@
           <td></td>
           <td></td>
           <td></td>
-          <td></td>
         </tr>
         <tr>
           <td>2</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td></td>
           <td></td>
           <td></td>
           <td></td>
@@ -2199,6 +2184,15 @@
           <td></td>
           <td></td>
           <td></td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
           <td></td>
         </tr>
         <tr>
@@ -2210,7 +2204,6 @@
           <td></td>
           <td></td>
           <td></td>
-          <td></td>
         </tr>
         <tr>
           <td>2</td>
@@ -2221,22 +2214,9 @@
           <td></td>
           <td></td>
           <td></td>
-          <td></td>
         </tr>
         <tr>
           <td>3</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>3</td>
-          <td></td>
           <td></td>
           <td></td>
           <td></td>
@@ -2254,6 +2234,15 @@
           <td></td>
           <td></td>
           <td></td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
           <td></td>
         </tr>
         <tr>
@@ -2265,11 +2254,9 @@
           <td></td>
           <td></td>
           <td></td>
-          <td></td>
         </tr>
         <tr>
           <td>3</td>
-          <td></td>
           <td></td>
           <td></td>
           <td></td>
@@ -4113,11 +4100,11 @@
           <td>0</td>
           <td>Mãos Ágeis</td>
           <td>4 PD</td>
+          <td>Ação Livre</td>
           <td>-</td>
           <td>-</td>
           <td>-</td>
-          <td>-</td>
-          <td>Uma vez por Cena, você reduz uma ação que custaria uma Ação Principal para uma Ação Livre.</td>
+          <td>Uma vez por Cena, você reduz sua próxima Ação que demandaria uma Ação Principal para uma Ação Livre.</td>
         </tr>
         <tr>
           <td>1</td>
@@ -4656,7 +4643,7 @@
           <td>0</td>
           <td>Conhecimentos Gerais</td>
           <td>3 PD</td>
-          <td>-</td>
+          <td>Ação Livre</td>
           <td>-</td>
           <td>-</td>
           <td>-</td>
@@ -7552,11 +7539,11 @@
           <td>0</td>
           <td>Avaliação</td>
           <td>3 PD</td>
+          <td>Ação Livre</td>
           <td>-</td>
           <td>-</td>
           <td>-</td>
-          <td>-</td>
-          <td></td>
+          <td>Você recebe +2 pontos no valor numérico de uma Perícia se fizer a Ação Observar ou Analisar.</td>
         </tr>
         <tr>
           <td>1</td>
@@ -8819,7 +8806,7 @@
           <td>0</td>
           <td>Fascinar</td>
           <td>3 PD</td>
-          <td>Ação Livre</td>
+          <td>Ação Principal</td>
           <td>Todas as pessoas escolhidas no alcance</td>
           <td>Círculo de raio de alcance Curto (9 metros)</td>
           <td>Vontade anula</td>
@@ -11353,7 +11340,7 @@
           <td>0</td>
           <td>Fascinar</td>
           <td>3 PD</td>
-          <td>Ação Livre</td>
+          <td>Ação Principal</td>
           <td>Todas as pessoas escolhidas no alcance</td>
           <td>Círculo de raio de alcance Curto (9 metros)</td>
           <td>Vontade anula</td>

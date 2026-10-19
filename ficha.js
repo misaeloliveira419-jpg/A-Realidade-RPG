@@ -1583,6 +1583,7 @@ function habilidadeVaziaCategoriaZero() {
     categoria: 0,
     nome: "",
     custo: "",
+    acao: "",
     alvo: "",
     alcance: "",
     resistencia: "",
@@ -1590,19 +1591,10 @@ function habilidadeVaziaCategoriaZero() {
   };
 }
 
-function normalizarHabilidadeSalva(
-  habilidade,
-  tipo,
-  indice
-) {
-  const dados =
-    habilidade &&
-    typeof habilidade === "object"
-      ? habilidade
-      : {};
+function normalizarHabilidadeSalva(habilidade, tipo, indice) {
+  const dados = habilidade && typeof habilidade === "object" ? habilidade : {};
 
-  const categoriaNumero =
-    Number(dados.categoria);
+  const categoriaNumero = Number(dados.categoria);
 
   const categoria =
     Number.isInteger(categoriaNumero)
@@ -1624,35 +1616,19 @@ function normalizarHabilidadeSalva(
 
     categoria: categoria,
 
-    nome:
-      textoHabilidadeSeguro(
-        dados.nome
-      ),
+    nome: textoHabilidadeSeguro(dados.nome),
 
-    custo:
-      textoHabilidadeSeguro(
-        dados.custo
-      ),
+    custo: textoHabilidadeSeguro(dados.custo),
 
-    alvo:
-      textoHabilidadeSeguro(
-        dados.alvo
-      ),
+    acao: textoHabilidadeSeguro(dados.acao),
 
-    alcance:
-      textoHabilidadeSeguro(
-        dados.alcance
-      ),
+    alvo: textoHabilidadeSeguro(dados.alvo),
 
-    resistencia:
-      textoHabilidadeSeguro(
-        dados.resistencia
-      ),
+    alcance: textoHabilidadeSeguro(dados.alcance),
 
-    descricao:
-      textoHabilidadeSeguro(
-        dados.descricao
-      ),
+    resistencia: textoHabilidadeSeguro(dados.resistencia),
+
+    descricao: textoHabilidadeSeguro(dados.descricao),
 
     origem: origem
   };
@@ -1732,6 +1708,9 @@ function copiarEstadoHabilidadesFicha() {
 
           custo:
             habilidade.custo,
+
+          acao:
+            habilidade.acao,
 
           alvo:
             habilidade.alvo,
@@ -1938,11 +1917,7 @@ function extrairHabilidadeCategoriaZero(
   };
 }
 
-function extrairTodasHabilidadesTabela(
-  tabela,
-  tipo,
-  origem
-) {
+function extrairTodasHabilidadesTabela(tabela, tipo, origem) {
   if (!tabela) {
     return [];
   }
@@ -1999,6 +1974,11 @@ function extrairTodasHabilidadesTabela(
   const indiceCusto =
     indiceCampo(
       ["custo"]
+    );
+
+  const indiceAcao =
+    indiceCampo(
+      ["acao"]
     );
 
   const indiceAlvo =
@@ -2086,6 +2066,12 @@ function extrairTodasHabilidadesTabela(
           textoCelula(
             celulas,
             indiceCusto
+          ),
+
+        acao:
+          textoCelula(
+            celulas,
+            indiceAcao
           ),
 
         alvo:
@@ -2335,6 +2321,11 @@ function criarHabilidadeDoSistema(
     custo:
       textoHabilidadeSeguro(
         dados.custo
+      ),
+
+    acao:
+      textoHabilidadeSeguro(
+        dados.acao
       ),
 
     alvo:
@@ -2815,6 +2806,14 @@ function criarCardHabilidadeFicha(
           <textarea
             rows="1"
             data-campo-habilidade="custo"
+          ></textarea>
+        </label>
+
+        <label>
+          <span>AÇÃO</span>
+          <textarea
+            rows="1"
+            data-campo-habilidade="acao"
           ></textarea>
         </label>
 
@@ -3312,6 +3311,7 @@ function criarHabilidadePessoalFicha() {
 
     nome: "",
     custo: "",
+    acao: "",
     alvo: "",
     alcance: "",
     resistencia: "",
@@ -3522,6 +3522,7 @@ function habilidadeCombinaComPesquisa(
     [
       habilidade.nome,
       habilidade.custo,
+      habilidade.acao,
       habilidade.alvo,
       habilidade.alcance,
       habilidade.resistencia,
@@ -3564,6 +3565,9 @@ function copiarHabilidadeDoCatalogo(
 
     custo:
       habilidade.custo,
+    
+    acao:
+      habilidade.acao,
 
     alvo:
       habilidade.alvo,
@@ -3807,6 +3811,15 @@ function criarCardCatalogoHabilidade(
           rows="1"
           readonly
           data-campo-catalogo="custo"
+        ></textarea>
+      </label>
+
+      <label>
+        <span>AÇÃO</span>
+        <textarea
+          rows="1"
+          readonly
+          data-campo-catalogo="acao"
         ></textarea>
       </label>
 
@@ -4236,29 +4249,63 @@ pesquisaCatalogoHabilidades
   );
 
 
-botoesPerfisCatalogoHabilidades
-  .forEach(
-    botao => {
-      botao.addEventListener(
-        "click",
-        () => {
-          perfilCatalogoHabilidadesAtivo =
-            botao.dataset
-              .perfilCatalogo;
+botoesPerfisCatalogoHabilidades.forEach(botao => {
+  botao.addEventListener("click", () => {
+    perfilCatalogoHabilidadesAtivo = botao.dataset.perfilCatalogo;
 
-          atualizarMenuPerfisCatalogo();
-          renderizarCatalogoHabilidades();
-        }
-      );
-    }
-  );
+    atualizarMenuPerfisCatalogo();
+    renderizarCatalogoHabilidades();
+  });
+});
 
+ocupacaoCatalogoHabilidades ?.addEventListener("change", renderizarCatalogoHabilidades);
 
-ocupacaoCatalogoHabilidades
-  ?.addEventListener(
-    "change",
-    renderizarCatalogoHabilidades
-  );
+function preencherAcoesAntigasHabilidadesFicha() {
+  let alterou = false;
+
+  const procurarNoCatalogo = (habilidade,tipo) => {
+    const grupos =
+      tipo === "perfil"
+        ? catalogoCompletoHabilidadesSistema.perfis
+        : catalogoCompletoHabilidadesSistema.ocupacoes;
+
+    const habilidades =
+      Object.values(grupos).flat();
+
+    return habilidades.find(item =>
+      habilidade.catalogoId &&
+      habilidade.catalogoId === item.catalogoId
+    ) || habilidades.find(item =>
+      item.origem === habilidade.origem &&
+      Number(item.categoria) === Number(habilidade.categoria) &&
+      normalizarTextoHabilidade(item.nome) === normalizarTextoHabilidade(habilidade.nome)
+    );
+  };
+
+  [
+    ["perfil",estadoHabilidadesFicha.perfil],
+    ["ocupacao",estadoHabilidadesFicha.ocupacao]
+  ].forEach(([tipo,lista]) => {
+    lista.forEach(habilidade => {
+      if (habilidade.acao) return;
+
+      const habilidadeSistema =
+        procurarNoCatalogo(
+          habilidade,
+          tipo
+        );
+
+      if (!habilidadeSistema?.acao) return;
+
+      habilidade.acao =
+        habilidadeSistema.acao;
+
+      alterou = true;
+    });
+  });
+
+  return alterou;
+}
 
 /* Preencher a aba */
 
@@ -4272,6 +4319,16 @@ async function preencherHabilidadesFicha(ficha) {
 
   if (salvo.inicializadas) {
     estadoHabilidadesFicha = salvo;
+
+    const acoesAtualizadas = preencherAcoesAntigasHabilidadesFicha();
+
+    if (acoesAtualizadas && podeEditarFichaAtual) {
+      try {
+        await salvarHabilidadesFichaImediatamente();
+      } catch (erro) {
+        console.error("Não foi possível atualizar as Ações das Habilidades antigas:", erro);
+      }
+    }
 
   } else {
     estadoHabilidadesFicha = await criarEstadoInicialHabilidadesFicha(ficha);
