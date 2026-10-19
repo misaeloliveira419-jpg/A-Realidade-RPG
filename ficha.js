@@ -4197,15 +4197,9 @@ botaoAdicionarHabilidadePerfil
   );
 
 
-botaoAdicionarHabilidadeOcupacao
-  ?.addEventListener(
-    "click",
-    () => {
-      abrirCatalogoHabilidades(
-        "ocupacao"
-      );
-    }
-  );
+botaoAdicionarHabilidadeOcupacao ?.addEventListener("click", () => {
+  abrirCatalogoHabilidades("ocupacao");
+});
 
 
 fecharCatalogoHabilidades
