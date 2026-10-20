@@ -4106,7 +4106,6 @@ function preencherSelectOcupacoesCatalogo() {
     "";
 }
 
-
 function atualizarMenuPerfisCatalogo() {
   botoesPerfisCatalogoHabilidades
     .forEach(
