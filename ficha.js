@@ -35,6 +35,7 @@ let nomeFichaSalvo = "";
 let podeEditarFichaAtual = true;
 let papelCampanhaFichaAtual = null;
 let tipoFichaCampanhaAtual = null;
+let podeAlterarNiveisFicha = false;
 let cancelarEscutaVinculosPersonagensFicha = null;
 let cancelamentosDadosPersonagensFicha = [];
 let ordemPersonagensCampanhaFicha = [];
@@ -102,6 +103,51 @@ function verificarElementosPontosFicha() {
     throw new Error(
       `Elementos ausentes na tela de Pontos de Ficha: ${faltando.join(", ")}`
     );
+  }
+}
+async function verificarPermissaoNiveisFicha(usuario) {
+  if (previewLocal) return true;
+  if (!usuario) return false;
+
+  try {
+    const documento = await db.collection("usuarios").doc(usuario.uid).get();
+
+    return documento.exists &&
+      documento.data().papel === "mestre";
+  } catch (erro) {
+    console.error("Erro ao verificar permissão de Níveis:",erro);
+    return false;
+  }
+}
+function aplicarPermissaoNiveisFicha() {
+  const campos = [
+    campoNcpFicha,
+    campoNeoFicha,
+    campoNivelPerfilHabilidadesFicha,
+    campoNivelOcupacaoHabilidadesFicha
+  ].filter(Boolean);
+
+  campos.forEach(campo => {
+    campo.disabled = !podeAlterarNiveisFicha;
+
+    campo.title = podeAlterarNiveisFicha
+      ? "Alterar Nível"
+      : "Somente o Mestre pode alterar este Nível.";
+  });
+}
+function restaurarCamposNiveisFicha() {
+  const ncp = String(Number(dadosFichaAtual?.ncp) || 0);
+  const neo = String(Number(dadosFichaAtual?.neo) || 0);
+
+  campoNcpFicha.value = ncp;
+  campoNeoFicha.value = neo;
+
+  if (campoNivelPerfilHabilidadesFicha) {
+    campoNivelPerfilHabilidadesFicha.value = ncp;
+  }
+
+  if (campoNivelOcupacaoHabilidadesFicha) {
+    campoNivelOcupacaoHabilidadesFicha.value = neo;
   }
 }
 
@@ -874,6 +920,8 @@ async function carregarFichaAutenticada(usuario) {
     return;
   }
 
+  podeAlterarNiveisFicha = await verificarPermissaoNiveisFicha(usuario);
+
   let contextoCampanha = null;
 
   if (idCampanhaFicha) {
@@ -941,7 +989,8 @@ async function carregarFichaAutenticada(usuario) {
     await preencherPontosFicha(ficha);
     await preencherHabilidadesFicha(ficha);
     await preencherInventarioFicha(ficha);
-
+    
+    aplicarPermissaoNiveisFicha();
     aplicarPermissaoEdicaoFicha();
     iniciarEscutasRolagensFicha();
     iniciarEscutaRecursosFicha();
@@ -4385,47 +4434,37 @@ campoOcupacao2HabilidadesFicha
     }
   );
 
-campoNivelPerfilHabilidadesFicha
-  ?.addEventListener(
-    "change",
-    () => {
-      const campoNcp =
-        document.getElementById(
-          "ncp-ficha"
-        );
+campoNivelPerfilHabilidadesFicha ?.addEventListener("change", () => {
 
-      if (!campoNcp) return;
+  if (!podeAlterarNiveisFicha) {
+    restaurarCamposNiveisFicha();
+    return;
+  }
 
-      campoNcp.value =
-        campoNivelPerfilHabilidadesFicha
-          .value;
+  const campoNcp = document.getElementById("ncp-ficha");
 
-      campoNcp.dispatchEvent(
-        new Event("change")
-      );
-    }
-  );
+  if (!campoNcp) return;
+  
+  campoNcp.value = campoNivelPerfilHabilidadesFicha.value;
 
-campoNivelOcupacaoHabilidadesFicha
-  ?.addEventListener(
-    "change",
-    () => {
-      const campoNeo =
-        document.getElementById(
-          "neo-ficha"
-        );
+  campoNcp.dispatchEvent(new Event("change"));
+});
 
-      if (!campoNeo) return;
+campoNivelOcupacaoHabilidadesFicha ?.addEventListener("change", () => {
 
-      campoNeo.value =
-        campoNivelOcupacaoHabilidadesFicha
-          .value;
+  if (!podeAlterarNiveisFicha) {
+    restaurarCamposNiveisFicha();
+    return;
+  }
 
-      campoNeo.dispatchEvent(
-        new Event("change")
-      );
-    }
-  );
+  const campoNeo = document.getElementById("neo-ficha");
+
+  if (!campoNeo) return;
+
+  campoNeo.value = campoNivelOcupacaoHabilidadesFicha.value;
+
+  campoNeo.dispatchEvent(new Event("change"));
+});
 
 campoPerfilFicha.addEventListener(
   "change",
@@ -5097,6 +5136,90 @@ const BONUS_NATURAL_TOTAL_FICHA = 5;
 const BONUS_NATURAL_POR_PERICIA_FICHA = 3;
 const MAXIMO_PERICIA_NORMAL_FICHA = 12;
 const MAXIMO_PERICIA_NATURAL_FICHA = 14;
+const BENEFICIOS_NIVEIS_FICHA = {
+  ncp: {
+    1: [
+      {tipo:"pendente",chave:"habilidade-perfil",texto:"Habilidade de Perfil - Categoria 1.",categoriaMin:1,categoriaMax:1}
+    ],
+
+    2: [
+      {tipo:"pendente",chave:"evolucao-ou-habilidade-perfil",texto:"Evolução de Habilidade de Perfil - Categoria 1 ou Habilidade de Perfil - Categoria 1 a 2.",categoriaMin:1,categoriaMax:2},
+      {tipo:"pontos-pericia",valor:5},
+      {tipo:"pd",valor:2}
+    ],
+
+    3: [
+      {tipo:"pendente",chave:"evolucao-ou-habilidade-pessoal",texto:"Evolução de Habilidade Pessoal 1 ou Habilidade Pessoal 2."},
+      {tipo:"pendente",chave:"habilidade-perfil",texto:"Habilidade de Perfil - Categoria 1 a 3.",categoriaMin:1,categoriaMax:3}
+    ],
+
+    4: [
+      {tipo:"pendente",chave:"evolucao-habilidade-perfil",texto:"Evolução de Habilidade de Perfil - Categoria 0 a 3.",categoriaMin:0,categoriaMax:3},
+      {tipo:"pontos-pericia",valor:5},
+      {tipo:"pd",valor:2}
+    ],
+
+    5: [
+      {tipo:"pendente",chave:"evolucao-habilidade-pessoal",texto:"Evolução de Habilidade Pessoal 1 ou 2."},
+      {tipo:"pendente",chave:"habilidade-perfil-ou-pessoal",texto:"Habilidade de Perfil - Categoria 1 a 3 ou Habilidade Pessoal 3.",categoriaMin:1,categoriaMax:3},
+      {tipo:"atributo",valor:1}
+    ]
+  },
+
+  neo: {
+    1: [
+      {tipo:"pendente",chave:"habilidade-ocupacao",texto:"Habilidade de Ocupação - Categoria 1.",categoriaMin:1,categoriaMax:1}
+    ],
+
+    2: [
+      {tipo:"pericia-natural",valor:1},
+      {tipo:"pontos-pericia",valor:4},
+      {tipo:"pd",valor:1}
+    ],
+
+    3: [
+      {tipo:"pendente",chave:"habilidade-ocupacao",texto:"Habilidade de Ocupação - Categoria 1.",categoriaMin:1,categoriaMax:1},
+      {tipo:"pendente",chave:"reducao-custo",texto:"Redução de Custo em -1 PD em uma Habilidade adquirida.",valor:1}
+    ],
+
+    4: [
+      {tipo:"pendente",chave:"habilidade-ocupacao",texto:"Habilidade de Ocupação - Categoria 1 a 2.",categoriaMin:1,categoriaMax:2},
+      {tipo:"pd",valor:1}
+    ],
+
+    5: [
+      {tipo:"pericia-natural",valor:1},
+      {tipo:"pontos-pericia",valor:4}
+    ],
+
+    6: [
+      {tipo:"pendente",chave:"habilidade-ocupacao",texto:"Habilidade de Ocupação - Categoria 1 a 2.",categoriaMin:1,categoriaMax:2},
+      {tipo:"pd",valor:1}
+    ],
+
+    7: [
+      {tipo:"pendente",chave:"habilidade-ocupacao",texto:"Habilidade de Ocupação - Categoria 1 a 3.",categoriaMin:1,categoriaMax:3},
+      {tipo:"pendente",chave:"reducao-custo",texto:"Redução de Custo em -1 PD em uma Habilidade adquirida.",valor:1}
+    ],
+
+    8: [
+      {tipo:"pericia-natural",valor:1},
+      {tipo:"pontos-pericia",valor:4},
+      {tipo:"pd",valor:1}
+    ],
+
+    9: [
+      {tipo:"pendente",chave:"habilidade-ocupacao",texto:"Habilidade de Ocupação - Categoria 1 a 3.",categoriaMin:1,categoriaMax:3}
+    ],
+
+    10: [
+      {tipo:"pendente",chave:"habilidade-ocupacao",texto:"Habilidade de Ocupação - Categoria 1 a 3.",categoriaMin:1,categoriaMax:3},
+      {tipo:"pendente",chave:"reducao-custo",texto:"Redução de Custo em -1 PD em uma Habilidade adquirida.",valor:1},
+      {tipo:"pd",valor:1},
+      {tipo:"atributo",valor:1}
+    ]
+  }
+};
 
 let periciasNaturaisFicha = [];
 let periciasNaturaisRascunho = [];
@@ -5130,6 +5253,150 @@ let cancelarEscutaHistoricoRolagens = null;
 let cancelarEscutaRolagensSalvas = null;
 let cancelarEscutaRecursosFicha = null;
 
+let estadoProgressaoNiveisFicha = {
+  bonusPontosPericia: 0,
+  bonusPericiasNaturais: 0,
+  bonusPd: 0,
+  bonusAtributos: 0,
+  niveisAplicados: [],
+  beneficiosPendentes: []
+};
+
+function normalizarProgressaoNiveisFicha(ficha) {
+  const dados =
+    ficha?.progressaoNiveis &&
+    typeof ficha.progressaoNiveis === "object"
+      ? ficha.progressaoNiveis
+      : {};
+
+  return {
+    bonusPontosPericia:
+      Math.max(0,Number(dados.bonusPontosPericia) || 0),
+
+    bonusPericiasNaturais:
+      Math.max(0,Number(dados.bonusPericiasNaturais) || 0),
+
+    bonusPd:
+      Math.max(0,Number(dados.bonusPd) || 0),
+
+    bonusAtributos:
+      Math.max(0,Number(dados.bonusAtributos) || 0),
+
+    niveisAplicados:
+      Array.isArray(dados.niveisAplicados)
+        ? [...dados.niveisAplicados]
+        : [],
+
+    beneficiosPendentes:
+      Array.isArray(dados.beneficiosPendentes)
+        ? dados.beneficiosPendentes.map(item => ({...item}))
+        : []
+  };
+}
+
+function obterLimitePontosPericiasProgressaoFicha() {
+  return PONTOS_PERICIA_INICIAIS_FICHA +
+    estadoProgressaoNiveisFicha.bonusPontosPericia;
+}
+
+function obterLimiteBonusNaturalFicha() {
+  return BONUS_NATURAL_TOTAL_FICHA +
+    estadoProgressaoNiveisFicha.bonusPericiasNaturais;
+}
+
+function obterLimiteAtributosFicha() {
+  return 4 +
+    estadoProgressaoNiveisFicha.bonusAtributos;
+}
+
+function clonarProgressaoNiveisFicha() {
+  return {
+    bonusPontosPericia:estadoProgressaoNiveisFicha.bonusPontosPericia,
+    bonusPericiasNaturais:estadoProgressaoNiveisFicha.bonusPericiasNaturais,
+    bonusPd:estadoProgressaoNiveisFicha.bonusPd,
+    bonusAtributos:estadoProgressaoNiveisFicha.bonusAtributos,
+    niveisAplicados:[...estadoProgressaoNiveisFicha.niveisAplicados],
+    beneficiosPendentes:estadoProgressaoNiveisFicha.beneficiosPendentes.map(item => ({...item}))
+  };
+}
+
+function aplicarBeneficioProgressaoFicha(progressao,tipoNivel,nivel,beneficio,indice) {
+  if (beneficio.tipo === "pontos-pericia") {
+    progressao.bonusPontosPericia += beneficio.valor;
+    return;
+  }
+
+  if (beneficio.tipo === "pericia-natural") {
+    progressao.bonusPericiasNaturais += beneficio.valor;
+    return;
+  }
+
+  if (beneficio.tipo === "pd") {
+    progressao.bonusPd += beneficio.valor;
+    return;
+  }
+
+  if (beneficio.tipo === "atributo") {
+    progressao.bonusAtributos += beneficio.valor;
+    return;
+  }
+
+  if (beneficio.tipo === "pendente") {
+    const id = `${tipoNivel}-${nivel}-${beneficio.chave}-${indice}`;
+
+    if (
+      progressao.beneficiosPendentes.some(
+        item => item.id === id
+      )
+    ) return;
+
+    progressao.beneficiosPendentes.push({
+      id:id,
+      origem:tipoNivel,
+      nivel:nivel,
+      chave:beneficio.chave,
+      texto:beneficio.texto,
+      categoriaMin:beneficio.categoriaMin ?? null,
+      categoriaMax:beneficio.categoriaMax ?? null,
+      valor:beneficio.valor ?? null
+    });
+  }
+}
+
+function prepararProgressaoAteNivelFicha(tipoNivel,nivelAtual,novoNivel) {
+  const progressao = clonarProgressaoNiveisFicha();
+
+  for (
+    let nivel = nivelAtual + 1;
+    nivel <= novoNivel;
+    nivel++
+  ) {
+    const idNivel = `${tipoNivel}-${nivel}`;
+
+    if (
+      progressao.niveisAplicados.includes(
+        idNivel
+      )
+    ) continue;
+
+    const beneficios =
+      BENEFICIOS_NIVEIS_FICHA[tipoNivel]?.[nivel] || [];
+
+    beneficios.forEach((beneficio,indice) => {
+      aplicarBeneficioProgressaoFicha(
+        progressao,
+        tipoNivel,
+        nivel,
+        beneficio,
+        indice
+      );
+    });
+
+    progressao.niveisAplicados.push(idNivel);
+  }
+
+  return progressao;
+}
 
 /* Utilidades */
 
@@ -5268,17 +5535,10 @@ function calcularPvFicha() {
 }
 
 function calcularPdFicha() {
-  return Math.floor(
-    20 +
-    obterValorAtributoFicha("presenca") +
-    obterValorPericiaFichaPorNome("Vontade") / 2
-  );
+  return Math.floor(20 + obterValorAtributoFicha("presenca") + obterValorPericiaFichaPorNome("Vontade") / 2 +estadoProgressaoNiveisFicha.bonusPd);
 }
 
-function atualizarBarraRecursoFicha(
-  estado,
-  preenchimento
-) {
+function atualizarBarraRecursoFicha(estado, preenchimento) {
   const porcentagem =
     estado.maximo > 0
       ? Math.max(
@@ -5360,15 +5620,10 @@ function recalcularRecursosAutomaticos(
 /* Contador de Atributos */
 
 function atualizarContadorAtributosFicha() {
-  const total =
-    obterValorAtributoFicha("fisico") +
-    obterValorAtributoFicha("cognicao") +
-    obterValorAtributoFicha("presenca");
+  const total = obterValorAtributoFicha("fisico") + obterValorAtributoFicha("cognicao") + obterValorAtributoFicha("presenca");
 
-  contadorAtributosFicha.textContent =
-    `${total}/4`;
+  contadorAtributosFicha.textContent = `${total}/${obterLimiteAtributosFicha()}`;
 }
-
 
 /* Salvamento */
 
@@ -5442,23 +5697,19 @@ function obterResumoPontosPericiasFicha() {
   return {
     pontosGastos,
     pontosRecuperados,
-    limitePontos: PONTOS_PERICIA_INICIAIS_FICHA + pontosRecuperados,
+    limitePontos: obterLimitePontosPericiasProgressaoFicha() + pontosRecuperados,
     bonusNaturais
   };
 }
 
 function renderizarContadoresPericiasFicha() {
-  const resumo =
-    obterResumoPontosPericiasFicha();
+  const resumo = obterResumoPontosPericiasFicha();
 
-  limitePontosPericiasFicha =
-    resumo.limitePontos;
+  limitePontosPericiasFicha = resumo.limitePontos;
 
-  contadorPontosPericiasFicha.textContent =
-    `${resumo.pontosGastos} / ${resumo.limitePontos}`;
+  contadorPontosPericiasFicha.textContent = `${resumo.pontosGastos} / ${resumo.limitePontos}`;
 
-  contadorNaturaisPericiasFicha.textContent =
-    `NATURAIS: ${resumo.bonusNaturais} / 5`;
+  contadorNaturaisPericiasFicha.textContent = `NATURAIS: ${resumo.bonusNaturais} / ${obterLimiteBonusNaturalFicha()}`;
 }
 
 function nomesIguaisPericiaFicha(a,b) {
@@ -5556,29 +5807,28 @@ function validarEdicaoPericiasNaturaisFicha() {
     }
   }
 
-  if (totalBonus !== BONUS_NATURAL_TOTAL_FICHA) {
-    return { valida:false, mensagem:"Distribua exatamente os 5 pontos bônus das Perícias Naturais." };
+  const limiteNaturais = obterLimiteBonusNaturalFicha();
+
+  if (totalBonus !== limiteNaturais) {
+    return {
+      valida:false,
+      mensagem:`Distribua exatamente os ${limiteNaturais} pontos bônus das Perícias Naturais.`
+    };
   }
 
   return { valida:true, mensagem:"" };
 }
 
 function atualizarEstadoEditorPericiasNaturaisFicha() {
-  const total = periciasNaturaisRascunho.reduce(
-    (soma,nome) => soma + bonusRascunhoPericiaFicha(nome),
-    0
-  );
+  const total = periciasNaturaisRascunho.reduce((soma,nome) => soma + bonusRascunhoPericiaFicha(nome), 0);
 
-  contadorEditorPericiasNaturaisFicha.textContent =
-    `${periciasNaturaisRascunho.length} / 3 • ${total} / 5 pontos`;
+  contadorEditorPericiasNaturaisFicha.textContent = `${periciasNaturaisRascunho.length} / 3 • ${total} / ${obterLimiteBonusNaturalFicha()} pontos`
 
   const validacao = validarEdicaoPericiasNaturaisFicha();
 
-  mensagemEditorPericiasNaturaisFicha.textContent =
-    validacao.valida ? "" : validacao.mensagem;
+  mensagemEditorPericiasNaturaisFicha.textContent = validacao.valida ? "" : validacao.mensagem;
 
-  botaoSalvarEditorPericiasNaturaisFicha.disabled =
-    !validacao.valida;
+  botaoSalvarEditorPericiasNaturaisFicha.disabled = !validacao.valida;
 }
 
 function renderizarEditorPericiasNaturaisFicha() {
@@ -5591,8 +5841,7 @@ function renderizarEditorPericiasNaturaisFicha() {
   const especiais = obterOcupacoesAreaObrigatoriaFicha();
 
   if (!especiais.length) {
-    regraEditorPericiasNaturaisFicha.textContent =
-      "Escolha 3 Perícias Naturais e distribua os 5 pontos bônus.";
+    regraEditorPericiasNaturaisFicha.textContent = `Escolha 3 Perícias Naturais e distribua os ${obterLimiteBonusNaturalFicha()} pontos bônus.`
   } else {
     regraEditorPericiasNaturaisFicha.textContent =
       `Escolha 3 Perícias e mantenha pelo menos uma Perícia de Área de ${especiais.map(o => o.nome).join(" e ")}.`;
@@ -5670,10 +5919,10 @@ function renderizarEditorPericiasNaturaisFicha() {
         .filter(nome => !nomesIguaisPericiaFicha(nome,nomePericia))
         .reduce((soma,nome) => soma + bonusRascunhoPericiaFicha(nome),0);
 
-      if (totalOutras + valor > 5) {
+      if (totalOutras + valor > obterLimiteBonusNaturalFicha()) {
         bonus.value = bonusRascunhoPericiaFicha(nomePericia);
         mensagemEditorPericiasNaturaisFicha.textContent =
-          "As Perícias Naturais possuem somente 5 pontos bônus.";
+          `As Perícias Naturais possuem somente ${obterLimiteBonusNaturalFicha()} pontos bônus.`
         return;
       }
 
@@ -6077,6 +6326,7 @@ function renderizarPericiasPontosFicha() {
 async function preencherPontosFicha(ficha) {
   verificarElementosPontosFicha();
   await promessaPericiasPontosFicha;
+  estadoProgressaoNiveisFicha = normalizarProgressaoNiveisFicha(ficha);
 
   campoNcpFicha.value =
     String(
@@ -6265,49 +6515,155 @@ async function preencherPontosFicha(ficha) {
 
 /* Alterações de NCP, NEO e Crédito */
 
-campoNcpFicha.addEventListener(
-  "change",
-  () => {
-    const ncp =
-      Number(campoNcpFicha.value);
+async function subirNivelFicha(tipoNivel,novoNivel) {
+  if (!podeAlterarNiveisFicha) {
+    restaurarCamposNiveisFicha();
+    return;
+  }
 
-    if (
-      !Number.isInteger(ncp) ||
-      ncp < 0 ||
-      ncp > 5
-    ) return;
+  const nivelAtual =
+    Number(dadosFichaAtual?.[tipoNivel]) || 0;
 
-    if (dadosFichaAtual) {
-      dadosFichaAtual.ncp = ncp;
+  const maximo =
+    tipoNivel === "ncp"
+      ? 5
+      : 10;
+
+  if (
+    !Number.isInteger(novoNivel) ||
+    novoNivel < 0 ||
+    novoNivel > maximo
+  ) {
+    restaurarCamposNiveisFicha();
+    return;
+  }
+
+  if (novoNivel === nivelAtual) return;
+
+  if (novoNivel < nivelAtual) {
+    restaurarCamposNiveisFicha();
+
+    alert(
+      "O Nível não pode ser reduzido por este controle, pois os benefícios já podem ter sido aplicados."
+    );
+
+    return;
+  }
+
+  const nomeNivel =
+    tipoNivel === "ncp"
+      ? "NCP"
+      : "NEO";
+
+  const confirmar = window.confirm(
+    `Subir ${nomeNivel} de ${nivelAtual} para ${novoNivel}? Os benefícios dos Níveis alcançados serão aplicados à ficha.`
+  );
+
+  if (!confirmar) {
+    restaurarCamposNiveisFicha();
+    return;
+  }
+
+  const progressaoAnterior =
+    clonarProgressaoNiveisFicha();
+
+  const novaProgressao =
+    prepararProgressaoAteNivelFicha(
+      tipoNivel,
+      nivelAtual,
+      novoNivel
+    );
+
+  const aumentoPd =
+    novaProgressao.bonusPd -
+    estadoProgressaoNiveisFicha.bonusPd;
+
+  estadoProgressaoNiveisFicha =
+    novaProgressao;
+
+  dadosFichaAtual[tipoNivel] =
+    novoNivel;
+
+  dadosFichaAtual.progressaoNiveis =
+    novaProgressao;
+
+  if (aumentoPd > 0) {
+    estadoPdFicha.maximo += aumentoPd;
+    estadoPdFicha.atual += aumentoPd;
+  }
+
+  const alteracoes = {
+    [tipoNivel]:novoNivel,
+    progressaoNiveis:novaProgressao
+  };
+
+  if (aumentoPd > 0) {
+    alteracoes.pd = {
+      ...estadoPdFicha
+    };
+  }
+
+  try {
+    if (!previewLocal) {
+      await db.collection("fichas")
+        .doc(idFicha)
+        .update({
+          ...alteracoes,
+          atualizadoEm:
+            firebase.firestore.FieldValue.serverTimestamp()
+        });
     }
 
-    salvarAtualizacaoPontosFicha({
-      ncp: ncp
-    });
-  }
-);
+    restaurarCamposNiveisFicha();
+    renderizarContadoresPericiasFicha();
+    atualizarContadorAtributosFicha();
+    renderizarPvPdFicha();
 
-campoNeoFicha.addEventListener(
-  "change",
-  () => {
-    const neo =
-      Number(campoNeoFicha.value);
+    const novosPendentes =
+      novaProgressao.beneficiosPendentes.filter(
+        beneficio =>
+          !progressaoAnterior.beneficiosPendentes.some(
+            anterior =>
+              anterior.id === beneficio.id
+          )
+      );
 
-    if (
-      !Number.isInteger(neo) ||
-      neo < 0 ||
-      neo > 10
-    ) return;
-
-    if (dadosFichaAtual) {
-      dadosFichaAtual.neo = neo;
+    if (novosPendentes.length) {
+      alert(
+        "Nível aumentado!\n\nBenefícios que ainda precisam de escolha:\n\n" +
+        novosPendentes
+          .map(item => `• ${item.texto}`)
+          .join("\n")
+      );
     }
 
-    salvarAtualizacaoPontosFicha({
-      neo: neo
-    });
+  } catch (erro) {
+    console.error(
+      "Erro ao subir Nível:",
+      erro
+    );
+
+    estadoProgressaoNiveisFicha =
+      progressaoAnterior;
+
+    dadosFichaAtual[tipoNivel] =
+      nivelAtual;
+
+    restaurarCamposNiveisFicha();
+
+    alert(
+      "Não foi possível subir o Nível."
+    );
   }
-);
+}
+
+campoNcpFicha.addEventListener("change", () => {
+  subirNivelFicha("ncp", Number(campoNcpFicha.value));
+});
+
+campoNeoFicha.addEventListener("change", () => {
+  subirNivelFicha("neo", Number(campoNeoFicha.value));
+});
 
 campoCreditoFicha.addEventListener(
   "change",
