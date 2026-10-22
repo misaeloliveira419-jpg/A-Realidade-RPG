@@ -105,51 +105,6 @@ function verificarElementosPontosFicha() {
     );
   }
 }
-async function verificarPermissaoNiveisFicha(usuario) {
-  if (previewLocal) return true;
-  if (!usuario) return false;
-
-  try {
-    const documento = await db.collection("usuarios").doc(usuario.uid).get();
-
-    return documento.exists &&
-      documento.data().papel === "mestre";
-  } catch (erro) {
-    console.error("Erro ao verificar permissão de Níveis:",erro);
-    return false;
-  }
-}
-function aplicarPermissaoNiveisFicha() {
-  const campos = [
-    campoNcpFicha,
-    campoNeoFicha,
-    campoNivelPerfilHabilidadesFicha,
-    campoNivelOcupacaoHabilidadesFicha
-  ].filter(Boolean);
-
-  campos.forEach(campo => {
-    campo.disabled = !podeAlterarNiveisFicha;
-
-    campo.title = podeAlterarNiveisFicha
-      ? "Alterar Nível"
-      : "Somente o Mestre pode alterar este Nível.";
-  });
-}
-function restaurarCamposNiveisFicha() {
-  const ncp = String(Number(dadosFichaAtual?.ncp) || 0);
-  const neo = String(Number(dadosFichaAtual?.neo) || 0);
-
-  campoNcpFicha.value = ncp;
-  campoNeoFicha.value = neo;
-
-  if (campoNivelPerfilHabilidadesFicha) {
-    campoNivelPerfilHabilidadesFicha.value = ncp;
-  }
-
-  if (campoNivelOcupacaoHabilidadesFicha) {
-    campoNivelOcupacaoHabilidadesFicha.value = neo;
-  }
-}
 
 /* Acesso pela campanha */
 
@@ -288,26 +243,7 @@ async function verificarPermissaoNiveisFicha(usuario) {
   if (previewLocal) return true;
   if (!usuario) return false;
 
-  try {
-    const documento =
-      await db
-        .collection("usuarios")
-        .doc(usuario.uid)
-        .get();
-
-    return (
-      documento.exists &&
-      documento.data().papel === "mestre"
-    );
-
-  } catch (erro) {
-    console.error(
-      "Erro ao verificar permissão de Níveis:",
-      erro
-    );
-
-    return false;
-  }
+  return (typeof UID_CRIADOR_CAMPANHAS !== "undefined" && usuario.uid === UID_CRIADOR_CAMPANHAS);
 }
 
 function restaurarCamposNiveisFicha() {
