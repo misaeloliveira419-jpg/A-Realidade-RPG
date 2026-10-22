@@ -33,9 +33,9 @@ const listaHistoricoMestreCampanhaFicha = document.getElementById("lista-histori
 let dadosFichaAtual = null;
 let nomeFichaSalvo = "";
 let podeEditarFichaAtual = true;
+let podeAlterarNiveisFicha = false;
 let papelCampanhaFichaAtual = null;
 let tipoFichaCampanhaAtual = null;
-let podeAlterarNiveisFicha = false;
 let cancelarEscutaVinculosPersonagensFicha = null;
 let cancelamentosDadosPersonagensFicha = [];
 let ordemPersonagensCampanhaFicha = [];
@@ -282,6 +282,74 @@ async function garantirAcessoPersonagemCampanhaFicha(fichaId) {
     console.error(`Erro ao liberar acesso ao personagem ${fichaId}:`,erro);
     return false;
   }
+}
+
+async function verificarPermissaoNiveisFicha(usuario) {
+  if (previewLocal) return true;
+  if (!usuario) return false;
+
+  try {
+    const documento =
+      await db
+        .collection("usuarios")
+        .doc(usuario.uid)
+        .get();
+
+    return (
+      documento.exists &&
+      documento.data().papel === "mestre"
+    );
+
+  } catch (erro) {
+    console.error(
+      "Erro ao verificar permissão de Níveis:",
+      erro
+    );
+
+    return false;
+  }
+}
+
+function restaurarCamposNiveisFicha() {
+  const ncp =
+    String(
+      Number(dadosFichaAtual?.ncp) || 0
+    );
+
+  const neo =
+    String(
+      Number(dadosFichaAtual?.neo) || 0
+    );
+
+  campoNcpFicha.value = ncp;
+  campoNeoFicha.value = neo;
+
+  if (campoNivelPerfilHabilidadesFicha) {
+    campoNivelPerfilHabilidadesFicha.value = ncp;
+  }
+
+  if (campoNivelOcupacaoHabilidadesFicha) {
+    campoNivelOcupacaoHabilidadesFicha.value = neo;
+  }
+}
+
+function aplicarPermissaoNiveisFicha() {
+  const campos = [
+    campoNcpFicha,
+    campoNeoFicha,
+    campoNivelPerfilHabilidadesFicha,
+    campoNivelOcupacaoHabilidadesFicha
+  ].filter(Boolean);
+
+  campos.forEach(campo => {
+    campo.disabled =
+      !podeAlterarNiveisFicha;
+
+    campo.title =
+      podeAlterarNiveisFicha
+        ? "Alterar Nível"
+        : "Somente o Mestre principal pode alterar este Nível.";
+  });
 }
 
 /* Permissão de edição */
@@ -964,12 +1032,12 @@ async function carregarFichaAutenticada(usuario) {
   const ficha = documento.data();
   const donoDaFicha = ficha.donoUid === usuario.uid;
 
-  if (!idCampanhaFicha && !donoDaFicha) {
+  if (!idCampanhaFicha && !donoDaFicha && !podeAlterarNiveisFicha) {
     redirecionarSemAcessoFicha();
     return;
   }
 
-  podeEditarFichaAtual = donoDaFicha || papelCampanhaFichaAtual === "mestre";
+  podeEditarFichaAtual = donoDaFicha || papelCampanhaFichaAtual === "mestre" || podeAlterarNiveisFicha;
 
   if (ficha.estado !== "pronta") {
     if (donoDaFicha) {
@@ -990,8 +1058,8 @@ async function carregarFichaAutenticada(usuario) {
     await preencherHabilidadesFicha(ficha);
     await preencherInventarioFicha(ficha);
     
-    aplicarPermissaoNiveisFicha();
     aplicarPermissaoEdicaoFicha();
+    aplicarPermissaoNiveisFicha();
     iniciarEscutasRolagensFicha();
     iniciarEscutaRecursosFicha();
 
