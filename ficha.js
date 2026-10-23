@@ -5885,7 +5885,7 @@ function renderizarEditorPericiasNaturaisFicha() {
       nomesIguaisPericiaFicha(nome,nomePericia)
     );
 
-    const card = document.createElement("label");
+    const card = document.createElement("div");
     card.className = "opcao-editor-pericia-natural";
     card.classList.toggle("selecionada",selecionada);
 
@@ -5897,7 +5897,7 @@ function renderizarEditorPericiasNaturaisFicha() {
     const nome = document.createElement("strong");
     nome.textContent = nomePericia;
 
-    const areaBonus = document.createElement("label");
+    const areaBonus = document.createElement("div");
     areaBonus.className = "bonus-editor-pericia-natural";
 
     const sinal = document.createElement("span");
@@ -5912,6 +5912,7 @@ function renderizarEditorPericiasNaturaisFicha() {
     bonus.disabled = !selecionada;
 
     checkbox.addEventListener("change",evento => {
+      if (evento.target !== checkbox) return;
       evento.stopPropagation();
 
       if (checkbox.checked) {
@@ -5935,8 +5936,7 @@ function renderizarEditorPericiasNaturaisFicha() {
       renderizarEditorPericiasNaturaisFicha();
     });
 
-    bonus.addEventListener("change",evento => {
-      evento.preventDefault();
+    bonus.addEventListener("input",evento => {
       evento.stopPropagation();
 
       const valor = Number(bonus.value);
@@ -5952,8 +5952,7 @@ function renderizarEditorPericiasNaturaisFicha() {
 
       if (totalOutras + valor > obterLimiteBonusNaturalFicha()) {
         bonus.value = bonusRascunhoPericiaFicha(nomePericia);
-        mensagemEditorPericiasNaturaisFicha.textContent =
-          `As Perícias Naturais possuem somente ${obterLimiteBonusNaturalFicha()} pontos bônus.`
+        mensagemEditorPericiasNaturaisFicha.textContent = `As Perícias Naturais possuem somente ${obterLimiteBonusNaturalFicha()} pontos bônus.`;
         return;
       }
 
