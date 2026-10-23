@@ -5783,22 +5783,67 @@ function renderizarContadoresPericiasFicha() {
   contadorPontosPericiasFicha.classList.toggle("estourado",resumo.pontosGastos > resumo.limitePontos);
   contadorNaturaisPericiasFicha.classList.toggle("estourado",resumo.bonusNaturais > limiteNaturais);
 }
+function obterTodasHabilidadesFicha() {
+  return [...estadoHabilidadesFicha.perfil,...estadoHabilidadesFicha.pessoais,...estadoHabilidadesFicha.ocupacao];
+}
+function beneficioProgressaoResolvidoFicha(beneficio) {
+  return obterTodasHabilidadesFicha().some(habilidade => habilidade.progressaoOrigem?.beneficioId === beneficio.id);
+}
+function obterHabilidadesIrregularesProgressaoFicha() {
+  const ncp = Number(dadosFichaAtual?.ncp) || 0;
+  const neo = Number(dadosFichaAtual?.neo) || 0;
+
+  return obterTodasHabilidadesFicha().filter(habilidade => {
+    const origem = habilidade.progressaoOrigem;
+    if (!origem) return false;
+
+    const nivelAtual = origem.tipo === "ncp" ? ncp : neo;
+    return nivelAtual < origem.nivel;
+  });
+}
 function obterPendenciasInformacoesFicha() {
   const pendencias = [];
+  const ncp = Number(dadosFichaAtual?.ncp) || 0;
+  const neo = Number(dadosFichaAtual?.neo) || 0;
+
   const totalAtributos = obterValorAtributoFicha("fisico") + obterValorAtributoFicha("cognicao") + obterValorAtributoFicha("presenca");
   const limiteAtributos = obterLimiteAtributosFicha();
   const resumo = obterResumoPontosPericiasFicha();
   const limiteNaturais = obterLimiteBonusNaturalFicha();
-  const ncp = Number(dadosFichaAtual?.ncp) || 0;
-  const neo = Number(dadosFichaAtual?.neo) || 0;
 
-  if (totalAtributos > limiteAtributos) pendencias.push({titulo:"ATRIBUTOS",texto:`${totalAtributos} / ${limiteAtributos}. Reduza o total em ${totalAtributos - limiteAtributos} ponto(s).`});
-  if (resumo.pontosGastos > resumo.limitePontos) pendencias.push({titulo:"PERÍCIAS",texto:`${resumo.pontosGastos} / ${resumo.limitePontos}. Reduza o excesso em ${resumo.pontosGastos - resumo.limitePontos} ponto(s).`});
-  if (resumo.bonusNaturais > limiteNaturais) pendencias.push({titulo:"PERÍCIAS NATURAIS",texto:`${resumo.bonusNaturais} / ${limiteNaturais}. Redistribua ou remova ${resumo.bonusNaturais - limiteNaturais} ponto(s) bônus.`});
+  if (totalAtributos > limiteAtributos) {
+    pendencias.push({titulo:"ATRIBUTOS",texto:`${totalAtributos} / ${limiteAtributos}. Reduza o total em ${totalAtributos - limiteAtributos} ponto(s).`});
+  }
+
+  if (resumo.pontosGastos > resumo.limitePontos) {
+    pendencias.push({titulo:"PERÍCIAS",texto:`${resumo.pontosGastos} / ${resumo.limitePontos}. Reduza o excesso em ${resumo.pontosGastos - resumo.limitePontos} ponto(s).`});
+  }
+
+  if (resumo.bonusNaturais > limiteNaturais) {
+    pendencias.push({titulo:"PERÍCIAS NATURAIS",texto:`${resumo.bonusNaturais} / ${limiteNaturais}. Redistribua ou remova ${resumo.bonusNaturais - limiteNaturais} ponto(s) bônus.`});
+  }
+
+  obterHabilidadesIrregularesProgressaoFicha().forEach(habilidade => {
+    const origem = habilidade.progressaoOrigem;
+    const nivelAtual = origem.tipo === "ncp" ? ncp : neo;
+    const nome = habilidade.nome?.trim() || "Habilidade sem nome";
+
+    pendencias.push({
+      titulo:"HABILIDADE IRREGULAR",
+      texto:`"${nome}" foi adquirida no ${origem.tipo.toUpperCase()} ${origem.nivel}, mas o ${origem.tipo.toUpperCase()} atual é ${nivelAtual}. Ela permanece na ficha até ser removida manualmente.`
+    });
+  });
 
   estadoProgressaoNiveisFicha.beneficiosPendentes.forEach(item => {
     const nivelAtual = item.origem === "ncp" ? ncp : neo;
-    if (item.nivel <= nivelAtual) pendencias.push({titulo:`${item.origem.toUpperCase()} ${item.nivel} — ESCOLHA PENDENTE`,texto:item.texto});
+
+    if (item.nivel > nivelAtual) return;
+    if (beneficioProgressaoResolvidoFicha(item)) return;
+
+    pendencias.push({
+      titulo:`${item.origem.toUpperCase()} ${item.nivel} — ESCOLHA PENDENTE`,
+      texto:item.texto
+    });
   });
 
   return pendencias;
