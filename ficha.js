@@ -5325,81 +5325,108 @@ function clonarProgressaoNiveisFicha() {
 }
 
 function aplicarBeneficioProgressaoFicha(progressao,tipoNivel,nivel,beneficio,indice) {
-  if (beneficio.tipo === "pontos-pericia") {
-    progressao.bonusPontosPericia += beneficio.valor;
-    return;
-  }
+  if (beneficio.tipo !== "pendente") return;
 
-  if (beneficio.tipo === "pericia-natural") {
-    progressao.bonusPericiasNaturais += beneficio.valor;
-    return;
-  }
+  const id = `${tipoNivel}-${nivel}-${beneficio.chave}-${indice}`;
+  if (progressao.beneficiosPendentes.some(item => item.id === id)) return;
 
-  if (beneficio.tipo === "pd") {
-    progressao.bonusPd += beneficio.valor;
-    return;
-  }
-
-  if (beneficio.tipo === "atributo") {
-    progressao.bonusAtributos += beneficio.valor;
-    return;
-  }
-
-  if (beneficio.tipo === "pendente") {
-    const id = `${tipoNivel}-${nivel}-${beneficio.chave}-${indice}`;
-
-    if (
-      progressao.beneficiosPendentes.some(
-        item => item.id === id
-      )
-    ) return;
-
-    progressao.beneficiosPendentes.push({
-      id:id,
-      origem:tipoNivel,
-      nivel:nivel,
-      chave:beneficio.chave,
-      texto:beneficio.texto,
-      categoriaMin:beneficio.categoriaMin ?? null,
-      categoriaMax:beneficio.categoriaMax ?? null,
-      valor:beneficio.valor ?? null
-    });
-  }
+  progressao.beneficiosPendentes.push({
+    id,
+    origem:tipoNivel,
+    nivel,
+    chave:beneficio.chave,
+    texto:beneficio.texto,
+    categoriaMin:beneficio.categoriaMin ?? null,
+    categoriaMax:beneficio.categoriaMax ?? null,
+    valor:beneficio.valor ?? null
+  });
 }
 
-function prepararProgressaoAteNivelFicha(tipoNivel,nivelAtual,novoNivel) {
+function calcularBonusAtivosProgressaoFicha(ncp,neo) {
+  const bonus = {bonusPontosPericia:0,bonusPericiasNaturais:0,bonusPd:0,bonusAtributos:0};
+
+  [["ncp",ncp],["neo",neo]].forEach(([tipo,limite]) => {
+    for (let nivel = 1; nivel <= limite; nivel++) {
+      (BENEFICIOS_NIVEIS_FICHA[tipo]?.[nivel] || []).forEach(beneficio => {
+        if (beneficio.tipo === "pontos-pericia") bonus.bonusPontosPericia += beneficio.valor;
+        else if (beneficio.tipo === "pericia-natural") bonus.bonusPericiasNaturais += beneficio.valor;
+        else if (beneficio.tipo === "pd") bonus.bonusPd += beneficio.valor;
+        else if (beneficio.tipo === "atributo") bonus.bonusAtributos += beneficio.valor;
+      });
+    }
+  });
+
+  return bonus;
+}
+
+function recalcularBonusAtivosProgressaoFicha(progressao,ncp,neo) {
+  Object.assign(progressao,calcularBonusAtivosProgressaoFicha(ncp,neo));
+  return progressao;
+}
+
+function prepararProgressaoNivelFicha(tipoNivel,nivelAtual,novoNivel) {
   const progressao = clonarProgressaoNiveisFicha();
 
-  for (
-    let nivel = nivelAtual + 1;
-    nivel <= novoNivel;
-    nivel++
-  ) {
-    const idNivel = `${tipoNivel}-${nivel}`;
+  if (novoNivel > nivelAtual) {
+    for (let nivel = nivelAtual + 1; nivel <= novoNivel; nivel++) {
+      const idNivel = `${tipoNivel}-${nivel}`;
+      if (progressao.niveisAplicados.includes(idNivel)) continue;
 
-    if (
-      progressao.niveisAplicados.includes(
-        idNivel
-      )
-    ) continue;
+      (BENEFICIOS_NIVEIS_FICHA[tipoNivel]?.[nivel] || []).forEach((beneficio,indice) => {
+        aplicarBeneficioProgressaoFicha(progressao,tipoNivel,nivel,beneficio,indice);
+      });
 
-    const beneficios =
-      BENEFICIOS_NIVEIS_FICHA[tipoNivel]?.[nivel] || [];
-
-    beneficios.forEach((beneficio,indice) => {
-      aplicarBeneficioProgressaoFicha(
-        progressao,
-        tipoNivel,
-        nivel,
-        beneficio,
-        indice
-      );
-    });
-
-    progressao.niveisAplicados.push(idNivel);
+      progressao.niveisAplicados.push(idNivel);
+    }
   }
 
-  return progressao;
+  const ncp = tipoNivel === "ncp" ? novoNivel : Number(dadosFichaAtual?.ncp) || 0;
+  const neo = tipoNivel === "neo" ? novoNivel : Number(dadosFichaAtual?.neo) || 0;
+
+  return recalcularBonusAtivosProgressaoFicha(progressao,ncp,neo);
+}
+
+function textoBeneficioProgressaoFicha(beneficio) {
+  if (beneficio.tipo === "pontos-pericia") return `+${beneficio.valor} pontos no limite de Perícias`;
+  if (beneficio.tipo === "pericia-natural") return `+${beneficio.valor} ponto no limite de Perícias Naturais`;
+  if (beneficio.tipo === "pd") return `+${beneficio.valor} PD`;
+  if (beneficio.tipo === "atributo") return `+${beneficio.valor} ponto no limite de Atributos`;
+  return `PENDENTE: ${beneficio.texto}`;
+}
+
+function montarResumoAlteracaoNivelFicha(tipoNivel,nivelAtual,novoNivel,anterior,nova) {
+  const nome = tipoNivel === "ncp" ? "NCP" : "NEO";
+
+  if (novoNivel < nivelAtual) {
+    const linhas = [`${nome} alterado: ${nivelAtual} → ${novoNivel}`,"","BENEFÍCIOS NUMÉRICOS RECALCULADOS"];
+
+    if (anterior.bonusPontosPericia !== nova.bonusPontosPericia) linhas.push(`• Bônus de Perícias: +${anterior.bonusPontosPericia} → +${nova.bonusPontosPericia}`);
+    if (anterior.bonusPericiasNaturais !== nova.bonusPericiasNaturais) linhas.push(`• Bônus de Perícias Naturais: +${anterior.bonusPericiasNaturais} → +${nova.bonusPericiasNaturais}`);
+    if (anterior.bonusPd !== nova.bonusPd) linhas.push(`• Bônus de PD: +${anterior.bonusPd} → +${nova.bonusPd}`);
+    if (anterior.bonusAtributos !== nova.bonusAtributos) linhas.push(`• Bônus de Atributos: +${anterior.bonusAtributos} → +${nova.bonusAtributos}`);
+
+    if (linhas.length === 3) linhas.push("• Nenhum benefício numérico foi alterado.");
+    linhas.push("","Habilidades, evoluções e outras escolhas já recebidas foram mantidas.");
+    return linhas.join("\n");
+  }
+
+  const linhas = [`${nome} ${novoNivel} alcançado!`];
+
+  for (let nivel = nivelAtual + 1; nivel <= novoNivel; nivel++) {
+    const idNivel = `${tipoNivel}-${nivel}`;
+    const jaRecebido = anterior.niveisAplicados.includes(idNivel);
+    const beneficios = BENEFICIOS_NIVEIS_FICHA[tipoNivel]?.[nivel] || [];
+    const exibidos = jaRecebido ? beneficios.filter(item => item.tipo !== "pendente") : beneficios;
+
+    linhas.push("",`${nome} ${nivel}`);
+    exibidos.forEach(item => linhas.push(`• ${textoBeneficioProgressaoFicha(item)}`));
+
+    if (jaRecebido && beneficios.some(item => item.tipo === "pendente")) {
+      linhas.push("• As escolhas deste Nível já haviam sido concedidas anteriormente.");
+    }
+  }
+
+  return linhas.join("\n");
 }
 
 /* Utilidades */
@@ -6519,103 +6546,60 @@ async function preencherPontosFicha(ficha) {
 
 /* Alterações de NCP, NEO e Crédito */
 
-async function subirNivelFicha(tipoNivel,novoNivel) {
+async function alterarNivelFicha(tipoNivel,novoNivel) {
   if (!podeAlterarNiveisFicha) {
     restaurarCamposNiveisFicha();
     return;
   }
 
-  const nivelAtual =
-    Number(dadosFichaAtual?.[tipoNivel]) || 0;
+  const nivelAtual = Number(dadosFichaAtual?.[tipoNivel]) || 0;
+  const maximo = tipoNivel === "ncp" ? 5 : 10;
 
-  const maximo =
-    tipoNivel === "ncp"
-      ? 5
-      : 10;
-
-  if (
-    !Number.isInteger(novoNivel) ||
-    novoNivel < 0 ||
-    novoNivel > maximo
-  ) {
+  if (!Number.isInteger(novoNivel) || novoNivel < 0 || novoNivel > maximo) {
     restaurarCamposNiveisFicha();
     return;
   }
 
   if (novoNivel === nivelAtual) return;
 
-  if (novoNivel < nivelAtual) {
-    restaurarCamposNiveisFicha();
+  const nomeNivel = tipoNivel === "ncp" ? "NCP" : "NEO";
+  const subindo = novoNivel > nivelAtual;
+  const mensagem = subindo
+    ? `Subir ${nomeNivel} de ${nivelAtual} para ${novoNivel}? Os benefícios dos novos Níveis serão aplicados.`
+    : `Diminuir ${nomeNivel} de ${nivelAtual} para ${novoNivel}? Os limites numéricos serão reduzidos, mas Habilidades e escolhas já recebidas serão mantidas.`;
 
-    alert(
-      "O Nível não pode ser reduzido por este controle, pois os benefícios já podem ter sido aplicados."
-    );
-
-    return;
-  }
-
-  const nomeNivel =
-    tipoNivel === "ncp"
-      ? "NCP"
-      : "NEO";
-
-  const confirmar = window.confirm(
-    `Subir ${nomeNivel} de ${nivelAtual} para ${novoNivel}? Os benefícios dos Níveis alcançados serão aplicados à ficha.`
-  );
-
-  if (!confirmar) {
+  if (!confirm(mensagem)) {
     restaurarCamposNiveisFicha();
     return;
   }
 
-  const progressaoAnterior =
-    clonarProgressaoNiveisFicha();
+  const progressaoAnterior = clonarProgressaoNiveisFicha();
+  const pdAnterior = {...estadoPdFicha};
+  const novaProgressao = prepararProgressaoNivelFicha(tipoNivel,nivelAtual,novoNivel);
+  const diferencaPd = novaProgressao.bonusPd - progressaoAnterior.bonusPd;
 
-  const novaProgressao =
-    prepararProgressaoAteNivelFicha(
-      tipoNivel,
-      nivelAtual,
-      novoNivel
-    );
+  estadoProgressaoNiveisFicha = novaProgressao;
+  dadosFichaAtual[tipoNivel] = novoNivel;
+  dadosFichaAtual.progressaoNiveis = novaProgressao;
 
-  const aumentoPd =
-    novaProgressao.bonusPd -
-    estadoProgressaoNiveisFicha.bonusPd;
-
-  estadoProgressaoNiveisFicha =
-    novaProgressao;
-
-  dadosFichaAtual[tipoNivel] =
-    novoNivel;
-
-  dadosFichaAtual.progressaoNiveis =
-    novaProgressao;
-
-  if (aumentoPd > 0) {
-    estadoPdFicha.maximo += aumentoPd;
-    estadoPdFicha.atual += aumentoPd;
-  }
-
-  const alteracoes = {
-    [tipoNivel]:novoNivel,
-    progressaoNiveis:novaProgressao
-  };
-
-  if (aumentoPd > 0) {
-    alteracoes.pd = {
-      ...estadoPdFicha
+  if (diferencaPd !== 0) {
+    estadoPdFicha = {
+      atual:Math.max(0,estadoPdFicha.atual + diferencaPd),
+      maximo:Math.max(0,estadoPdFicha.maximo + diferencaPd),
+      manual:estadoPdFicha.manual
     };
+    dadosFichaAtual.pd = {...estadoPdFicha};
   }
+
+  const alteracoes = {[tipoNivel]:novoNivel,progressaoNiveis:novaProgressao};
+  if (diferencaPd !== 0) alteracoes.pd = {...estadoPdFicha};
 
   try {
     if (!previewLocal) {
-      await db.collection("fichas")
-        .doc(idFicha)
-        .update({
-          ...alteracoes,
-          atualizadoEm:
-            firebase.firestore.FieldValue.serverTimestamp()
-        });
+      await db.collection("fichas").doc(idFicha).update({
+        ...alteracoes,
+        atualizadoEm:firebase.firestore.FieldValue.serverTimestamp()
+      });
     }
 
     restaurarCamposNiveisFicha();
@@ -6623,51 +6607,25 @@ async function subirNivelFicha(tipoNivel,novoNivel) {
     atualizarContadorAtributosFicha();
     renderizarPvPdFicha();
 
-    const novosPendentes =
-      novaProgressao.beneficiosPendentes.filter(
-        beneficio =>
-          !progressaoAnterior.beneficiosPendentes.some(
-            anterior =>
-              anterior.id === beneficio.id
-          )
-      );
-
-    if (novosPendentes.length) {
-      alert(
-        "Nível aumentado!\n\nBenefícios que ainda precisam de escolha:\n\n" +
-        novosPendentes
-          .map(item => `• ${item.texto}`)
-          .join("\n")
-      );
-    }
+    alert(montarResumoAlteracaoNivelFicha(tipoNivel,nivelAtual,novoNivel,progressaoAnterior,novaProgressao));
 
   } catch (erro) {
-    console.error(
-      "Erro ao subir Nível:",
-      erro
-    );
+    console.error("Erro ao alterar Nível:",erro);
 
-    estadoProgressaoNiveisFicha =
-      progressaoAnterior;
-
-    dadosFichaAtual[tipoNivel] =
-      nivelAtual;
+    estadoProgressaoNiveisFicha = progressaoAnterior;
+    estadoPdFicha = pdAnterior;
+    dadosFichaAtual[tipoNivel] = nivelAtual;
+    dadosFichaAtual.progressaoNiveis = progressaoAnterior;
+    dadosFichaAtual.pd = {...pdAnterior};
 
     restaurarCamposNiveisFicha();
-
-    alert(
-      "Não foi possível subir o Nível."
-    );
+    renderizarPvPdFicha();
+    alert("Não foi possível alterar o Nível.");
   }
 }
 
-campoNcpFicha.addEventListener("change", () => {
-  subirNivelFicha("ncp", Number(campoNcpFicha.value));
-});
-
-campoNeoFicha.addEventListener("change", () => {
-  subirNivelFicha("neo", Number(campoNeoFicha.value));
-});
+campoNcpFicha.addEventListener("change",() => alterarNivelFicha("ncp",Number(campoNcpFicha.value)));
+campoNeoFicha.addEventListener("change",() => alterarNivelFicha("neo",Number(campoNeoFicha.value)));
 
 campoCreditoFicha.addEventListener(
   "change",
