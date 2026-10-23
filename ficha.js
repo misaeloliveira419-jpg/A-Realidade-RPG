@@ -1556,7 +1556,6 @@ function copiarVersaoHabilidadePessoal(h = {}) {
     origem:textoHabilidadeSeguro(h.origem)
   };
 }
-
 function normalizarEvolucaoPessoal(dados) {
   if (!dados || typeof dados !== "object") return null;
 
@@ -1573,10 +1572,38 @@ function normalizarEvolucaoPessoal(dados) {
     nova:copiarVersaoHabilidadePessoal(dados.nova)
   };
 }
+function versoesHabilidadePessoalIguais(a,b) {
+  const campos = ["categoria","nome","custo","acao","alvo","alcance","resistencia","descricao","origem"];
+  return campos.every(campo => String(a?.[campo] ?? "") === String(b?.[campo] ?? ""));
+}
+
+function sincronizarEvolucoesPessoaisComNcp(ncp) {
+  let alteradas = 0;
+
+  estadoHabilidadesFicha.pessoais.forEach(habilidade => {
+    const evolucoes = (habilidade.evolucoes || [])
+      .filter(evolucao => evolucao?.tipo === "ncp")
+      .sort((a,b) => a.nivel - b.nivel);
+
+    if (!evolucoes.length) return;
+
+    const aplicaveis = evolucoes.filter(evolucao => evolucao.nivel <= ncp);
+
+    const versaoCorreta = aplicaveis.length
+      ? aplicaveis[aplicaveis.length - 1].nova
+      : evolucoes[0].anterior;
+
+    if (!versaoCorreta || versoesHabilidadePessoalIguais(habilidade,versaoCorreta)) return;
+
+    Object.assign(habilidade,copiarVersaoHabilidadePessoal(versaoCorreta));
+    alteradas++;
+  });
+
+  return alteradas;
+}
 let filaSalvamentoHabilidades = Promise.resolve();
 let timerSalvamentoHabilidades = null;
 let sequenciaHabilidadePessoal = 0;
-
 
 /* Menu responsivo */
 
@@ -4132,7 +4159,6 @@ function criarCardCatalogoHabilidade(
       }
     );
 
-
   /* Abrir e fechar */
 
   botaoExpandir.addEventListener(
@@ -4583,6 +4609,16 @@ async function preencherHabilidadesFicha(ficha) {
 
     } catch (erro) {
       console.error("Não foi possível salvar a inicialização das Habilidades:", erro);
+    }
+  }
+
+  const evolucoesAjustadas = sincronizarEvolucoesPessoaisComNcp(Number(ficha.ncp) || 0);
+
+  if (evolucoesAjustadas > 0 && podeEditarFichaAtual) {
+    try {
+      await salvarHabilidadesFichaImediatamente();
+    } catch (erro) {
+      console.error("Não foi possível sincronizar as evoluções pessoais com o NCP:",erro);
     }
   }
 
@@ -5621,7 +5657,11 @@ function montarResumoAlteracaoNivelFicha(tipoNivel,nivelAtual,novoNivel,anterior
     exibidos.forEach(item => linhas.push(`• ${textoBeneficioProgressaoFicha(item)}`));
 
     if (jaRecebido && beneficios.some(item => item.tipo === "pendente")) {
-      linhas.push("• As escolhas deste Nível já haviam sido concedidas anteriormente.");
+      if (tipoNivel === "ncp") {
+        linhas.push("","Habilidades adquiridas permanecem na ficha. Evoluções de Habilidades Pessoais são ajustadas automaticamente ao NCP atual.");
+      } else {
+        linhas.push("","Habilidades e outras escolhas já recebidas foram mantidas.");
+      }
     }
   }
 
@@ -6820,6 +6860,12 @@ async function alterarNivelFicha(tipoNivel,novoNivel) {
 
   if (novoNivel === nivelAtual) return;
 
+  if (tipoNivel === "ncp" && evolucaoPessoalEmEdicao) {
+    alert("Conclua ou cancele a evolução da Habilidade Pessoal antes de alterar o NCP.");
+    restaurarCamposNiveisFicha();
+    return;
+  }
+
   const nomeNivel = tipoNivel === "ncp" ? "NCP" : "NEO";
   const subindo = novoNivel > nivelAtual;
   const mensagem = subindo
@@ -6833,12 +6879,15 @@ async function alterarNivelFicha(tipoNivel,novoNivel) {
 
   const progressaoAnterior = clonarProgressaoNiveisFicha();
   const pdAnterior = {...estadoPdFicha};
+  const habilidadesAnteriores = tipoNivel === "ncp" ? copiarEstadoHabilidadesFicha() : null;
   const novaProgressao = prepararProgressaoNivelFicha(tipoNivel,nivelAtual,novoNivel);
   const diferencaPd = novaProgressao.bonusPd - progressaoAnterior.bonusPd;
 
   estadoProgressaoNiveisFicha = novaProgressao;
   dadosFichaAtual[tipoNivel] = novoNivel;
   dadosFichaAtual.progressaoNiveis = novaProgressao;
+
+  const evolucoesPessoaisAlteradas = tipoNivel === "ncp" ? sincronizarEvolucoesPessoaisComNcp(novoNivel): 0;
 
   if (diferencaPd !== 0) {
     estadoPdFicha = {
@@ -6850,7 +6899,14 @@ async function alterarNivelFicha(tipoNivel,novoNivel) {
   }
 
   const alteracoes = {[tipoNivel]:novoNivel,progressaoNiveis:novaProgressao};
+
   if (diferencaPd !== 0) alteracoes.pd = {...estadoPdFicha};
+
+  if (evolucoesPessoaisAlteradas > 0) {
+    const habilidadesAtualizadas = copiarEstadoHabilidadesFicha();
+    alteracoes.habilidades = habilidadesAtualizadas;
+    dadosFichaAtual.habilidades = habilidadesAtualizadas;
+  }
 
   try {
     if (!previewLocal) {
@@ -6864,6 +6920,10 @@ async function alterarNivelFicha(tipoNivel,novoNivel) {
     renderizarContadoresPericiasFicha();
     atualizarContadorAtributosFicha();
     renderizarPvPdFicha();
+
+    if (evolucoesPessoaisAlteradas > 0) {
+      renderizarHabilidadesFicha();
+    }
 
     alert(montarResumoAlteracaoNivelFicha(tipoNivel,nivelAtual,novoNivel,progressaoAnterior,novaProgressao));
 
@@ -6879,6 +6939,12 @@ async function alterarNivelFicha(tipoNivel,novoNivel) {
     restaurarCamposNiveisFicha();
     renderizarPvPdFicha();
     alert("Não foi possível alterar o Nível.");
+
+    if (habilidadesAnteriores) {
+      estadoHabilidadesFicha = normalizarEstadoHabilidadesFicha(habilidadesAnteriores);
+      dadosFichaAtual.habilidades = habilidadesAnteriores;
+      renderizarHabilidadesFicha();
+    }
   }
 }
 
