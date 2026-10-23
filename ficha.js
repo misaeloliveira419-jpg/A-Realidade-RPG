@@ -6240,112 +6240,64 @@ function renderizarPericiasPontosFicha() {
       }
     );
 
-    inputNormal.addEventListener(
-  "change",
-  () => {
-    const novoValor =
-      Number(inputNormal.value);
+    inputNormal.addEventListener("change",() => {
+      const novoValor = Number(inputNormal.value);
+      const bonusNatural = Number(dados.bonusNatural) || 0;
+      const valorMinimo = 1 + bonusNatural;
 
-    const bonusNatural =
-      Number(dados.bonusNatural) || 0;
+      if (!Number.isInteger(novoValor) || novoValor < valorMinimo || novoValor > 99) {
+        inputNormal.value = dados.valor;
+        return;
+      }
 
-    const valorMinimo =
-      1 + bonusNatural;
+      const valorAnterior = dados.valor;
+      const resumoAnterior = obterResumoPontosPericiasFicha();
 
-    if (
-      !Number.isInteger(novoValor) ||
-      novoValor < valorMinimo ||
-      novoValor > 99
-    ) {
-      inputNormal.value =
-        dados.valor;
+      dados.valor = novoValor;
+      const resumoNovo = obterResumoPontosPericiasFicha();
 
-      return;
-    }
+      if (resumoNovo.pontosRecuperados > MAXIMO_PONTOS_RECUPERADOS_FICHA) {
+        dados.valor = valorAnterior;
+        inputNormal.value = valorAnterior;
+        return;
+      }
 
-    const valorAnterior =
-      dados.valor;
+      const excessoAnterior = resumoAnterior.pontosGastos - resumoAnterior.limitePontos;
+      const excessoNovo = resumoNovo.pontosGastos - resumoNovo.limitePontos;
 
-    dados.valor =
-      novoValor;
+      if (!podeAlterarDentroDoLimiteFicha(excessoAnterior,excessoNovo)) {
+        dados.valor = valorAnterior;
+        inputNormal.value = valorAnterior;
+        return;
+      }
 
-    const resumo =
-      obterResumoPontosPericiasFicha();
+      if (dadosFichaAtual) {
+        dadosFichaAtual.pericias ||= {};
+        dadosFichaAtual.pericias[pericia.id] ||= {};
+        dadosFichaAtual.pericias[pericia.id].valorAtual = novoValor;
+      }
 
-    if (
-      resumo.pontosRecuperados >
-      MAXIMO_PONTOS_RECUPERADOS_FICHA
-    ) {
-      dados.valor =
-        valorAnterior;
+      const alteracoes = {[`pericias.${pericia.id}.valorAtual`]:novoValor};
 
-      inputNormal.value =
-        valorAnterior;
+      recalcularRecursosAutomaticos(alteracoes);
+      salvarAtualizacaoPontosFicha(alteracoes);
 
-      return;
-    }
+      if (periciaSelecionadaRolagemId === pericia.id) valorTestePericia.value = novoValor;
 
-    if (dadosFichaAtual) {
-      dadosFichaAtual.pericias ||= {};
+      renderizarPericiasPontosFicha();
+    });
 
-      dadosFichaAtual
-        .pericias[pericia.id] ||= {};
+    grupoValores.append(inputNormal, bom, extremo, modificador);
 
-      dadosFichaAtual
-        .pericias[pericia.id]
-        .valorAtual =
-          novoValor;
-    }
+    linha.append(nomeEAtributo,grupoValores);
 
-    const alteracoes = {
-      [`pericias.${pericia.id}.valorAtual`]:
-        novoValor
-    };
-
-    recalcularRecursosAutomaticos(
-      alteracoes
-    );
-
-    salvarAtualizacaoPontosFicha(
-      alteracoes
-    );
-
-    if (
-      periciaSelecionadaRolagemId ===
-      pericia.id
-    ) {
-      valorTestePericia.value =
-        novoValor;
-    }
-
-    renderizarPericiasPontosFicha();
-  }
-);
-
-    grupoValores.append(
-      inputNormal,
-      bom,
-      extremo,
-      modificador
-    );
-
-    linha.append(
-      nomeEAtributo,
-      grupoValores
-    );
-
-    fragmento.appendChild(
-      linha
-    );
+    fragmento.appendChild(linha);
   });
 
-  listaPericiasFicha.replaceChildren(
-    fragmento
-  );
+  listaPericiasFicha.replaceChildren(fragmento);
 
   renderizarContadoresPericiasFicha();
 }
-
 
 /* Preencher Pontos de Ficha */
 
@@ -6622,99 +6574,62 @@ async function alterarNivelFicha(tipoNivel,novoNivel) {
 campoNcpFicha.addEventListener("change",() => alterarNivelFicha("ncp",Number(campoNcpFicha.value)));
 campoNeoFicha.addEventListener("change",() => alterarNivelFicha("neo",Number(campoNeoFicha.value)));
 
-campoCreditoFicha.addEventListener(
-  "change",
-  () => {
-    const credito =
-      Number(
-        campoCreditoFicha.value
-      );
+campoCreditoFicha.addEventListener("change",() => {
+  const credito = Number(campoCreditoFicha.value);
 
-    if (!Number.isFinite(credito)) {
-      campoCreditoFicha.value =
-        Number(
-          dadosFichaAtual?.credito
-        ) || 0;
-
-      return;
-    }
-
-    if (dadosFichaAtual) {
-      dadosFichaAtual.credito = credito;
-    }
-
-    atualizarCreditoInventarioFicha();
-    if (fundoCatalogoItensFicha && !fundoCatalogoItensFicha.hidden) renderizarCatalogoItensFicha();
-
-    salvarAtualizacaoPontosFicha({
-      credito: credito
-    });
+  if (!Number.isFinite(credito)) {
+    campoCreditoFicha.value = Number(dadosFichaAtual?.credito) || 0;
+    return;
   }
-);
 
+  if (dadosFichaAtual) {
+    dadosFichaAtual.credito = credito;
+  }
+
+  atualizarCreditoInventarioFicha();
+  if (fundoCatalogoItensFicha && !fundoCatalogoItensFicha.hidden) renderizarCatalogoItensFicha();
+
+  salvarAtualizacaoPontosFicha({
+    credito: credito
+  });
+});
+function podeAlterarDentroDoLimiteFicha(excessoAnterior,excessoNovo) {
+  if (podeAlterarNiveisFicha) return true;
+  return excessoAnterior > 0 ? excessoNovo < excessoAnterior : excessoNovo <= 0;
+}
 
 /* Alterações dos Atributos */
 
-function configurarCampoAtributoFicha(
-  campo,
-  chave
-) {
-  campo.addEventListener(
-    "change",
-    () => {
-      const valor =
-        Number(campo.value);
+function configurarCampoAtributoFicha(campo,chave) {
+  campo.addEventListener("change",() => {
+    const valor = Number(campo.value);
+    const valorAnterior = estadoAtributosFicha[chave];
 
-      if (
-        !Number.isInteger(valor) ||
-        valor < 0 ||
-        valor > 9
-      ) {
-        campo.value =
-          estadoAtributosFicha[
-            chave
-          ];
-
-        return;
-      }
-
-      estadoAtributosFicha[
-        chave
-      ] = valor;
-
-      if (
-        dadosFichaAtual
-          ?.atributos
-      ) {
-        dadosFichaAtual
-          .atributos[chave] =
-            valor;
-      }
-
-      atualizarContadorAtributosFicha();
-
-      const alteracoes = {
-        [`atributos.${chave}`]:
-          valor
-      };
-
-      recalcularRecursosAutomaticos(
-        alteracoes
-      );
-
-      salvarAtualizacaoPontosFicha(
-        alteracoes
-      );
-
-      if (
-        periciaSelecionadaRolagemId
-      ) {
-        atualizarParametrosRolagemPericia(
-          periciaSelecionadaRolagemId
-        );
-      }
+    if (!Number.isInteger(valor) || valor < 0 || valor > 9) {
+      campo.value = valorAnterior;
+      return;
     }
-  );
+
+    const limite = obterLimiteAtributosFicha();
+    const totalAnterior = obterValorAtributoFicha("fisico") + obterValorAtributoFicha("cognicao") + obterValorAtributoFicha("presenca");
+    const totalNovo = totalAnterior - valorAnterior + valor;
+
+    if (!podeAlterarDentroDoLimiteFicha(totalAnterior - limite,totalNovo - limite)) {
+      campo.value = valorAnterior;
+      return;
+    }
+
+    estadoAtributosFicha[chave] = valor;
+    if (dadosFichaAtual?.atributos) dadosFichaAtual.atributos[chave] = valor;
+
+    atualizarContadorAtributosFicha();
+
+    const alteracoes = {[`atributos.${chave}`]:valor};
+    recalcularRecursosAutomaticos(alteracoes);
+    salvarAtualizacaoPontosFicha(alteracoes);
+
+    if (periciaSelecionadaRolagemId) atualizarParametrosRolagemPericia(periciaSelecionadaRolagemId);
+  });
 }
 
 configurarCampoAtributoFicha(
