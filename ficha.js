@@ -1544,7 +1544,38 @@ let estadoHabilidadesFicha = {
   ocupacao: [],
   escolhaOcupacaoPendente: false
 };
+let evolucaoPessoalEmEdicao = null;
 
+function copiarVersaoHabilidadePessoal(h = {}) {
+  return {
+    categoria:Number.isInteger(Number(h.categoria)) ? Number(h.categoria) : 1,
+    nome:textoHabilidadeSeguro(h.nome),
+    custo:textoHabilidadeSeguro(h.custo),
+    acao:textoHabilidadeSeguro(h.acao),
+    alvo:textoHabilidadeSeguro(h.alvo),
+    alcance:textoHabilidadeSeguro(h.alcance),
+    resistencia:textoHabilidadeSeguro(h.resistencia),
+    descricao:textoHabilidadeSeguro(h.descricao),
+    origem:textoHabilidadeSeguro(h.origem)
+  };
+}
+
+function normalizarEvolucaoPessoal(dados) {
+  if (!dados || typeof dados !== "object") return null;
+
+  const nivel = Number(dados.nivel);
+  const beneficioId = textoHabilidadeSeguro(dados.beneficioId);
+
+  if (dados.tipo !== "ncp" || !Number.isInteger(nivel) || nivel < 0 || !beneficioId) return null;
+
+  return {
+    tipo:"ncp",
+    nivel,
+    beneficioId,
+    anterior:copiarVersaoHabilidadePessoal(dados.anterior),
+    nova:copiarVersaoHabilidadePessoal(dados.nova)
+  };
+}
 let filaSalvamentoHabilidades = Promise.resolve();
 let timerSalvamentoHabilidades = null;
 let sequenciaHabilidadePessoal = 0;
@@ -1752,8 +1783,10 @@ function normalizarHabilidadeSalva(habilidade, tipo, indice) {
     descricao: textoHabilidadeSeguro(dados.descricao),
 
     origem: origem,
-
-    progressaoOrigem: normalizarProgressaoOrigemHabilidade(dados.progressaoOrigem)
+    
+    progressaoOrigem:normalizarProgressaoOrigemHabilidade(dados.progressaoOrigem),
+    
+    evolucoes:Array.isArray(dados.evolucoes) ? dados.evolucoes.map(normalizarEvolucaoPessoal).filter(Boolean) : []
   };
 }
 
@@ -1837,7 +1870,15 @@ function copiarEstadoHabilidadesFicha() {
 
       origem: habilidade.origem,
 
-      progressaoOrigem:habilidade.progressaoOrigem ? {...habilidade.progressaoOrigem} : null
+      progressaoOrigem:habilidade.progressaoOrigem ? {...habilidade.progressaoOrigem} : null,
+
+      evolucoes: (habilidade.evolucoes || []).map(e => ({
+        tipo: e.tipo,
+        nivel: e.nivel,
+        beneficioId: e.beneficioId,
+        anterior: {...e.anterior},
+        nova: {...e.nova}
+      }))
     }));
 
   return {
@@ -2847,7 +2888,88 @@ function ajustarAlturaCampoHabilidade(
   campo.style.height =
     `${campo.scrollHeight}px`;
 }
+function obterBeneficioEvolucaoPessoalFicha(habilidade) {
+  const ncp = Number(dadosFichaAtual?.ncp) || 0;
+  const categoria = Number(habilidade.categoria);
 
+  return estadoProgressaoNiveisFicha.beneficiosPendentes.find(item => {
+    if (item.origem !== "ncp" || item.nivel > ncp || beneficioProgressaoResolvidoFicha(item)) return false;
+    if (item.chave === "evolucao-ou-habilidade-pessoal") return categoria === 1;
+    if (item.chave === "evolucao-habilidade-pessoal") return categoria === 1 || categoria === 2;
+    return false;
+  }) || null;
+}
+
+function iniciarEvolucaoPessoalFicha(id) {
+  if (evolucaoPessoalEmEdicao) {
+    alert("Conclua ou cancele a evolução atual antes de iniciar outra.");
+    return;
+  }
+
+  const habilidade = estadoHabilidadesFicha.pessoais.find(item => item.id === id);
+  if (!habilidade) return;
+
+  const beneficio = obterBeneficioEvolucaoPessoalFicha(habilidade);
+
+  if (!beneficio) {
+    alert("Não há uma evolução disponível para esta Habilidade Pessoal no NCP atual.");
+    return;
+  }
+
+  const anterior = copiarVersaoHabilidadePessoal(habilidade);
+
+  evolucaoPessoalEmEdicao = {
+    habilidadeId:id,
+    beneficioId:beneficio.id,
+    nivel:beneficio.nivel,
+    anterior,
+    rascunho:{...anterior}
+  };
+
+  renderizarHabilidadesFicha(id);
+}
+function cancelarEvolucaoPessoalFicha() {
+  const id = evolucaoPessoalEmEdicao?.habilidadeId;
+  evolucaoPessoalEmEdicao = null;
+  renderizarHabilidadesFicha(id);
+}
+
+async function concluirEvolucaoPessoalFicha() {
+  const edicao = evolucaoPessoalEmEdicao;
+  if (!edicao) return;
+
+  const habilidade = estadoHabilidadesFicha.pessoais.find(item => item.id === edicao.habilidadeId);
+  const beneficio = estadoProgressaoNiveisFicha.beneficiosPendentes.find(item => item.id === edicao.beneficioId);
+
+  if (!habilidade || !beneficio || beneficio.nivel > (Number(dadosFichaAtual?.ncp) || 0)) {
+    alert("Esta evolução não está mais disponível no NCP atual.");
+    cancelarEvolucaoPessoalFicha();
+    return;
+  }
+
+  const versaoAnterior = copiarVersaoHabilidadePessoal(habilidade);
+  const evolucoesAnteriores = [...(habilidade.evolucoes || [])];
+  const nova = copiarVersaoHabilidadePessoal(edicao.rascunho);
+
+  Object.assign(habilidade,nova);
+  habilidade.evolucoes = [...evolucoesAnteriores,{
+    tipo:"ncp",
+    nivel:beneficio.nivel,
+    beneficioId:beneficio.id,
+    anterior:{...edicao.anterior},
+    nova:{...nova}
+  }];
+
+  try {
+    await salvarHabilidadesFichaImediatamente();
+    evolucaoPessoalEmEdicao = null;
+    renderizarHabilidadesFicha(habilidade.id);
+  } catch (erro) {
+    Object.assign(habilidade,versaoAnterior);
+    habilidade.evolucoes = evolucoesAnteriores;
+    alert("Não foi possível salvar a evolução da Habilidade.");
+  }
+}
 
 /* Cards */
 
@@ -2863,6 +2985,9 @@ function criarCardHabilidadeFicha(
 
   const abertoInicial =
     opcoes.aberto === true;
+
+  const evoluindo = tipo === "pessoais" && evolucaoPessoalEmEdicao?.habilidadeId === habilidade.id;
+  const dadosEdicao = evoluindo ? evolucaoPessoalEmEdicao.rascunho : habilidade;
 
   card.className =
     "card-habilidade-ficha";
@@ -2995,8 +3120,7 @@ function criarCardHabilidadeFicha(
       ".excluir-habilidade-ficha"
     );
 
-  nome.value =
-    habilidade.nome;
+  nome.value = dadosEdicao.nome;
 
   if (tipo === "pessoais") {
     nome.placeholder =
@@ -3046,15 +3170,10 @@ function criarCardHabilidadeFicha(
     }
   );
 
-  nome.addEventListener(
-    "input",
-    () => {
-      habilidade.nome =
-        nome.value;
-
-      agendarSalvamentoHabilidadesFicha();
-    }
-  );
+  nome.addEventListener("input", () => {
+    dadosEdicao.nome = nome.value;
+    if (!evoluindo) agendarSalvamentoHabilidadesFicha();
+  });
 
   conteudo
     .querySelectorAll(
@@ -3067,24 +3186,54 @@ function criarCardHabilidadeFicha(
             .campoHabilidade;
 
         campo.value =
-          habilidade[chave] ||
+          dadosEdicao[chave] ||
           "";
 
         campo.addEventListener(
           "input",
           () => {
-            habilidade[chave] =
-              campo.value;
-
-            ajustarAlturaCampoHabilidade(
-              campo
-            );
-
-            agendarSalvamentoHabilidadesFicha();
+            dadosEdicao[chave] = campo.value;
+            ajustarAlturaCampoHabilidade(campo);
+            if (!evoluindo) agendarSalvamentoHabilidadesFicha();
           }
         );
       }
     );
+
+  if (tipo === "pessoais") {
+    const acoes = document.createElement("div");
+    acoes.className = "acoes-evolucao-habilidade-pessoal";
+
+    if (evoluindo) {
+      const concluir = document.createElement("button");
+      const cancelar = document.createElement("button");
+
+      concluir.type = cancelar.type = "button";
+      concluir.className = "botao-concluir-evolucao-pessoal";
+      cancelar.className = "botao-cancelar-evolucao-pessoal";
+      concluir.textContent = "CONCLUIR";
+      cancelar.textContent = "CANCELAR";
+
+      concluir.addEventListener("click",concluirEvolucaoPessoalFicha);
+      cancelar.addEventListener("click",cancelarEvolucaoPessoalFicha);
+
+      acoes.append(cancelar,concluir);
+    } else {
+      const evoluir = document.createElement("button");
+      const beneficio = obterBeneficioEvolucaoPessoalFicha(habilidade);
+
+      evoluir.type = "button";
+      evoluir.className = "botao-evoluir-habilidade-pessoal";
+      evoluir.textContent = "EVOLUIR";
+      evoluir.disabled = !podeEditarFichaAtual || !beneficio;
+      evoluir.title = beneficio ? `Usar evolução do NCP ${beneficio.nivel}` : "Nenhuma evolução disponível";
+
+      evoluir.addEventListener("click",() => iniciarEvolucaoPessoalFicha(habilidade.id));
+      acoes.appendChild(evoluir);
+    }
+
+    conteudo.appendChild(acoes);
+  }
 
   if (
     opcoes.mostrarEscolha ===
@@ -3427,7 +3576,9 @@ function criarHabilidadePessoalFicha() {
     alcance: "",
     resistencia: "",
     descricao: "",
-    origem: ""
+    origem:"",
+    progressaoOrigem:null,
+    evolucoes:[]
   };
 
   estadoHabilidadesFicha
@@ -3457,11 +3608,7 @@ function criarHabilidadePessoalFicha() {
   );
 }
 
-botaoAdicionarHabilidadePessoal
-  ?.addEventListener(
-    "click",
-    criarHabilidadePessoalFicha
-  );
+botaoAdicionarHabilidadePessoal ?.addEventListener("click", criarHabilidadePessoalFicha);
 
 /* Catálogo de Habilidades */
 
@@ -3967,7 +4114,7 @@ function criarCardCatalogoHabilidade(
             .campoCatalogo;
 
         campo.value =
-          habilidade[chave] || "";
+          dadosEdicao[chave] || "";
       }
     );
 
@@ -5787,7 +5934,10 @@ function obterTodasHabilidadesFicha() {
   return [...estadoHabilidadesFicha.perfil,...estadoHabilidadesFicha.pessoais,...estadoHabilidadesFicha.ocupacao];
 }
 function beneficioProgressaoResolvidoFicha(beneficio) {
-  return obterTodasHabilidadesFicha().some(habilidade => habilidade.progressaoOrigem?.beneficioId === beneficio.id);
+  return obterTodasHabilidadesFicha().some(habilidade =>
+    habilidade.progressaoOrigem?.beneficioId === beneficio.id ||
+    (habilidade.evolucoes || []).some(evolucao => evolucao.beneficioId === beneficio.id)
+  );
 }
 function obterHabilidadesIrregularesProgressaoFicha() {
   const ncp = Number(dadosFichaAtual?.ncp) || 0;

@@ -1564,14 +1564,12 @@ input[type="number"]{
   border: 1px solid rgb(85,85,85);
   border-radius: 5px;
 }
-
 .cabecalho-card-habilidade{
   display: grid;
   grid-template-columns: 27px minmax(0,1fr) 26px 28px;
   align-items: center;
   min-height: 34px;
 }
-
 .categoria-habilidade{
   display: flex;
   align-items: center;
@@ -1604,7 +1602,6 @@ input[type="number"]{
   border: none;
   cursor: pointer;
 }
-
 .expandir-habilidade-ficha{
   color: rgb(190,190,190);
   font-size: 10px;
@@ -1612,13 +1609,11 @@ input[type="number"]{
     transform 0.2s,
     color 0.2s;
 }
-
 .card-habilidade-ficha.aberta
 .expandir-habilidade-ficha{
   transform: rotate(90deg);
   color: rgb(0,225,240);
 }
-
 .excluir-habilidade-ficha{
   color: rgb(150,150,150);
   font-size: 12px;
@@ -1626,7 +1621,6 @@ input[type="number"]{
     color 0.2s,
     transform 0.2s;
 }
-
 .excluir-habilidade-ficha:hover{
   color: rgb(255,80,80);
   transform: scale(1.12);
@@ -1639,11 +1633,9 @@ input[type="number"]{
   padding: 7px;
   border-top: 1px solid rgb(55,55,55);
 }
-
 .conteudo-card-habilidade[hidden]{
   display: none;
 }
-
 .linha-tripla-habilidade{
   display: grid;
   grid-template-columns: repeat(3,minmax(0,1fr));
@@ -1661,11 +1653,9 @@ input[type="number"]{
   font-size: 7px;
   font-weight: bold;
 }
-
 .campo-largo-habilidade{
   margin-top: 6px;
 }
-
 .conteudo-card-habilidade textarea{
   width: 100%;
   min-width: 0;
@@ -1684,17 +1674,45 @@ input[type="number"]{
   line-height: 1.3;
   transition: border-color 0.3s, box-shadow 0.3s;
 }
-
 .conteudo-card-habilidade textarea:focus{
   border-color: rgb(150,0,225);
   box-shadow: 0 0 5px rgb(200,100,225);
 }
-
 .conteudo-card-habilidade
 .descricao-habilidade-ficha{
   min-height: 58px;
 }
-
+.acoes-evolucao-habilidade-pessoal{
+  display:flex;
+  justify-content:flex-end;
+  gap:6px;
+  margin-top:8px;
+}
+.acoes-evolucao-habilidade-pessoal button{
+  padding:5px 8px;
+  background:black;
+  color:rgb(190,190,190);
+  border:1px solid rgb(80,80,80);
+  border-radius:4px;
+  cursor:pointer;
+  font-size:8px;
+  font-weight:bold;
+}
+.botao-evoluir-habilidade-pessoal:hover,
+.botao-concluir-evolucao-pessoal:hover{
+  color:white;
+  border-color:rgb(150,0,225);
+  box-shadow:0 0 6px rgba(180,80,225,.4);
+}
+.botao-cancelar-evolucao-pessoal:hover{
+  color:rgb(255,120,100);
+  border-color:rgb(150,70,60);
+}
+.acoes-evolucao-habilidade-pessoal button:disabled{
+  opacity:.35;
+  cursor:default;
+  box-shadow:none;
+}
 
 /* Adicionar */
 
