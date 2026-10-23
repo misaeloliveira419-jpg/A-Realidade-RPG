@@ -5774,15 +5774,12 @@ function obterPericiasNaturaisDisponiveisFicha() {
 
   return resultado;
 }
-
 function obterOcupacoesAreaObrigatoriaFicha() {
   return obterOcupacoesNaturaisFicha().filter(ocupacao => ocupacao.areasObrigatorias.length > 0);
 }
-
 function bonusRascunhoPericiaFicha(nome) {
-  return Number(bonusNaturaisRascunho[nome]) || 0;
+  return Number(bonusNaturaisRascunho[criarIdPericiaPontosFicha(nome)]) || 0;
 }
-
 function validarEdicaoPericiasNaturaisFicha() {
   const disponiveis = obterPericiasNaturaisDisponiveisFicha();
 
@@ -5924,13 +5921,13 @@ function renderizarEditorPericiasNaturaisFicha() {
         }
 
         periciasNaturaisRascunho.push(nomePericia);
-        bonusNaturaisRascunho[nomePericia] ||= 0;
+        bonusNaturaisRascunho[criarIdPericiaPontosFicha(nomePericia)] ||= 0;
       } else {
         periciasNaturaisRascunho = periciasNaturaisRascunho.filter(
           nome => !nomesIguaisPericiaFicha(nome,nomePericia)
         );
 
-        bonusNaturaisRascunho[nomePericia] = 0;
+        bonusNaturaisRascunho[criarIdPericiaPontosFicha(nomePericia)] = 0;
       }
 
       renderizarEditorPericiasNaturaisFicha();
@@ -5956,7 +5953,7 @@ function renderizarEditorPericiasNaturaisFicha() {
         return;
       }
 
-      bonusNaturaisRascunho[nomePericia] = valor;
+      bonusNaturaisRascunho[criarIdPericiaPontosFicha(nomePericia)] = valor;
       atualizarEstadoEditorPericiasNaturaisFicha();
     });
 
@@ -5980,8 +5977,7 @@ function abrirEditorPericiasNaturaisFicha() {
 
   disponiveis.forEach(nome => {
     const id = criarIdPericiaPontosFicha(nome);
-
-    bonusNaturaisRascunho[nome] = periciasNaturaisRascunho.some(atual => nomesIguaisPericiaFicha(atual,nome)) ? Number(estadoPericiasFicha[id]?.bonusNatural) || 0 : 0;
+    bonusNaturaisRascunho[id] = periciasNaturaisRascunho.some(atual => nomesIguaisPericiaFicha(atual,nome)) ? Number(estadoPericiasFicha[id]?.bonusNatural) || 0 : 0;
   });
 
   editorPericiasNaturaisFicha.hidden = false;
