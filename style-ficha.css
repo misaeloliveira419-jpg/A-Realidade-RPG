@@ -386,13 +386,11 @@
   font-size: 16px;
   letter-spacing: 0.2em;
 }
-
 .lista-atributos-ficha{
   display: flex;
   flex-direction: column;
   gap: 5px;
 }
-
 .linha-atributo-ficha{
   display: flex;
   align-items: center;
@@ -402,7 +400,6 @@
   font-size: 13px;
   font-weight: bold;
 }
-
 .atributo-fisico-ficha{
   --gradiente-atributo-ficha: linear-gradient(
     rgb(150,50,0),
@@ -411,7 +408,6 @@
   );
   --cor-atributo-ficha: rgb(210,70,50);
 }
-
 .atributo-cognicao-ficha{
   --gradiente-atributo-ficha: linear-gradient(
     rgb(180,180,210),
@@ -604,17 +600,21 @@
   font-size: 9px;
   white-space: nowrap;
 }
-
 .contador-pontos-pericias-ficha{
   color: rgb(210,210,210);
 }
-
 .contador-naturais-pericias-ficha{
   color: rgb(200,110,240);
   border-color: rgb(105,55,130);
   text-shadow: 0 0 5px rgba(200,110,240,0.4);
 }
-
+.contador-atributos-ficha.estourado,
+.contador-pontos-pericias-ficha.estourado,
+.contador-naturais-pericias-ficha.estourado{
+  color:rgb(255,110,90) !important;
+  border-color:rgb(160,70,60) !important;
+  text-shadow:0 0 6px rgba(255,80,60,.45) !important;
+}
 .legenda-valores-pericia{
   display: grid;
   grid-template-columns:

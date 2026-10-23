@@ -5647,13 +5647,14 @@ function recalcularRecursosAutomaticos(
   renderizarPvPdFicha();
 }
 
-
 /* Contador de Atributos */
 
 function atualizarContadorAtributosFicha() {
   const total = obterValorAtributoFicha("fisico") + obterValorAtributoFicha("cognicao") + obterValorAtributoFicha("presenca");
+  const limite = obterLimiteAtributosFicha();
 
-  contadorAtributosFicha.textContent = `${total}/${obterLimiteAtributosFicha()}`;
+  contadorAtributosFicha.textContent = `${total}/${limite}`;
+  contadorAtributosFicha.classList.toggle("estourado",total > limite);
 }
 
 /* Salvamento */
@@ -5732,25 +5733,24 @@ function obterResumoPontosPericiasFicha() {
     bonusNaturais
   };
 }
-
 function renderizarContadoresPericiasFicha() {
   const resumo = obterResumoPontosPericiasFicha();
+  const limiteNaturais = obterLimiteBonusNaturalFicha();
 
   limitePontosPericiasFicha = resumo.limitePontos;
 
   contadorPontosPericiasFicha.textContent = `${resumo.pontosGastos} / ${resumo.limitePontos}`;
+  contadorNaturaisPericiasFicha.textContent = `NATURAIS: ${resumo.bonusNaturais} / ${limiteNaturais}`;
 
-  contadorNaturaisPericiasFicha.textContent = `NATURAIS: ${resumo.bonusNaturais} / ${obterLimiteBonusNaturalFicha()}`;
+  contadorPontosPericiasFicha.classList.toggle("estourado",resumo.pontosGastos > resumo.limitePontos);
+  contadorNaturaisPericiasFicha.classList.toggle("estourado",resumo.bonusNaturais > limiteNaturais);
 }
-
 function nomesIguaisPericiaFicha(a,b) {
   return normalizarTextoPontosFicha(a) === normalizarTextoPontosFicha(b);
 }
-
 function ehPericiaNaturalFicha(pericia) {
   return periciasNaturaisFicha.some(nome => nomesIguaisPericiaFicha(nome,pericia.nome));
 }
-
 function obterOcupacoesNaturaisFicha() {
   const ids = Array.isArray(dadosFichaAtual?.ocupacoes)
     ? dadosFichaAtual.ocupacoes
