@@ -1628,13 +1628,77 @@ function nomeOcupacaoHabilidadeFicha(
     ""
   );
 }
-
 function textoHabilidadeSeguro(valor) {
   return typeof valor === "string"
     ? valor
     : "";
 }
+function obterPendenciasInformacoesFicha() {
+  const pendencias = [];
+  const totalAtributos = obterValorAtributoFicha("fisico") + obterValorAtributoFicha("cognicao") + obterValorAtributoFicha("presenca");
+  const limiteAtributos = obterLimiteAtributosFicha();
+  const resumo = obterResumoPontosPericiasFicha();
+  const limiteNaturais = obterLimiteBonusNaturalFicha();
+  const ncp = Number(dadosFichaAtual?.ncp) || 0;
+  const neo = Number(dadosFichaAtual?.neo) || 0;
 
+  if (totalAtributos > limiteAtributos) pendencias.push({titulo:"ATRIBUTOS",texto:`${totalAtributos} / ${limiteAtributos}. Reduza o total em ${totalAtributos - limiteAtributos} ponto(s).`});
+  if (resumo.pontosGastos > resumo.limitePontos) pendencias.push({titulo:"PERÍCIAS",texto:`${resumo.pontosGastos} / ${resumo.limitePontos}. Reduza o excesso em ${resumo.pontosGastos - resumo.limitePontos} ponto(s).`});
+  if (resumo.bonusNaturais > limiteNaturais) pendencias.push({titulo:"PERÍCIAS NATURAIS",texto:`${resumo.bonusNaturais} / ${limiteNaturais}. Redistribua ou remova ${resumo.bonusNaturais - limiteNaturais} ponto(s) bônus.`});
+
+  estadoProgressaoNiveisFicha.beneficiosPendentes.forEach(item => {
+    const nivelAtual = item.origem === "ncp" ? ncp : neo;
+    if (item.nivel <= nivelAtual) pendencias.push({titulo:`${item.origem.toUpperCase()} ${item.nivel} — ESCOLHA PENDENTE`,texto:item.texto});
+  });
+
+  return pendencias;
+}
+function renderizarInformacoesFicha() {
+  const ncp = Number(dadosFichaAtual?.ncp) || 0;
+  const neo = Number(dadosFichaAtual?.neo) || 0;
+  const pendencias = obterPendenciasInformacoesFicha();
+
+  const niveis = document.createElement("div");
+  niveis.className = "resumo-niveis-informacoes-ficha";
+  niveis.innerHTML = `<strong>NCP ${ncp}</strong><strong>NEO ${neo}</strong>`;
+
+  const estado = document.createElement("div");
+  estado.className = `estado-informacoes-ficha ${pendencias.length ? "com-pendencias" : "regular"}`;
+  estado.textContent = pendencias.length ? `⚠ Esta ficha possui ${pendencias.length} pendência(s).` : "✓ FICHA REGULAR — não há ajustes pendentes.";
+
+  const fragmento = document.createDocumentFragment();
+  pendencias.forEach(item => {
+    const card = document.createElement("div");
+    const titulo = document.createElement("strong");
+    const texto = document.createElement("p");
+
+    card.className = "pendencia-informacoes-ficha";
+    titulo.textContent = item.titulo;
+    texto.textContent = item.texto;
+
+    card.append(titulo,texto);
+    fragmento.appendChild(card);
+  });
+
+  conteudoInformacoesFicha.replaceChildren(niveis,estado,fragmento);
+}
+function abrirInformacoesFicha() {
+  renderizarInformacoesFicha();
+  modalInformacoesFicha.hidden = false;
+}
+
+function fecharInformacoesFicha() {
+  modalInformacoesFicha.hidden = true;
+}
+
+botaoAbrirInformacoesFicha.addEventListener("click",abrirInformacoesFicha);
+botaoFecharInformacoesFicha.addEventListener("click",fecharInformacoesFicha);
+modalInformacoesFicha.addEventListener("click",evento => {
+  if (evento.target === modalInformacoesFicha) fecharInformacoesFicha();
+});
+document.addEventListener("keydown",evento => {
+  if (evento.key === "Escape" && !modalInformacoesFicha.hidden) fecharInformacoesFicha();
+});
 function habilidadeVaziaCategoriaZero() {
   return {
     categoria: 0,
@@ -1687,7 +1751,9 @@ function normalizarHabilidadeSalva(habilidade, tipo, indice) {
 
     descricao: textoHabilidadeSeguro(dados.descricao),
 
-    origem: origem
+    origem: origem,
+
+    progressaoOrigem: normalizarProgressaoOrigemHabilidade(dados.progressaoOrigem)
   };
 }
 
@@ -1748,43 +1814,31 @@ function normalizarEstadoHabilidadesFicha(
 
 function copiarEstadoHabilidadesFicha() {
   const copiarLista =
-    lista =>
-      lista.map(
-        habilidade => ({
-          catalogoId:
-            habilidade.catalogoId || "",
+    lista => lista.map(habilidade => ({
+      catalogoId: habilidade.catalogoId || "",
 
-          id:
-            habilidade.id,
+      id: habilidade.id,
 
-          categoria:
-            habilidade.categoria,
+      categoria: habilidade.categoria,
 
-          nome:
-            habilidade.nome,
+      nome: habilidade.nome,
 
-          custo:
-            habilidade.custo,
+      custo: habilidade.custo,
 
-          acao:
-            habilidade.acao,
+      acao: habilidade.acao,
 
-          alvo:
-            habilidade.alvo,
+      alvo: habilidade.alvo,
 
-          alcance:
-            habilidade.alcance,
+      alcance: habilidade.alcance,
 
-          resistencia:
-            habilidade.resistencia,
+      resistencia: habilidade.resistencia,
 
-          descricao:
-            habilidade.descricao,
+      descricao: habilidade.descricao,
 
-          origem:
-            habilidade.origem
-        })
-      );
+      origem: habilidade.origem,
+
+      progressaoOrigem:habilidade.progressaoOrigem ? {...habilidade.progressaoOrigem} : null
+    }));
 
   return {
     inicializadas: true,
@@ -3594,94 +3648,74 @@ function habilidadeCombinaComPesquisa(
     termo
   );
 }
-
-
-function copiarHabilidadeDoCatalogo(
-  tipo,
-  habilidade
-) {
+function copiarHabilidadeDoCatalogo(tipo, habilidade) {
   return {
-    catalogoId:
-      habilidade.catalogoId,
+    catalogoId: habilidade.catalogoId,
 
-    id:
-      [
-        "adquirida",
-        tipo,
-        Date.now(),
-        Math.random()
-          .toString(36)
-          .slice(2, 8)
-      ].join("-"),
+    id: ["adquirida", tipo, Date.now(), Math.random().toString(36).slice(2, 8)].join("-"),
 
-    categoria:
-      habilidade.categoria,
+    categoria: habilidade.categoria,
 
-    nome:
-      habilidade.nome,
+    nome: habilidade.nome,
 
-    custo:
-      habilidade.custo,
+    custo: habilidade.custo,
     
-    acao:
-      habilidade.acao,
+    acao: habilidade.acao,
 
-    alvo:
-      habilidade.alvo,
+    alvo: habilidade.alvo,
 
-    alcance:
-      habilidade.alcance,
+    alcance: habilidade.alcance,
 
-    resistencia:
-      habilidade.resistencia,
+    resistencia: habilidade.resistencia,
 
-    descricao:
-      habilidade.descricao,
+    descricao: habilidade.descricao,
 
-    origem:
-      habilidade.origem
+    origem: habilidade.origem,
+
+    progressaoOrigem: null
   };
 }
+function beneficioProgressaoJaUsadoFicha(id) {
+  return [...estadoHabilidadesFicha.perfil,...estadoHabilidadesFicha.pessoais,...estadoHabilidadesFicha.ocupacao]
+    .some(habilidade => habilidade.progressaoOrigem?.beneficioId === id);
+}
+function obterBeneficioProgressaoNovaHabilidadeFicha(tipo,habilidade) {
+  const origem = tipo === "perfil" ? "ncp" : "neo";
+  const nivelAtual = origem === "ncp" ? Number(dadosFichaAtual?.ncp) || 0 : Number(dadosFichaAtual?.neo) || 0;
+  const categoria = Number(habilidade.categoria);
+  const chaves = tipo === "perfil"
+    ? ["habilidade-perfil","evolucao-ou-habilidade-perfil","habilidade-perfil-ou-pessoal"]
+    : ["habilidade-ocupacao"];
 
-
-async function adicionarHabilidadeDoCatalogo(
-  tipo,
-  habilidade
-) {
-  if (
-    habilidadeCatalogoJaAdquirida(
-      tipo,
-      habilidade
-    )
-  ) {
-    alert(
-      "Esta Habilidade já foi adicionada ao personagem."
-    );
-
+  return estadoProgressaoNiveisFicha.beneficiosPendentes.find(item => {
+    if (item.origem !== origem || item.nivel > nivelAtual || !chaves.includes(item.chave)) return false;
+    if (Number.isInteger(item.categoriaMin) && categoria < item.categoriaMin) return false;
+    if (Number.isInteger(item.categoriaMax) && categoria > item.categoriaMax) return false;
+    return !beneficioProgressaoJaUsadoFicha(item.id);
+  }) || null;
+}
+async function adicionarHabilidadeDoCatalogo(tipo, habilidade) {
+  if (habilidadeCatalogoJaAdquirida(tipo, habilidade)) {
+    alert("Esta Habilidade já foi adicionada ao personagem.");
     return;
   }
 
-  if (
-    !habilidadeCatalogoCompativel(
-      tipo,
-      habilidade
-    )
-  ) {
-    alert(
-      textoIncompatibilidadeHabilidade(
-        tipo,
-        habilidade
-      )
-    );
-
+  if (!habilidadeCatalogoCompativel(tipo, habilidade)) {
+    alert(textoIncompatibilidadeHabilidade(tipo, habilidade));
     return;
   }
 
-  const novaHabilidade =
-    copiarHabilidadeDoCatalogo(
-      tipo,
-      habilidade
-    );
+  const novaHabilidade = copiarHabilidadeDoCatalogo(tipo, habilidade);
+
+  const beneficioProgressao = obterBeneficioProgressaoNovaHabilidadeFicha(tipo,novaHabilidade);
+
+  if (beneficioProgressao) {
+    novaHabilidade.progressaoOrigem = {
+      tipo:beneficioProgressao.origem,
+      nivel:beneficioProgressao.nivel,
+      beneficioId:beneficioProgressao.id
+    };
+  }
 
   if (tipo === "perfil") {
     estadoHabilidadesFicha
