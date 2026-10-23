@@ -4128,7 +4128,7 @@ function criarCardCatalogoHabilidade(
             .campoCatalogo;
 
         campo.value =
-          dadosEdicao[chave] || "";
+          habilidade[chave] || "";
       }
     );
 
