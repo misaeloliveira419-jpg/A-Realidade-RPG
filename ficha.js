@@ -743,16 +743,15 @@ function mostrarFotoFicha(foto) {
     imagemFotoFicha.removeAttribute("src");
   }
 }
-
 function preencherCabecalhoFicha(ficha) {
   dadosFichaAtual = ficha;
 
   nomeFichaSalvo = ficha.nome || "Nome do Personagem";
   campoNomeFicha.value = nomeFichaSalvo;
+  document.title = `${nomeFichaSalvo}: A Realidade RPG`;
 
   mostrarFotoFicha(ficha.foto || "");
 }
-
 campoNomeFicha.addEventListener("change", async () => {
   if (!podeEditarFichaAtual) return;
 
@@ -1012,8 +1011,6 @@ async function carregarFichaAutenticada(usuario) {
         papel: papelCampanhaFichaAtual
       });
     }
-
-    document.title = `${ficha.nome || "Ficha"}: A Realidade RPG`;
 
   } catch (erro) {
     console.error("Erro ao montar a interface da ficha:",erro);
@@ -1663,6 +1660,21 @@ function textoHabilidadeSeguro(valor) {
   return typeof valor === "string"
     ? valor
     : "";
+}
+function normalizarProgressaoOrigemHabilidade(dados) {
+  if (!dados || typeof dados !== "object") return null;
+
+  const tipo = dados.tipo === "ncp" || dados.tipo === "neo" ? dados.tipo : "";
+  const nivel = Number(dados.nivel);
+  const beneficioId = textoHabilidadeSeguro(dados.beneficioId);
+
+  if (!tipo || !Number.isInteger(nivel) || nivel < 0 || !beneficioId) return null;
+
+  return {
+    tipo,
+    nivel,
+    beneficioId
+  };
 }
 function obterPendenciasInformacoesFicha() {
   const pendencias = [];
@@ -2630,8 +2642,9 @@ function agendarSalvamentoHabilidadesFicha() {
   timerSalvamentoHabilidades =
     setTimeout(
       () => {
-        salvarEstadoHabilidadesFichaAgora()
-          .catch(() => {});
+        salvarEstadoHabilidadesFichaAgora().catch(erro => {
+          console.error("Erro no salvamento automático das Habilidades:",erro);
+        });
       },
       400
     );
@@ -3192,7 +3205,7 @@ function criarCardHabilidadeFicha(
         campo.addEventListener(
           "input",
           () => {
-            dadosEdicao[chave] = campo.value;
+            habilidade[chave] = campo.value;
             ajustarAlturaCampoHabilidade(campo);
             if (!evoluindo) agendarSalvamentoHabilidadesFicha();
           }
@@ -3591,8 +3604,9 @@ function criarHabilidadePessoalFicha() {
     habilidade.id
   );
 
-  salvarHabilidadesFichaImediatamente()
-    .catch(() => {});
+  salvarHabilidadesFichaImediatamente().catch(erro => {
+    console.error("Erro ao salvar Habilidade Pessoal:",erro);
+  });
 
   requestAnimationFrame(
     () => {
