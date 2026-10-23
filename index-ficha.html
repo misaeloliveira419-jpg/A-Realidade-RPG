@@ -29,6 +29,7 @@
           <button id="remover-foto-ficha" class="botao-remover-foto-ficha" type="button" title="Remover foto" aria-label="Remover foto" hidden>×</button>
         </div>
         <input id="nome-personagem-ficha" class="nome-personagem-ficha" type="text" maxlength="80" value="Nome do Personagem" aria-label="Nome do personagem">
+        <button id="abrir-informacoes-ficha" class="abrir-informacoes-ficha" type="button" title="Informações da ficha" aria-label="Informações da ficha">ⓘ</button>
       </header>
 
       <nav class="menu-ficha" role="tablist" aria-label="Áreas da ficha">
@@ -824,7 +825,7 @@
           </div>
         </section>
         
-            </div>
+      </div>
     </section>
 
     <aside id="historico-campanha-ficha" class="historico-campanha-ficha" hidden>
@@ -840,6 +841,16 @@
     </aside>
   </div>
   </main>
+
+  <div id="modal-informacoes-ficha" class="fundo-informacoes-ficha" hidden>
+    <section class="janela-informacoes-ficha" role="dialog" aria-modal="true" aria-labelledby="titulo-informacoes-ficha">
+      <header>
+        <h2 id="titulo-informacoes-ficha">INFORMAÇÕES DA FICHA</h2>
+        <button id="fechar-informacoes-ficha" type="button" aria-label="Fechar">×</button>
+      </header>
+      <div id="conteudo-informacoes-ficha"></div>
+    </section>
+  </div>
 
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>

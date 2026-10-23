@@ -23,6 +23,10 @@ const campoFotoFicha = document.getElementById("input-foto-ficha");
 const imagemFotoFicha = document.getElementById("imagem-foto-ficha");
 const semFotoFicha = document.getElementById("sem-foto-ficha");
 const botaoRemoverFotoFicha = document.getElementById("remover-foto-ficha");
+const botaoAbrirInformacoesFicha = document.getElementById("abrir-informacoes-ficha");
+const modalInformacoesFicha = document.getElementById("modal-informacoes-ficha");
+const botaoFecharInformacoesFicha = document.getElementById("fechar-informacoes-ficha");
+const conteudoInformacoesFicha = document.getElementById("conteudo-informacoes-ficha");
 const areaPersonagensCampanhaFicha = document.getElementById("personagens-campanha-ficha");
 const listaPersonagensCampanhaFicha = document.getElementById("lista-personagens-campanha-ficha");
 const painelHistoricoCampanhaFicha = document.getElementById("historico-campanha-ficha");
@@ -5745,6 +5749,70 @@ function renderizarContadoresPericiasFicha() {
   contadorPontosPericiasFicha.classList.toggle("estourado",resumo.pontosGastos > resumo.limitePontos);
   contadorNaturaisPericiasFicha.classList.toggle("estourado",resumo.bonusNaturais > limiteNaturais);
 }
+function obterPendenciasInformacoesFicha() {
+  const pendencias = [];
+  const totalAtributos = obterValorAtributoFicha("fisico") + obterValorAtributoFicha("cognicao") + obterValorAtributoFicha("presenca");
+  const limiteAtributos = obterLimiteAtributosFicha();
+  const resumo = obterResumoPontosPericiasFicha();
+  const limiteNaturais = obterLimiteBonusNaturalFicha();
+  const ncp = Number(dadosFichaAtual?.ncp) || 0;
+  const neo = Number(dadosFichaAtual?.neo) || 0;
+
+  if (totalAtributos > limiteAtributos) pendencias.push({titulo:"ATRIBUTOS",texto:`${totalAtributos} / ${limiteAtributos}. Reduza o total em ${totalAtributos - limiteAtributos} ponto(s).`});
+  if (resumo.pontosGastos > resumo.limitePontos) pendencias.push({titulo:"PERÍCIAS",texto:`${resumo.pontosGastos} / ${resumo.limitePontos}. Reduza o excesso em ${resumo.pontosGastos - resumo.limitePontos} ponto(s).`});
+  if (resumo.bonusNaturais > limiteNaturais) pendencias.push({titulo:"PERÍCIAS NATURAIS",texto:`${resumo.bonusNaturais} / ${limiteNaturais}. Redistribua ou remova ${resumo.bonusNaturais - limiteNaturais} ponto(s) bônus.`});
+
+  estadoProgressaoNiveisFicha.beneficiosPendentes.forEach(item => {
+    const nivelAtual = item.origem === "ncp" ? ncp : neo;
+    if (item.nivel <= nivelAtual) pendencias.push({titulo:`${item.origem.toUpperCase()} ${item.nivel} — ESCOLHA PENDENTE`,texto:item.texto});
+  });
+
+  return pendencias;
+}
+function renderizarInformacoesFicha() {
+  const ncp = Number(dadosFichaAtual?.ncp) || 0;
+  const neo = Number(dadosFichaAtual?.neo) || 0;
+  const pendencias = obterPendenciasInformacoesFicha();
+
+  const niveis = document.createElement("div");
+  niveis.className = "resumo-niveis-informacoes-ficha";
+  niveis.innerHTML = `<strong>NCP ${ncp}</strong><strong>NEO ${neo}</strong>`;
+
+  const estado = document.createElement("div");
+  estado.className = `estado-informacoes-ficha ${pendencias.length ? "com-pendencias" : "regular"}`;
+  estado.textContent = pendencias.length ? `⚠ Esta ficha possui ${pendencias.length} pendência(s).` : "✓ FICHA REGULAR — não há ajustes pendentes.";
+
+  const fragmento = document.createDocumentFragment();
+  pendencias.forEach(item => {
+    const card = document.createElement("div");
+    const titulo = document.createElement("strong");
+    const texto = document.createElement("p");
+
+    card.className = "pendencia-informacoes-ficha";
+    titulo.textContent = item.titulo;
+    texto.textContent = item.texto;
+
+    card.append(titulo,texto);
+    fragmento.appendChild(card);
+  });
+
+  conteudoInformacoesFicha.replaceChildren(niveis,estado,fragmento);
+}
+function abrirInformacoesFicha() {
+  renderizarInformacoesFicha();
+  modalInformacoesFicha.hidden = false;
+}
+function fecharInformacoesFicha() {
+  modalInformacoesFicha.hidden = true;
+}
+botaoAbrirInformacoesFicha.addEventListener("click",abrirInformacoesFicha);
+botaoFecharInformacoesFicha.addEventListener("click",fecharInformacoesFicha);
+modalInformacoesFicha.addEventListener("click",evento => {
+  if (evento.target === modalInformacoesFicha) fecharInformacoesFicha();
+});
+document.addEventListener("keydown",evento => {
+  if (evento.key === "Escape" && !modalInformacoesFicha.hidden) fecharInformacoesFicha();
+});
 function nomesIguaisPericiaFicha(a,b) {
   return normalizarTextoPontosFicha(a) === normalizarTextoPontosFicha(b);
 }
