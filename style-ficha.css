@@ -655,18 +655,15 @@
   justify-content: center;
   margin-bottom: 7px;
 }
-
 .cabecalho-recurso strong{
   position: relative;
   right: 20px;
 }
-
 .valores-recurso{
   display: flex;
   align-items: center;
   gap: 4px;
 }
-
 .valores-recurso input{
   width: 42px;
   padding: 3px;
@@ -676,7 +673,26 @@
   border-radius: 4px;
   text-align: center;
 }
-
+.resetar-recurso-ficha{
+  width:23px;
+  height:23px;
+  margin-left:4px;
+  padding:0;
+  background:black;
+  color:rgb(160,160,160);
+  border:1px solid rgb(80,80,80);
+  border-radius:50%;
+  cursor:pointer;
+  font-size:14px;
+  line-height:1;
+  transition:color .2s,border-color .2s,transform .2s,box-shadow .2s;
+}
+.resetar-recurso-ficha:hover{
+  transform:rotate(-35deg);
+  color:white;
+  border-color:rgb(150,0,225);
+  box-shadow:0 0 6px rgba(180,80,225,.45);
+}
 .barra-recurso{
   height: 14px;
   padding: 2px;

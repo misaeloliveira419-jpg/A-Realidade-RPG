@@ -5523,7 +5523,8 @@ const campoPvAtualFicha = document.getElementById("pv-atual-ficha");
 const campoPvMaximoFicha = document.getElementById("pv-maximo-ficha");
 const campoPdAtualFicha = document.getElementById("pd-atual-ficha");
 const campoPdMaximoFicha = document.getElementById("pd-maximo-ficha");
-
+const botaoResetarPvFicha = document.getElementById("resetar-pv-ficha");
+const botaoResetarPdFicha = document.getElementById("resetar-pd-ficha");
 const preenchimentoPvFicha = document.querySelector(".barra-pv .preenchimento-recurso");
 const preenchimentoPdFicha = document.querySelector(".barra-pd .preenchimento-recurso");
 
@@ -5662,17 +5663,8 @@ let estadoAtributosFicha = {
   deslocamentoQuadrados: 6
 };
 
-let estadoPvFicha = {
-  atual: 0,
-  maximo: 0,
-  manual: false
-};
-
-let estadoPdFicha = {
-  atual: 0,
-  maximo: 0,
-  manual: false
-};
+let estadoPvFicha = {atual:0,maximo:0,baseMaximo:0,manual:false};
+let estadoPdFicha = {atual:0,maximo:0,baseMaximo:0,manual:false};
 
 let periciaSelecionadaRolagemId = null;
 let ultimaRolagemFicha = null;
@@ -5986,7 +5978,7 @@ function obterValorAtributoFicha(atributo) {
 
 /* PV e PD */
 
-function calcularPvFicha() {
+function calcularPvBaseFicha() {
   return Math.floor(
     15 +
     obterValorAtributoFicha("fisico") +
@@ -5994,87 +5986,115 @@ function calcularPvFicha() {
     obterValorPericiaFichaPorNome("Atletismo") / 4
   );
 }
-
-function calcularPdFicha() {
-  return Math.floor(20 + obterValorAtributoFicha("presenca") + obterValorPericiaFichaPorNome("Vontade") / 2 +estadoProgressaoNiveisFicha.bonusPd);
+function calcularPdBaseFicha() {
+  return Math.floor(
+    20 +
+    obterValorAtributoFicha("presenca") +
+    obterValorPericiaFichaPorNome("Vontade") / 2
+  );
 }
-
-function atualizarBarraRecursoFicha(estado, preenchimento) {
-  const porcentagem =
-    estado.maximo > 0
-      ? Math.max(
-          0,
-          Math.min(
-            100,
-            estado.atual / estado.maximo * 100
-          )
-        )
-      : 0;
-
-  preenchimento.style.width =
-    `${porcentagem}%`;
+function obterBonusProgressaoRecursoFicha(tipo) {
+  if (tipo === "pd") return Math.max(0,Number(estadoProgressaoNiveisFicha.bonusPd) || 0);
+  if (tipo === "pv") return Math.max(0,Number(estadoProgressaoNiveisFicha.bonusPv) || 0);
+  return 0;
 }
+function calcularBasePadraoRecursoFicha(tipo) {
+  return tipo === "pv" ? calcularPvBaseFicha() : calcularPdBaseFicha();
+}
+function obterEstadoRecursoFicha(tipo) {
+  return tipo === "pv" ? estadoPvFicha : estadoPdFicha;
+}
+function definirEstadoRecursoFicha(tipo,estado) {
+  if (tipo === "pv") estadoPvFicha = estado;
+  else estadoPdFicha = estado;
 
+  if (dadosFichaAtual) dadosFichaAtual[tipo] = {...estado};
+}
+function criarEstadoRecursoFicha(tipo,recursoSalvo) {
+  const bonus = obterBonusProgressaoRecursoFicha(tipo);
+  const basePadrao = calcularBasePadraoRecursoFicha(tipo);
+  const manual = recursoSalvo?.manual === true;
+  const maximoSalvo = Number(recursoSalvo?.maximo);
+  const baseSalva = Number(recursoSalvo?.baseMaximo);
+
+  let baseMaximo = basePadrao;
+
+  if (manual) {
+    if (Number.isInteger(baseSalva) && baseSalva >= 0) {
+      baseMaximo = baseSalva;
+    } else if (Number.isInteger(maximoSalvo) && maximoSalvo >= 0) {
+      baseMaximo = Math.max(0,maximoSalvo - bonus);
+    }
+  }
+
+  const maximo = baseMaximo + bonus;
+  const atualSalvo = Number(recursoSalvo?.atual);
+  const atual = Number.isInteger(atualSalvo) && atualSalvo >= 0 ? atualSalvo : maximo;
+
+  return {atual,maximo,baseMaximo,manual};
+}
+function atualizarBarraRecursoFicha(estado,preenchimento) {
+  const porcentagem = estado.maximo > 0 ? Math.max(0,Math.min(100,estado.atual / estado.maximo * 100)) : 0;
+  preenchimento.style.width = `${porcentagem}%`;
+}
 function renderizarPvPdFicha() {
-  campoPvAtualFicha.value =
-    estadoPvFicha.atual;
+  campoPvAtualFicha.value = estadoPvFicha.atual;
+  campoPvMaximoFicha.value = estadoPvFicha.maximo;
+  campoPdAtualFicha.value = estadoPdFicha.atual;
+  campoPdMaximoFicha.value = estadoPdFicha.maximo;
 
-  campoPvMaximoFicha.value =
-    estadoPvFicha.maximo;
+  botaoResetarPvFicha.hidden = !estadoPvFicha.manual || !podeEditarFichaAtual;
+  botaoResetarPdFicha.hidden = !estadoPdFicha.manual || !podeEditarFichaAtual;
 
-  campoPdAtualFicha.value =
-    estadoPdFicha.atual;
-
-  campoPdMaximoFicha.value =
-    estadoPdFicha.maximo;
-
-  atualizarBarraRecursoFicha(
-    estadoPvFicha,
-    preenchimentoPvFicha
-  );
-
-  atualizarBarraRecursoFicha(
-    estadoPdFicha,
-    preenchimentoPdFicha
-  );
+  atualizarBarraRecursoFicha(estadoPvFicha,preenchimentoPvFicha);
+  atualizarBarraRecursoFicha(estadoPdFicha,preenchimentoPdFicha);
 }
+function recalcularBaseAutomaticaRecursoFicha(tipo,alteracoes = null) {
+  const estado = obterEstadoRecursoFicha(tipo);
+  if (estado.manual) return;
 
-function recalcularRecursosAutomaticos(
-  alteracoes = null
-) {
-  if (!estadoPvFicha.manual) {
-    const maximo = calcularPvFicha();
+  const baseMaximo = calcularBasePadraoRecursoFicha(tipo);
+  const maximo = baseMaximo + obterBonusProgressaoRecursoFicha(tipo);
+  const diferenca = maximo - estado.maximo;
 
-    estadoPvFicha = {
-      atual: maximo,
-      maximo: maximo,
-      manual: false
-    };
+  const novoEstado = {
+    atual:Math.max(0,estado.atual + diferenca),
+    maximo,
+    baseMaximo,
+    manual:false
+  };
 
-    if (alteracoes) {
-      alteracoes.pv = {
-        ...estadoPvFicha
-      };
-    }
-  }
-
-  if (!estadoPdFicha.manual) {
-    const maximo = calcularPdFicha();
-
-    estadoPdFicha = {
-      atual: maximo,
-      maximo: maximo,
-      manual: false
-    };
-
-    if (alteracoes) {
-      alteracoes.pd = {
-        ...estadoPdFicha
-      };
-    }
-  }
-
+  definirEstadoRecursoFicha(tipo,novoEstado);
+  if (alteracoes) alteracoes[tipo] = {...novoEstado};
+}
+function recalcularRecursosAutomaticos(alteracoes = null) {
+  recalcularBaseAutomaticaRecursoFicha("pv",alteracoes);
+  recalcularBaseAutomaticaRecursoFicha("pd",alteracoes);
   renderizarPvPdFicha();
+}
+function sincronizarBonusProgressaoRecursoFicha(tipo,alteracoes = null) {
+  const estado = obterEstadoRecursoFicha(tipo);
+  const baseInformada = Number(estado.baseMaximo);
+  const baseMaximo = Number.isInteger(baseInformada) && baseInformada >= 0
+    ? baseInformada
+    : calcularBasePadraoRecursoFicha(tipo);
+
+  const maximo = baseMaximo + obterBonusProgressaoRecursoFicha(tipo);
+  const diferenca = maximo - estado.maximo;
+
+  if (diferenca === 0) return false;
+
+  const novoEstado = {
+    ...estado,
+    atual:Math.max(0,estado.atual + diferenca),
+    maximo,
+    baseMaximo
+  };
+
+  definirEstadoRecursoFicha(tipo,novoEstado);
+  if (alteracoes) alteracoes[tipo] = {...novoEstado};
+
+  return true;
 }
 
 /* Contador de Atributos */
@@ -6894,7 +6914,7 @@ function renderizarPericiasPontosFicha() {
 async function preencherPontosFicha(ficha) {
   verificarElementosPontosFicha();
   await promessaPericiasPontosFicha;
-  estadoProgressaoNiveisFicha = normalizarProgressaoNiveisFicha(ficha);
+  recalcularBonusAtivosProgressaoFicha(estadoProgressaoNiveisFicha, Number(ficha.ncp) || 0, Number(ficha.neo) || 0);
 
   campoNcpFicha.value =
     String(
@@ -7039,42 +7059,12 @@ async function preencherPontosFicha(ficha) {
   renderizarPericiasPontosFicha();
   preencherDatalistPericiasRolagem();
 
-  if (ficha.pv && typeof ficha.pv === "object" && ficha.pv.manual === true) {
-    estadoPvFicha = {
-      atual: Number(ficha.pv.atual) || 0,
+  estadoPvFicha = criarEstadoRecursoFicha("pv",ficha.pv);
+  estadoPdFicha = criarEstadoRecursoFicha("pd",ficha.pd);
 
-      maximo: Number(ficha.pv.maximo) || 0,
-
-      manual: true
-    };
-
-  } else {
-    const maximo = calcularPvFicha();
-
-    estadoPvFicha = {
-      atual: maximo,
-      maximo: maximo,
-      manual: false
-    };
-  }
-
-  if (ficha.pd && typeof ficha.pd === "object" && ficha.pd.manual === true) {
-    estadoPdFicha = {
-      atual: Number(ficha.pd.atual) || 0,
-
-      maximo: Number(ficha.pd.maximo) || 0,
-
-      manual: true
-    };
-
-  } else {
-    const maximo = calcularPdFicha();
-
-    estadoPdFicha = {
-      atual: maximo,
-      maximo: maximo,
-      manual: false
-    };
+  if (dadosFichaAtual) {
+    dadosFichaAtual.pv = {...estadoPvFicha};
+    dadosFichaAtual.pd = {...estadoPdFicha};
   }
 
   renderizarPvPdFicha();
@@ -7117,10 +7107,10 @@ async function alterarNivelFicha(tipoNivel,novoNivel) {
   }
 
   const progressaoAnterior = clonarProgressaoNiveisFicha();
+  const pvAnterior = {...estadoPvFicha};
   const pdAnterior = {...estadoPdFicha};
   const habilidadesAnteriores = tipoNivel === "ncp" ? copiarEstadoHabilidadesFicha() : null;
   const novaProgressao = prepararProgressaoNivelFicha(tipoNivel,nivelAtual,novoNivel);
-  const diferencaPd = novaProgressao.bonusPd - progressaoAnterior.bonusPd;
 
   estadoProgressaoNiveisFicha = novaProgressao;
   dadosFichaAtual[tipoNivel] = novoNivel;
@@ -7128,18 +7118,13 @@ async function alterarNivelFicha(tipoNivel,novoNivel) {
 
   const evolucoesPessoaisAlteradas = tipoNivel === "ncp" ? sincronizarEvolucoesPessoaisComNcp(novoNivel): 0;
 
-  if (diferencaPd !== 0) {
-    estadoPdFicha = {
-      atual:Math.max(0,estadoPdFicha.atual + diferencaPd),
-      maximo:Math.max(0,estadoPdFicha.maximo + diferencaPd),
-      manual:estadoPdFicha.manual
-    };
-    dadosFichaAtual.pd = {...estadoPdFicha};
-  }
+  const alteracoes = {
+    [tipoNivel]:novoNivel,
+    progressaoNiveis:novaProgressao
+  };
 
-  const alteracoes = {[tipoNivel]:novoNivel,progressaoNiveis:novaProgressao};
-
-  if (diferencaPd !== 0) alteracoes.pd = {...estadoPdFicha};
+  sincronizarBonusProgressaoRecursoFicha("pv",alteracoes);
+  sincronizarBonusProgressaoRecursoFicha("pd",alteracoes);
 
   if (evolucoesPessoaisAlteradas > 0) {
     const habilidadesAtualizadas = copiarEstadoHabilidadesFicha();
@@ -7170,9 +7155,11 @@ async function alterarNivelFicha(tipoNivel,novoNivel) {
     console.error("Erro ao alterar Nível:",erro);
 
     estadoProgressaoNiveisFicha = progressaoAnterior;
+    estadoPvFicha = pvAnterior;
     estadoPdFicha = pdAnterior;
     dadosFichaAtual[tipoNivel] = nivelAtual;
     dadosFichaAtual.progressaoNiveis = progressaoAnterior;
+    dadosFichaAtual.pv = {...pvAnterior};
     dadosFichaAtual.pd = {...pdAnterior};
 
     restaurarCamposNiveisFicha();
@@ -7323,91 +7310,75 @@ campoDeslocamentoQuadradosFicha.addEventListener("change",() => {
 
 /* PV e PD manuais */
 
-function salvarRecursoManualFicha(
-  tipo
-) {
-  const ehPv =
-    tipo === "pv";
+function salvarAtualRecursoFicha(tipo) {
+  const estado = obterEstadoRecursoFicha(tipo);
+  const campo = tipo === "pv" ? campoPvAtualFicha : campoPdAtualFicha;
+  const atual = Number(campo.value);
 
-  const campoAtual =
-    ehPv
-      ? campoPvAtualFicha
-      : campoPdAtualFicha;
+  if (!Number.isInteger(atual) || atual < 0) {
+    renderizarPvPdFicha();
+    return;
+  }
 
-  const campoMaximo =
-    ehPv
-      ? campoPvMaximoFicha
-      : campoPdMaximoFicha;
+  const novoEstado = {...estado,atual};
+  definirEstadoRecursoFicha(tipo,novoEstado);
+  renderizarPvPdFicha();
+  salvarAtualizacaoPontosFicha({[tipo]:novoEstado});
+}
+function salvarMaximoRecursoFicha(tipo) {
+  const estado = obterEstadoRecursoFicha(tipo);
+  const campo = tipo === "pv" ? campoPvMaximoFicha : campoPdMaximoFicha;
+  const maximo = Number(campo.value);
+  const bonus = obterBonusProgressaoRecursoFicha(tipo);
 
-  const atual =
-    Number(campoAtual.value);
+  if (!Number.isInteger(maximo) || maximo < 0) {
+    renderizarPvPdFicha();
+    return;
+  }
 
-  const maximo =
-    Number(campoMaximo.value);
-
-  if (
-    !Number.isInteger(atual) ||
-    atual < 0 ||
-    !Number.isInteger(maximo) ||
-    maximo < 0
-  ) {
+  if (maximo < bonus) {
+    alert(`O máximo não pode ficar abaixo do bônus ativo de +${bonus}.`);
     renderizarPvPdFicha();
     return;
   }
 
   const novoEstado = {
-    atual: atual,
-    maximo: maximo,
-    manual: true
+    ...estado,
+    maximo,
+    baseMaximo:maximo - bonus,
+    manual:true
   };
 
-  if (ehPv) {
-    estadoPvFicha =
-      novoEstado;
-
-    if (dadosFichaAtual) {
-      dadosFichaAtual.pv = {
-        ...novoEstado
-      };
-    }
-
-  } else {
-    estadoPdFicha =
-      novoEstado;
-
-    if (dadosFichaAtual) {
-      dadosFichaAtual.pd = {
-        ...novoEstado
-      };
-    }
-  }
-
+  definirEstadoRecursoFicha(tipo,novoEstado);
   renderizarPvPdFicha();
+  salvarAtualizacaoPontosFicha({[tipo]:novoEstado});
+}
+function resetarMaximoRecursoFicha(tipo) {
+  if (!podeEditarFichaAtual) return;
 
-  salvarAtualizacaoPontosFicha({
-    [tipo]: novoEstado
-  });
+  const estado = obterEstadoRecursoFicha(tipo);
+  const baseMaximo = calcularBasePadraoRecursoFicha(tipo);
+  const maximo = baseMaximo + obterBonusProgressaoRecursoFicha(tipo);
+
+  const novoEstado = {
+    ...estado,
+    maximo,
+    baseMaximo,
+    manual:false
+  };
+
+  definirEstadoRecursoFicha(tipo,novoEstado);
+  renderizarPvPdFicha();
+  salvarAtualizacaoPontosFicha({[tipo]:novoEstado});
 }
 
-campoPvAtualFicha.addEventListener(
-  "change",
-  () => salvarRecursoManualFicha("pv")
-);
+campoPvAtualFicha.addEventListener("change",() => salvarAtualRecursoFicha("pv"));
+campoPvMaximoFicha.addEventListener("change",() => salvarMaximoRecursoFicha("pv"));
+campoPdAtualFicha.addEventListener("change",() => salvarAtualRecursoFicha("pd"));
+campoPdMaximoFicha.addEventListener("change",() => salvarMaximoRecursoFicha("pd"));
 
-campoPvMaximoFicha.addEventListener(
-  "change",
-  () => salvarRecursoManualFicha("pv")
-);
-
-campoPdAtualFicha.addEventListener(
-  "change",
-  () => salvarRecursoManualFicha("pd")
-);
-
-campoPdMaximoFicha.addEventListener(
-  "change",
-  () => salvarRecursoManualFicha("pd")
-);
+botaoResetarPvFicha.addEventListener("click",() => resetarMaximoRecursoFicha("pv"));
+botaoResetarPdFicha.addEventListener("click",() => resetarMaximoRecursoFicha("pd"));
 
 /* Rolagens */
 
@@ -8784,65 +8755,42 @@ function renderizarRolagensSalvasFicha(
 
 /* PV e PD em tempo real */
 
-function recursoFichaMudou(
-  atual,
-  novo
-) {
+function recursoFichaMudou(atual,novo) {
   return (
     atual.atual !== novo.atual ||
     atual.maximo !== novo.maximo ||
+    atual.baseMaximo !== novo.baseMaximo ||
     atual.manual !== novo.manual
   );
 }
+function obterRecursoTempoRealFicha(recurso,tipo) {
+  if (!recurso || typeof recurso !== "object") return null;
 
-function obterRecursoTempoRealFicha(
-  recurso
-) {
-  if (
-    !recurso ||
-    typeof recurso !== "object"
-  ) {
-    return null;
-  }
+  const atual = Number(recurso.atual);
+  const maximo = Number(recurso.maximo);
 
-  const atual =
-    Number(recurso.atual);
+  if (!Number.isInteger(atual) || atual < 0 || !Number.isInteger(maximo) || maximo < 0) return null;
 
-  const maximo =
-    Number(recurso.maximo);
+  const baseSalva = Number(recurso.baseMaximo);
+  const bonus = obterBonusProgressaoRecursoFicha(tipo);
 
-  if (
-    !Number.isInteger(atual) ||
-    atual < 0 ||
-    !Number.isInteger(maximo) ||
-    maximo < 0
-  ) {
-    return null;
-  }
+  const baseMaximo =
+    Number.isInteger(baseSalva) && baseSalva >= 0
+      ? baseSalva
+      : Math.max(0,maximo - bonus);
 
   return {
-    atual: atual,
-    maximo: maximo,
-    manual:
-      recurso.manual === true
+    atual,
+    maximo,
+    baseMaximo,
+    manual:recurso.manual === true
   };
 }
+function aplicarRecursosTempoRealFicha(ficha) {
+  const novoPv = obterRecursoTempoRealFicha(ficha.pv,"pv")
+  const novoPd = obterRecursoTempoRealFicha(ficha.pd,"pd")
 
-function aplicarRecursosTempoRealFicha(
-  ficha
-) {
-  const novoPv =
-    obterRecursoTempoRealFicha(
-      ficha.pv
-    );
-
-  const novoPd =
-    obterRecursoTempoRealFicha(
-      ficha.pd
-    );
-
-  let precisaRenderizar =
-    false;
+  let precisaRenderizar = false;
 
   if (
     novoPv &&
@@ -8890,7 +8838,6 @@ function aplicarRecursosTempoRealFicha(
     renderizarPvPdFicha();
   }
 }
-
 function iniciarEscutaRecursosFicha() {
   if (
     previewLocal ||
