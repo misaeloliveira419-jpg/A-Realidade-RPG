@@ -6398,6 +6398,12 @@ function obterOcupacoesAreaObrigatoriaFicha() {
 function bonusRascunhoPericiaFicha(nome) {
   return Number(bonusNaturaisRascunho[criarIdPericiaPontosFicha(nome)]) || 0;
 }
+function obterTotalBonusNaturaisSalvoFicha() {
+  return periciasNaturaisFicha.reduce((soma,nome) => {
+    const id = criarIdPericiaPontosFicha(nome);
+    return soma + (Number(estadoPericiasFicha[id]?.bonusNatural) || 0);
+  },0);
+}
 function validarEdicaoPericiasNaturaisFicha() {
   const disponiveis = obterPericiasNaturaisDisponiveisFicha();
 
@@ -6455,7 +6461,16 @@ function validarEdicaoPericiasNaturaisFicha() {
 
   const limiteNaturais = obterLimiteBonusNaturalFicha();
 
-  if (totalBonus !== limiteNaturais) {
+  const totalSalvo = obterTotalBonusNaturaisSalvoFicha();
+
+  if (totalSalvo > limiteNaturais) {
+    if (totalBonus >= totalSalvo) {
+      return {
+        valida:false,
+        mensagem:`A ficha está acima do limite de ${limiteNaturais} pontos. Reduza pelo menos 1 ponto bônus para salvar.`
+      };
+    }
+  } else if (totalBonus !== limiteNaturais) {
     return {
       valida:false,
       mensagem:`Distribua exatamente os ${limiteNaturais} pontos bônus das Perícias Naturais.`
@@ -6565,9 +6580,28 @@ function renderizarEditorPericiasNaturaisFicha() {
         .filter(nome => !nomesIguaisPericiaFicha(nome,nomePericia))
         .reduce((soma,nome) => soma + bonusRascunhoPericiaFicha(nome),0);
 
-      if (totalOutras + valor > obterLimiteBonusNaturalFicha()) {
+      const limite = obterLimiteBonusNaturalFicha();
+
+      const totalAntes = periciasNaturaisRascunho.reduce(
+        (soma,nome) => soma + bonusRascunhoPericiaFicha(nome),
+        0
+      );
+
+      const totalNovo = totalOutras + valor;
+
+      const alteracaoInvalida =
+        totalAntes > limite
+          ? totalNovo >= totalAntes
+          : totalNovo > limite;
+
+      if (alteracaoInvalida) {
         bonus.value = bonusRascunhoPericiaFicha(nomePericia);
-        mensagemEditorPericiasNaturaisFicha.textContent = `As Perícias Naturais possuem somente ${obterLimiteBonusNaturalFicha()} pontos bônus.`;
+
+        mensagemEditorPericiasNaturaisFicha.textContent =
+          totalAntes > limite
+            ? `A ficha está acima do limite de ${limite}. Você só pode fazer alterações que reduzam esse excesso.`
+            : `As Perícias Naturais possuem somente ${limite} pontos bônus.`;
+
         return;
       }
 
@@ -6922,21 +6956,14 @@ function renderizarPericiasPontosFicha() {
 async function preencherPontosFicha(ficha) {
   verificarElementosPontosFicha();
   await promessaPericiasPontosFicha;
+
+  estadoProgressaoNiveisFicha = normalizarProgressaoNiveisFicha(ficha);
+
   recalcularBonusAtivosProgressaoFicha(estadoProgressaoNiveisFicha, Number(ficha.ncp) || 0, Number(ficha.neo) || 0);
 
-  campoNcpFicha.value =
-    String(
-      Number.isInteger(ficha.ncp)
-        ? ficha.ncp
-        : 0
-    );
+  campoNcpFicha.value = String(Number.isInteger(ficha.ncp) ? ficha.ncp : 0);
 
-  campoNeoFicha.value =
-    String(
-      Number.isInteger(ficha.neo)
-        ? ficha.neo
-        : 0
-    );
+  campoNeoFicha.value = String(Number.isInteger(ficha.neo) ? ficha.neo : 0);
 
   campoCreditoFicha.value =
     Number.isFinite(Number(ficha.credito))
