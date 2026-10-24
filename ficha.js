@@ -3036,24 +3036,22 @@ function obterBeneficioReducaoCustoDisponivelFicha() {
     !beneficioProgressaoResolvidoFicha(item)
   ) || null;
 }
-
-function reduzirCustoHistoricoEvolucoesPessoais(habilidade,valor) {
+function ajustarCustoHistoricoEvolucoesPessoais(habilidade,diferenca) {
   (habilidade.evolucoes || []).forEach(evolucao => {
     ["anterior","nova"].forEach(chave => {
       if (!evolucao[chave]) return;
 
-      const novoCusto = alterarValorPdCustoHabilidade(
+      const custoAjustado = alterarValorPdCustoHabilidade(
         evolucao[chave].custo,
-        -valor
+        diferenca
       );
 
-      if (novoCusto !== null) {
-        evolucao[chave].custo = novoCusto;
+      if (custoAjustado !== null) {
+        evolucao[chave].custo = custoAjustado;
       }
     });
   });
 }
-
 async function aplicarReducaoCustoHabilidadeFicha(id) {
   const habilidade = obterTodasHabilidadesFicha().find(item => item.id === id);
   const beneficio = obterBeneficioReducaoCustoDisponivelFicha();
@@ -3094,7 +3092,7 @@ async function aplicarReducaoCustoHabilidadeFicha(id) {
     }
   ];
 
-  reduzirCustoHistoricoEvolucoesPessoais(habilidade,valor);
+  ajustarCustoHistoricoEvolucoesPessoais(habilidade,-valor);
 
   try {
     await salvarHabilidadesFichaImediatamente();
@@ -3106,6 +3104,69 @@ async function aplicarReducaoCustoHabilidadeFicha(id) {
 
     console.error("Erro ao aplicar redução de custo:",erro);
     alert("Não foi possível aplicar a redução de custo.");
+  }
+}
+async function removerReducaoCustoHabilidadeFicha(habilidadeId,beneficioId) {
+  const habilidade = obterTodasHabilidadesFicha().find(item => item.id === habilidadeId);
+  if (!habilidade) return;
+
+  const reducoes = habilidade.reducoesCusto || [];
+  const indice = reducoes.findIndex(item => item.beneficioId === beneficioId);
+
+  if (indice < 0) return;
+
+  const reducao = reducoes[indice];
+  const neo = Number(dadosFichaAtual?.neo) || 0;
+
+  if (reducao.nivel <= neo) {
+    alert("Essa redução de custo ainda é válida no NEO atual.");
+    return;
+  }
+
+  const nome = habilidade.nome?.trim() || "Habilidade sem nome";
+
+  if (!confirm(`Remover a redução de -${reducao.valor} PD de "${nome}"? O custo será aumentado novamente.`)) {
+    return;
+  }
+
+  const custoAntes = habilidade.custo;
+  const reducoesAntes = reducoes.map(item => ({...item}));
+  const evolucoesAntes = JSON.parse(JSON.stringify(habilidade.evolucoes || []));
+
+  const custoRestaurado = alterarValorPdCustoHabilidade(
+    habilidade.custo,
+    reducao.valor
+  );
+
+  if (custoRestaurado === null) {
+    alert("Não foi possível restaurar automaticamente o custo desta Habilidade.");
+    return;
+  }
+
+  habilidade.custo = custoRestaurado;
+  habilidade.reducoesCusto = reducoes.filter((_,i) => i !== indice);
+
+  ajustarCustoHistoricoEvolucoesPessoais(
+    habilidade,
+    reducao.valor
+  );
+
+  try {
+    await salvarHabilidadesFichaImediatamente();
+
+    renderizarHabilidadesFicha(habilidade.id);
+
+    if (!modalInformacoesFicha.hidden) {
+      renderizarInformacoesFicha();
+    }
+
+  } catch (erro) {
+    habilidade.custo = custoAntes;
+    habilidade.reducoesCusto = reducoesAntes;
+    habilidade.evolucoes = evolucoesAntes;
+
+    console.error("Erro ao remover redução de custo:",erro);
+    alert("Não foi possível remover a redução de custo.");
   }
 }
 
@@ -3363,7 +3424,7 @@ function criarCardHabilidadeFicha(
         campo.addEventListener(
           "input",
           () => {
-            habilidade[chave] = campo.value;
+            dadosEdicao[chave] = campo.value;
             ajustarAlturaCampoHabilidade(campo);
             if (!evoluindo) agendarSalvamentoHabilidadesFicha();
           }
@@ -4198,7 +4259,6 @@ function criarCardCatalogoHabilidade(
     botaoExpandir,
     botaoAdicionar
   );
-
 
   /* Conteúdo expandido */
 
@@ -6185,7 +6245,12 @@ function obterPendenciasInformacoesFicha() {
 
     pendencias.push({
       titulo:"REDUÇÃO DE CUSTO ACIMA DO NÍVEL",
-      texto:`"${nome}" mantém uma redução de -${reducao.valor} PD recebida no NEO ${reducao.nivel}, mas o NEO atual é ${neo}. Essa redução deve ser ajustada manualmente.`
+      texto:`"${nome}" mantém uma redução de -${reducao.valor} PD recebida no NEO ${reducao.nivel}, mas o NEO atual é ${neo}.`,
+      textoAcao:"REMOVER REDUÇÃO",
+      acao:() => removerReducaoCustoHabilidadeFicha(
+        habilidade.id,
+        reducao.beneficioId
+      )
     });
   });
 
@@ -6227,6 +6292,29 @@ function renderizarInformacoesFicha() {
     texto.textContent = item.texto;
 
     card.append(titulo,texto);
+
+    if (typeof item.acao === "function" && item.textoAcao && podeEditarFichaAtual) {
+      const botao = document.createElement("button");
+
+      botao.type = "button";
+      botao.className = "acao-pendencia-informacoes-ficha";
+      botao.textContent = item.textoAcao;
+
+      botao.addEventListener("click",async () => {
+        botao.disabled = true;
+
+        try {
+          await item.acao();
+        } finally {
+          if (document.body.contains(botao)) {
+            botao.disabled = false;
+          }
+        }
+      });
+
+      card.appendChild(botao);
+    }
+
     fragmento.appendChild(card);
   });
 
