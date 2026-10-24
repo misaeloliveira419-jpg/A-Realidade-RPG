@@ -2559,7 +2559,40 @@ function criarHabilidadeDoSistema(
       origem
   };
 }
+function criarHabilidadePessoalVaziaFicha(categoria,progressaoOrigem = null) {
+  return {
+    id:criarIdHabilidadePessoalFicha(),
+    categoria,
+    nome:"",
+    custo:"",
+    acao:"",
+    alvo:"",
+    alcance:"",
+    resistencia:"",
+    descricao:"",
+    origem:"",
+    progressaoOrigem:progressaoOrigem ? {...progressaoOrigem} : null,
+    evolucoes:[],
+    reducoesCusto:[]
+  };
+}
+function garantirHabilidadePessoalUmFicha() {
+  const possuiPessoalUm = estadoHabilidadesFicha.pessoais.some(
+    habilidade => Number(habilidade.categoria) === 1
+  );
 
+  if (possuiPessoalUm) return false;
+
+  estadoHabilidadesFicha.pessoais.unshift(
+    criarHabilidadePessoalVaziaFicha(1)
+  );
+
+  estadoHabilidadesFicha.pessoais.sort(
+    (a,b) => Number(a.categoria) - Number(b.categoria)
+  );
+
+  return true;
+}
 async function criarEstadoInicialHabilidadesFicha(
   ficha
 ) {
@@ -2612,7 +2645,9 @@ async function criarEstadoInicialHabilidadesFicha(
       habilidadePerfil
     ],
 
-    pessoais: [],
+    pessoais:[
+      criarHabilidadePessoalVaziaFicha(1)
+    ],
 
     ocupacao:
       habilidadesOcupacao,
@@ -3314,10 +3349,12 @@ function criarCardHabilidadeFicha(
       ".expandir-habilidade-ficha"
     );
 
-  const botaoExcluir =
-    card.querySelector(
-      ".excluir-habilidade-ficha"
-    );
+  const botaoExcluir = card.querySelector(".excluir-habilidade-ficha");
+
+  if (tipo === "pessoais" && Number(habilidade.categoria) === 1) {
+    botaoExcluir.disabled = true;
+    botaoExcluir.title = "A Habilidade Pessoal 1 é recebida no NCP 0.";
+  }
 
   nome.value = dadosEdicao.nome;
 
@@ -3616,6 +3653,7 @@ function renderizarHabilidadesFicha(
     listaHabilidadesOcupacao,
     idAbrir
   );
+  atualizarBotaoAdicionarHabilidadePessoalFicha();
 }
 
 
@@ -3645,6 +3683,11 @@ function excluirHabilidadeFicha(tipo, id) {
     );
 
   if (!habilidade) return;
+
+  if (tipo === "pessoais" && Number(habilidade.categoria) === 1) {
+    alert("A Habilidade Pessoal 1 é recebida no NCP 0 e não pode ser excluída.");
+    return;
+  }
 
   const nome =
     habilidade.nome.trim() ||
@@ -3789,58 +3832,102 @@ function obterProximaCategoriaPessoal() {
     ? Math.max(...categorias) + 1
     : 1;
 }
+function obterBeneficioNovaHabilidadePessoalFicha(categoria) {
+  const ncp = Number(dadosFichaAtual?.ncp) || 0;
 
+  let chave = "";
+
+  if (categoria === 2) {
+    chave = "evolucao-ou-habilidade-pessoal";
+  } else if (categoria === 3) {
+    chave = "habilidade-perfil-ou-pessoal";
+  } else {
+    return null;
+  }
+
+  return estadoProgressaoNiveisFicha.beneficiosPendentes.find(item =>
+    item.origem === "ncp" &&
+    item.nivel <= ncp &&
+    item.chave === chave &&
+    !beneficioProgressaoResolvidoFicha(item)
+  ) || null;
+}
+function atualizarBotaoAdicionarHabilidadePessoalFicha() {
+  if (!botaoAdicionarHabilidadePessoal) return;
+
+  const categoria = obterProximaCategoriaPessoal();
+  const beneficio =
+    categoria === 1
+      ? true
+      : obterBeneficioNovaHabilidadePessoalFicha(categoria);
+
+  const disponivel =
+    categoria <= 3 &&
+    Boolean(beneficio);
+
+  botaoAdicionarHabilidadePessoal.disabled =
+    !podeEditarFichaAtual ||
+    !disponivel;
+
+  if (!podeEditarFichaAtual) {
+    botaoAdicionarHabilidadePessoal.title = "Você não pode editar esta ficha.";
+  } else if (categoria > 3) {
+    botaoAdicionarHabilidadePessoal.title = "Todas as Habilidades Pessoais disponíveis já foram recebidas.";
+  } else if (!beneficio) {
+    botaoAdicionarHabilidadePessoal.title = `Nenhum benefício disponível para receber a Habilidade Pessoal ${categoria}.`;
+  } else if (categoria === 1) {
+    botaoAdicionarHabilidadePessoal.title = "Criar Habilidade Pessoal 1.";
+  } else {
+    botaoAdicionarHabilidadePessoal.title = `Usar benefício do NCP ${beneficio.nivel} para receber a Habilidade Pessoal ${categoria}.`;
+  }
+}
 function criarHabilidadePessoalFicha() {
-  const categoria =
-    obterProximaCategoriaPessoal();
+  const categoria = obterProximaCategoriaPessoal();
 
-  const habilidade = {
-    id:
-      criarIdHabilidadePessoalFicha(),
+  if (categoria > 3) {
+    alert("Não há uma nova Habilidade Pessoal disponível.");
+    return;
+  }
 
-    categoria:
-      categoria,
+  let beneficio = null;
 
-    nome: "",
-    custo: "",
-    acao: "",
-    alvo: "",
-    alcance: "",
-    resistencia: "",
-    descricao: "",
-    origem:"",
-    progressaoOrigem:null,
-    evolucoes:[]
-  };
+  if (categoria > 1) {
+    beneficio = obterBeneficioNovaHabilidadePessoalFicha(categoria);
 
-  estadoHabilidadesFicha
-    .pessoais
-    .push(
-      habilidade
-    );
+    if (!beneficio) {
+      alert("Não há um benefício de progressão disponível para criar esta Habilidade Pessoal.");
+      return;
+    }
+  }
 
-  renderizarHabilidadesFicha(
-    habilidade.id
+  const progressaoOrigem = beneficio
+    ? {
+        tipo:beneficio.origem,
+        nivel:beneficio.nivel,
+        beneficioId:beneficio.id
+      }
+    : null;
+
+  const habilidade = criarHabilidadePessoalVaziaFicha(
+    categoria,
+    progressaoOrigem
   );
+
+  estadoHabilidadesFicha.pessoais.push(habilidade);
+
+  renderizarHabilidadesFicha(habilidade.id);
 
   salvarHabilidadesFichaImediatamente().catch(erro => {
     console.error("Erro ao salvar Habilidade Pessoal:",erro);
   });
 
-  requestAnimationFrame(
-    () => {
-      listaHabilidadesPessoais
-        .querySelector(
-          `[data-id-habilidade="${habilidade.id}"]`
-        )
-        ?.querySelector(
-          ".nome-habilidade-ficha"
-        )
-        ?.focus();
-    }
-  );
+  requestAnimationFrame(() => {
+    listaHabilidadesPessoais
+      .querySelector(`[data-id-habilidade="${habilidade.id}"]`)
+      ?.querySelector(".nome-habilidade-ficha")
+      ?.focus();
+  });
 }
-
 botaoAdicionarHabilidadePessoal ?.addEventListener("click", criarHabilidadePessoalFicha);
 
 /* Catálogo de Habilidades */
@@ -4783,12 +4870,13 @@ async function preencherHabilidadesFicha(ficha) {
     estadoHabilidadesFicha = salvo;
 
     const acoesAtualizadas = preencherAcoesAntigasHabilidadesFicha();
+    const pessoalUmCriada = garantirHabilidadePessoalUmFicha();
 
-    if (acoesAtualizadas && podeEditarFichaAtual) {
+    if ((acoesAtualizadas || pessoalUmCriada) && podeEditarFichaAtual) {
       try {
         await salvarHabilidadesFichaImediatamente();
       } catch (erro) {
-        console.error("Não foi possível atualizar as Ações das Habilidades antigas:", erro);
+        console.error("Não foi possível atualizar as Habilidades antigas:",erro);
       }
     }
 
