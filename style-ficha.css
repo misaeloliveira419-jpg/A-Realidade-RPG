@@ -1713,6 +1713,31 @@ input[type="number"]{
   cursor:default;
   box-shadow:none;
 }
+.acoes-reducao-custo-habilidade{
+  display:flex;
+  justify-content:flex-end;
+  margin-top:8px;
+}
+.botao-reduzir-custo-habilidade{
+  padding:5px 8px;
+  background:black;
+  color:rgb(190,190,190);
+  border:1px solid rgb(80,80,80);
+  border-radius:4px;
+  cursor:pointer;
+  font-size:8px;
+  font-weight:bold;
+}
+.botao-reduzir-custo-habilidade:hover{
+  color:white;
+  border-color:rgb(0,210,225);
+  box-shadow:0 0 6px rgba(0,210,225,.4);
+}
+.botao-reduzir-custo-habilidade:disabled{
+  opacity:.35;
+  cursor:default;
+  box-shadow:none;
+}
 
 /* Adicionar */
 

@@ -1703,25 +1703,38 @@ function normalizarProgressaoOrigemHabilidade(dados) {
     beneficioId
   };
 }
-function obterPendenciasInformacoesFicha() {
-  const pendencias = [];
-  const totalAtributos = obterValorAtributoFicha("fisico") + obterValorAtributoFicha("cognicao") + obterValorAtributoFicha("presenca");
-  const limiteAtributos = obterLimiteAtributosFicha();
-  const resumo = obterResumoPontosPericiasFicha();
-  const limiteNaturais = obterLimiteBonusNaturalFicha();
-  const ncp = Number(dadosFichaAtual?.ncp) || 0;
-  const neo = Number(dadosFichaAtual?.neo) || 0;
+function normalizarReducaoCustoHabilidade(dados) {
+  if (!dados || typeof dados !== "object") return null;
 
-  if (totalAtributos > limiteAtributos) pendencias.push({titulo:"ATRIBUTOS",texto:`${totalAtributos} / ${limiteAtributos}. Reduza o total em ${totalAtributos - limiteAtributos} ponto(s).`});
-  if (resumo.pontosGastos > resumo.limitePontos) pendencias.push({titulo:"PERÍCIAS",texto:`${resumo.pontosGastos} / ${resumo.limitePontos}. Reduza o excesso em ${resumo.pontosGastos - resumo.limitePontos} ponto(s).`});
-  if (resumo.bonusNaturais > limiteNaturais) pendencias.push({titulo:"PERÍCIAS NATURAIS",texto:`${resumo.bonusNaturais} / ${limiteNaturais}. Redistribua ou remova ${resumo.bonusNaturais - limiteNaturais} ponto(s) bônus.`});
+  const nivel = Number(dados.nivel);
+  const beneficioId = textoHabilidadeSeguro(dados.beneficioId);
+  const valor = Math.max(1,Number(dados.valor) || 1);
 
-  estadoProgressaoNiveisFicha.beneficiosPendentes.forEach(item => {
-    const nivelAtual = item.origem === "ncp" ? ncp : neo;
-    if (item.nivel <= nivelAtual) pendencias.push({titulo:`${item.origem.toUpperCase()} ${item.nivel} — ESCOLHA PENDENTE`,texto:item.texto});
-  });
+  if (dados.tipo !== "neo" || !Number.isInteger(nivel) || nivel < 0 || !beneficioId) return null;
 
-  return pendencias;
+  return {
+    tipo:"neo",
+    nivel,
+    beneficioId,
+    valor,
+    custoAnterior:textoHabilidadeSeguro(dados.custoAnterior),
+    custoAplicado:textoHabilidadeSeguro(dados.custoAplicado)
+  };
+}
+function obterValorPdCustoHabilidade(custo) {
+  const resultado = String(custo || "").match(/(\d+)\s*PD\b/i);
+  return resultado ? Number(resultado[1]) : null;
+}
+function alterarValorPdCustoHabilidade(custo,diferenca) {
+  const texto = String(custo || "");
+  const resultado = texto.match(/(\d+)\s*PD\b/i);
+
+  if (!resultado) return null;
+
+  const atual = Number(resultado[1]);
+  const novo = Math.max(0,atual + diferenca);
+
+  return texto.replace(resultado[0],`${novo} PD`);
 }
 function renderizarInformacoesFicha() {
   const ncp = Number(dadosFichaAtual?.ncp) || 0;
@@ -1825,7 +1838,9 @@ function normalizarHabilidadeSalva(habilidade, tipo, indice) {
     
     progressaoOrigem:normalizarProgressaoOrigemHabilidade(dados.progressaoOrigem),
     
-    evolucoes:Array.isArray(dados.evolucoes) ? dados.evolucoes.map(normalizarEvolucaoPessoal).filter(Boolean) : []
+    evolucoes:Array.isArray(dados.evolucoes) ? dados.evolucoes.map(normalizarEvolucaoPessoal).filter(Boolean) : [],
+    
+    reducoesCusto:Array.isArray(dados.reducoesCusto) ? dados.reducoesCusto.map(normalizarReducaoCustoHabilidade).filter(Boolean) : []
   };
 }
 
@@ -1917,7 +1932,9 @@ function copiarEstadoHabilidadesFicha() {
         beneficioId: e.beneficioId,
         anterior: {...e.anterior},
         nova: {...e.nova}
-      }))
+      })),
+
+      reducoesCusto:(habilidade.reducoesCusto || []).map(reducao => ({...reducao}))
     }));
 
   return {
@@ -1944,7 +1961,6 @@ function copiarEstadoHabilidadesFicha() {
           true
   };
 }
-
 
 /* Ler Habilidades do Sistema */
 
@@ -3010,6 +3026,88 @@ async function concluirEvolucaoPessoalFicha() {
     alert("Não foi possível salvar a evolução da Habilidade.");
   }
 }
+function obterBeneficioReducaoCustoDisponivelFicha() {
+  const neo = Number(dadosFichaAtual?.neo) || 0;
+
+  return estadoProgressaoNiveisFicha.beneficiosPendentes.find(item =>
+    item.origem === "neo" &&
+    item.chave === "reducao-custo" &&
+    item.nivel <= neo &&
+    !beneficioProgressaoResolvidoFicha(item)
+  ) || null;
+}
+
+function reduzirCustoHistoricoEvolucoesPessoais(habilidade,valor) {
+  (habilidade.evolucoes || []).forEach(evolucao => {
+    ["anterior","nova"].forEach(chave => {
+      if (!evolucao[chave]) return;
+
+      const novoCusto = alterarValorPdCustoHabilidade(
+        evolucao[chave].custo,
+        -valor
+      );
+
+      if (novoCusto !== null) {
+        evolucao[chave].custo = novoCusto;
+      }
+    });
+  });
+}
+
+async function aplicarReducaoCustoHabilidadeFicha(id) {
+  const habilidade = obterTodasHabilidadesFicha().find(item => item.id === id);
+  const beneficio = obterBeneficioReducaoCustoDisponivelFicha();
+
+  if (!habilidade || !beneficio) return;
+
+  const valor = Math.max(1,Number(beneficio.valor) || 1);
+  const custoAtualPd = obterValorPdCustoHabilidade(habilidade.custo);
+
+  if (custoAtualPd === null) {
+    alert("Esta Habilidade não possui um custo numérico em PD.");
+    return;
+  }
+
+  if (custoAtualPd <= 0) {
+    alert("O custo desta Habilidade já é 0 PD.");
+    return;
+  }
+
+  const custoAnterior = habilidade.custo;
+  const reducoesAnteriores = (habilidade.reducoesCusto || []).map(item => ({...item}));
+  const evolucoesAnteriores = JSON.parse(JSON.stringify(habilidade.evolucoes || []));
+
+  const custoNovo = alterarValorPdCustoHabilidade(custoAnterior,-valor);
+  if (custoNovo === null) return;
+
+  habilidade.custo = custoNovo;
+
+  habilidade.reducoesCusto = [
+    ...(habilidade.reducoesCusto || []),
+    {
+      tipo:"neo",
+      nivel:beneficio.nivel,
+      beneficioId:beneficio.id,
+      valor,
+      custoAnterior,
+      custoAplicado:custoNovo
+    }
+  ];
+
+  reduzirCustoHistoricoEvolucoesPessoais(habilidade,valor);
+
+  try {
+    await salvarHabilidadesFichaImediatamente();
+    renderizarHabilidadesFicha(habilidade.id);
+  } catch (erro) {
+    habilidade.custo = custoAnterior;
+    habilidade.reducoesCusto = reducoesAnteriores;
+    habilidade.evolucoes = evolucoesAnteriores;
+
+    console.error("Erro ao aplicar redução de custo:",erro);
+    alert("Não foi possível aplicar a redução de custo.");
+  }
+}
 
 /* Cards */
 
@@ -3165,6 +3263,39 @@ function criarCardHabilidadeFicha(
   if (tipo === "pessoais") {
     nome.placeholder =
       "Nome da Habilidade";
+  }
+
+  if (!evoluindo) {
+    const beneficioReducao = obterBeneficioReducaoCustoDisponivelFicha();
+
+    if (beneficioReducao) {
+      const areaReducao = document.createElement("div");
+      const botaoReducao = document.createElement("button");
+      const custoPd = obterValorPdCustoHabilidade(habilidade.custo);
+
+      areaReducao.className = "acoes-reducao-custo-habilidade";
+
+      botaoReducao.type = "button";
+      botaoReducao.className = "botao-reduzir-custo-habilidade";
+      botaoReducao.textContent = "REDUZIR CUSTO -1 PD";
+
+      botaoReducao.disabled =
+        !podeEditarFichaAtual ||
+        custoPd === null ||
+        custoPd <= 0;
+
+      botaoReducao.title =
+        custoPd === null
+          ? "Esta Habilidade não possui custo numérico em PD"
+          : `Usar redução recebida no NEO ${beneficioReducao.nivel}`;
+
+      botaoReducao.addEventListener("click",() => {
+        aplicarReducaoCustoHabilidadeFicha(habilidade.id);
+      });
+
+      areaReducao.appendChild(botaoReducao);
+      conteudo.appendChild(areaReducao);
+    }
   }
 
   conteudo.hidden =
@@ -5988,10 +6119,7 @@ function obterTodasHabilidadesFicha() {
   return [...estadoHabilidadesFicha.perfil,...estadoHabilidadesFicha.pessoais,...estadoHabilidadesFicha.ocupacao];
 }
 function beneficioProgressaoResolvidoFicha(beneficio) {
-  return obterTodasHabilidadesFicha().some(habilidade =>
-    habilidade.progressaoOrigem?.beneficioId === beneficio.id ||
-    (habilidade.evolucoes || []).some(evolucao => evolucao.beneficioId === beneficio.id)
-  );
+  return obterTodasHabilidadesFicha().some(habilidade => habilidade.progressaoOrigem?.beneficioId === beneficio.id || (habilidade.evolucoes || []).some(evolucao => evolucao.beneficioId === beneficio.id) || (habilidade.reducoesCusto || []).some(reducao => reducao.beneficioId === beneficio.id));
 }
 function obterHabilidadesAdquiridasIrregularesFicha() {
   const ncp = Number(dadosFichaAtual?.ncp) || 0;
@@ -6004,6 +6132,20 @@ function obterHabilidadesAdquiridasIrregularesFicha() {
     const nivelAtual = origem.tipo === "ncp" ? ncp : neo;
     return nivelAtual < origem.nivel;
   });
+}
+function obterReducoesCustoIrregularesFicha() {
+  const neo = Number(dadosFichaAtual?.neo) || 0;
+  const resultado = [];
+
+  obterTodasHabilidadesFicha().forEach(habilidade => {
+    (habilidade.reducoesCusto || []).forEach(reducao => {
+      if (reducao.tipo === "neo" && reducao.nivel > neo) {
+        resultado.push({habilidade,reducao});
+      }
+    });
+  });
+
+  return resultado;
 }
 function obterPendenciasInformacoesFicha() {
   const pendencias = [];
@@ -6035,6 +6177,15 @@ function obterPendenciasInformacoesFicha() {
     pendencias.push({
       titulo:"HABILIDADE ADQUIRIDA ACIMA DO NÍVEL",
       texto:`"${nome}" foi adquirida no ${origem.tipo.toUpperCase()} ${origem.nivel}, mas o ${origem.tipo.toUpperCase()} atual é ${nivelAtual}. Ela permanece na ficha até ser removida manualmente.`
+    });
+  });
+
+  obterReducoesCustoIrregularesFicha().forEach(({habilidade,reducao}) => {
+    const nome = habilidade.nome?.trim() || "Habilidade sem nome";
+
+    pendencias.push({
+      titulo:"REDUÇÃO DE CUSTO ACIMA DO NÍVEL",
+      texto:`"${nome}" mantém uma redução de -${reducao.valor} PD recebida no NEO ${reducao.nivel}, mas o NEO atual é ${neo}. Essa redução deve ser ajustada manualmente.`
     });
   });
 
