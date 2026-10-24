@@ -5993,7 +5993,7 @@ function beneficioProgressaoResolvidoFicha(beneficio) {
     (habilidade.evolucoes || []).some(evolucao => evolucao.beneficioId === beneficio.id)
   );
 }
-function obterHabilidadesIrregularesProgressaoFicha() {
+function obterHabilidadesAdquiridasIrregularesFicha() {
   const ncp = Number(dadosFichaAtual?.ncp) || 0;
   const neo = Number(dadosFichaAtual?.neo) || 0;
 
@@ -6027,13 +6027,13 @@ function obterPendenciasInformacoesFicha() {
     pendencias.push({titulo:"PERÍCIAS NATURAIS",texto:`${resumo.bonusNaturais} / ${limiteNaturais}. Redistribua ou remova ${resumo.bonusNaturais - limiteNaturais} ponto(s) bônus.`});
   }
 
-  obterHabilidadesIrregularesProgressaoFicha().forEach(habilidade => {
+  obterHabilidadesAdquiridasIrregularesFicha().forEach(habilidade => {
     const origem = habilidade.progressaoOrigem;
     const nivelAtual = origem.tipo === "ncp" ? ncp : neo;
     const nome = habilidade.nome?.trim() || "Habilidade sem nome";
 
     pendencias.push({
-      titulo:"HABILIDADE IRREGULAR",
+      titulo:"HABILIDADE ADQUIRIDA ACIMA DO NÍVEL",
       texto:`"${nome}" foi adquirida no ${origem.tipo.toUpperCase()} ${origem.nivel}, mas o ${origem.tipo.toUpperCase()} atual é ${nivelAtual}. Ela permanece na ficha até ser removida manualmente.`
     });
   });
