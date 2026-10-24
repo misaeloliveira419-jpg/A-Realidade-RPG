@@ -6013,25 +6013,33 @@ function definirEstadoRecursoFicha(tipo,estado) {
 function criarEstadoRecursoFicha(tipo,recursoSalvo) {
   const bonus = obterBonusProgressaoRecursoFicha(tipo);
   const basePadrao = calcularBasePadraoRecursoFicha(tipo);
-  const manual = recursoSalvo?.manual === true;
+  const maximoPadrao = basePadrao + bonus;
+
   const maximoSalvo = Number(recursoSalvo?.maximo);
   const baseSalva = Number(recursoSalvo?.baseMaximo);
 
-  let baseMaximo = basePadrao;
+  const temBaseSalva = Number.isInteger(baseSalva) && baseSalva >= 0;
 
-  if (manual) {
-    if (Number.isInteger(baseSalva) && baseSalva >= 0) {
-      baseMaximo = baseSalva;
-    } else if (Number.isInteger(maximoSalvo) && maximoSalvo >= 0) {
-      baseMaximo = Math.max(0,maximoSalvo - bonus);
-    }
-  }
+  const manualAntigo = recursoSalvo?.manual === true;
+
+  const maximoAntigoValido = Number.isInteger(maximoSalvo) && maximoSalvo >= 0;
+
+  const manual = temBaseSalva ? manualAntigo : (manualAntigo && maximoAntigoValido && maximoSalvo !== maximoPadrao);
+
+  const baseMaximo = manual ? (temBaseSalva ? baseSalva : Math.max(0,maximoSalvo - bonus)): basePadrao;
 
   const maximo = baseMaximo + bonus;
+
   const atualSalvo = Number(recursoSalvo?.atual);
+
   const atual = Number.isInteger(atualSalvo) && atualSalvo >= 0 ? atualSalvo : maximo;
 
-  return {atual,maximo,baseMaximo,manual};
+  return {
+    atual,
+    maximo,
+    baseMaximo,
+    manual
+  };
 }
 function atualizarBarraRecursoFicha(estado,preenchimento) {
   const porcentagem = estado.maximo > 0 ? Math.max(0,Math.min(100,estado.atual / estado.maximo * 100)) : 0;
