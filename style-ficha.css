@@ -1720,13 +1720,15 @@ input[type="number"]{
 .descricao-habilidade-ficha{
   min-height: 58px;
 }
-.acoes-evolucao-habilidade-pessoal{
+.acoes-evolucao-habilidade-pessoal,
+.acoes-evolucao-habilidade-perfil{
   display:flex;
   justify-content:flex-end;
   gap:6px;
   margin-top:8px;
 }
-.acoes-evolucao-habilidade-pessoal button{
+.acoes-evolucao-habilidade-pessoal button,
+.acoes-evolucao-habilidade-perfil button{
   padding:5px 8px;
   background:black;
   color:rgb(190,190,190);
@@ -1737,6 +1739,7 @@ input[type="number"]{
   font-weight:bold;
 }
 .botao-evoluir-habilidade-pessoal:hover,
+.botao-evoluir-habilidade-perfil:hover,
 .botao-concluir-evolucao-pessoal:hover{
   color:white;
   border-color:rgb(150,0,225);
@@ -1746,7 +1749,8 @@ input[type="number"]{
   color:rgb(255,120,100);
   border-color:rgb(150,70,60);
 }
-.acoes-evolucao-habilidade-pessoal button:disabled{
+.acoes-evolucao-habilidade-pessoal button:disabled,
+.acoes-evolucao-habilidade-perfil button:disabled{
   opacity:.35;
   cursor:default;
   box-shadow:none;
