@@ -2,7 +2,7 @@
   const MUSICAS = [
     { nome: "Ataque", arquivo: "musicas/Misael Oliveira - Ataque - A Realidade 2026-07-25 13_38.m4a" },
     { nome: "Até", arquivo: "musicas/Misael Oliveira - Até - A Realidade 2026-08-02 13_06.m4a" },
-    { nome: "Brincar", arquivo: "musicas/Misael Oliveira - Brincar - A Realidade 1793986046174 2026-11-06 14_27.m4a" },
+    { nome: "Brincar", arquivo: "musicas/Misael Oliveira - Brincar - A Realidade - 1793986046174 2026-11-06 14_27.m4a" },
     { nome: "Caos", arquivo: "musicas/Misael Oliveira - Caos - A Realidade 2026-07-31 21_22.m4a" },
     { nome: "Demonstração", arquivo: "musicas/Misael Oliveira - Demonstração - A Realidade - 1794533667882 2026-11-12 22_34.m4a" },
     { nome: "Deus", arquivo: "musicas/Misael Oliveira - Deus - A Realidade - 1794958112616 2026-11-17 20_28.m4a" },
