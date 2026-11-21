@@ -364,15 +364,72 @@ function dividirLinhasPersonagensCampanhaFicha(total) {
 
   return linhas;
 }
-function obterDadosRecursoCardFicha(recurso) {
-  const atual = Math.max(0,Number(recurso?.atual) || 0);
-  const maximo = Math.max(0,Number(recurso?.maximo) || 0);
-  const porcentagem = maximo > 0 ? Math.max(0,Math.min(100,(atual / maximo) * 100)) : 0;
-
-  return {atual,maximo,porcentagem};
+function recursoCardSalvoValidoFicha(recurso) {
+  return recurso && typeof recurso === "object" &&
+    Number.isInteger(recurso.atual) && recurso.atual >= 0 &&
+    Number.isInteger(recurso.maximo) && recurso.maximo >= 0;
 }
-function criarBarraPersonagemCampanhaFicha(rotulo,recurso,classe) {
-  const dados = obterDadosRecursoCardFicha(recurso);
+
+function obterValorPericiaCardPersonagemFicha(ficha,nome) {
+  const id = criarIdPericiaPontosFicha(nome);
+  const salva = ficha?.pericias?.[id] || {};
+
+  if (Number.isInteger(salva.valorAtual)) return salva.valorAtual;
+
+  const valorDistribuido = Number(salva.valorDistribuido);
+  const bonusNatural = Number(salva.bonusNatural) || 0;
+
+  return Number.isFinite(valorDistribuido)
+    ? valorDistribuido + bonusNatural
+    : 4;
+}
+
+function calcularRecursoPadraoCardPersonagemFicha(ficha,tipo) {
+  const atributos = ficha?.atributos || {};
+
+  const fisico = Number.isInteger(atributos.fisico) ? atributos.fisico : 1;
+  const presenca = Number.isInteger(atributos.presenca) ? atributos.presenca : 2;
+
+  const progressao = ficha?.progressaoNiveis || {};
+
+  if (tipo === "pv") {
+    const fortitude = obterValorPericiaCardPersonagemFicha(ficha,"Fortitude");
+    const atletismo = obterValorPericiaCardPersonagemFicha(ficha,"Atletismo");
+    const bonusPv = Math.max(0,Number(progressao.bonusPv) || 0);
+    const maximo = Math.floor(15 + fisico + fortitude / 3 + atletismo / 4) + bonusPv;
+
+    return {atual:maximo,maximo};
+  }
+
+  const vontade = obterValorPericiaCardPersonagemFicha(ficha,"Vontade");
+  const bonusPd = Math.max(0,Number(progressao.bonusPd) || 0);
+  const maximo = Math.floor(20 + presenca + vontade / 2) + bonusPd;
+
+  return {atual:maximo,maximo};
+}
+
+function obterDadosRecursoCardFicha(ficha,tipo) {
+  const recurso = ficha?.[tipo];
+
+  const dados = recursoCardSalvoValidoFicha(recurso)
+    ? {
+        atual:recurso.atual,
+        maximo:recurso.maximo
+      }
+    : calcularRecursoPadraoCardPersonagemFicha(ficha,tipo);
+
+  const porcentagem = dados.maximo > 0
+    ? Math.max(0,Math.min(100,(dados.atual / dados.maximo) * 100))
+    : 0;
+
+  return {
+    atual:dados.atual,
+    maximo:dados.maximo,
+    porcentagem
+  };
+}
+function criarBarraPersonagemCampanhaFicha(rotulo,ficha,tipo,classe) {
+  const dados = obterDadosRecursoCardFicha(ficha,tipo);
   const area = document.createElement("div");
   area.className = "recurso-card-personagem-ficha";
 
@@ -426,8 +483,8 @@ function criarCardPersonagemCampanhaFicha(ficha) {
   const recursos = document.createElement("div");
   recursos.className = "recursos-card-personagem-campanha-ficha";
   recursos.append(
-    criarBarraPersonagemCampanhaFicha("PV",ficha.pv,"pv-card-personagem-ficha"),
-    criarBarraPersonagemCampanhaFicha("PD",ficha.pd,"pd-card-personagem-ficha")
+    criarBarraPersonagemCampanhaFicha("PV",ficha,"pv","pv-card-personagem-ficha"),
+    criarBarraPersonagemCampanhaFicha("PD",ficha,"pd","pd-card-personagem-ficha")
   );
 
   informacoes.append(nome,recursos);
@@ -6127,6 +6184,20 @@ let estadoAtributosFicha = {
   deslocamentoQuadrados: 6
 };
 
+const pvPrecisaSerPersistido =
+  !ficha.pv ||
+  typeof ficha.pv !== "object" ||
+  !Number.isInteger(ficha.pv.atual) ||
+  !Number.isInteger(ficha.pv.maximo) ||
+  typeof ficha.pv.manual !== "boolean";
+
+const pdPrecisaSerPersistido =
+  !ficha.pd ||
+  typeof ficha.pd !== "object" ||
+  !Number.isInteger(ficha.pd.atual) ||
+  !Number.isInteger(ficha.pd.maximo) ||
+  typeof ficha.pd.manual !== "boolean";
+
 let estadoPvFicha = {atual:0,maximo:0,baseMaximo:0,manual:false};
 let estadoPdFicha = {atual:0,maximo:0,baseMaximo:0,manual:false};
 
@@ -7564,6 +7635,23 @@ async function preencherPontosFicha(ficha) {
   if (dadosFichaAtual) {
     dadosFichaAtual.pv = {...estadoPvFicha};
     dadosFichaAtual.pd = {...estadoPdFicha};
+  }
+
+  if (
+    podeEditarFichaAtual &&
+    (pvPrecisaSerPersistido || pdPrecisaSerPersistido)
+  ) {
+    const alteracoesRecursos = {};
+
+    if (pvPrecisaSerPersistido) {
+      alteracoesRecursos.pv = {...estadoPvFicha};
+    }
+
+    if (pdPrecisaSerPersistido) {
+      alteracoesRecursos.pd = {...estadoPdFicha};
+    }
+
+    salvarAtualizacaoPontosFicha(alteracoesRecursos);
   }
 
   renderizarPvPdFicha();
