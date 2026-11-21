@@ -5541,9 +5541,29 @@ function obterCustoFinalItemFicha(item) {
 }
 function obterCustoCreditoItemFicha(item) {
   const custoSalvo = Number(item.custoCredito);
-  if (Number.isFinite(custoSalvo)) return custoSalvo;
-  const custoSistema = custosCreditoItensFicha[normalizarNomeItemFicha(item.nome)];
-  return Number.isFinite(custoSistema) ? custoSistema : null;
+
+  if (Number.isFinite(custoSalvo)) {
+    return custoSalvo;
+  }
+
+  const itemOriginalCatalogo =
+    catalogoItensFicha.find(
+      itemCatalogo =>
+        itemCatalogo.id === item.id
+    );
+
+  const nomeOriginal =
+    itemOriginalCatalogo?.nome ||
+    item.nome;
+
+  const custoSistema =
+    custosCreditoItensFicha[
+      normalizarNomeItemFicha(nomeOriginal)
+    ];
+
+  return Number.isFinite(custoSistema)
+    ? custoSistema
+    : null;
 }
 function atualizarContadorCargaFicha() {
   if (!contadorCargaFicha) return;
@@ -5640,9 +5660,13 @@ function criarCardItemFicha(item) {
   card.className = "card-item-ficha";
   const cabecalho = document.createElement("div");
   cabecalho.className = "cabecalho-card-item-ficha";
-  const nome = document.createElement("strong");
+  const nome = document.createElement("input");
+  nome.type = "text";
   nome.className = "nome-item-ficha";
-  nome.textContent = item.nome || "Item";
+  nome.value = item.nome || "Item";
+  nome.maxLength = 100;
+  nome.readOnly = !podeEditarFichaAtual;
+  nome.title = podeEditarFichaAtual ? "Clique para alterar o nome do Item" : "Somente o dono da ficha ou o Mestre da campanha pode alterar este Item";
   const peso = document.createElement("span");
   peso.className = "dado-item-ficha peso-item-ficha";
   peso.textContent = `Peso: ${formatarNumeroInventarioFicha(item.peso)}`;
@@ -5770,6 +5794,28 @@ function criarCardItemFicha(item) {
   descricao.addEventListener("input",() => {
     item.descricao = descricao.value;
     ajustarAlturaDescricaoItemFicha(descricao);
+    agendarSalvamentoInventarioFicha();
+  });
+  nome.addEventListener("input",() => {
+    if (!podeEditarFichaAtual) return;
+
+    item.nome = nome.value;
+
+    agendarSalvamentoInventarioFicha();
+  });
+  nome.addEventListener("change",() => {
+    if (!podeEditarFichaAtual) return;
+
+    const novoNome = nome.value.trim();
+
+    if (!novoNome) {
+      nome.value = item.nome || "Item";
+      return;
+    }
+
+    item.nome = novoNome;
+    nome.value = novoNome;
+
     agendarSalvamentoInventarioFicha();
   });
   botaoExpandir.addEventListener("click",() => {

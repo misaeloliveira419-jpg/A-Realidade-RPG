@@ -2323,12 +2323,33 @@ body.catalogo-habilidades-aberto{
   padding-left: 10px;
 }
 .nome-item-ficha{
-  min-width: 0;
-  overflow: hidden;
-  color: white;
-  font-size: 11px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  width:100%;
+  min-width:0;
+  padding:4px 5px;
+  box-sizing:border-box;
+  overflow:hidden;
+  background:transparent;
+  color:white;
+  border:1px solid transparent;
+  border-radius:3px;
+  outline:none;
+  font-family:inherit;
+  font-size:11px;
+  font-weight:bold;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  transition:border-color .2s,box-shadow .2s,background .2s;
+}
+.nome-item-ficha:not([readonly]):hover{
+  border-color:rgb(75,75,75);
+}
+.nome-item-ficha:not([readonly]):focus{
+  background:black;
+  border-color:rgb(135,70,210);
+  box-shadow:0 0 6px rgba(150,80,220,.4);
+}
+.nome-item-ficha[readonly]{
+  cursor:default;
 }
 .dado-item-ficha{
   flex-shrink: 0;
