@@ -6184,20 +6184,6 @@ let estadoAtributosFicha = {
   deslocamentoQuadrados: 6
 };
 
-const pvPrecisaSerPersistido =
-  !ficha.pv ||
-  typeof ficha.pv !== "object" ||
-  !Number.isInteger(ficha.pv.atual) ||
-  !Number.isInteger(ficha.pv.maximo) ||
-  typeof ficha.pv.manual !== "boolean";
-
-const pdPrecisaSerPersistido =
-  !ficha.pd ||
-  typeof ficha.pd !== "object" ||
-  !Number.isInteger(ficha.pd.atual) ||
-  !Number.isInteger(ficha.pd.maximo) ||
-  typeof ficha.pd.manual !== "boolean";
-
 let estadoPvFicha = {atual:0,maximo:0,baseMaximo:0,manual:false};
 let estadoPdFicha = {atual:0,maximo:0,baseMaximo:0,manual:false};
 
@@ -7628,6 +7614,20 @@ async function preencherPontosFicha(ficha) {
 
   renderizarPericiasPontosFicha();
   preencherDatalistPericiasRolagem();
+
+  const pvPrecisaSerPersistido =
+    !ficha.pv ||
+    typeof ficha.pv !== "object" ||
+    !Number.isInteger(ficha.pv.atual) ||
+    !Number.isInteger(ficha.pv.maximo) ||
+    typeof ficha.pv.manual !== "boolean";
+
+  const pdPrecisaSerPersistido =
+    !ficha.pd ||
+    typeof ficha.pd !== "object" ||
+    !Number.isInteger(ficha.pd.atual) ||
+    !Number.isInteger(ficha.pd.maximo) ||
+    typeof ficha.pd.manual !== "boolean";
 
   estadoPvFicha = criarEstadoRecursoFicha("pv",ficha.pv);
   estadoPdFicha = criarEstadoRecursoFicha("pd",ficha.pd);
