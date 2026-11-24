@@ -1179,11 +1179,11 @@
     <h1>CENAS E AÇÕES</h1>
     <p>A Cena é um momento o qual os personagens estão fazendo algum tipo de Ação com algum objetivo, seja esse descansar, investigar, entre outros.</p>
     <br>
-    <p>Em cada Cena, existem os <b>turnos</b> e <b>rodadas</b>:</p>
+    <p>Em cada Cena, existem os <b>rodadas</b> e <b>turnos</b>:</p>
     <br>
     <ul id="lista-turnos-rodadas">
-      <li><b>Turno:</b> Um turno é um conjunto de rodadas, tendo uma duração estimada de 10 a 15 segundos, mas que pode variar de acordo com a Cena.</li>
-      <li><b>Rodada:</b> Uma rodada é um conjunto de ações de um personagem, e cada personagem tem 1 rodada por turno.</li>
+      <li><b>Rodada:</b> Uma rodada é um conjunto de turnos, tendo uma duração estimada de 10 a 15 segundos, mas que pode variar de acordo com a Cena.</li>
+      <li><b>Turno:</b> Um turno é um conjunto de ações de um personagem, e cada personagem tem 1 turno por rodada.</li>
     </ul>
     <br>
     <p>Toda Cena deve manter uma ordem de iniciativa dos personagens, sendo escolha da mesa definir como isso é decidido.</p>
@@ -1194,6 +1194,8 @@
 
     <h2 id="tipos-cena">Tipos de Cena</h2>
     <p>Existem alguns tipos de cenas, sendo elas: <b>Cena de Exploração</b>, <b>Cena de Interlúdio</b>, <b>Cena de Investigação</b>, <b>Cena de Combate</b>, e <b>Cena de Perseguição</b>.</p>
+    <br>
+    <p>Em cada Cena, um personagem pode fazer Ações específicas de cada Cena, e pode se <em><b>movimentar</b></em> um valor máximo de metros ou quadrados igual ao seu Atributo <b>Deslocamento</b>.</p>
 
     <h2 id="cena-exploracao">Cena de Exploração</h2>
     <p>Uma Cena de Exploração é caracterizada pela exploração de uma área ou região, com o objetivo de conhecer melhor o ambiente de uma maneira geral, como um shopping, parque, etc.</p>
@@ -1254,8 +1256,6 @@
     <br>
     <p>Durante uma Cena de Combate, um personagem pode fazer <b>1 Ação Principal</b>, <b>1 Ação Rápida</b>, e uma quantidade <b>variável de Reações</b>.</p>
     <br>
-    <p>Além dessas Ações, um personagem pode se movimentar baseado no seu Atributo de <b>Deslocamento</b> durante sua rodada.</p>
-    <br>
     <p>Um personagem pode fazer uma <b>Ação Rápida</b> como uma <b>Ação Principal</b>, mas <u>não</u> pode fazer uma <b>Ação Principal</b> como uma <b>Ação Rápida</b>.</p>
     <br>
     <p>Uma <b>Ação Principal</b> é uma Ação que exige maior esforço, que demora mais para ser realizada, ou que impacta diretamente no Combate.</p>
@@ -1280,8 +1280,8 @@
       
       <li><b>Ações Especiais:</b> Algumas Ações Adicionais que o personagem pode fazer durante a Cena.
         <ul class="sub-lista-acoes-combate">
-          <li><b>Mirar:</b> O personagem passa a Ação inteira mirando o Ataque em um alvo, ganhando vantagem de +1d20 no próximo ataque ao alvo escolhido.</li>
-          <li><b>Preparar:</b> O personagem guarda uma Ação, para que seja feita em qualquer rodada até o fim do turno (o jogador não pode mudar essa Ação, apenas desfazê-la).</li>
+          <li><b>Mirar:</b> O personagem usa a Ação inteira mirando o Ataque em um alvo, ganhando vantagem de +1d20 no próximo ataque ao alvo escolhido.</li>
+          <li><b>Preparar:</b> O personagem guarda uma Ação, para que seja feita em qualquer turno até o fim da rodada (o jogador não pode mudar essa Ação, apenas desfazê-la).</li>
           <li><b>Investida:</b> O personagem gasta todas as suas Ações e 2 PV percorrendo seu Deslocamento + 1 metro por valor de Atletismo, e desfere um Ataque físico em um alvo. O dano desse Ataque aumenta em +2d6, porém o personagem tem penalidade de -1d20 nas suas Reações até o início da sua próxima rodada.</li>
         </ul>
       </li>
@@ -1292,10 +1292,9 @@
     <br>
     <h3>Lista de Ações Rápidas de Combate:</h3>
     <ul class="lista-acoes-combate">
-      <li><b>Observar:</b> O personagem olha ao redor rapidamente, para entender o que está acontecendo no meio do Combate.</li>
-      <li><b>Levantar rápido:</b> O personagem se levanta rapidamente. Para isso, deve fazer um teste de Acrobacia, precisando de um Sucesso para levantar-se. Se falhar, cai no chão gastando 1 Ação Principal.</li>
+      <li><b>Observar:</b> O personagem olha ao redor rapidamente, e consegue informações gerais de tudo que está acontecendo no Combate.</li>
+      <li><b>Levantar rápido:</b> O personagem se levanta rapidamente. Para isso, deve fazer um teste de Acrobacia, precisando de um Sucesso para levantar-se. Se falhar, cai no chão gastando seu Deslocamento na rodada.</li>
       <li><b>Entregar/Receber Item:</b> O personagem entrega um Item para outro a alcance Pessoal, ou recebe um Item de outro a alcance Pessoal. Tentar entregar um Item de uma distância maior (arremessando) demanda uma Ação Principal.</li>
-      <li><b>Soltar Item:</b> O personagem larga um Item no chão.</li>
       <li><b>Apanhar Item:</b> O personagem apanha um Item a alcance Pessoal do chão.</li>
       <li><b>Jogar-se ao chão:</b> O personagem se atira ao chão a alcance Pessoal rapidamente.</li>
     </ul>
@@ -1303,7 +1302,7 @@
 
     <p>Uma <b>Reação</b> é uma Ação reativa a algum acontecimento dentro do Combate, como reagir a um Ataque que está sofrendo, reagir a um Ataque que um aliado está sofrendo (se jogando na frente dele), etc.</p>
     <br>
-    <p>A cada nova Reação que um personagem fizer no turno, ele tem desvantagem de -1d20 no teste.</p>
+    <p>A cada nova Reação que um personagem fizer na rodada, ele tem desvantagem de -1d20 no teste.</p>
     <br>
     <p>O <em>limite de Reações</em> é atingido quando seu teste de Reação chegar a 0d20 (joga dois dados e pega o pior resultado). Após essa Reação, ele não pode mais Reagir.</p>
     <br>
@@ -1363,7 +1362,7 @@
     <ul id="lista-acoes-presa">
       <li><b>Fugir:</b> A Presa corre para o mais longe possível do Caçador. Teste de Atletismo ou Acrobacia (esse último dá +1 PS em caso de Sucesso, e -1 PS em Fracasso).</li>
       <li><b>Despistar:</b> A Presa se esconde em algum lugar possível dentro do cenário. Teste de <b>Furtividade DT Percepção do Caçador</b> (o Caçador tem +3d20 no teste, -1d20 por distância em Zonas).</li>
-      <li><b>Ajudar:</b> A Presa passa sua rodada ajudando um aliado a Fugir. Teste de <b>Sobrevivência DT Sucesso Bom</b> dá vantagem de <b>+1d20</b>, <b>Sucesso Extremo</b> dá vantagem de <b>+2d20</b>.</li>
+      <li><b>Ajudar:</b> A Presa passa seu turno ajudando um aliado a Fugir. Teste de <b>Sobrevivência DT Sucesso Bom</b> dá vantagem de <b>+1d20</b>, <b>Sucesso Extremo</b> dá vantagem de <b>+2d20</b>.</li>
       <li><b>Criar Obstáculo:</b> A Presa pode usar o cenário, algum Item, ou artifício para atrapalhar o caminho de todos que estiverem qualquer <b>Zona</b> atrás (inclui outras Presas ou Caçadores). A DT do teste de <b>Atletismo ou Acrobacia</b> dos afetados é aumentada em <b>+1 nível</b>.</li>
     </ul>
     <br><br>
@@ -1390,21 +1389,9 @@
 
     <h3>Lista de Ações Gerais:</h3>
     <ul id="lista-acoes-gerais">
-      <li><b>Falar (Ação Livre):</b> O personagem conversa durante a Cena.</li>
-      <li><b>Levantar-se (Ação Principal em Combate, Ação Livre em outras Cenas):</b> O personagem se levanta do chão.</li>
-      <li><b>Levantar rápido (Ação Rápida em Combate, Ação Livre em outras Cenas):</b> O personagem se levanta rapidamente. Para isso, deve fazer um teste de <b>Acrobacia DT Sucesso Normal</b> para levantar-se. Se falhar, cai no chão gastando 1 Ação Principal.</li>
-      <li><b>Interagir com o ambiente (Ação Principal):</b> O personagem interage com o ambiente, como ligar um computador, ou procurar algo importante.</li>
-      <li><b>Entregar/Receber Item (Ação Rápida em Combate, Ação Livre em outras Cenas):</b> O personagem entrega um Item para outro a alcance Pessoal, ou recebe um Item de outro a alcance Pessoal.</li>
-      <li><b>Soltar Item (Ação Rápida em Combate, Ação Livre em outras Cenas):</b> O personagem larga um Item no chão.</li>
-      <li><b>Apanhar Item (Ação Rápida em Combate, Ação Livre em outras Cenas):</b> O personagem apanha um Item a alcance Pessoal do chão.</li>
-      <li><b>Jogar-se ao chão (Ação Rápida em Combate, Ação Livre em outras Cenas):</b> O personagem se atira ao chão a um alcance Pessoal rapidamente.</li>
       <li><b>Primeiros socorros (Ação Principal):</b> O personagem trata os machucados de um outro personagem que está <b>Morrendo</b>. Para isso, deve fazer um teste de <b>Área - Medicina</b>, precisando de um <b>Sucesso Extremo</b> para tratar o personagem.</li>
-      <li><b>Esconder-se (Ação Principal):</b> O personagem se esconde de um ou mais alvos. Para isso, deve fazer um teste de <b>Furtividade DT Percepção do(s) alvo(s)</b>.</li>
       <li><b>Roubar (Ação Principal):</b> O personagem rouba um Item de um alvo, seja ele uma arma empunhada ou objeto guardado. Para isso, deve fazer um teste de <b>Crime DT Reflexo do alvo</b>, precisando <b>vencer</b> para roubar o Item do alvo.</li>
       <li><b>Furtar (Ação Principal):</b> O personagem furta um Item de um alvo enquanto está furtivo, seja ele uma arma empunhada ou objeto guardado. Para isso, deve fazer um teste de <b>Crime</b>, precisando ter <b>Sucesso</b> para furtar o Item do alvo.</li>
-      <li><b>Provocar (Ação Principal):</b> O personagem provoca um alvo, tentando atrair sua atenção. Para isso, deve fazer um teste de <b>Lábia DT Vontade do alvo</b>, precisando <b>vencer</b> para provocar o alvo.</li>
-      <li><b>Intimidar (Ação Principal):</b> O personagem intimida um alvo, deixando-o <b>Pasmo</b>. Para isso, deve fazer um teste de <b>Intimidação DT Vontade do alvo</b>, precisando <b>vencer</b> para intimidar o alvo.</li>
-      <li><b>Blefar (Ação Principal):</b> O personagem mente para um alvo, tentando enganá-lo. Para isso, deve fazer um teste de <b>Lábia DT Intuição do alvo</b>, precisando <b>vencer</b> para convencer o alvo.</li>
       <li><b>Incentivar (Ação Principal):</b> Uma vez na Cena, o personagem deixa um alvo <b>Incentivado</b>. Para isso, deve fazer um teste de <b>Diplomacia DT Sucesso Extremo</b> para Incentivar o alvo.</li>
       <li><b>Acerto garantido (Ação Principal):</b> O personagem finaliza um alvo que esteja <b>Indefeso</b>, ou faz uma Ação como se tivesse um <b>Sucesso Extremo</b>. Uma situação que isso pode ocorrer é definida pelo mestre, geralmente sendo uma Cena sem um perigo ou pressa de fazer Ações.</li>
     </ul>
@@ -1454,9 +1441,9 @@
     <h2 id="testes-coletivos">Testes Coletivos</h2>
     <p>A mecânica de Teste Coletivo é uma mecânica que ocorre em situações que um personagem tenta colaborar outro a fazer uma Ação.</p>
     <br>
-    <p>Quando isso acontecer, os jogadores definem o <b>Agente</b> (o personagem principal que faz a Ação) e o <b>Ajudante</b> (o personagem que ajuda o Agente; no <b>máximo um</b>).</p>
+    <p>Quando isso acontecer, os jogadores definem o <b>Agente</b> (o personagem principal que faz a Ação) e o <b>Ajudante</b> (o personagem que ajuda o Agente).</p>
     <br>
-    <p>Após decidir, o <b>Agente</b> rola uma quantidade de d20 para a Perícia igual ao seu <b>valor no Atributo</b>, e recebe um bônus determinado pelo <b>Nível da Perícia do Ajudante</b>, conforme a tabela abaixo. O Ajudante deve possuir, no mínimo, Nível 2 na Perícia utilizada.</p>
+    <p>Após decidir, o <b>Agente</b> rola o teste da Ação, e recebe um bônus determinado pelo <b>Nível da Perícia do Ajudante</b>, conforme a tabela abaixo. O Ajudante deve possuir, no mínimo, Nível 2 na Perícia utilizada.</p>
     <br>
     
     <h3>Lista de Níveis de ajuda:</h3>
@@ -1467,10 +1454,10 @@
     </ul>
     <br>
 
-    <p>Na mecânica de Destrancar, caso um personagem queira ajudar outro, o <b>Ajudante</b> soma +1 na Perícia <b>Crime</b> do <b>Agente</b> a cada Nível que ele tiver nessa Perícia a partir do <b>Nível 2</b>.</p>
+    <p>Se houver a partir de 2 Ajudantes na Ação, o Agente recebe +1 no valor numérico de sua Perícia para cada novo Ajudante além do primeiro.</p>
     <br>
-    <p>Em certas situações, todos os personagens irão querer/precisar fazer Ações em conjunto, como na mecânica de Movimento Furtivo vista anteriormente. Nessas situações, o mestre deve usar da criatividade para criar mecânicas novas que favoreçam o andamento da Cena, podendo ou não se basear nas mecânicas já existentes nesse sistema.</p>
-
+    <p>Na mecânica de Destrancar, caso um personagem queira ajudar outro, o <b>Ajudante</b> soma +1 na Perícia <b>Crime</b> do <b>Agente</b> a cada Nível que ele tiver nessa Perícia a partir do <b>Nível 2</b>.</p>
+    
     <h2 id="acoes-prolongadas">Ações Prolongadas</h2>
     <p>As Ações Prolongadas são testes que funcionam para fazer Ações que duram mais de uma rodada, como por exemplo, manter um portão segurado constantemente para que ele não se feche.</p>
     <br>
@@ -1583,33 +1570,33 @@
       <li><b>ABALADO:</b> O personagem sofre desvantagem de -1d20 em testes de Perícia.</li>
       <li><b>AGARRADO:</b> O personagem fica Desprevinido e Imóvel, e sofre desvantagem de -1d20 em testes de Ataque. Um personagem agarrando outro perde 1/2 do seu Deslocamento, e se o agarrado estiver resistindo, perde 3/4 do Deslocamento. Se um personagem fizer um Ataque à distância contra um dos alvos envolvidos, há 50% de chance de acertar o alvo errado.</li>
       <li><b>APAVORADO:</b> Ainda mais Pasmo. O personagem sofre desvantagem de -2d20 em testes de Perícia com Atributo base Presença e deve fugir da fonte do medo até que não a veja ou esteja a alcance médio dela. Se não puder fugir, pode agir normalmente, mas não pode se aproximar voluntariamente da fonte do medo.</li>
-      <li><b>ASFIXIADO:</b> O personagem não consegue respirar. Enquanto está Asfixiado, o personagem pode prender a respiração por um número de turnos igual ao seu Físico. Depois disso, deve fazer um teste de Fortitude DT Normal + 1 nível por teste anterior. Se Fracassar, cai Inconsciente e perde 1d6 de PV por turno até conseguir respirar novamente ou morrer.</li>
+      <li><b>ASFIXIADO:</b> O personagem não consegue respirar. Enquanto está Asfixiado, o personagem pode prender a respiração por um número de rodadas igual ao seu Físico. Depois disso, deve fazer um teste de Fortitude DT Normal + 1 nível por teste anterior. Se Fracassar, cai Inconsciente e perde 1d6 de PV por rodada até conseguir respirar novamente ou morrer.</li>
       <li><b>ATORDOADO:</b> O personagem fica Desprevenido e não pode fazer Ações.</li>
       <li><b>CAÍDO:</b> Deitado no chão. O personagem sofre desvantagem de -2d20 para fazer Ataques corpo a corpo e seu Deslocamento é reduzido para 1,5 metros. Além disso, sofre desvantagem de -1d20 para Reagir a Ataques corpo a corpo, mas recebe +1d20 para Reagir a ataques à distância.</li>
       <li><b>CEGO:</b> O personagem fica Desprevenido e Lento, não pode fazer testes de Percepção para observar e sofre desvantagem de -2d20 em testes de Perícia com Atributo base Físico. Todos os alvos de seus Ataques recebem Camuflagem Total. Um personagem é considerado Cego enquanto estiver em uma área de escuridão total, a menos que algo lhe permita perceber no escuro, ou se estiver com os olhos fechados, por exemplo.</li>
       <li><b>DESPREVINIDO:</b> O personagem sofre desvantagem de -1d20 em Reações. Um personagem fica Desprevinido contra inimigos que não possa perceber.</li>
       <li><b>DOENTE:</b> Sob efeito de uma doença (baseado na doença, o mestre define as penalidades).</li>
-      <li><b>EM CHAMAS:</b> O personagem está pegando fogo. No início de suas rodadas, sofre 1d6 de dano de fogo. O personagem pode gastar uma rodada inteira para apagar o fogo com as mãos. Imersão em água também apaga as chamas.</li>
-      <li><b>ENJOADO:</b> O personagem só pode realizar uma Ação de cada tipo na sua rodada em Combates, e demora 2 turnos para fazer uma Ação Principal em outras Cenas.</li>
-      <li><b>ENLOUQUECENDO:</b> O personagem está com 0 PD. Se iniciar 3 rodadas Enlouquecendo na mesma Cena (não necessariamente consecutivos), você fica enlouquecido (seu personagem se torna um NPC). A Condição pode ser encerrada com um teste de Diplomacia DT Sucesso Extremo, ou por qualquer efeito que cure pelo menos 1 PD.</li>
+      <li><b>EM CHAMAS:</b> O personagem está pegando fogo. No início de seus turnos, sofre 1d6 de dano de fogo. O personagem pode gastar um turno inteira para apagar o fogo com as mãos. Imersão em água também apaga as chamas.</li>
+      <li><b>ENJOADO:</b> O personagem só pode realizar uma Ação de cada tipo no seu turno em Combates, e demora 2 rodadas para fazer uma Ação Principal em outras Cenas.</li>
+      <li><b>ENLOUQUECENDO:</b> O personagem está com 0 PD. Se iniciar 3 turnos Enlouquecendo na mesma Cena (não necessariamente consecutivos), você fica enlouquecido (seu personagem se torna um NPC). A Condição pode ser encerrada com um teste de Diplomacia DT Sucesso Extremo, ou por qualquer efeito que cure pelo menos 1 PD.</li>
       <li><b>ENVENENADO:</b> Sob efeito de um veneno (baseado no tipo de veneno, o mestre define as penalidades).</li>
       <li><b>ESMORECIDO:</b> O personagem sofre desvantagem de -1d20 em testes de Perícia com Atributo base Cognição.</li>
       <li><b>EXAUSTO:</b> Ainda mais Fatigado. O personagem sofre desvantagem de -2d20 em testes de Perícia com Atributo base Físico.</li>
-      <li><b>FASCINADO:</b> O personagem entra em transe e deve se aproximar da fonte do fascínio ou olhar para ele fixamente. Se não conseguir, perde 2 PD na sua rodada.</li>
+      <li><b>FASCINADO:</b> O personagem entra em transe e deve se aproximar da fonte do fascínio ou olhar para ele fixamente. Se não conseguir, perde 2 PD no seu turno.</li>
       <li><b>FATIGADO:</b> O personagem sofre desvantagem de -1d20 em testes de Perícia com Atributo base Físico.</li>
       <li><b>FLANQUEADO:</b> O personagem está cercado corpo a corpo por 2 ou mais inimigos em lados opostos. Sofre desvantagem de -1d20 em testes de Reação.</li>
-      <li><b>FRUSTRADO:</b> O personagem tem um Desastre ou um Desastre Máximo. Perde 1 PD na rodada.</li>
+      <li><b>FRUSTRADO:</b> O personagem tem um Desastre ou um Desastre Máximo. Perde 1 PD no turno.</li>
       <li><b>IMÓVEL:</b> O personagem é incapaz de se mover. Seu Deslocamento é nulo.</li>
       <li><b>INCENTIVADO:</b> O personagem tem vantagem de +1d20 no seu próximo teste de Perícia.</li>
       <li><b>INCONSCIENTE:</b> O personagem cai desmaiado. Pode ser reanimado com um teste de Área - Medicina DT Sucesso Normal.</li>
       <li><b>INDEFESO:</b> O personagem se torna suscetível a sofrer um Acerto garantido.</li>
       <li><b>LENTO:</b> O personagem tem o Deslocamento reduzido pela metade.</li>
       <li><b>MACHUCADO:</b> O personagem está com metade ou menos de seu PV.</li>
-      <li><b>MORRENDO:</b> O personagem está com 0 PV. Fica Caído, Indefeso, e não pode fazer ações. Se iniciar 3 rodadas Morrendo na mesma Cena (não necessariamente consecutivas) o personagem morre. É necessário fazer um teste de Área - Medicina DT Sucesso Extremo para tirar essa Condição. Se ela for curada, o personagem recupera 1 PV.</li>
+      <li><b>MORRENDO:</b> O personagem está com 0 PV. Fica Caído, Indefeso, e não pode fazer ações. Se iniciar 3 turnos Morrendo na mesma Cena (não necessariamente consecutivas) o personagem morre. É necessário fazer um teste de Área - Medicina DT Sucesso Extremo para tirar essa Condição. Se ela for curada, o personagem recupera 1 PV.</li>
       <li><b>OFUSCADO:</b> O personagem sofre desvantagem de -1d20 em testes de Percepção.</li>
       <li><b>PASMO:</b> O personagem sofre desvantagem de -1d20 em testes de Perícia com Atributo base Presença.</li>
       <li><b>PERTURBADO:</b> O personagem perde 1 rodada Atordoado, em estado de choque. A partir da 2° rodada, deve fazer um teste de Vontade DT Sucesso Extremo -1 nível por rodada para conseguir se recompor. Outros personagens podem fazer um teste de Diplomacia para diminuir em 1 nível a DT do teste por tipo de Sucesso.</li>
-      <li><b>SANGRANDO:</b> O personagem perde 1d6 PV por turno enquanto está com essa Condição.</li>
+      <li><b>SANGRANDO:</b> O personagem perde 1d6 PV por rodada enquanto está com essa Condição.</li>
       <li><b>SURDO:</b> O personagem não consegue ouvir, nem fazer testes de Percepção para ouvir.</li>
       <li><b>SURPREENDIDO:</b> O personagem não consegue Reagir.</li>
       <li><b>VICIADO:</b> Sob efeito de um vício. O personagem precisa saciar o vício no máximo a cada 12 horas. Se não o fizer, perde 2 PD e fica Abalado até que sacie seu vício novamente. Um personagem fica Viciado a critério do mestre. Para se livrar de um vício, o personagem deve resistir a 14 dias (336 horas) sem saciar o vício. Após esse tempo, o personagem pode voltar a consumir normalmente sua fonte de vício sem voltar a ser Viciado, mas pode voltar a ser a critério do mestre.</li>
@@ -1888,7 +1875,7 @@
           <td>-</td>
           <td>-</td>
           <td>-</td>
-          <td>No início de uma Cena, você pode escolher uma Perícia. Se fizer isso, recebe uma vantagem cumulativa de +1 no valor da Perícia escolhida sempre que usar ela de maneira contínua (em todos os turnos). Se a Perícia escolhida atingir o valor 14, você deve escolher outra Perícia para fornecer a vantagem, fazendo isso toda vez que uma Perícia escolhida chegar a 14. Se você tiver um Fracasso usando uma das Perícias escolhidas, ou não usar uma das Perícias escolhidas durante 1 turno, o efeito é cancelado, e a Habilidade só poderá ser usada novamente ao iniciar uma nova Cena.</td>
+          <td>No início de uma Cena, você pode escolher uma Perícia. Se fizer isso, recebe uma vantagem cumulativa de +1 no valor da Perícia escolhida sempre que usar ela de maneira contínua (em todas as rodadas). Se a Perícia escolhida atingir o valor 14, você deve escolher outra Perícia para fornecer a vantagem, fazendo isso toda vez que uma Perícia escolhida chegar a 14. Se você tiver um Fracasso usando uma das Perícias escolhidas, ou não usar uma das Perícias escolhidas durante 1 rodada, o efeito é cancelado, e a Habilidade só poderá ser usada novamente ao iniciar uma nova Cena.</td>
         </tr>
         <tr>
           <td>3</td>
@@ -1899,7 +1886,7 @@
           <td>-</td>
           <td>-</td>
           <td>-</td>
-          <td>No início de uma Cena, você pode escolher uma Perícia. Se fizer isso, recebe uma vantagem cumulativa de +1 no valor da Perícia escolhida sempre que usar ela de maneira contínua (em todos os turnos). Se a Perícia escolhida atingir o valor 14, você deve escolher outra Perícia para fornecer a vantagem, fazendo isso toda vez que uma Perícia escolhida chegar a 14. Se você não usar uma das Perícias escolhidas durante 1 turno, o efeito é cancelado.</td>
+          <td>No início de uma Cena, você pode escolher uma Perícia. Se fizer isso, recebe uma vantagem cumulativa de +1 no valor da Perícia escolhida sempre que usar ela de maneira contínua (em todas as rodadas). Se a Perícia escolhida atingir o valor 14, você deve escolher outra Perícia para fornecer a vantagem, fazendo isso toda vez que uma Perícia escolhida chegar a 14. Se você não usar uma das Perícias escolhidas durante 1 rodada, o efeito é cancelado.</td>
         </tr>
       </tbody>
     </table>
