@@ -7742,17 +7742,61 @@ async function alterarNivelFicha(tipoNivel,novoNivel) {
   const progressaoAnterior = clonarProgressaoNiveisFicha();
   const pvAnterior = {...estadoPvFicha};
   const pdAnterior = {...estadoPdFicha};
-  const habilidadesAnteriores = tipoNivel === "ncp" ? copiarEstadoHabilidadesFicha() : null;
-  const novaProgressao = prepararProgressaoNivelFicha(tipoNivel,nivelAtual,novoNivel);
 
-  estadoProgressaoNiveisFicha = novaProgressao;
-  dadosFichaAtual[tipoNivel] = novoNivel;
-  dadosFichaAtual.progressaoNiveis = novaProgressao;
+  const ncpAnterior =
+    Number.isInteger(dadosFichaAtual?.ncp)
+      ? dadosFichaAtual.ncp
+      : 0;
 
-  const evolucoesPessoaisAlteradas = tipoNivel === "ncp" ? sincronizarEvolucoesPessoaisComNcp(novoNivel): 0;
+  const neoAnterior =
+    Number.isInteger(dadosFichaAtual?.neo)
+      ? dadosFichaAtual.neo
+      : 0;
+
+  const habilidadesAnteriores =
+    tipoNivel === "ncp"
+      ? copiarEstadoHabilidadesFicha()
+      : null;
+
+  const novaProgressao =
+    prepararProgressaoNivelFicha(
+      tipoNivel,
+      nivelAtual,
+      novoNivel
+    );
+
+  const ncpAtualizado =
+    tipoNivel === "ncp"
+      ? novoNivel
+      : ncpAnterior;
+
+  const neoAtualizado =
+    tipoNivel === "neo"
+      ? novoNivel
+      : neoAnterior;
+
+  estadoProgressaoNiveisFicha =
+    novaProgressao;
+
+  dadosFichaAtual.ncp =
+    ncpAtualizado;
+
+  dadosFichaAtual.neo =
+    neoAtualizado;
+
+  dadosFichaAtual.progressaoNiveis =
+    novaProgressao;
+
+  const evolucoesPessoaisAlteradas =
+    tipoNivel === "ncp"
+      ? sincronizarEvolucoesPessoaisComNcp(
+          novoNivel
+        )
+      : 0;
 
   const alteracoes = {
-    [tipoNivel]:novoNivel,
+    ncp:ncpAtualizado,
+    neo:neoAtualizado,
     progressaoNiveis:novaProgressao
   };
 
@@ -7790,7 +7834,9 @@ async function alterarNivelFicha(tipoNivel,novoNivel) {
     estadoProgressaoNiveisFicha = progressaoAnterior;
     estadoPvFicha = pvAnterior;
     estadoPdFicha = pdAnterior;
-    dadosFichaAtual[tipoNivel] = nivelAtual;
+    dadosFichaAtual.ncp = ncpAnterior;
+    dadosFichaAtual.neo = neoAnterior;
+
     dadosFichaAtual.progressaoNiveis = progressaoAnterior;
     dadosFichaAtual.pv = {...pvAnterior};
     dadosFichaAtual.pd = {...pdAnterior};
