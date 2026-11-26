@@ -11,7 +11,7 @@
     { nome: "Fuga", arquivo: "musicas/Misael Oliveira - Fuga - A Realidade - 1793308659661 2026-10-29 18_17.m4a" },
     { nome: "Libertados", arquivo: "musicas/Misael Oliveira - Libertados - A Realidade 2026-07-31 21_23.m4a" },
     { nome: "Mosh", arquivo: "musicas/Misael Oliveira - Mosh - A Realidade - 1792086538406 2026-10-15 14_48.m4a" },
-    { nome: "Shopping", arquivo: "músicas/Misael Oliveira - Shopping - A Realidade - 1795565947336 2026-11-24 21_19.m4a" },
+    { nome: "Shopping", arquivo: "musicas/Misael Oliveira - Shopping - A Realidade - 1795565947336 2026-11-24 21_19.m4a" },
     { nome: "Sincero", arquivo: "musicas/Misael Oliveira - Sincero - A Realidade - 1793642633707 2026-11-02 15_03.m4a" },
     { nome: "Tudo é Nada", arquivo: "musicas/Misael Oliveira - Tudo é Nada - A Realidade 2026-07-20 14_31.m4a" }
   ];
