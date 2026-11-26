@@ -193,7 +193,7 @@
 
     <h2 id="tipos-sucesso">Tipos de sucesso</h2>
     <ul id="lista-explicacao-tipos-sucesso">
-      <li><b style="color: rgb(170,60,0);">DESASTRE MÁXIMO:</b> acontece se todos os resultados do teste forem 20 (mínimo 2d20). Gera consequências desvastadoras, como cair no chão e sofrer dano ao tentar esquivar, ou quebrar a perna ao tentar arrombar uma porta. O personagem sofre um dano mínimo de 1 PV e 1 PD e fica Frustrado na rodada.</li>
+      <li><b style="color: rgb(170,60,0);">DESASTRE MÁXIMO:</b> acontece se todos os resultados do teste forem 20 (mínimo 2d20). Gera consequências desvastadoras, como cair no chão e sofrer dano ao tentar esquivar, ou deslocar a perna ao tentar arrombar uma porta. O personagem fica Frustrado na rodada, mas pode perder mais PD ou perder PV a critério do mestre.</li>
       <li><b style="color: rgb(210,0,0);">DESASTRE:</b> acontece se o menor resultado do teste for 20. Pode gerar consequências horríveis, como quebrar um computador ao tentar consertá-lo, ou sofrer dano ao tentar arrombar uma porta. O personagem fica Frustrado na rodada.</li>
       <li><b style="color: rgb(130,130,130);">FRACASSO:</b> acontece se o menor resultado do teste for maior que o valor da perícia usada. O personagem não consegue realizar a Ação.</li>
       <li><b style="color: rgb(5,160,30);">NORMAL:</b> acontece se o menor resultado do teste for igual ou menor que o valor da perícia usada. O personagem realiza a Ação de maneira simples.</li>
@@ -1229,7 +1229,7 @@
     <h3>Lista de níveis de Ações de Interlúdio:</h3>
     <ul class="lista-acoes-interludio">
       <li><b>Descanso Horrível:</b> O personagem recupera 1 PV e 1 PD a menos por Ação.</li>
-      <li><b>Descanso Precário:</b> O personagem recupera 1 PV ou 1 PD a menos por Ação.</li>
+      <li><b>Descanso Precário:</b> O personagem recupera 1 PV ou 1 PD a menos por Ação à escolha do jogador.</li>
       <li><b>Descanso Adequado:</b> O personagem descansa normalmente.</li>
       <li><b>Descanso Perfeito:</b> O personagem recupera 1 PV e 1 PD a mais por Ação.</li>
     </ul>
@@ -1237,18 +1237,13 @@
     <h2 id="cena-investigacao">Cena de Investigação</h2>
     <p>A Cena de Investigação ocorre em momentos nos quais os personagens estão procurando algo específico em um local, como algum tipo de pista, objeto específico, ou algo de interesse.</p>
     <br>
-    <p>Nessa Cena, os personagens têm Pontos de Interesse (PI), que são objetos ou locais específicos para fazer alguma <b>Ação de Investigação</b>.</p>
+    <p>Nessa Cena, os personagens têm Pontos de Interesse (PI), que são objetos ou locais específicos para fazer a <b>Ação de Investigação: Analisar</b>.</p>
     <br>
-    <p>A cada rodada, o personagem pode fazer 1 ou 2 Ações de Investigação, a quantidade varia de acordo com a descrição de o que o personagem faz.</p>
+    <p>Uma vez por rodada, um personagem pode interagir com os PI's e fazer a Ação Analisar. Além disso, um personagem pode apenas interagir com um PI durante uma rodada, sem precisar Analisar.</p>
     <br>
-    <h3>Lista de Ações de Investigação:</h3>
-    <ul id="lista-acoes-investigacao">
-      <li><b>Interagir:</b> O personagem interage fisicamente com o PI, como abrir um livro, ou olhar embaixo de um tapete. Isso não requer testes, basta a criatividade do jogador.</li>
-      <li><b>Analisar:</b> O jogador pode requisitar uma Perícia específica ao mestre para obter mais informações sobre o PI baseado no valor de sua Perícia. Por exemplo, tentar obter informações com a perícia Área - Linguagem ao analisar um livro. Baseado na Perícia descrita pelo jogador, e pela coerência dela com o PI, o mestre pode fornecer informações.
-        <br>
-        Além disso, o jogador pode gastar 1 PD para rolar um teste da Perícia que escolheu se achar que não obteve todas as informações que podia.
-        <br>
-        A cada novo teste que fizer no mesmo PI, o jogador deve gastar 1 PD a mais (por exemplo, se fizer uma segunda vez, gasta 2 PD, se fizer uma terceira vez, gasta 3 PD, e assim por diante).</li>
+    <p><b>Analisar:</b> O jogador pode requisitar uma Perícia específica ao mestre para obter mais informações sobre o PI baseado no valor de sua Perícia. Por exemplo, tentar obter informações com a perícia Área - Linguagem ao analisar um livro. Baseado na Perícia descrita pelo jogador, e pela coerência dela com o PI, o mestre pode fornecer informações.</p>
+    <p>Além disso, o jogador pode gastar 1 PD para rolar um teste da Perícia que escolheu se achar que não obteve todas as informações que podia.</p>
+    <p>A cada novo teste que fizer no mesmo PI, o jogador deve gastar 1 PD a mais (por exemplo, se fizer uma segunda vez, gasta 2 PD, se fizer uma terceira vez, gasta 3 PD, e assim por diante).</p>
     </ul>
 
     <h2 id="cena-combate">Cena de Combate</h2>
@@ -1393,7 +1388,7 @@
       <li><b>Roubar (Ação Principal):</b> O personagem rouba um Item de um alvo, seja ele uma arma empunhada ou objeto guardado. Para isso, deve fazer um teste de <b>Crime DT Reflexo do alvo</b>, precisando <b>vencer</b> para roubar o Item do alvo.</li>
       <li><b>Furtar (Ação Principal):</b> O personagem furta um Item de um alvo enquanto está furtivo, seja ele uma arma empunhada ou objeto guardado. Para isso, deve fazer um teste de <b>Crime</b>, precisando ter <b>Sucesso</b> para furtar o Item do alvo.</li>
       <li><b>Incentivar (Ação Principal):</b> Uma vez na Cena, o personagem deixa um alvo <b>Incentivado</b>. Para isso, deve fazer um teste de <b>Diplomacia DT Sucesso Extremo</b> para Incentivar o alvo.</li>
-      <li><b>Acerto garantido (Ação Principal):</b> O personagem finaliza um alvo que esteja <b>Indefeso</b>, ou faz uma Ação como se tivesse um <b>Sucesso Extremo</b>. Uma situação que isso pode ocorrer é definida pelo mestre, geralmente sendo uma Cena sem um perigo ou pressa de fazer Ações.</li>
+      <li><b>Acerto garantido (Ação Principal):</b> O personagem faz uma Ação como se tivesse um <b>Sucesso Extremo</b>. Além disso, pode matar ou causar dano crítico em um Alvo. Uma situação que isso pode ocorrer é definida pelo mestre, geralmente sendo uma Cena sem um perigo ou pressa de fazer Ações.</li>
     </ul>
   
   </div>
@@ -1484,19 +1479,8 @@
     <br>
     <p>Nesse exemplo, o mestre diz: <b>Maior</b> para o valor 4 (corresponde ao 2), <b>Menor</b> para o valor 3 (corresponde ao 5), e <b>Igual</b> para o valor 3 (corresponde ao 3).</p>
     <br>
-    <p>Existe um número máximo de tentativas que um personagem pode tentar para Destrancar. Essa quantidade é baseada no <b>Nível da Perícia Crime</b> do personagem.</p>
+    <p>O personagem possui uma quantidade de tentativas igual ao seu <b>Nível de Crime + 1</b>. Se a tranca possuir pelo menos 1d8 ou 1d10, recebe <b>+1 tentativa</b>.</p>
     <br>
-
-    <h3>Lista de tentativas de Destrancar:</h3>
-    <ul id="lista-tentativas-destrancar">
-      <li><b>Crime Nível 0 (1-3):</b> <b>2 tentativas</b> se houver pelo menos 1d10 ou 1d8 na tranca; <b>1 tentativa</b> se houver pelo menos 1d6 ou apenas 1d4 na tranca.</li>
-      <li><b>Crime Nível 1 (4-6):</b> <b>3 tentativas</b> se houver pelo menos 1d10 ou 1d8 na tranca; <b>2 tentativas</b> se houver pelo menos 1d6 ou apenas 1d4 na tranca.</li>
-      <li><b>Crime Nível 2 (7-9):</b> <b>4 tentativas</b> se houver pelo menos 1d10 ou 1d8 na tranca; <b>3 tentativas</b> se houver pelo menos 1d6 ou apenas 1d4 na tranca.</li> 
-      <li><b>Crime Nível 3 (10-12):</b> <b>5 tentativas</b> se houver pelo menos 1d10 ou 1d8 na tranca; <b>4 tentativas</b> se houver pelo menos 1d6 ou apenas 1d4 na tranca.</li>
-      <li><b>Crime Nível 4 (13-14):</b> <b>6 tentativas</b> se houver pelo menos 1d10 ou 1d8 na tranca; <b>5 tentativas</b> se houver pelo menos 1d6 ou apenas 1d4 na tranca.</li>
-    </ul>
-    <br>
-
     <p>Se após as tentativas, o personagem não conseguir Destrancar e outro personagem, ou o mesmo, quiser tentar de novo, eles terão que gastar <b>1 PD</b> e terão apenas <b>+1 tentativa</b>. A cada nova tentativa, o <b>número de PD's gasto</b> aumenta em <b>+1</b> (no caso descrito, após tentar novamente e fracassar, os personagens terão que gastar <b>2 PD</b> para +1 tentativa).</p>
     <br>
     <p>O mestre pode ainda aplicar essa mecânica a momentos em que a tranca é baseada em números, e há dicas dos valores necessários, limitando a quantidade de tentativas para que os personagens tentem Destrancar o obstáculo.</p>
@@ -1506,25 +1490,25 @@
     <br>
     <p>Caso isso aconteça, o personagem que tentar <b>Arrombar</b> deve gastar <b>1 PV</b> e fazer um teste de <b>Atletismo DT Sucesso definido pelo obstáculo</b>.</p>
     <br>
-    <p>Se o personagem atingir a DT, o obstáculo é quebrado; Se não atingir a DT, pode facilitar o teste em <b>1 nível de Sucesso</b> caso tenha tido um <b>Sucesso Normal ou Bom</b> no seu teste (por exemplo, se o obstáculo precisar de um <b>Sucesso Bom</b>, e o personagem teve <b>Sucesso Normal</b>, <em>diminui</em> o <b>Sucesso</b> necessário para <b>Normal</b>).</p>
+    <p>Se o personagem atingir a DT, o obstáculo é quebrado; Se não atingir a DT, pode reduzir a DT do teste em <b>1 nível de Sucesso</b> caso tenha tido um <b>Sucesso Normal ou Bom</b> no seu teste (por exemplo, se o obstáculo precisar de um <b>Sucesso Bom</b>, e o personagem teve <b>Sucesso Normal</b>, <em>diminui</em> o <b>Sucesso</b> necessário para <b>Normal</b>). Essa redução permanece para as próximas tentativas contra o mesmo obstáculo e pode se acumular até <b>DT Normal</b>.</p>
 
     <h2 id="invadir-sistema">Invadir Sistema</h2>
     <p>Essa mecânica pode ser usada para situações em que um personagem está tentando vencer um firewall ou algum tipo de defesa de um sistema.</p>
     <br>
-    <p>Aplicando essa mecânica, o personagem que está tentando <b>Invadir o Sistema</b> deve a cada rodada fazer um teste de <b>Área - Computação DT Sucesso definido pela dificuldade de acessar o sistema</b>.</p>
+    <p>Aplicando essa mecânica, o personagem que está tentando <b>Invadir o Sistema</b> deve a cada rodada fazer um teste de <b>Área - Computação DT Sucesso definido pela Defesa do sistema</b>.</p>
     <br>
     <p>Tendo <b>Sucesso</b>, o personagem aplica um dano de <b>1d6 Pontos de Resistência (PR)</b> na defesa do sistema (Extremo causa <b>dano máximo</b>); Se tiver um <b>Fracasso</b>, sofre um dano de <b>1 PD</b>.</p>
     <br>
-    <p>Se a defesa do sistema não sofrer <em>nenhum dano</em> durante <b>1 rodada</b>, ela <b>recupera 2 PR</b>.</p>
+    <p>Se a defesa do sistema não sofrer <em>nenhum dano</em> durante <b>2 rodadas</b>, ela <b>recupera 2 PR</b>.</p>
     <br>
     <p>Existem 3 tipos de sistema, eles estão na tabela abaixo, e o mestre pode definir qual o tipo de sistema que o personagem tentará invadir.</p>
     <br>
 
     <h3>Lista de Tipos de Sistema:</h3>
     <ul id="lista-tipos-sistema">
-      <li><b>Sistema Simples:</b> 30 PR - Defesa DT Normal</li>
-      <li><b>Sistema Intermediário:</b> 40 PR - Defesa DT Bom</li>
-      <li><b>Sistema Complexo:</b> 50 PR - Defesa DT Extremo</li>
+      <li><b>Sistema Simples:</b> 20 PR - Defesa DT Sucesso Normal</li>
+      <li><b>Sistema Intermediário:</b> 30 PR - Defesa DT Sucesso Bom</li>
+      <li><b>Sistema Complexo:</b> 40 PR - Defesa DT Sucesso Bom</li>
     </ul>
     <br><br>
 
@@ -1577,7 +1561,7 @@
       <li><b>DESPREVINIDO:</b> O personagem sofre desvantagem de -1d20 em Reações. Um personagem fica Desprevinido contra inimigos que não possa perceber.</li>
       <li><b>DOENTE:</b> Sob efeito de uma doença (baseado na doença, o mestre define as penalidades).</li>
       <li><b>EM CHAMAS:</b> O personagem está pegando fogo. No início de seus turnos, sofre 1d6 de dano de fogo. O personagem pode gastar um turno inteira para apagar o fogo com as mãos. Imersão em água também apaga as chamas.</li>
-      <li><b>ENJOADO:</b> O personagem só pode realizar uma Ação de cada tipo no seu turno em Combates, e demora 2 rodadas para fazer uma Ação Principal em outras Cenas.</li>
+      <li><b>ENJOADO:</b> O personagem demora mais para fazer todas as suas Ações em um nível. Por exemplo, Ação Livre vira Ação Rápida, ou Ação Principal vira Ação Completa.</li>
       <li><b>ENLOUQUECENDO:</b> O personagem está com 0 PD. Se iniciar 3 turnos Enlouquecendo na mesma Cena (não necessariamente consecutivos), você fica enlouquecido (seu personagem se torna um NPC). A Condição pode ser encerrada com um teste de Diplomacia DT Sucesso Extremo, ou por qualquer efeito que cure pelo menos 1 PD.</li>
       <li><b>ENVENENADO:</b> Sob efeito de um veneno (baseado no tipo de veneno, o mestre define as penalidades).</li>
       <li><b>ESMORECIDO:</b> O personagem sofre desvantagem de -1d20 em testes de Perícia com Atributo base Cognição.</li>
