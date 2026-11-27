@@ -6131,6 +6131,7 @@ const BONUS_NATURAL_TOTAL_FICHA = 5;
 const BONUS_NATURAL_POR_PERICIA_FICHA = 3;
 const MAXIMO_PERICIA_NORMAL_FICHA = 12;
 const MAXIMO_PERICIA_NATURAL_FICHA = 14;
+const MAXIMO_PERICIA_NATURAL_EVOLUIDA_FICHA = 16;
 const BENEFICIOS_NIVEIS_FICHA = {
   ncp: {
     1: [
@@ -6279,22 +6280,30 @@ function normalizarProgressaoNiveisFicha(ficha) {
         : []
   };
 }
-
 function obterLimitePontosPericiasProgressaoFicha() {
   return PONTOS_PERICIA_INICIAIS_FICHA +
     estadoProgressaoNiveisFicha.bonusPontosPericia;
 }
-
 function obterLimiteBonusNaturalFicha() {
   return BONUS_NATURAL_TOTAL_FICHA +
     estadoProgressaoNiveisFicha.bonusPericiasNaturais;
 }
-
+function obterPontosNaturaisEvolucaoFicha() {
+  return Math.max(0,obterLimiteBonusNaturalFicha() - BONUS_NATURAL_TOTAL_FICHA);
+}
+function permitirNaturaisExtrasFicha() {
+  return obterPontosNaturaisEvolucaoFicha() > 0 && obterOcupacoesNaturaisFicha().length >= 2;
+}
+function obterMaximoValorPericiaFicha(nome,bonus,selecionadas = periciasNaturaisFicha) {
+  const inicial = selecionadas.some(atual => nomesIguaisPericiaFicha(atual,nome));
+  const extraNestaPericia = inicial ? Math.max(0,bonus - BONUS_NATURAL_POR_PERICIA_FICHA) : bonus;
+  if (extraNestaPericia > 0 && obterPontosNaturaisEvolucaoFicha() > 0) return MAXIMO_PERICIA_NATURAL_EVOLUIDA_FICHA;
+  return inicial ? MAXIMO_PERICIA_NATURAL_FICHA : MAXIMO_PERICIA_NORMAL_FICHA;
+}
 function obterLimiteAtributosFicha() {
   return 4 +
     estadoProgressaoNiveisFicha.bonusAtributos;
 }
-
 function clonarProgressaoNiveisFicha() {
   return {
     bonusPontosPericia:estadoProgressaoNiveisFicha.bonusPontosPericia,
@@ -6910,7 +6919,7 @@ function nomesIguaisPericiaFicha(a,b) {
   return normalizarTextoPontosFicha(a) === normalizarTextoPontosFicha(b);
 }
 function ehPericiaNaturalFicha(pericia) {
-  return periciasNaturaisFicha.some(nome => nomesIguaisPericiaFicha(nome,pericia.nome));
+  return periciasNaturaisFicha.some(nome => nomesIguaisPericiaFicha(nome,pericia.nome)) || (Number(estadoPericiasFicha[pericia.id]?.bonusNatural) || 0) > 0;
 }
 function obterOcupacoesNaturaisFicha() {
   const ids = Array.isArray(dadosFichaAtual?.ocupacoes)
@@ -6942,89 +6951,62 @@ function bonusRascunhoPericiaFicha(nome) {
   return Number(bonusNaturaisRascunho[criarIdPericiaPontosFicha(nome)]) || 0;
 }
 function obterTotalBonusNaturaisSalvoFicha() {
-  return periciasNaturaisFicha.reduce((soma,nome) => {
-    const id = criarIdPericiaPontosFicha(nome);
-    return soma + (Number(estadoPericiasFicha[id]?.bonusNatural) || 0);
-  },0);
+  return Object.values(estadoPericiasFicha).reduce((soma,dados) => soma + (Number(dados.bonusNatural) || 0),0);
 }
 function validarEdicaoPericiasNaturaisFicha() {
   const disponiveis = obterPericiasNaturaisDisponiveisFicha();
-
-  if (!disponiveis.length) {
-    return { valida:false, mensagem:"As Ocupações atuais não possuem Perícias disponíveis." };
-  }
-
-  if (disponiveis.length > 3 && periciasNaturaisRascunho.length !== 3) {
-    return { valida:false, mensagem:"Escolha exatamente 3 Perícias Naturais." };
-  }
-
-  if (disponiveis.length <= 3) {
-    periciasNaturaisRascunho = [...disponiveis];
-  }
+  const quantidadeIniciais = Math.min(3,disponiveis.length);
+  if (!disponiveis.length) return {valida:false,mensagem:"As Ocupações atuais não possuem Perícias disponíveis."};
+  if (periciasNaturaisRascunho.length !== quantidadeIniciais) return {valida:false,mensagem:`Escolha exatamente ${quantidadeIniciais} Perícias Naturais iniciais.`};
 
   for (const ocupacao of obterOcupacoesAreaObrigatoriaFicha()) {
-    const possuiArea = periciasNaturaisRascunho.some(nome =>
-      ocupacao.areasObrigatorias.some(area => nomesIguaisPericiaFicha(area,nome))
-    );
-
-    if (!possuiArea) {
-      return {
-        valida:false,
-        mensagem:`Escolha pelo menos uma Perícia de Área de ${ocupacao.nome}.`
-      };
-    }
+    const possuiArea = periciasNaturaisRascunho.some(nome => ocupacao.areasObrigatorias.some(area => nomesIguaisPericiaFicha(area,nome)));
+    if (!possuiArea) return {valida:false,mensagem:`Escolha pelo menos uma Perícia de Área de ${ocupacao.nome}.`};
   }
 
+  const extrasDisponiveis = obterPontosNaturaisEvolucaoFicha();
+  const permitirExtras = permitirNaturaisExtrasFicha();
   let totalBonus = 0;
+  let pontosIniciais = 0;
 
-  for (const nome of periciasNaturaisRascunho) {
+  for (const nome of disponiveis) {
+    const inicial = periciasNaturaisRascunho.some(atual => nomesIguaisPericiaFicha(atual,nome));
     const bonus = bonusRascunhoPericiaFicha(nome);
+    const maximoBonus = inicial ? BONUS_NATURAL_POR_PERICIA_FICHA + extrasDisponiveis : (permitirExtras ? extrasDisponiveis : 0);
 
-    if (!Number.isInteger(bonus) || bonus < 0 || bonus > BONUS_NATURAL_POR_PERICIA_FICHA) {
-      return { valida:false, mensagem:"Cada Perícia Natural pode receber de +0 a +3." };
+    if (!Number.isInteger(bonus) || bonus < 0 || bonus > maximoBonus) {
+      return {valida:false,mensagem:`${nome} pode receber no máximo +${maximoBonus} pontos naturais nesta evolução.`};
     }
 
     totalBonus += bonus;
+    if (inicial) pontosIniciais += Math.min(bonus,BONUS_NATURAL_POR_PERICIA_FICHA);
 
-    const id = criarIdPericiaPontosFicha(nome);
-    const dados = estadoPericiasFicha[id];
-
+    const dados = estadoPericiasFicha[criarIdPericiaPontosFicha(nome)];
     if (!dados) continue;
 
-    const valorDistribuido = Number(dados.valor) - (Number(dados.bonusNatural) || 0);
+    const valorNormal = Number(dados.valor) - (Number(dados.bonusNatural) || 0);
+    if (valorNormal > MAXIMO_PERICIA_NORMAL_FICHA) return {valida:false,mensagem:`${nome} possui mais de 12 pontos normais.`};
 
-    if (valorDistribuido > MAXIMO_PERICIA_NORMAL_FICHA) {
-      return { valida:false, mensagem:`${nome} possui mais de 12 pontos normais.` };
-    }
-
-    if (valorDistribuido + bonus > MAXIMO_PERICIA_NATURAL_FICHA) {
-      return { valida:false, mensagem:`${nome} não pode ultrapassar 14.` };
-    }
+    const maximoTotal = obterMaximoValorPericiaFicha(nome,bonus,periciasNaturaisRascunho);
+    if (valorNormal + bonus > maximoTotal) return {valida:false,mensagem:`${nome} não pode ultrapassar ${maximoTotal} pontos com esta distribuição.`};
   }
 
-  const limiteNaturais = obterLimiteBonusNaturalFicha();
+  if (pontosIniciais < BONUS_NATURAL_TOTAL_FICHA) return {valida:false,mensagem:"Os 5 pontos iniciais devem continuar distribuídos entre as 3 Perícias escolhidas, com até +3 em cada uma."};
+  if (totalBonus - pontosIniciais > extrasDisponiveis) return {valida:false,mensagem:`Você possui somente ${extrasDisponiveis} ponto(s) extra de Perícias Naturais pela evolução.`};
 
+  const limiteNaturais = obterLimiteBonusNaturalFicha();
   const totalSalvo = obterTotalBonusNaturaisSalvoFicha();
 
   if (totalSalvo > limiteNaturais) {
-    if (totalBonus >= totalSalvo) {
-      return {
-        valida:false,
-        mensagem:`A ficha está acima do limite de ${limiteNaturais} pontos. Reduza pelo menos 1 ponto bônus para salvar.`
-      };
-    }
+    if (totalBonus >= totalSalvo) return {valida:false,mensagem:`A ficha está acima do limite de ${limiteNaturais} pontos. Reduza pelo menos 1 ponto bônus para salvar.`};
   } else if (totalBonus !== limiteNaturais) {
-    return {
-      valida:false,
-      mensagem:`Distribua exatamente os ${limiteNaturais} pontos bônus das Perícias Naturais.`
-    };
+    return {valida:false,mensagem:`Distribua exatamente os ${limiteNaturais} pontos bônus das Perícias Naturais.`};
   }
 
-  return { valida:true, mensagem:"" };
+  return {valida:true,mensagem:""};
 }
-
 function atualizarEstadoEditorPericiasNaturaisFicha() {
-  const total = periciasNaturaisRascunho.reduce((soma,nome) => soma + bonusRascunhoPericiaFicha(nome), 0);
+  const total = obterPericiasNaturaisDisponiveisFicha().reduce((soma,nome) => soma + bonusRascunhoPericiaFicha(nome),0);
 
   contadorEditorPericiasNaturaisFicha.textContent = `${periciasNaturaisRascunho.length} / 3 • ${total} / ${obterLimiteBonusNaturalFicha()} pontos`
 
@@ -7044,13 +7026,10 @@ function renderizarEditorPericiasNaturaisFicha() {
 
   const especiais = obterOcupacoesAreaObrigatoriaFicha();
 
-  if (!especiais.length) {
-    regraEditorPericiasNaturaisFicha.textContent = `Escolha 3 Perícias Naturais e distribua os ${obterLimiteBonusNaturalFicha()} pontos bônus.`
-  } else {
-    regraEditorPericiasNaturaisFicha.textContent =
-      `Escolha 3 Perícias e mantenha pelo menos uma Perícia de Área de ${especiais.map(o => o.nome).join(" e ")}.`;
-  }
+  const instrucoes = especiais.length ? `Escolha 3 Perícias iniciais, incluindo pelo menos uma Área de ${especiais.map(o => o.nome).join(" e ")}.` : "Escolha 3 Perícias Naturais iniciais.";
 
+  regraEditorPericiasNaturaisFicha.textContent = `${instrucoes} Distribua 5 pontos iniciais (até +3 por Perícia) e ${obterPontosNaturaisEvolucaoFicha()} ponto(s) de evolução.` + (permitirNaturaisExtrasFicha() ? " Com duas Ocupações, os pontos de evolução também podem ir para outras Perícias da lista, sem marcar a caixa." : "");
+  
   const fragmento = document.createDocumentFragment();
 
   disponiveis.forEach(nomePericia => {
@@ -7079,10 +7058,12 @@ function renderizarEditorPericiasNaturaisFicha() {
     const bonus = document.createElement("input");
     bonus.type = "number";
     bonus.min = "0";
-    bonus.max = "3";
+    const maximoBonus = selecionada ? BONUS_NATURAL_POR_PERICIA_FICHA + obterPontosNaturaisEvolucaoFicha() : (permitirNaturaisExtrasFicha() ? obterPontosNaturaisEvolucaoFicha() : 0);
+    bonus.max = String(maximoBonus);
     bonus.step = "1";
     bonus.value = bonusRascunhoPericiaFicha(nomePericia);
-    bonus.disabled = !selecionada;
+    bonus.disabled = !selecionada && !permitirNaturaisExtrasFicha();
+    bonus.title = !selecionada && permitirNaturaisExtrasFicha() ? "Bônus recebido por evolução do NEO" : "Pontos bônus da Perícia Natural";
 
     checkbox.addEventListener("change",evento => {
       if (evento.target !== checkbox) return;
@@ -7114,21 +7095,16 @@ function renderizarEditorPericiasNaturaisFicha() {
 
       const valor = Number(bonus.value);
 
-      if (!Number.isInteger(valor) || valor < 0 || valor > 3) {
+      if (!Number.isInteger(valor) || valor < 0 || valor > maximoBonus) {
         bonus.value = bonusRascunhoPericiaFicha(nomePericia);
         return;
       }
 
-      const totalOutras = periciasNaturaisRascunho
-        .filter(nome => !nomesIguaisPericiaFicha(nome,nomePericia))
-        .reduce((soma,nome) => soma + bonusRascunhoPericiaFicha(nome),0);
+      const totalOutras = disponiveis.filter(nome => !nomesIguaisPericiaFicha(nome,nomePericia)).reduce((soma,nome) => soma + bonusRascunhoPericiaFicha(nome),0);
 
       const limite = obterLimiteBonusNaturalFicha();
 
-      const totalAntes = periciasNaturaisRascunho.reduce(
-        (soma,nome) => soma + bonusRascunhoPericiaFicha(nome),
-        0
-      );
+      const totalAntes = disponiveis.reduce((soma,nome) => soma + bonusRascunhoPericiaFicha(nome),0);
 
       const totalNovo = totalOutras + valor;
 
@@ -7172,7 +7148,7 @@ function abrirEditorPericiasNaturaisFicha() {
 
   disponiveis.forEach(nome => {
     const id = criarIdPericiaPontosFicha(nome);
-    bonusNaturaisRascunho[id] = periciasNaturaisRascunho.some(atual => nomesIguaisPericiaFicha(atual,nome)) ? Number(estadoPericiasFicha[id]?.bonusNatural) || 0 : 0;
+    bonusNaturaisRascunho[id] = Number(estadoPericiasFicha[id]?.bonusNatural) || 0;
   });
 
   editorPericiasNaturaisFicha.hidden = false;
@@ -7204,14 +7180,7 @@ async function salvarEditorPericiasNaturaisFicha() {
       Number(dados.valor) -
       (Number(dados.bonusNatural) || 0);
 
-    const natural =
-      periciasNaturaisRascunho.some(nome =>
-        nomesIguaisPericiaFicha(nome,pericia.nome)
-      );
-
-    const novoBonus = natural
-      ? bonusRascunhoPericiaFicha(pericia.nome)
-      : 0;
+    const novoBonus = bonusRascunhoPericiaFicha(pericia.nome);
 
     const novoValor = valorDistribuido + novoBonus;
 
@@ -7390,7 +7359,7 @@ function renderizarPericiasPontosFicha() {
 
     inputNormal.type = "number";
     inputNormal.min = String(1 + (Number(dados.bonusNatural) || 0));
-    inputNormal.max = "99";
+    inputNormal.max = String(Math.min(MAXIMO_PERICIA_NORMAL_FICHA + (Number(dados.bonusNatural) || 0), obterMaximoValorPericiaFicha(pericia.nome,Number(dados.bonusNatural) || 0)));
     inputNormal.step = "1";
     inputNormal.value = dados.valor;
 
@@ -7441,6 +7410,14 @@ function renderizarPericiasPontosFicha() {
       const valorMinimo = 1 + bonusNatural;
 
       if (!Number.isInteger(novoValor) || novoValor < valorMinimo || novoValor > 99) {
+        inputNormal.value = dados.valor;
+        return;
+      }
+
+      const valorNormal = novoValor - bonusNatural;
+      const maximoTotal = obterMaximoValorPericiaFicha(pericia.nome,bonusNatural);
+
+      if ((valorNormal > MAXIMO_PERICIA_NORMAL_FICHA || novoValor > maximoTotal) && novoValor >= dados.valor) {
         inputNormal.value = dados.valor;
         return;
       }
