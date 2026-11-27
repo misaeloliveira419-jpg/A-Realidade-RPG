@@ -1,6 +1,8 @@
 (() => {
   const MUSICAS = [
-    { nome: "Ataque", arquivo: "musicas/Misael Oliveira - Ataque - A Realidade 2026-07-25 13_38.m4a" },
+    { nome: "Shopping", arquivo: "musicas/Misael Oliveira - Shopping - A Realidade - 1795565947336 2026-11-24 21_19.m4a" },
+    { nome: "Tudo é Nada", arquivo: "musicas/Misael Oliveira - Tudo é Nada - A Realidade - 1795736359333 2026-11-26 20_39.m4a" },
+    { nome: "Ataque", arquivo: "musicas/Misael Oliveira - Ataque - A Realidade - 1795817202003 2026-11-27 19_06.m4a" },
     { nome: "Até", arquivo: "musicas/Misael Oliveira - Até - A Realidade 2026-08-02 13_06.m4a" },
     { nome: "Brincar", arquivo: "musicas/Misael Oliveira - Brincar - A Realidade - 1793986046174 2026-11-06 14_27.m4a" },
     { nome: "Caos", arquivo: "musicas/Misael Oliveira - Caos - A Realidade 2026-07-31 21_22.m4a" },
@@ -11,9 +13,7 @@
     { nome: "Fuga", arquivo: "musicas/Misael Oliveira - Fuga - A Realidade - 1793308659661 2026-10-29 18_17.m4a" },
     { nome: "Libertados", arquivo: "musicas/Misael Oliveira - Libertados - A Realidade 2026-07-31 21_23.m4a" },
     { nome: "Mosh", arquivo: "musicas/Misael Oliveira - Mosh - A Realidade - 1792086538406 2026-10-15 14_48.m4a" },
-    { nome: "Shopping", arquivo: "musicas/Misael Oliveira - Shopping - A Realidade - 1795565947336 2026-11-24 21_19.m4a" },
-    { nome: "Sincero", arquivo: "musicas/Misael Oliveira - Sincero - A Realidade - 1793642633707 2026-11-02 15_03.m4a" },
-    { nome: "Tudo é Nada", arquivo: "musicas/Misael Oliveira - Tudo é Nada - A Realidade - 1795736359333 2026-11-26 20_39.m4a" }
+    { nome: "Sincero", arquivo: "musicas/Misael Oliveira - Sincero - A Realidade - 1793642633707 2026-11-02 15_03.m4a" }
   ];
 
   const alvoPlayer = document.getElementById("fichas-campanha") || document.querySelector(".painel-ficha");
