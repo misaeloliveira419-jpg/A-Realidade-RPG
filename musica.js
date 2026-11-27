@@ -58,7 +58,7 @@
       <input id="volume-musica-campanha" type="range" min="0" max="100" step="1" value="70">
     </label>
 
-    <audio id="audio-musica-campanha" preload="metadata"></audio>
+    <audio id="audio-musica-campanha" preload="auto"></audio>
   `;
 
   alvoPlayer.insertAdjacentElement("afterend", player);
@@ -270,29 +270,16 @@
   }
 
   function sincronizarPosicao(forcar = false) {
-    if (
-      !estado?.arquivo ||
-      audio.readyState < 1 ||
-      arrastando
-    ) return;
-
+    if (!estado?.arquivo || audio.readyState < 1 || arrastando) return;
     let alvo = posicaoEsperada();
-
-    if (
-      Number.isFinite(audio.duration) &&
-      audio.duration > 0
-    ) {
-      alvo = clamp(
-        alvo,
-        0,
-        Math.max(0, audio.duration - 0.05)
-      );
+    const duracao = Number.isFinite(audio.duration) && audio.duration > 0 ? audio.duration : 0;
+    if (duracao > 0) {
+      if (estado?.loop) alvo = ((alvo % duracao) + duracao) % duracao;
+      else alvo = clamp(alvo, 0, Math.max(0, duracao - 0.05));
     }
-
-    if (
-      forcar ||
-      Math.abs(audio.currentTime - alvo) > 0.5
-    ) {
+    let diferenca = Math.abs(audio.currentTime - alvo);
+    if (estado?.loop && duracao > 0) diferenca = Math.min(diferenca, duracao - diferenca);
+    if (forcar || diferenca > 0.5) {
       try {
         audio.currentTime = alvo;
       } catch {}
