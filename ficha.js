@@ -6295,10 +6295,7 @@ function permitirNaturaisExtrasFicha() {
   return obterPontosNaturaisEvolucaoFicha() > 0 && obterOcupacoesNaturaisFicha().length >= 2;
 }
 function obterMaximoValorPericiaFicha(nome,bonus,selecionadas = periciasNaturaisFicha) {
-  const inicial = selecionadas.some(atual => nomesIguaisPericiaFicha(atual,nome));
-  const extraNestaPericia = inicial ? Math.max(0,bonus - BONUS_NATURAL_POR_PERICIA_FICHA) : bonus;
-  if (extraNestaPericia > 0 && obterPontosNaturaisEvolucaoFicha() > 0) return MAXIMO_PERICIA_NATURAL_EVOLUIDA_FICHA;
-  return inicial ? MAXIMO_PERICIA_NATURAL_FICHA : MAXIMO_PERICIA_NORMAL_FICHA;
+  return Math.min(MAXIMO_PERICIA_NATURAL_EVOLUIDA_FICHA, MAXIMO_PERICIA_NORMAL_FICHA + Math.max(0,Number(bonus) || 0));
 }
 function obterLimiteAtributosFicha() {
   return 4 +
