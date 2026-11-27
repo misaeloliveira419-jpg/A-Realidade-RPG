@@ -6,12 +6,12 @@ if (idCampanhaFicha) document.body.classList.add("ficha-em-campanha");
 
 const botaoVoltarFicha = document.querySelector(".botao-voltar");
 if (botaoVoltarFicha) {
-  botaoVoltarFicha.onclick = () => {
+  botaoVoltarFicha.onclick = async () => {
+    await filaSalvamentoPontos;
     if (idCampanhaFicha) {
       window.location.href = `index.html?campanha=${encodeURIComponent(idCampanhaFicha)}`;
       return;
     }
-
     window.location.href = "index-suas-fichas.html";
   };
 }
@@ -490,12 +490,9 @@ function criarCardPersonagemCampanhaFicha(ficha) {
   informacoes.append(nome,recursos);
   card.append(foto,informacoes);
 
-  card.addEventListener("click",() => {
-    const parametros = new URLSearchParams({
-      ficha: ficha.id,
-      campanha: idCampanhaFicha
-    });
-
+  card.addEventListener("click",async () => {
+    const parametros = new URLSearchParams({ficha:ficha.id,campanha:idCampanhaFicha});
+    await filaSalvamentoPontos;
     window.location.href = `index-ficha.html?${parametros.toString()}`;
   });
 
@@ -6690,43 +6687,22 @@ function salvarAtualizacaoPontosFicha(alteracoes) {
     return Promise.resolve();
   }
 
-  if (
-    !auth.currentUser ||
-    !idFicha
-  ) {
+  if (!auth.currentUser || !idFicha) {
     return Promise.resolve();
   }
 
-  const uid =
-    auth.currentUser.uid;
+  const uid = auth.currentUser.uid;
 
-  filaSalvamentoPontos =
-    filaSalvamentoPontos
-      .catch(() => {})
-      .then(async () => {
-        if (
-          auth.currentUser?.uid !== uid
-        ) return;
-
-        await db
-          .collection("fichas")
-          .doc(idFicha)
-          .update({
-            ...alteracoes,
-
-            atualizadoEm:
-              firebase.firestore
-                .FieldValue
-                .serverTimestamp()
-          });
-      })
-      .catch(erro => {
-        console.error(
-          "Erro ao salvar Pontos de Ficha:",
-          erro
-        );
-      });
-
+  filaSalvamentoPontos = filaSalvamentoPontos.catch(() => {}).then(async () => {
+    if (auth.currentUser?.uid !== uid) return;
+    await db.collection("fichas").doc(idFicha).update({
+      ...alteracoes,
+      atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+    });
+  }).catch(erro => {
+    console.error("Erro ao salvar Pontos de Ficha:",erro,alteracoes);
+    alert(`Não foi possível salvar os Pontos de Ficha. Erro: ${erro?.code || erro?.message || "desconhecido"}`);
+  });
   return filaSalvamentoPontos;
 }
 
